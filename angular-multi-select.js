@@ -23,7 +23,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -217,7 +217,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			// List all the input elements. We need this for our keyboard navigation.
-			// This function will be called everytime the filter is updated.
+			// This function will be called every time the filter is updated.
 			// Depending on the size of filtered mode, might not good for performance, but oh well..
 			$scope.getFormElements = function() {
 				formElements = [];
@@ -275,7 +275,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				e.preventDefault();
 				e.stopPropagation();
 
-				// if the directive is globaly disabled, do nothing
+				// if the directive is globally disabled, do nothing
 				if ( typeof attrs.disableProperty !== 'undefined' && item[ attrs.disableProperty ] === true ) {
 					return false;
 				}
@@ -332,7 +332,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 							// if group end
 							nestLevel = nestLevel - 1;
 
-							// cek if all are ticked or not
+							// check if all are ticked or not
 							if ( tempArr.length > 0 && nestLevel === 0 ) {
 
 								var allTicked = true;
