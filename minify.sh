@@ -1,2 +1,1 @@
-yui-compressor --type js -v -o '.js$:-min.js' *.js
-yui-compressor --type js -v -o '.css$:-min.css' *.css
+java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --externs libs/angular-1.3.js --js angular-multi-select.js --js_output_file angular-multi-select.min.js --warning_level VERBOSE 2>&1 | sed -e '/libs/,+3d' 
