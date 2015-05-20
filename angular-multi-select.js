@@ -345,19 +345,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 								}
 
 								for ( j = startIndex; j <= endIndex ; j++ ) {
-									if ( typeof $scope.filteredModel[ j ][ attrs.groupProperty ] === 'undefined' ) {
-										if ( typeof attrs.disableProperty === 'undefined' ) {
-											$scope.filteredModel[ j ][ $scope.tickProperty ] = !allTicked;
-											// we refresh input model as well
-											inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-											$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = !allTicked;
-										} else if ( $scope.filteredModel[ j ][ attrs.disableProperty ] !== true ) {
-											$scope.filteredModel[ j ][ $scope.tickProperty ] = !allTicked;
-											// we refresh input model as well
-											inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-											$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = !allTicked;
-										}
+									if ( typeof $scope.filteredModel[ j ][ attrs.groupProperty ] === 'undefined' &&
+										( typeof attrs.disableProperty === 'undefined' || $scope.filteredModel[ j ][ attrs.disableProperty ] !== true )
+									) {
+										 $scope.filteredModel[ j ][ $scope.tickProperty ] = !allTicked;
+										 // we refresh input model as well
+										 inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
+										 $scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = !allTicked;
 									}
+
 								}
 							}
 						} else { // if data
