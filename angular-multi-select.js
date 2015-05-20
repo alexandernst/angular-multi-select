@@ -344,37 +344,18 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 									}
 								}
 
-								if ( allTicked === true ) {
-									for ( j = startIndex; j <= endIndex ; j++ ) {
-										if ( typeof $scope.filteredModel[ j ][ attrs.groupProperty ] === 'undefined' ) {
-											if ( typeof attrs.disableProperty === 'undefined' ) {
-												$scope.filteredModel[ j ][ $scope.tickProperty ] = false;
-												// we refresh input model as well
-												inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-												$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = false;
-											} else if ( $scope.filteredModel[ j ][ attrs.disableProperty ] !== true ) {
-												$scope.filteredModel[ j ][ $scope.tickProperty ] = false;
-												// we refresh input model as well
-												inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-												$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = false;
-											}
-										}
-									}
-								} else {
-									for ( j = startIndex; j <= endIndex ; j++ ) {
-										if ( typeof $scope.filteredModel[ j ][ attrs.groupProperty ] === 'undefined' ) {
-											if ( typeof attrs.disableProperty === 'undefined' ) {
-												$scope.filteredModel[ j ][ $scope.tickProperty ] = true;
-												// we refresh input model as well
-												inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-												$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = true;
-
-											} else if ( $scope.filteredModel[ j ][ attrs.disableProperty ] !== true ) {
-												$scope.filteredModel[ j ][ $scope.tickProperty ] = true;
-												// we refresh input model as well
-												inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
-												$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = true;
-											}
+								for ( j = startIndex; j <= endIndex ; j++ ) {
+									if ( typeof $scope.filteredModel[ j ][ attrs.groupProperty ] === 'undefined' ) {
+										if ( typeof attrs.disableProperty === 'undefined' ) {
+											$scope.filteredModel[ j ][ $scope.tickProperty ] = !allTicked;
+											// we refresh input model as well
+											inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
+											$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = !allTicked;
+										} else if ( $scope.filteredModel[ j ][ attrs.disableProperty ] !== true ) {
+											$scope.filteredModel[ j ][ $scope.tickProperty ] = !allTicked;
+											// we refresh input model as well
+											inputModelIndex = $scope.filteredModel[ j ][ $scope.indexProperty ];
+											$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = !allTicked;
 										}
 									}
 								}
