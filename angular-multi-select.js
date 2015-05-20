@@ -33,7 +33,7 @@
 
 'use strict';
 
-angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout, $templateCache ) {
+angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout, $templateCache ) {
 	return {
 		restrict:
 			'AE',
