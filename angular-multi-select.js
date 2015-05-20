@@ -95,8 +95,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				helperItems         = [],
 				helperItemsLength   = 0,
 				checkBoxLayer       = '',
-				scrolled            = false,
-				selectedItems       = [],
 				formElements        = [],
 				vMinSearchLength    = 0,
 				clickedItem         = null;
@@ -195,7 +193,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 						var filterObj = [];
 
-						angular.forEach( $scope.filteredModel, function( value, key ) {
+						angular.forEach( $scope.filteredModel, function( value ) {
 							if ( typeof value !== 'undefined' ) {
 								if ( typeof value[ attrs.groupProperty ] === 'undefined' ) {
 									var tempObj = angular.copy( value );
@@ -304,7 +302,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						return false;
 					}
 
-					var i,j,k;
+					var i,j;
 					var startIndex = 0;
 					var endIndex = $scope.filteredModel.length - 1;
 					var tempArr = [];
@@ -455,7 +453,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				// v4.0.0
 				if ( typeof attrs.outputProperties !== 'undefined' ) {
 					outputProps = attrs.outputProperties.split(' ');
-					angular.forEach( $scope.inputModel, function( value, key ) {
+					angular.forEach( $scope.inputModel, function( value ) {
 						if (
 							typeof value !== 'undefined'
 							&& typeof value[ attrs.groupProperty ] === 'undefined'
@@ -473,7 +471,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						}
 					});
 				} else {
-					angular.forEach( $scope.inputModel, function( value, key ) {
+					angular.forEach( $scope.inputModel, function( value ) {
 						if (
 							typeof value !== 'undefined'
 							&& typeof value[ attrs.groupProperty ] === 'undefined'
@@ -507,7 +505,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					// if max amount of labels displayed..
 					$scope.more = $scope.outputModel.length > tempMaxLabels;
 
-					angular.forEach( $scope.inputModel, function( value, key ) {
+					angular.forEach( $scope.inputModel, function( value ) {
 						if ( typeof value !== 'undefined' && value[ attrs.tickProperty ] === true ) {
 							if ( ctr < tempMaxLabels ) {
 								$scope.varButtonLabel += ( $scope.varButtonLabel.length > 0 ? '</div>, <div class="buttonLabel">' : '<div class="buttonLabel">') + $scope.writeLabel( value, 'buttonLabel' );
@@ -546,7 +544,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				var temp    = attrs[ type ].split( ' ' );
 				var label   = '';
 
-				angular.forEach( temp, function( value, key ) {
+				angular.forEach( temp, function( value ) {
 					if (item[value]) {
 						label += '&nbsp;' + item[value];
 					} else if ( value.split( '.').length !== 1 ) {
@@ -566,7 +564,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			// UI operations to show/hide checkboxes based on click event..
-			$scope.toggleCheckboxes = function( e ) {
+			$scope.toggleCheckboxes = function() {
 
 				// We grab the button
 				var clickedEl = element.children()[0];
@@ -683,7 +681,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 				switch( type.toUpperCase() ) {
 					case 'ALL':
-						angular.forEach( $scope.filteredModel, function( value, key ) {
+						angular.forEach( $scope.filteredModel, function( value ) {
 							if ( typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
 								if ( typeof value[ attrs.groupProperty ] === 'undefined' ) {
 									value[ $scope.tickProperty ] = true;
@@ -695,7 +693,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						$scope.onSelectAll();
 						break;
 					case 'NONE':
-						angular.forEach( $scope.filteredModel, function( value, key ) {
+						angular.forEach( $scope.filteredModel, function( value ) {
 							if ( typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
 								if ( typeof value[ attrs.groupProperty ] === 'undefined' ) {
 									value[ $scope.tickProperty ] = false;
@@ -707,7 +705,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						$scope.onSelectNone();
 						break;
 					case 'RESET':
-						angular.forEach( $scope.filteredModel, function( value, key ) {
+						angular.forEach( $scope.filteredModel, function( value ) {
 							if ( typeof value[ attrs.groupProperty ] === 'undefined' && typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
 								var temp = value[ $scope.indexProperty ];
 								value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
@@ -741,7 +739,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// count leading spaces
 			$scope.prepareGrouping = function() {
 				var spacing     = 0;
-				angular.forEach( $scope.filteredModel, function( value, key ) {
+				angular.forEach( $scope.filteredModel, function( value ) {
 					value[ $scope.spacingProperty ] = spacing;
 					if ( value[ attrs.groupProperty ] === true ) {
 						spacing+=2;
@@ -754,7 +752,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// prepare original index
 			$scope.prepareIndex = function() {
 				var ctr = 0;
-				angular.forEach( $scope.filteredModel, function( value, key ) {
+				angular.forEach( $scope.filteredModel, function( value ) {
 					value[ $scope.indexProperty ] = ctr;
 					ctr++;
 				});
@@ -826,8 +824,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						$scope.removeFocusStyle( formElements.length - 1 );
 					}
 				}
-
-				isNavigationKey = false;
 			};
 
 			// set (add) CSS style on selected row
@@ -962,13 +958,13 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			});
 
 			// this is for touch enabled devices. We don't want to hide checkboxes on scroll.
-			var onTouchStart = function( e ) {
+			var onTouchStart = function() {
 				$scope.$apply( function() {
 					$scope.scrolled = false;
 				});
 			};
 			angular.element( document ).bind( 'touchstart', onTouchStart);
-			var onTouchMove = function( e ) {
+			var onTouchMove = function() {
 				$scope.$apply( function() {
 					$scope.scrolled = true;
 				});
