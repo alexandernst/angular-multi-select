@@ -544,10 +544,16 @@ angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect'
 				var label   = '';
 
 				angular.forEach( temp, function( value, key ) {
-					item[ value ] && ( label += '&nbsp;' + value.split( '.' ).reduce( function( prev, current ) {
-						return prev[ current ];
-					}, item ));
-					!item[ value ] && (label += value);
+					if (item[value]) {
+						label += '&nbsp;' + item[value];
+					} else if ( value.split( '.').length !== 1 ) {
+						var tmp_v = value.split( '.' ).reduce( function( prev, current ) {
+							return prev[ current ];
+						}, item );
+						label += tmp_v === undefined ? value : '&nbsp;' + tmp_v;
+					} else {
+						label += value;
+					}
 				});
 
 				if ( type.toUpperCase() === 'BUTTONLABEL' ) {
