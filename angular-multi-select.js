@@ -291,6 +291,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$t
 				}
 
 				var index = $scope.filteredModel.indexOf( item );
+                var inputModelIndex;
 
 				// if the start of group marker is clicked ( only for multiple selection! )
 				// how it works:
@@ -404,7 +405,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$t
 					}
 
 					// we refresh input model as well
-					var inputModelIndex = $scope.filteredModel[ index ][ $scope.indexProperty ];
+					inputModelIndex = $scope.filteredModel[ index ][ $scope.indexProperty ];
 					$scope.inputModel[ inputModelIndex ][ $scope.tickProperty ] = $scope.filteredModel[ index ][ $scope.tickProperty ];
 				}
 
@@ -920,8 +921,8 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$t
 			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
 
 			// min length of keyword to trigger the filter function
-			if ( typeof attrs.MinSearchLength !== 'undefined' && parseInt( attrs.MinSearchLength ) > 0 ) {
-				vMinSearchLength = Math.floor( parseInt( attrs.MinSearchLength ) );
+			if ( typeof attrs.MinSearchLength !== 'undefined' && parseInt( attrs.MinSearchLength, 10 ) > 0 ) {
+				vMinSearchLength = Math.floor( parseInt( attrs.MinSearchLength, 10 ) );
 			}
 
 			/*******************************************************
