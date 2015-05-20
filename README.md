@@ -1,19 +1,19 @@
 # AngularJS MultiSelect
-Pure AngularJS directive which creates a dropdown button with multiple or single selections. 
-Doesn't require jQuery and works well with other Javascript libraries. 
+Pure AngularJS directive which creates a dropdown button with multiple or single selections.
+Doesn't require jQuery and works well with other Javascript libraries.
 
-![Screenshot](https://raw.githubusercontent.com/isteven/angular-multi-select/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/alexandernst/angular-multi-select/master/screenshot.png)
 
-### Demo & How To 
+### Demo & How To
 Go to http://isteven.github.io/angular-multi-select
 
 ### Current Version
-4.0.0
+4.0.2
 
 ### Change Log
-See <a href="https://github.com/isteven/angular-multi-select/blob/master/CHANGELOG.md">CHANGELOG.md</a>. 
+See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
 For those who's upgrading from version 2.x.x, do note that this version is not backward-compatible. Please read the manual
-thoroughly and update your code accordingly. 
+thoroughly and update your code accordingly.
 
 ### Bug Reporting
 Please follow these steps:
