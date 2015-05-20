@@ -1,3 +1,7 @@
+### v4.0.6
+##### Added / Updated
+- Ignore more files in the NPM package
+
 ### v4.0.5
 ##### Added / Updated
 - Fixed minified version of JS file
