@@ -3,7 +3,7 @@
  * Creates a dropdown-like button with checkboxes.
  *
  * Project started on: Tue, 14 Jan 2014 - 5:18:02 PM
- * Current version: 4.0.2
+ * Current version: 4.0.3
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -33,7 +33,9 @@
 
 'use strict';
 
-angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout, $templateCache ) {
+var angular_multi_select = angular.module( 'angular-multi-select', ['ng'] );
+
+angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout ) {
 	return {
 		restrict:
 			'AE',
@@ -979,7 +981,9 @@ angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect'
 			});
 		}
 	}
-}]).run( [ '$templateCache' , function( $templateCache ) {
+}]);
+
+angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
