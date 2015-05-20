@@ -1,3 +1,9 @@
+### v4.0.1
+##### Added / Updated
+- I'm forking this project as original project doesn't seem to have any activity.
+- Renaming files to something more general.
+- Moving from Bower to NPM
+
 ### v4.0.0
 ##### Added / Updated
 - You can now customize output-model properties that you need, instead of having all data.
