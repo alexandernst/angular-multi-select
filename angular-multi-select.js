@@ -427,44 +427,34 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				} else {
 					$scope.outputModel = [];
 				}
-				var
-					outputProps     = [],
-					tempObj         = {};
 
 				// v4.0.0
-				if ( typeof attrs.outputProperties !== 'undefined' ) {
-					outputProps = attrs.outputProperties.split(' ');
-					angular.forEach( $scope.inputModel, function( value ) {
-						if (
-							typeof value !== 'undefined'
-							&& typeof value[ attrs.groupProperty ] === 'undefined'
-							&& value[ $scope.tickProperty ] === true
-						) {
-							tempObj         = {};
+				var outputProps = typeof attrs.outputProperties !== 'undefined' ? attrs.outputProperties.split(' ') : false;
+				var temp = {};
+
+				angular.forEach( $scope.inputModel, function( value ) {
+					if (
+						typeof value !== 'undefined'
+						&& typeof value[ attrs.groupProperty ] === 'undefined'
+						&& value[ $scope.tickProperty ] === true
+					) {
+
+						if (outputProps === false) {
+							temp = angular.copy( value );
+						} else {
 							angular.forEach( value, function( value1, key1 ) {
 								if ( outputProps.indexOf( key1 ) > -1 ) {
-									tempObj[ key1 ] = value1;
+									temp[ key1 ] = value1;
 								}
 							});
-							var index = $scope.outputModel.push( tempObj );
-							delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
-							delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
 						}
-					});
-				} else {
-					angular.forEach( $scope.inputModel, function( value ) {
-						if (
-							typeof value !== 'undefined'
-							&& typeof value[ attrs.groupProperty ] === 'undefined'
-							&& value[ $scope.tickProperty ] === true
-						) {
-							var temp = angular.copy( value );
-							var index = $scope.outputModel.push( temp );
-							delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
-							delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
-						}
-					});
-				}
+
+						var index = $scope.outputModel.push( temp );
+						delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
+						delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
+					}
+				});
+
 			};
 
 			// refresh button label
