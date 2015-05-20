@@ -8,12 +8,18 @@ Doesn't require jQuery and works well with other Javascript libraries.
 Go to http://isteven.github.io/angular-multi-select
 
 ### Current Version
-4.0.3
+4.0.4
 
 ### Change Log
 See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
 For those who's upgrading from version 2.x.x, do note that this version is not backward-compatible. Please read the manual
 thoroughly and update your code accordingly.
+
+### Building
+
+You'll need Java and CSSO installed. Java is required for running Google Closure Compiler, while CSSO is the CSS
+compressor itself. It's up to you how you'll install Java, but you must add it to your PATH. For CSSO, use the
+following command: `npm install csso -g`.
 
 ### Bug Reporting
 Please follow these steps:

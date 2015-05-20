@@ -1,3 +1,7 @@
+### v4.0.4
+##### Added / Updated
+- Add min version of the CSS and the JS files
+
 ### v4.0.3
 ##### Added / Updated
 - Apply some of the PRs from the original project
