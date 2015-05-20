@@ -547,6 +547,7 @@ angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect'
 					item[ value ] && ( label += '&nbsp;' + value.split( '.' ).reduce( function( prev, current ) {
 						return prev[ current ];
 					}, item ));
+					!item[ value ] && (label += value);
 				});
 
 				if ( type.toUpperCase() === 'BUTTONLABEL' ) {
