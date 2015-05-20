@@ -535,7 +535,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			// UI operations to show/hide checkboxes based on click event..
-			$scope.toggleCheckboxes = function() {
+			$scope.toggleCheckboxes = function( e ) {
 
 				// We grab the button
 				var clickedEl = element.children()[0];
