@@ -440,7 +440,11 @@ angular.module( 'angular-multi-select', ['ng'] ).directive( 'angularMultiSelect'
 			// update $scope.outputModel
 			$scope.refreshOutputModel = function() {
 
-				$scope.outputModel  = [];
+				if ($scope.outputModel) {
+					$scope.outputModel.length = 0;
+				} else {
+					$scope.outputModel = [];
+				}
 				var
 					outputProps     = [],
 					tempObj         = {};
