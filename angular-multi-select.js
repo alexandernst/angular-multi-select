@@ -289,7 +289,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}
 
 				var index = $scope.filteredModel.indexOf( item );
-                var inputModelIndex;
+				var inputModelIndex;
 
 				// if the start of group marker is clicked ( only for multiple selection! )
 				// how it works:
