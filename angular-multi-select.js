@@ -35,7 +35,7 @@
 
 var angular_multi_select = angular.module( 'angular-multi-select', ['ng'] );
 
-angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout ) {
+angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', function ( $sce, $timeout ) {
 	return {
 		restrict:
 			'AE',
