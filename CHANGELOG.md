@@ -1,3 +1,7 @@
+### v4.0.5
+##### Added / Updated
+- Fixed minified version of JS file
+
 ### v4.0.4
 ##### Added / Updated
 - Add min version of the CSS and the JS files

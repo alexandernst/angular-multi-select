@@ -8,7 +8,7 @@ Doesn't require jQuery and works well with other Javascript libraries.
 Go to http://isteven.github.io/angular-multi-select
 
 ### Current Version
-4.0.4
+4.0.5
 
 ### Change Log
 See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
