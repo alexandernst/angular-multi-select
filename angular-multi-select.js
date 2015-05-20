@@ -376,7 +376,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						// then set the clicked item to true
 						$scope.filteredModel[ index ][ $scope.tickProperty ] = true;
 					} else { // Multiple
-						$scope.filteredModel[ index ][ $scope.tickProperty ]   = !$scope.filteredModel[ index ][ $scope.tickProperty ];
+						$scope.filteredModel[ index ][ $scope.tickProperty ] = !$scope.filteredModel[ index ][ $scope.tickProperty ];
 					}
 
 					// we refresh input model as well
