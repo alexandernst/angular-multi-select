@@ -121,12 +121,61 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				$scope.updateFilter();
 			};
 
-			$scope.updateFilter = function() {
-				console.log("Update filter!");
+			/**
+			 * Recursive function for iterating nested objects.
+			 * This function will take an array `obj` of objects and will
+			 * traverse all object and nested object that have a property
+			 * called `key`, if that property's value is an array.
+			 * A filter function (`fn`) can be passed. If that is the case,
+			 * the filter function will be passed each object. If `true` is
+			 * returned, the object won't be filtered, otherwise it will be
+			 * filtered only if that object doesn't contain any nested objects
+			 * that will be included (that is, it will be filtered only if
+			 * `fn` returned `false` for all nested objects of the current
+			 * object).
+			 * @param obj
+			 * @param key
+			 * @param fn (obj)
+			 * @returns {*}
+			 */
+			$scope._walk = function(obj, key, fn) {
 
-				// we check by looping from end of input-model
-				//$scope.filteredModel = [];
-				$scope.filteredModel = angular.copy($scope.inputModel);
+				fn = fn || function(){ return true; };
+				var should_be_returned = fn(obj);
+
+				if (obj.hasOwnProperty(key) && angular.isArray(obj[key]) ) {
+					var sub = [];
+					angular.forEach(obj[key], function(v) {
+						var new_obj = $scope._walk(v, key, fn);
+						if( new_obj !== null) {
+							sub.push( new_obj );
+						}
+					});
+					obj[key] = sub;
+					should_be_returned = sub.length > 0;
+				}
+
+				return should_be_returned ? obj : null;
+			};
+
+			$scope.updateFilter = function() {
+
+				$scope.filteredModel = [];
+
+				var filter_fn = function(obj) {
+					console.log(obj);
+					return true;
+				};
+
+				angular.forEach($scope.inputModel, function(v) {
+					var new_obj = $scope._walk(v, "sub", filter_fn);
+					if (new_obj !== null) {
+						$scope.filteredModel.push( new_obj );
+					}
+				});
+
+
+				/////////////////////////////////////////////////////////////////
 				return;
 
 				var i, key;
