@@ -122,8 +122,13 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			$scope.updateFilter = function() {
+				console.log("Update filter!");
+
 				// we check by looping from end of input-model
-				$scope.filteredModel = [];
+				//$scope.filteredModel = [];
+				$scope.filteredModel = angular.copy($scope.inputModel);
+				return;
+
 				var i, key;
 
 				if ( typeof $scope.inputModel === 'undefined' ) {
@@ -948,6 +953,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 }]);
 
 angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
+	var template = "" +
+		"{{ item.name }}" +
+		"<ul ng-if='item.sub'>" +
+			"<li ng-repeat='item in item.sub' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
+		"</ul>" +
+		"";
+	$templateCache.put( 'angular-multi-select-item.htm' , template );
+}]);
+angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
@@ -999,6 +1013,7 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 				'</div> '+
 				// selection items
 				'<div class="checkBoxContainer">'+
+					/*
 					'<div '+
 						'ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"'+
 						'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"'+
@@ -1023,6 +1038,10 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 					'</div>'+
 					// the tick/check mark
 					'<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></span>'+
+					*/
+					'<ul>' +
+						'<li ng-repeat="item in filteredModel" ng-include="\'angular-multi-select-item.htm\'"></li>' +
+					'</ul>' +
 				'</div>'+
 			'</div>'+
 		'</div>'+
