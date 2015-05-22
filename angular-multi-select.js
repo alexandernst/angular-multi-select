@@ -255,6 +255,19 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}
 			};
 
+			/**
+			 * Helper function to uncheck all items
+			 * @private
+			 */
+			$scope._uncheckAll = function(){
+				angular.forEach($scope.filteredModel, function(v) {
+					$scope._walk(v, attrs.groupProperty, function(item){
+						item[attrs.tickProperty] = false;
+						return true;
+					});
+				});
+			};
+
 
 
 			$scope.updateFilter = function() {
