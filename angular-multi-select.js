@@ -131,6 +131,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 * @param key
 			 * @param fn (obj)
 			 * @returns {*}
+			 * @private
 			 */
 			$scope._walk = function(obj, key, fn) {
 
@@ -141,29 +142,133 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					var sub = [];
 					angular.forEach(obj[key], function(v) {
 						var new_obj = $scope._walk(v, key, fn);
-						if( new_obj !== null) {
+						if( new_obj !== null ) {
 							sub.push( new_obj );
 						}
 					});
-					obj[key] = sub;
+					if(sub.length !== obj[key].length){
+						obj[key] = sub;
+					}
 					should_be_returned = sub.length > 0;
 				}
 
 				return should_be_returned ? obj : null;
 			};
 
+			/**
+			 * Helper function that returns `true` if the passed item contains
+			 * a key called `attrs.groupProperty` and that key's value is an array
+			 * with at least 1 item.
+			 * @param item
+			 * @returns {boolean}
+			 * @private
+			 */
+			$scope._hasChildren = function(item) {
+				return item.hasOwnProperty(attrs.groupProperty) &&
+					angular.isArray(item[attrs.groupProperty]) &&
+					item[attrs.groupProperty].length > 0;
+			};
+
+			/**
+			 * Helper function that checks if a single element
+			 * is checked. Note that this function will check the
+			 * passed item if it has nested items and some or all
+			 * of them are checked.
+			 * @param item
+			 * @returns {boolean}
+			 * @private
+			 */
+			$scope._isChecked = function(item) {
+				if ($scope._hasChildren(item) && $scope._areAllChecked(item) !== 0) {
+					item[attrs.tickProperty] = true;
+				}
+				return !(!item.hasOwnProperty(attrs.tickProperty) || item[attrs.tickProperty] === false);
+			};
+
+			/**
+			 * Helper function that checks if all nested objects are
+			 * checked. Returns:
+			 * 1 if all are checked
+			 * 0 if none is checked
+			 * -1 if some are checked
+			 * Note that this function will check the passed item if it
+			 * has nested items and some or all of them are checked.
+			 * @param item
+			 * @private
+			 */
+			$scope._areAllChecked = function(item) {
+				var checked = [];
+
+				angular.forEach(item[attrs.groupProperty], function(v) {
+					$scope._walk(v, attrs.groupProperty, function(sub_v) {
+						var tmp_checked = $scope._isChecked(sub_v);
+						if(checked.length === 0) {
+							checked.push(tmp_checked);
+						} else if(checked.length === 1 && checked[0] !== tmp_checked) {
+							checked.push(tmp_checked);
+						}
+						return true;
+					});
+				});
+
+				var state;
+				if(checked.length < 2) {
+					state = checked[0] === true ? 1 : 0;
+				} else if(checked[0] === true && checked[0] === checked[1]) {
+					state = 1;
+				} else if(checked[0] === false && checked[0] === checked[1]) {
+					state = 0;
+				} else {
+					state = -1;
+				}
+
+				item[attrs.tickProperty] = state !== 0;
+				return state;
+			};
+
+			/**
+			 * If an item without children is passed and if it's not
+			 * checked or it doesn't have a check value, it will be
+			 * checked; else it will be unchecked.
+			 *
+			 * If an item with children is passed, if none or more,
+			 * but not all, of the children is checked, all children
+			 * and the item itself will be set to true. If all
+			 * children are checked, then they, and the item itself,
+			 * will be unchecked.
+			 * @param item
+			 * @private
+			 */
+			$scope._flipCheck = function(item) {
+				if($scope._hasChildren(item)) {
+					var check_state = $scope._areAllChecked(item);
+					check_state = !!(check_state === -1 || check_state === -0);
+
+					angular.forEach(item[attrs.groupProperty], function(v) {
+						$scope._walk(v, attrs.groupProperty, function(sub_v) {
+							sub_v[attrs.tickProperty] = check_state;
+							return true;
+						});
+					});
+				} else {
+					item[attrs.tickProperty] = !!(!item.hasOwnProperty(attrs.tickProperty) || item[attrs.tickProperty] === false);
+				}
+			};
+
+
+
 			$scope.updateFilter = function() {
 
 				$scope.filteredModel = [];
 
 				var filter_fn = function(obj) {
-					console.log(obj);
+					//console.log(obj);
 					return true;
 				};
 
 				angular.forEach($scope.inputModel, function(v) {
-					var new_obj = $scope._walk(v, "sub", filter_fn);
-					if (new_obj !== null) {
+					var new_obj = $scope._walk(v, attrs.groupProperty, filter_fn);
+					if ( new_obj !== null ) {
 						$scope.filteredModel.push( new_obj );
 					}
 				});
@@ -316,25 +421,20 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			// call this function when an item is clicked
-			$scope.syncItems = function( item, e, ng_repeat_index ) {
+			$scope.clickItem = function( item, e ) {
 
-				e.preventDefault();
-				e.stopPropagation();
-
-				// if the directive is globally disabled, do nothing
-				if ( typeof attrs.disableProperty !== 'undefined' && item[ attrs.disableProperty ] === true ) {
-					return false;
+				console.log(item, e);
+				if($scope._hasChildren(item) === true){
+					//De/select all children
+					return;
 				}
 
-				// if item is disabled, do nothing
-				if ( typeof attrs.isDisabled !== 'undefined' && $scope.isDisabled === true ) {
-					return false;
-				}
+				item[attrs.tickProperty] = item[attrs.tickProperty] === undefined ? true : !item[attrs.tickProperty];
 
-				// if end group marker is clicked, do nothing
-				if ( typeof item[ attrs.groupProperty ] !== 'undefined' && item[ attrs.groupProperty ] === false ) {
-					return false;
-				}
+
+				//attrs.selectionMode.toUpperCase() === 'SINGLE'
+				return;
+
 
 				var index = $scope.filteredModel.indexOf( item );
 				var inputModelIndex;
@@ -991,15 +1091,24 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				angular.element( document ).unbind( 'touchstart', onTouchStart);
 				angular.element( document ).unbind( 'touchmove', onTouchMove);
 			});
+
 		}
 	}
 }]);
 
 angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template = "" +
-		"{{ item.name }}" +
+		"<div class='multiSelectItem' ng-click='_flipCheck(item);' " +
+			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item), disabled:itemIsDisabled(item)}'" +
+		">" +
+			"{{ item.name }}" +
+			'<span class="tickMark" ng-if="(_hasChildren(item) === true && _areAllChecked(item) === 1 ) || item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
+		"</div>" +
+
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item.sub' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
+			"<li ng-repeat='item in item.sub' ng-include=\"'angular-multi-select-item.htm'\" >" +
+
+			"</li>" +
 		"</ul>" +
 		"";
 	$templateCache.put( 'angular-multi-select-item.htm' , template );
@@ -1055,6 +1164,7 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 					'</div> '+
 				'</div> '+
 				// selection items
+
 				'<div class="checkBoxContainer">'+
 					/*
 					'<div '+
@@ -1082,9 +1192,10 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 					// the tick/check mark
 					'<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></span>'+
 					*/
-					'<ul>' +
-						'<li ng-repeat="item in filteredModel" ng-include="\'angular-multi-select-item.htm\'"></li>' +
-					'</ul>' +
+
+					"<ul>" +
+						"<li ng-repeat='item in filteredModel' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
+					"</ul>" +
 				'</div>'+
 			'</div>'+
 		'</div>'+
