@@ -436,6 +436,16 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// call this function when an item is clicked
 			$scope.clickItem = function( item, e ) {
 
+				if(typeof attrs.selectionMode !== 'undefined' && attrs.selectionMode.toUpperCase() === 'SINGLE') {
+					if($scope._hasChildren(item) === false) {
+						$scope._uncheckAll();
+					}
+				}
+
+				$scope._flipCheck(item);
+
+				return;
+
 				console.log(item, e);
 				if($scope._hasChildren(item) === true){
 					//De/select all children
@@ -1111,7 +1121,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template = "" +
-		"<div class='multiSelectItem' ng-click='_flipCheck(item);' " +
+		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
 			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item), disabled:itemIsDisabled(item)}'" +
 		">" +
 			"{{ item.name }}" +
