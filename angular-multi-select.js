@@ -107,12 +107,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				$scope.select( 'clear', e );
 			};
 
-			// A little hack so that AngularJS ng-repeat can loop using start and end index like a normal loop
-			// http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array
-			$scope.numberToArray = function( num ) {
-				return new Array( num );
-			};
-
 			// Call this function when user type on the filter field
 			$scope.searchChanged = function() {
 				if ( $scope.inputLabel.labelFilter.length < vMinSearchLength && $scope.inputLabel.labelFilter.length > 0 ) {
