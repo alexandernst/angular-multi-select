@@ -73,51 +73,13 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 		link: function ( $scope, element, attrs ) {
 
-			$scope.backUp           = [];
-			$scope.varButtonLabel   = '';
-			$scope.spacingProperty  = '';
-			$scope.indexProperty    = '';
-			$scope.orientationH     = false;
-			$scope.orientationV     = true;
-			$scope.filteredModel    = [];
-			$scope.inputLabel       = { labelFilter: '' };
-			$scope.tabIndex         = 0;
-			$scope.lang             = {};
-			$scope.helperStatus     = {
-				all     : true,
-				none    : true,
-				reset   : true,
-				filter  : true
-			};
-
+			/**
+			 * Globally used variables.
+			 */
+			$scope.filteredModel = [];
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
-
-			var
-				prevTabIndex        = 0,
-				helperItems         = [],
-				helperItemsLength   = 0,
-				checkBoxLayer       = '',
-				formElements        = [],
-				vMinSearchLength    = 0,
-				clickedItem         = null;
-
-			// v3.0.0
-			// clear button clicked
-			$scope.clearClicked = function( e ) {
-				$scope.inputLabel.labelFilter = '';
-				//$scope.updateFilter();
-				$scope.select( 'clear', e );
-			};
-
-			// Call this function when user type on the filter field
-			$scope.searchChanged = function() {
-				if ( $scope.inputLabel.labelFilter.length < vMinSearchLength && $scope.inputLabel.labelFilter.length > 0 ) {
-					return false;
-				}
-				//$scope.updateFilter();
-			};
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -452,6 +414,57 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				delete $scope._shadowModel;
 			};
 
+
+			$scope.updateFilter();
+
+			$scope.$watch('filteredModel', function(_new) {
+				if(_new) {
+					$scope._enforceChecks($scope.filteredModel);
+				}
+			}, true);
+
+			/////////////////////////////// OLD CODE STARTS FROM HERE
+
+			$scope.backUp           = [];
+			$scope.varButtonLabel   = '';
+			$scope.spacingProperty  = '';
+			$scope.indexProperty    = '';
+			$scope.orientationH     = false;
+			$scope.orientationV     = true;
+			$scope.inputLabel       = { labelFilter: '' };
+			$scope.tabIndex         = 0;
+			$scope.lang             = {};
+			$scope.helperStatus     = {
+				all     : true,
+				none    : true,
+				reset   : true,
+				filter  : true
+			};
+
+			var
+				prevTabIndex        = 0,
+				helperItems         = [],
+				helperItemsLength   = 0,
+				checkBoxLayer       = '',
+				formElements        = [],
+				vMinSearchLength    = 0,
+				clickedItem         = null;
+
+			// v3.0.0
+			// clear button clicked
+			$scope.clearClicked = function( e ) {
+				$scope.inputLabel.labelFilter = '';
+				//$scope.updateFilter();
+				$scope.select( 'clear', e );
+			};
+
+			// Call this function when user type on the filter field
+			$scope.searchChanged = function() {
+				if ( $scope.inputLabel.labelFilter.length < vMinSearchLength && $scope.inputLabel.labelFilter.length > 0 ) {
+					return false;
+				}
+				//$scope.updateFilter();
+			};
 
 			// List all the input elements. We need this for our keyboard navigation.
 			// This function will be called every time the filter is updated.
@@ -1036,20 +1049,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				angular.element( document ).unbind( 'touchstart', onTouchStart);
 				angular.element( document ).unbind( 'touchmove', onTouchMove);
 			});
-
-
-
-
-			//////////////// NEW
-
-			$scope.updateFilter();
-
-			$scope.$watch( 'filteredModel' , function(_new, _old) {
-				if(_new) {
-					$scope._enforceChecks($scope.filteredModel);
-
-				}
-			}, true );
 
 		}
 	}
