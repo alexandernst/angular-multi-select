@@ -215,7 +215,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 					if(_found === true) return true;
 
-					if($scope._hasChildren(_item) > 0 && _item[attrs.idProperty] !== item[attrs.idProperty]) {
+					if($scope._hasChildren(_item, false) > 0 && _item[attrs.idProperty] !== item[attrs.idProperty]) {
 						_lastParent = _item;
 					}
 
@@ -240,7 +240,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				var _leafs = [];
 
 				$scope._walk(model, attrs.groupProperty, function(_item) {
-					if($scope._hasChildren(_item) === 0) {
+					if($scope._hasChildren(_item, false) === 0) {
 						_leafs.push(_item);
 					}
 					return true;
@@ -260,7 +260,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				var _nodes = [];
 
 				$scope._walk(model, attrs.groupProperty, function(_item) {
-					if($scope._hasChildren(_item) > 0) {
+					if($scope._hasChildren(_item, false) > 0) {
 						_nodes.push(_item);
 					}
 					return true;
@@ -271,17 +271,27 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			/**
 			 * Helper function that returns the number of children that
-			 * the passed item contains.
-			 *
-			 * //TODO: Possible optimization with a second argument that
-			 * would control if a recursive (and precise) check should be
-			 * done, or if the function should just return true or false.
+			 * the passed item contains. If `recursive` is set to false,
+			 * the function will return 1 if the item contains any number
+			 * of children, without traversing all of them.
 			 *
 			 * @param item
+			 * @param recursive
 			 * @returns {number}
 			 * @private
 			 */
-			$scope._hasChildren = function(item) {
+			$scope._hasChildren = function(item, recursive) {
+				recursive = recursive || false;
+
+				if(
+					recursive === false &&
+					item.hasOwnProperty(attrs.groupProperty) &&
+					angular.isArray(item[attrs.groupProperty]) &&
+					item[attrs.groupProperty].length > 0
+				) {
+					return 1;
+				}
+
 				var _n_children = -1;
 
 				$scope._walk(item, attrs.groupProperty, function() {
@@ -320,7 +330,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				var _checked = 0, _total = 0;
 
 				$scope._walk(item, attrs.groupProperty, function(_item) {
-					if(!$scope._hasChildren(_item)) {
+					if($scope._hasChildren(_item, false) === 0) {
 						if($scope._isChecked(_item)) {
 							_checked++;
 						}
@@ -408,7 +418,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			$scope.clickItem = function(item) {
 
 				if(attrs.selectionMode === 'single') {
-					if(($scope._hasChildren(item) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item)) {
+					if(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item)) {
 						$scope._flipCheck(item);
 					} else {
 						$scope._uncheckAll($scope.filteredModel);
@@ -1048,7 +1058,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
-			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item) > 0, disabled:itemIsDisabled(item)}'" +
+			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item, false) > 0, disabled:itemIsDisabled(item)}'" +
 		">" +
 			"{{ item.name }}" +
 			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
