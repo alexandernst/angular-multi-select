@@ -250,8 +250,33 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			/**
+			 * Helper function that returns all the nodes of a model,
+			 * that is, all the items that have children.
+			 * @param model
+			 * @returns {Array}
+			 * @private
+			 */
+			$scope._getNodes = function(model) {
+				var _nodes = [];
+
+				$scope._walk(model, attrs.groupProperty, function(_item) {
+					if($scope._hasChildren(_item) > 0) {
+						_nodes.push(_item);
+					}
+					return true;
+				});
+
+				return _nodes;
+			};
+
+			/**
 			 * Helper function that returns the number of children that
 			 * the passed item contains.
+			 *
+			 * //TODO: Possible optimization with a second argument that
+			 * would control if a recursive (and precise) check should be
+			 * done, or if the function should just return true or false.
+			 *
 			 * @param item
 			 * @returns {number}
 			 * @private
@@ -319,27 +344,27 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 */
 			$scope._enforceChecks = function(model) {
 				var _n_checked = 0;
-
 				var _leafs = $scope._getLeafs(model);
 
+				var _break = false;
 				angular.forEach(_leafs, function(_item) {
+					if(_break === true) return;
 					var _state = $scope._isChecked(_item);
 
 					if(_state) _n_checked++;
 
 					if(_n_checked > 1 && attrs.selectionMode === "single") {
-						console.log("Breaking");
+						_break = true;
 						$scope._uncheckAll(model);
-						return;
-					}
-
-					var _parent = $scope._getParent(model, _item);
-					while(_parent !== null) {
-						_parent[attrs.tickProperty] = $scope._areAllChecked(_parent) !== 0;
-						_parent = $scope._getParent(model, _parent);
 					}
 				});
 
+				if(_break === true) return;
+
+				var _nodes  = $scope._getNodes(model);
+				angular.forEach(_nodes, function(_node) {
+					_node[attrs.tickProperty] = $scope._areAllChecked(_node) !== 0;
+				});
 			};
 
 			/**
@@ -355,7 +380,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 * @param item
 			 * @private
 			 */
-			$scope._flipCheck = function(model, item) {
+			$scope._flipCheck = function(item) {
 				if($scope._hasChildren(item) > 0) {
 					var _state = !($scope._areAllChecked(item) > 0);
 
@@ -383,14 +408,14 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			$scope.clickItem = function(item) {
 
 				if(attrs.selectionMode === 'single') {
-					if($scope._hasChildren(item) === 0 && $scope._isChecked(item)) {
-						$scope._flipCheck($scope.filteredModel, item);
+					if(($scope._hasChildren(item) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item)) {
+						$scope._flipCheck(item);
 					} else {
 						$scope._uncheckAll($scope.filteredModel);
-						$scope._flipCheck($scope.filteredModel, item);
+						$scope._flipCheck(item);
 					}
 				} else {
-					$scope._flipCheck($scope.filteredModel, item);
+					$scope._flipCheck(item);
 				}
 
 				//Trigger the onItemClick callback
