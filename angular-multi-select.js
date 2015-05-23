@@ -510,15 +510,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				for ( i = 0; i < checkboxes.length ; i++ )      { formElements.push( checkboxes[ i ] );     }
 			};
 
-			// check if an item has attrs.groupProperty (be it true or false)
-			$scope.isGroupMarker = function( item , type ) {
-				return !!(typeof item[attrs.groupProperty] !== 'undefined' && item[attrs.groupProperty] === type);
-			};
-
-			$scope.removeGroupEndMarker = function( item ) {
-				return !(typeof item[attrs.groupProperty] !== 'undefined' && item[attrs.groupProperty] === false);
-			};
-
 			// update $scope.outputModel
 			$scope.refreshOutputModel = function() {
 
