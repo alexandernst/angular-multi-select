@@ -90,6 +90,10 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				filter  : true
 			};
 
+			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
+			attrs.selectionMode = attrs.selectionMode || "multi";
+			attrs.selectionMode = attrs.selectionMode.toLowerCase();
+
 			var
 				prevTabIndex        = 0,
 				helperItems         = [],
