@@ -43,7 +43,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 		scope: {
 			// models
 			inputModel      : '=',
-			outputModel     : '=',
 
 			// settings based on attribute
 			isDisabled      : '=',
@@ -67,8 +66,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 		 *   tickProperty, disableProperty, groupProperty, searchProperty, maxHeight, outputProperties
 		 */
 
-		 templateUrl:
-			'angular-multi-select.htm',
+		 templateUrl: 'angular-multi-select.htm',
 
 		link: function ( $scope, element, attrs ) {
 
@@ -76,7 +74,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 * Globally used variables.
 			 */
 			$scope.filteredModel = [];
-			//$scope.searchInput = "";
+			$scope.searchInput = "";
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -435,7 +433,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			/////////////////////////////// OLD CODE STARTS FROM HERE
 
-			$scope.backUp           = [];
 			$scope.varButtonLabel   = '';
 			$scope.indexProperty    = '';
 			$scope.orientationH     = false;
@@ -506,15 +503,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				for ( i = 0; i < inputField.length ; i++ )      { formElements.push( inputField[ i ] );     }
 				for ( i = 0; i < clearButton.length ; i++ )     { formElements.push( clearButton[ i ] );    }
 				for ( i = 0; i < checkboxes.length ; i++ )      { formElements.push( checkboxes[ i ] );     }
-			};
-
-			// update $scope.outputModel
-			$scope.refreshOutputModel = function() {
-				if ($scope.outputModel) {
-					$scope.outputModel.length = 0;
-				} else {
-					$scope.outputModel = [];
-				}
 			};
 
 			// Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
@@ -650,7 +638,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 								}
 							}
 						});
-						$scope.refreshOutputModel();
 						$scope.onSelectAll();
 						break;
 					case 'NONE':
@@ -661,17 +648,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 								}
 							}
 						});
-						$scope.refreshOutputModel();
 						$scope.onSelectNone();
 						break;
 					case 'RESET':
 						angular.forEach( $scope.filteredModel, function( value ) {
 							if ( typeof value[ attrs.groupProperty ] === 'undefined' && typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
 								var temp = value[ $scope.indexProperty ];
-								value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
+								//value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
 							}
 						});
-						$scope.refreshOutputModel();
 						$scope.onReset();
 						break;
 					case 'CLEAR':
@@ -683,15 +668,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						break;
 					default:
 				}
-			};
-
-			// prepare original index
-			$scope.prepareIndex = function() {
-				var ctr = 0;
-				angular.forEach( $scope.filteredModel, function( value ) {
-					value[ $scope.indexProperty ] = ctr;
-					ctr++;
-				});
 			};
 
 			// navigate using up and down arrow
@@ -847,43 +823,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			}
 			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
 
-			/*******************************************************
-			 *******************************************************
-			 *
-			 * 2) Logic starts here, initiated by watch 1 & watch 2
-			 *
-			 *******************************************************
-			 *******************************************************/
-
-			// watch1, for changes in input model property
-			// updates multi-select when user select/deselect a single checkbox programatically
-			// https://github.com/isteven/angular-multi-select/issues/8
-			$scope.$watch( 'inputModel' , function( newVal ) {
-				//return;
-				if ( newVal ) {
-					$scope.refreshOutputModel();
-				}
-			}, true );
-
-			// watch2 for changes in input model as a whole
-			// this on updates the multi-select when a user load a whole new input-model. We also update the $scope.backUp variable
-			$scope.$watch( 'inputModel' , function( newVal ) {
-				return;
-				if ( newVal ) {
-					$scope.backUp = angular.copy( $scope.inputModel );
-					//$scope.fillInternalModel();
-					//$scope.prepareIndex();
-					$scope.refreshOutputModel();
-				}
-			});
-
-			// watch for changes in directive state (disabled or enabled)
-			/*
-			$scope.$watch( 'isDisabled' , function( newVal ) {
-				$scope.isDisabled = newVal;
-			});
-			*/
-
 			// this is for touch enabled devices. We don't want to hide checkboxes on scroll.
 			var onTouchStart = function() {
 				$scope.$apply( function() {
@@ -925,12 +864,13 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 		"";
 	$templateCache.put( 'angular-multi-select-item.htm' , template );
 }]);
+
 angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
 			'<button id="{{directiveId}}" type="button"' +
-				'ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); prepareIndex();"' + //
+				'ng-click="toggleCheckboxes( $event );"' + //
 				'ng-bind-html="varButtonLabel"' +
 				'ng-disabled="disable-button"' +
 			'>' +
