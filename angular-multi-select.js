@@ -51,7 +51,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// callbacks
 			onClear         : '&',
 			onClose         : '&',
-			onSearchChange  : '&',
 			onItemClick     : '&',
 			onOpen          : '&',
 			onReset         : '&',
@@ -64,7 +63,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 		/*
 		 * The rest are attributes. They don't need to be parsed / binded, so we can safely access them by value.
-		 * - buttonLabel, directiveId, helperElements, itemLabel, maxLabels, orientation, selectionMode, minSearchLength,
+		 * - buttonLabel, directiveId, helperElements, itemLabel, maxLabels, orientation, selectionMode,
 		 *   tickProperty, disableProperty, groupProperty, searchProperty, maxHeight, outputProperties
 		 */
 
@@ -77,6 +76,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 * Globally used variables.
 			 */
 			$scope.filteredModel = [];
+			//$scope.searchInput = "";
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -398,13 +398,19 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}, 0);
 			};
 
-			$scope.updateFilter = function() {
-				console.log("updateFilter!");
+			$scope._test = function() {
+				console.log($scope.searchInput);
+			};
+
+			$scope.fillInternalModel = function() {
+				console.log("fillInternalModel!");
 
 				$scope._shadowModel = [];
 
 				var filter_fn = function(obj) {
 					//console.log(obj);
+					console.log($scope.searchInput);
+					//return obj.name.indexOf($scope.searchInput) !== -1;
 					return true;
 				};
 
@@ -415,11 +421,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 
-			$scope.updateFilter();
+			$scope.fillInternalModel();
 
 			$scope.$watch('filteredModel', function(_new) {
 				if(_new) {
 					$scope._enforceChecks($scope.filteredModel);
+
+					var _n_selected = Math.abs($scope._areAllChecked($scope.filteredModel));
+					$scope.varButtonLabel =  _n_selected + " selected";
+					$scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );
 				}
 			}, true);
 
@@ -427,11 +437,9 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			$scope.backUp           = [];
 			$scope.varButtonLabel   = '';
-			$scope.spacingProperty  = '';
 			$scope.indexProperty    = '';
 			$scope.orientationH     = false;
 			$scope.orientationV     = true;
-			$scope.inputLabel       = { labelFilter: '' };
 			$scope.tabIndex         = 0;
 			$scope.lang             = {};
 			$scope.helperStatus     = {
@@ -446,24 +454,14 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				helperItems         = [],
 				helperItemsLength   = 0,
 				checkBoxLayer       = '',
-				formElements        = [],
-				vMinSearchLength    = 0,
-				clickedItem         = null;
+				formElements        = [];
 
 			// v3.0.0
 			// clear button clicked
 			$scope.clearClicked = function( e ) {
-				$scope.inputLabel.labelFilter = '';
-				//$scope.updateFilter();
+				return;
+				//$scope.fillInternalModel();
 				$scope.select( 'clear', e );
-			};
-
-			// Call this function when user type on the filter field
-			$scope.searchChanged = function() {
-				if ( $scope.inputLabel.labelFilter.length < vMinSearchLength && $scope.inputLabel.labelFilter.length > 0 ) {
-					return false;
-				}
-				//$scope.updateFilter();
 			};
 
 			// List all the input elements. We need this for our keyboard navigation.
@@ -512,117 +510,23 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			// update $scope.outputModel
 			$scope.refreshOutputModel = function() {
-
 				if ($scope.outputModel) {
 					$scope.outputModel.length = 0;
 				} else {
 					$scope.outputModel = [];
 				}
-
-				// v4.0.0
-				var outputProps = typeof attrs.outputProperties !== 'undefined' ? attrs.outputProperties.split(' ') : false;
-				var temp = {};
-
-				angular.forEach( $scope.inputModel, function( value ) {
-					if (
-						typeof value !== 'undefined'
-						&& typeof value[ attrs.groupProperty ] === 'undefined'
-						&& value[ $scope.tickProperty ] === true
-					) {
-
-						if (outputProps === false) {
-							temp = angular.copy( value );
-						} else {
-							angular.forEach( value, function( value1, key1 ) {
-								if ( outputProps.indexOf( key1 ) > -1 ) {
-									temp[ key1 ] = value1;
-								}
-							});
-						}
-
-						var index = $scope.outputModel.push( temp );
-						delete $scope.outputModel[ index - 1 ][ $scope.indexProperty ];
-						delete $scope.outputModel[ index - 1 ][ $scope.spacingProperty ];
-					}
-				});
-
-			};
-
-			// refresh button label
-			$scope.refreshButton = function() {
-
-				$scope.varButtonLabel   = '';
-				var ctr                 = 0;
-
-				// refresh button label...
-				if ( $scope.outputModel.length === 0 ) {
-					// https://github.com/isteven/angular-multi-select/pull/19
-					$scope.varButtonLabel = $scope.lang.nothingSelected;
-				} else {
-					var tempMaxLabels = $scope.outputModel.length;
-					if ( typeof attrs.maxLabels !== 'undefined' && attrs.maxLabels !== '' ) {
-						tempMaxLabels = attrs.maxLabels;
-					}
-
-					// if max amount of labels displayed..
-					$scope.more = $scope.outputModel.length > tempMaxLabels;
-
-					angular.forEach( $scope.inputModel, function( value ) {
-						if ( typeof value !== 'undefined' && value[ attrs.tickProperty ] === true ) {
-							if ( ctr < tempMaxLabels ) {
-								$scope.varButtonLabel += ( $scope.varButtonLabel.length > 0 ? '</div>, <div class="buttonLabel">' : '<div class="buttonLabel">') + $scope.writeLabel( value, 'buttonLabel' );
-							}
-							ctr++;
-						}
-					});
-
-					if ( $scope.more === true ) {
-						// https://github.com/isteven/angular-multi-select/pull/16
-						if (tempMaxLabels > 0) {
-							$scope.varButtonLabel += ', ... ';
-						}
-						$scope.varButtonLabel += '(' + $scope.outputModel.length + ')';
-					}
-				}
-				$scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );
 			};
 
 			// Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
 			// Take note that the granular control has higher priority.
 			$scope.itemIsDisabled = function( item ) {
-
+				return false;
 				if ( typeof attrs.disableProperty !== 'undefined' && item[ attrs.disableProperty ] === true ) {
 					return true;
 				} else {
 					return $scope.isDisabled === true;
 				}
 
-			};
-
-			// A simple function to parse the item label settings. Used on the buttons and checkbox labels.
-			$scope.writeLabel = function( item, type ) {
-
-				// type is either 'itemLabel' or 'buttonLabel'
-				var temp    = attrs[ type ].split( ' ' );
-				var label   = '';
-
-				angular.forEach( temp, function( value ) {
-					if (item[value]) {
-						label += '&nbsp;' + item[value];
-					} else if ( value.split( '.').length !== 1 ) {
-						var tmp_v = value.split( '.' ).reduce( function( prev, current ) {
-							return prev[ current ];
-						}, item );
-						label += tmp_v === undefined ? value : '&nbsp;' + tmp_v;
-					} else {
-						label += value;
-					}
-				});
-
-				if ( type.toUpperCase() === 'BUTTONLABEL' ) {
-					return label;
-				}
-				return $sce.trustAsHtml( label );
 			};
 
 			// UI operations to show/hide checkboxes based on click event..
@@ -634,9 +538,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				// Just to make sure.. had a bug where key events were recorded twice
 				angular.element( document ).off( 'click touchstart', $scope.externalClickListener );
 				angular.element( document ).off( 'keydown', $scope.keyboardListener );
-
-				// The idea below was taken from another multi-select directive - https://github.com/amitava82/angular-multiselect
-				// His version is awesome if you need a more simple multi-select approach.
 
 				// close
 				if ( angular.element( checkBoxLayer ).hasClass( 'show' )) {
@@ -661,8 +562,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					element.children().children()[ 0 ].focus();
 				} else { // open
 					// clear filter
-					$scope.inputLabel.labelFilter = '';
-					//$scope.updateFilter();
+					//$scope.fillInternalModel();
 
 					helperItems = [];
 					helperItemsLength = 0;
@@ -751,7 +651,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 							}
 						});
 						$scope.refreshOutputModel();
-						$scope.refreshButton();
 						$scope.onSelectAll();
 						break;
 					case 'NONE':
@@ -763,7 +662,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 							}
 						});
 						$scope.refreshOutputModel();
-						$scope.refreshButton();
 						$scope.onSelectNone();
 						break;
 					case 'RESET':
@@ -774,7 +672,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 							}
 						});
 						$scope.refreshOutputModel();
-						$scope.refreshButton();
 						$scope.onReset();
 						break;
 					case 'CLEAR':
@@ -786,29 +683,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						break;
 					default:
 				}
-			};
-
-			// just to create a random variable name
-			function genRandomString( length ) {
-				var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-				var temp        = '';
-				for( var i=0; i < length; i++ ) {
-					 temp += possible.charAt( Math.floor( Math.random() * possible.length ));
-				}
-				return temp;
-			}
-
-			// count leading spaces
-			$scope.prepareGrouping = function() {
-				var spacing     = 0;
-				angular.forEach( $scope.filteredModel, function( value ) {
-					value[ $scope.spacingProperty ] = spacing;
-					if ( value[ attrs.groupProperty ] === true ) {
-						spacing+=2;
-					} else if ( value[ attrs.groupProperty ] === false ) {
-						spacing-=2;
-					}
-				});
 			};
 
 			// prepare original index
@@ -912,11 +786,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			$scope.tickProperty     = attrs.tickProperty;
 			$scope.directiveId      = attrs.directiveId;
 
-			// Unfortunately I need to add these grouping properties into the input model
-			var tempStr = genRandomString( 5 );
-			$scope.indexProperty = 'idx_' + tempStr;
-			$scope.spacingProperty = 'spc_' + tempStr;
-
 			// set orientation css
 			if ( typeof attrs.orientation !== 'undefined' ) {
 
@@ -978,11 +847,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			}
 			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
 
-			// min length of keyword to trigger the filter function
-			if ( typeof attrs.MinSearchLength !== 'undefined' && parseInt( attrs.MinSearchLength, 10 ) > 0 ) {
-				vMinSearchLength = Math.floor( parseInt( attrs.MinSearchLength, 10 ) );
-			}
-
 			/*******************************************************
 			 *******************************************************
 			 *
@@ -995,22 +859,21 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// updates multi-select when user select/deselect a single checkbox programatically
 			// https://github.com/isteven/angular-multi-select/issues/8
 			$scope.$watch( 'inputModel' , function( newVal ) {
+				//return;
 				if ( newVal ) {
 					$scope.refreshOutputModel();
-					$scope.refreshButton();
 				}
 			}, true );
 
 			// watch2 for changes in input model as a whole
 			// this on updates the multi-select when a user load a whole new input-model. We also update the $scope.backUp variable
 			$scope.$watch( 'inputModel' , function( newVal ) {
+				return;
 				if ( newVal ) {
 					$scope.backUp = angular.copy( $scope.inputModel );
-					//$scope.updateFilter();
-					//$scope.prepareGrouping();
+					//$scope.fillInternalModel();
 					//$scope.prepareIndex();
 					$scope.refreshOutputModel();
-					$scope.refreshButton();
 				}
 			});
 
@@ -1067,7 +930,7 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 		'<span class="multiSelect inlineBlock">' +
 			// main button
 			'<button id="{{directiveId}}" type="button"' +
-				'ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); refreshButton(); prepareGrouping; prepareIndex();"' + //
+				'ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); prepareIndex();"' + //
 				'ng-bind-html="varButtonLabel"' +
 				'ng-disabled="disable-button"' +
 			'>' +
@@ -1103,10 +966,10 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 					// the search box
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
-						'<input placeholder="{{lang.search}}" type="text"' +
-							'ng-click="select( \'filter\', $event )" '+
-							'ng-model="inputLabel.labelFilter" '+
-							'ng-change="searchChanged()" class="inputFilter"'+
+						'<input placeholder="{{ lang.search }}" type="text"' +
+							//'ng-click="select( \'filter\', $event )" '+
+							'ng-model="searchInput" '+
+							'ng-change="_test()" class="inputFilter"'+
 							'/>'+
 						// clear button
 						'<button type="button" class="clearButton" ng-click="clearClicked( $event )" >×</button> '+
