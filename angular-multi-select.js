@@ -78,6 +78,12 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
+			$scope.helperStatus     = {
+				all     : attrs.selectionMode === "multi",
+				none    : attrs.selectionMode === "multi",
+				reset   : true,
+				filter  : true
+			};
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -434,17 +440,10 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			/////////////////////////////// OLD CODE STARTS FROM HERE
 
 			$scope.varButtonLabel   = '';
-			$scope.indexProperty    = '';
 			$scope.orientationH     = false;
 			$scope.orientationV     = true;
 			$scope.tabIndex         = 0;
 			$scope.lang             = {};
-			$scope.helperStatus     = {
-				all     : true,
-				none    : true,
-				reset   : true,
-				filter  : true
-			};
 
 			var
 				prevTabIndex        = 0,
@@ -508,7 +507,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			// Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
 			// Take note that the granular control has higher priority.
 			$scope.itemIsDisabled = function( item ) {
-				return false;
 				if ( typeof attrs.disableProperty !== 'undefined' && item[ attrs.disableProperty ] === true ) {
 					return true;
 				} else {
@@ -624,52 +622,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				element.children().children()[ 0 ].focus();
 			};
 
-			// select All / select None / reset buttons
-			$scope.select = function( type, e ) {
-
-				$scope.tabIndex = helperItems.indexOf( e.target );
-
-				switch( type.toUpperCase() ) {
-					case 'ALL':
-						angular.forEach( $scope.filteredModel, function( value ) {
-							if ( typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
-								if ( typeof value[ attrs.groupProperty ] === 'undefined' ) {
-									value[ $scope.tickProperty ] = true;
-								}
-							}
-						});
-						$scope.onSelectAll();
-						break;
-					case 'NONE':
-						angular.forEach( $scope.filteredModel, function( value ) {
-							if ( typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
-								if ( typeof value[ attrs.groupProperty ] === 'undefined' ) {
-									value[ $scope.tickProperty ] = false;
-								}
-							}
-						});
-						$scope.onSelectNone();
-						break;
-					case 'RESET':
-						angular.forEach( $scope.filteredModel, function( value ) {
-							if ( typeof value[ attrs.groupProperty ] === 'undefined' && typeof value !== 'undefined' && value[ attrs.disableProperty ] !== true ) {
-								var temp = value[ $scope.indexProperty ];
-								//value[ $scope.tickProperty ] = $scope.backUp[ temp ][ $scope.tickProperty ];
-							}
-						});
-						$scope.onReset();
-						break;
-					case 'CLEAR':
-						$scope.tabIndex = $scope.tabIndex + 1;
-						$scope.onClear();
-						break;
-					case 'FILTER':
-						$scope.tabIndex = helperItems.length - 1;
-						break;
-					default:
-				}
-			};
-
 			// navigate using up and down arrow
 			$scope.keyboardListener = function( e ) {
 
@@ -758,7 +710,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			// attrs to $scope - attrs-$scope - attrs - $scope
 			// Copy some properties that will be used on the template. They need to be in the $scope.
-			$scope.groupProperty    = attrs.groupProperty;
 			$scope.tickProperty     = attrs.tickProperty;
 			$scope.directiveId      = attrs.directiveId;
 
@@ -781,22 +732,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			if ( typeof attrs.maxHeight !== 'undefined' ) {
 				var layer = element.children().children().children()[0];
 				angular.element( layer ).attr( "style", "height:" + attrs.maxHeight + "; overflow-y:scroll;" );
-			}
-
-			// some flags for easier checking
-			for ( var property in $scope.helperStatus ) {
-				if ( $scope.helperStatus.hasOwnProperty( property )) {
-					if (
-						typeof attrs.helperElements !== 'undefined'
-						&& attrs.helperElements.toUpperCase().indexOf( property.toUpperCase() ) === -1
-					) {
-						$scope.helperStatus[ property ] = false;
-					}
-				}
-			}
-			if ( typeof attrs.selectionMode !== 'undefined' && attrs.selectionMode.toUpperCase() === 'SINGLE' )  {
-				$scope.helperStatus[ 'all' ] = false;
-				$scope.helperStatus[ 'none' ] = false;
 			}
 
 			// helper button icons.. I guess you can use html tag here if you want to.
@@ -847,7 +782,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 	}
 }]);
 
-angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
+angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
 			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item, false) > 0, disabled:itemIsDisabled(item)}'" +
@@ -862,10 +797,10 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 			"</li>" +
 		"</ul>" +
 		"";
-	$templateCache.put( 'angular-multi-select-item.htm' , template );
+	$templateCache.put('angular-multi-select-item.htm', template);
 }]);
 
-angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
+angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
@@ -883,34 +818,23 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled"' +
-							'ng-if="helperStatus.all"' +
-							'ng-click="select( \'all\', $event );"' +
-							'ng-bind-html="lang.selectAll">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="" ng-bind-html="lang.selectAll">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled"' +
-							'ng-if="helperStatus.none"' +
-							'ng-click="select( \'none\', $event );"' +
-							'ng-bind-html="lang.selectNone">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="" ng-bind-html="lang.selectNone">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="helperButton reset"' +
-							'ng-disabled="isDisabled"' +
-							'ng-if="helperStatus.reset"' +
-							'ng-click="select( \'reset\', $event );"' +
-							'ng-bind-html="lang.reset">'+
+							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="" ng-bind-html="lang.reset">'+
 						'</button>' +
 					'</div>' +
 					// the search box
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							//'ng-click="select( \'filter\', $event )" '+
-							'ng-model="searchInput" '+
-							'ng-change="_test()" class="inputFilter"'+
-							'/>'+
+							'ng-click="" ng-model="searchInput" ng-change="_test()" class="inputFilter"'+
+						'/>'+
 						// clear button
 						'<button type="button" class="clearButton" ng-click="clearClicked( $event )" >×</button> '+
 					'</div> '+
@@ -952,5 +876,5 @@ angular_multi_select.run( [ '$templateCache' , function( $templateCache ) {
 			'</div>'+
 		'</div>'+
 	'</span>';
-	$templateCache.put( 'angular-multi-select.htm' , template );
+	$templateCache.put('angular-multi-select.htm', template);
 }]);
