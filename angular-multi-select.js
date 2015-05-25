@@ -83,6 +83,8 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				reset   : true,
 				filter  : true
 			};
+			$scope.visible = false;
+			$scope.buttonLabel = '';
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -430,273 +432,82 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					$scope._enforceChecks($scope.filteredModel);
 
 					var _n_selected = Math.abs($scope._areAllChecked($scope.filteredModel));
-					$scope.varButtonLabel =  _n_selected + " selected";
-					$scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );
+					$scope.buttonLabel =  _n_selected + " selected";
+					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
 				}
 			}, true);
 
+			//Watch for search input
 			$scope.$watch('searchInput.value', function(_new, _old) {
 				if(!angular.equals(_new, _old)) {
 					$scope.fillInternalModel();
 				}
 			});
 
-			/////////////////////////////// OLD CODE STARTS FROM HERE
+			//Watch for show/hide event
+			$scope.$watch('visible', function(_new, _old) {
+				if(!angular.equals(_new, _old) && _new === true) {
 
-			$scope.varButtonLabel   = '';
+					//Listen for mouse events
+					$scope.stopListeningMouseEvents = $scope.$on('angular-multi-select-click', function(msg, obj) {
+						var inside = false;
+						angular.forEach($(obj.event.target).parents(), function(parent) {
+							if(inside === true) return;
+							if($(parent).attr("angular-multi-select") !== undefined) {
+								inside = true;
+							}
+						});
+						if(inside === false){
+							$scope.visible = false;
+							$scope.$apply();
+						}
+					});
+
+					//Listen for keyboard events
+					$scope.stopListeningKeyboardEvents = $scope.$on('angular-multi-select-keydown', function(msg, obj) {
+						var key = obj.event.keyCode ? obj.event.keyCode : obj.event.which;
+
+						//ESC should close
+						//if ( key === 27 ) {
+
+						// next element ( tab, down & right key )
+						//} else if ( key === 40 || key === 39 || ( !e.shiftKey && key == 9 ) ) {
+
+						// prev element ( shift+tab, up & left key )
+						//} else if ( key === 38 || key === 37 || ( e.shiftKey && key == 9 ) ) {
+
+						console.log("kb!");
+						/*
+						$scope.keys.forEach(function(o) {
+							if(o.code !== obj.event.code) {
+								return;
+							}
+							o.action();
+							$scope.$apply();
+						});
+						*/
+					});
+
+				} else if (!angular.equals(_new, _old) && _new === false){
+
+					//Stop listening for mouse events
+					$scope.stopListeningMouseEvents();
+					$scope.stopListeningMouseEvents = null;
+
+					//Stop listening for  keyboard events
+					$scope.stopListeningKeyboardEvents();
+					$scope.stopListeningKeyboardEvents = null;
+				}
+			});
+
+			/////////////////////////////// OLD CODE STARTS FROM HERE
 			$scope.orientationH     = false;
 			$scope.orientationV     = true;
 			$scope.tabIndex         = 0;
 			$scope.lang             = {};
 
-			var
-				prevTabIndex        = 0,
-				helperItems         = [],
-				helperItemsLength   = 0,
-				checkBoxLayer       = '',
-				formElements        = [];
-
-			// List all the input elements. We need this for our keyboard navigation.
-			// This function will be called every time the filter is updated.
-			// Depending on the size of filtered mode, might not good for performance, but oh well..
-			$scope.getFormElements = function() {
-				formElements = [];
-
-				var
-					i,
-					selectButtons   = [],
-					inputField      = [],
-					checkboxes      = [],
-					clearButton     = [];
-
-				// If available, then get select all, select none, and reset buttons
-				if ( $scope.helperStatus.all || $scope.helperStatus.none || $scope.helperStatus.reset ) {
-					selectButtons = element.children().children().next().children().children()[ 0 ].getElementsByTagName( 'button' );
-					// If available, then get the search box and the clear button
-					if ( $scope.helperStatus.filter ) {
-						// Get helper - search and clear button.
-						inputField =    element.children().children().next().children().children().next()[ 0 ].getElementsByTagName( 'input' );
-						clearButton =   element.children().children().next().children().children().next()[ 0 ].getElementsByTagName( 'button' );
-					}
-				} else {
-					if ( $scope.helperStatus.filter ) {
-						// Get helper - search and clear button.
-						inputField =    element.children().children().next().children().children()[ 0 ].getElementsByTagName( 'input' );
-						clearButton =   element.children().children().next().children().children()[ 0 ].getElementsByTagName( 'button' );
-					}
-				}
-
-				// Get checkboxes
-				if ( !$scope.helperStatus.all && !$scope.helperStatus.none && !$scope.helperStatus.reset && !$scope.helperStatus.filter ) {
-					checkboxes = element.children().children().next()[ 0 ].getElementsByTagName( 'input' );
-				} else {
-					checkboxes = element.children().children().next().children().next()[ 0 ].getElementsByTagName( 'input' );
-				}
-
-				// Push them into global array formElements[]
-				for ( i = 0; i < selectButtons.length ; i++ )   { formElements.push( selectButtons[ i ] );  }
-				for ( i = 0; i < inputField.length ; i++ )      { formElements.push( inputField[ i ] );     }
-				for ( i = 0; i < clearButton.length ; i++ )     { formElements.push( clearButton[ i ] );    }
-				for ( i = 0; i < checkboxes.length ; i++ )      { formElements.push( checkboxes[ i ] );     }
-			};
-
-			// Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
-			// Take note that the granular control has higher priority.
-			$scope.itemIsDisabled = function( item ) {
-				if ( typeof attrs.disableProperty !== 'undefined' && item[ attrs.disableProperty ] === true ) {
-					return true;
-				} else {
-					return $scope.isDisabled === true;
-				}
-
-			};
-
-			// UI operations to show/hide checkboxes based on click event..
-			$scope.toggleCheckboxes = function( e ) {
-
-				// We grab the button
-				var clickedEl = element.children()[0];
-
-				// Just to make sure.. had a bug where key events were recorded twice
-				angular.element( document ).off( 'click touchstart', $scope.externalClickListener );
-				angular.element( document ).off( 'keydown', $scope.keyboardListener );
-
-				// close
-				if ( angular.element( checkBoxLayer ).hasClass( 'show' )) {
-
-					angular.element( checkBoxLayer ).removeClass( 'show' );
-					angular.element( clickedEl ).removeClass( 'buttonClicked' );
-					angular.element( document ).off( 'click touchstart', $scope.externalClickListener );
-					angular.element( document ).off( 'keydown', $scope.keyboardListener );
-
-					// clear the focused element;
-					$scope.removeFocusStyle( $scope.tabIndex );
-					if ( typeof formElements[ $scope.tabIndex ] !== 'undefined' ) {
-						formElements[ $scope.tabIndex ].blur();
-					}
-
-					// close callback
-					$timeout( function() {
-						$scope.onClose();
-					}, 0 );
-
-					// set focus on button again
-					element.children().children()[ 0 ].focus();
-				} else { // open
-					// clear filter
-					//$scope.fillInternalModel();
-
-					helperItems = [];
-					helperItemsLength = 0;
-
-					angular.element( checkBoxLayer ).addClass( 'show' );
-					angular.element( clickedEl ).addClass( 'buttonClicked' );
-
-					// Attach change event listener on the input filter.
-					// We need this because ng-change is apparently not an event listener.
-					angular.element( document ).on( 'click touchstart', $scope.externalClickListener );
-					angular.element( document ).on( 'keydown', $scope.keyboardListener );
-
-					// to get the initial tab index, depending on how many helper elements we have.
-					// priority is to always focus it on the input filter
-					$scope.getFormElements();
-					$scope.tabIndex = 0;
-
-					var helperContainer = angular.element( element[ 0 ].querySelector( '.helperContainer' ) )[0];
-
-					if ( typeof helperContainer !== 'undefined' ) {
-						for ( var i = 0; i < helperContainer.getElementsByTagName( 'BUTTON' ).length ; i++ ) {
-							helperItems[ i ] = helperContainer.getElementsByTagName( 'BUTTON' )[ i ];
-						}
-						helperItemsLength = helperItems.length + helperContainer.getElementsByTagName( 'INPUT' ).length;
-					}
-
-					// focus on the filter element on open.
-					if ( element[ 0 ].querySelector( '.inputFilter' ) ) {
-						element[ 0 ].querySelector( '.inputFilter' ).focus();
-						$scope.tabIndex = $scope.tabIndex + helperItemsLength - 2;
-						// blur button in vain
-						angular.element( element ).children()[ 0 ].blur();
-					} else { // if there's no filter then just focus on the first checkbox item
-						if ( !$scope.isDisabled ) {
-							$scope.tabIndex = $scope.tabIndex + helperItemsLength;
-							if ( $scope.inputModel.length > 0 ) {
-								formElements[ $scope.tabIndex ].focus();
-								$scope.setFocusStyle( $scope.tabIndex );
-								// blur button in vain
-								angular.element( element ).children()[ 0 ].blur();
-							}
-						}
-					}
-
-					// open callback
-					$scope.onOpen();
-				}
-			};
-
-			// handle clicks outside the button / multi select layer
-			$scope.externalClickListener = function( e ) {
-				var targetsArr = element.find( e.target.tagName );
-				for (var i = 0; i < targetsArr.length; i++) {
-					if ( e.target == targetsArr[i] ) {
-						return;
-					}
-				}
-
-				angular.element( checkBoxLayer.previousSibling ).removeClass( 'buttonClicked' );
-				angular.element( checkBoxLayer ).removeClass( 'show' );
-				angular.element( document ).off( 'click touchstart', $scope.externalClickListener );
-				angular.element( document ).off( 'keydown', $scope.keyboardListener );
-
-				// close callback
-				$timeout( function() {
-					$scope.onClose();
-				}, 0 );
-
-				// set focus on button again
-				element.children().children()[ 0 ].focus();
-			};
-
-			// navigate using up and down arrow
-			$scope.keyboardListener = function( e ) {
-				var key = e.keyCode ? e.keyCode : e.which;
-				var isNavigationKey = false;
-
-				// ESC key (close)
-				if ( key === 27 ) {
-					e.preventDefault();
-					e.stopPropagation();
-					$scope.toggleCheckboxes( e );
-				} else if ( key === 40 || key === 39 || ( !e.shiftKey && key == 9 ) ) {
-					// next element ( tab, down & right key )
-					isNavigationKey = true;
-					prevTabIndex = $scope.tabIndex;
-					$scope.tabIndex++;
-					if ( $scope.tabIndex > formElements.length - 1 ) {
-						$scope.tabIndex = 0;
-						prevTabIndex = formElements.length - 1;
-					}
-					while ( formElements[ $scope.tabIndex ].disabled === true ) {
-						$scope.tabIndex++;
-						if ( $scope.tabIndex > formElements.length - 1 ) {
-							$scope.tabIndex = 0;
-						}
-						if ( $scope.tabIndex === prevTabIndex ) {
-							break;
-						}
-					}
-				} else if ( key === 38 || key === 37 || ( e.shiftKey && key == 9 ) ) {
-					// prev element ( shift+tab, up & left key )
-					isNavigationKey = true;
-					prevTabIndex = $scope.tabIndex;
-					$scope.tabIndex--;
-					if ( $scope.tabIndex < 0 ) {
-						$scope.tabIndex = formElements.length - 1;
-						prevTabIndex = 0;
-					}
-					while ( formElements[ $scope.tabIndex ].disabled === true ) {
-						$scope.tabIndex--;
-						if ( $scope.tabIndex === prevTabIndex ) {
-							break;
-						}
-						if ( $scope.tabIndex < 0 ) {
-							$scope.tabIndex = formElements.length - 1;
-						}
-					}
-				}
-
-				if ( isNavigationKey === true ) {
-
-					e.preventDefault();
-
-					// set focus on the checkbox
-					formElements[ $scope.tabIndex ].focus();
-					var actEl = document.activeElement;
-
-					if ( actEl.type.toUpperCase() === 'CHECKBOX' ) {
-						$scope.setFocusStyle( $scope.tabIndex );
-						$scope.removeFocusStyle( prevTabIndex );
-					} else {
-						$scope.removeFocusStyle( prevTabIndex );
-						$scope.removeFocusStyle( helperItemsLength );
-						$scope.removeFocusStyle( formElements.length - 1 );
-					}
-				}
-			};
-
-			// set (add) CSS style on selected row
-			$scope.setFocusStyle = function( tabIndex ) {
-				angular.element( formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );
-			};
-
-			// remove CSS style on selected row
-			$scope.removeFocusStyle = function( tabIndex ) {
-				angular.element( formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
-			};
-
 			// attrs to $scope - attrs-$scope - attrs - $scope
 			// Copy some properties that will be used on the template. They need to be in the $scope.
-			$scope.tickProperty     = attrs.tickProperty;
 			$scope.directiveId      = attrs.directiveId;
 
 			// set orientation css
@@ -710,9 +521,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					$scope.orientationV = true;
 				}
 			}
-
-			// get elements required for DOM operation
-			checkBoxLayer = element.children().children().next()[0];
 
 			// set max-height property if provided
 			if ( typeof attrs.maxHeight !== 'undefined' ) {
@@ -744,34 +552,31 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			}
 			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
 
-			// this is for touch enabled devices. We don't want to hide checkboxes on scroll.
-			var onTouchStart = function() {
-				$scope.$apply( function() {
-					$scope.scrolled = false;
-				});
-			};
-			angular.element( document ).bind( 'touchstart', onTouchStart);
-			var onTouchMove = function() {
-				$scope.$apply( function() {
-					$scope.scrolled = true;
-				});
-			};
-			angular.element( document ).bind( 'touchmove', onTouchMove);
-
-			// unbind document events to prevent memory leaks
-			$scope.$on( '$destroy', function () {
-				angular.element( document ).unbind( 'touchstart', onTouchStart);
-				angular.element( document ).unbind( 'touchmove', onTouchMove);
-			});
 
 		}
 	}
 }]);
 
+angular_multi_select.directive('angularMultiSelectKeyTrap', function() {
+	return function(scope, elem) {
+		elem.bind('keydown', function(event) {
+			scope.$broadcast('angular-multi-select-keydown', { event: event } );
+		});
+	};
+});
+
+angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
+	return function(scope, elem) {
+		elem.bind('click', function(event) {
+			scope.$broadcast('angular-multi-select-click', { event: event } );
+		});
+	};
+});
+
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
-			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item, false) > 0, disabled:itemIsDisabled(item)}'" +
+			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item, false) > 0}'" +
 		">" +
 			"{{ item.name }}" +
 			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
@@ -791,13 +596,13 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 		'<span class="multiSelect inlineBlock">' +
 			// main button
 			'<button id="{{directiveId}}" type="button"' +
-				'ng-click="toggleCheckboxes( $event );"' + //
-				'ng-bind-html="varButtonLabel"' +
+				'ng-click="visible = !visible"' +
+				'ng-bind-html="buttonLabel"' +
 				'ng-disabled="disable-button"' +
 			'>' +
 			'</button>' +
 			// overlay layer
-			'<div class="checkboxLayer">' +
+			'<div class="checkboxLayer" ng-show="visible">' +
 				// container of the helper elements
 				'<div class="helperContainer" ng-if="helperStatus.filter || helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 					// container of the first 3 buttons, select all, none and reset
@@ -825,36 +630,9 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" >×</button> '+
 					'</div> '+
 				'</div> '+
+
 				// selection items
-
 				'<div class="checkBoxContainer">'+
-					/*
-					'<div '+
-						'ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"'+
-						'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"'+
-						'ng-click="syncItems( item, $event, $index );" '+
-						'ng-mouseleave="removeFocusStyle( tabIndex );"> '+
-						// this is the spacing for grouped items
-						'<div class="acol" ng-if="item[ spacingProperty ] > 0" ng-repeat="i in numberToArray( item[ spacingProperty ] ) track by $index">'+
-					'</div>  '+
-					'<div class="acol">'+
-						'<label>'+
-							// input, so that it can accept focus on keyboard click
-							'<input class="checkbox focusable" type="checkbox" '+
-								'ng-disabled="itemIsDisabled( item )" '+
-								'ng-checked="item[ tickProperty ]" '+
-								'ng-click="syncItems( item, $event, $index )" />'+
-							// item label using ng-bind-hteml
-							'<span '+
-								'ng-class="{disabled:itemIsDisabled( item )}" '+
-								'ng-bind-html="writeLabel( item, \'itemLabel\' )">'+
-							'</span>'+
-						'</label>'+
-					'</div>'+
-					// the tick/check mark
-					'<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></span>'+
-					*/
-
 					"<ul>" +
 						"<li ng-repeat='item in filteredModel' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 					"</ul>" +
