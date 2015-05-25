@@ -37,8 +37,7 @@ var angular_multi_select = angular.module( 'angular-multi-select', ['ng'] );
 
 angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', function ( $sce, $timeout ) {
 	return {
-		restrict:
-			'AE',
+		restrict: 'AE',
 
 		scope: {
 			// models
@@ -74,7 +73,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			 * Globally used variables.
 			 */
 			$scope.filteredModel = [];
-			$scope.searchInput = "";
+			$scope.searchInput = { value: '' }; // Won't work if not an object. Why? Fuck me if I know...
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -402,10 +401,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}, 0);
 			};
 
-			$scope._test = function() {
-				console.log($scope.searchInput);
-			};
-
 			$scope.fillInternalModel = function() {
 				console.log("fillInternalModel!");
 
@@ -413,12 +408,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 				var filter_fn = function(obj) {
 					//console.log(obj);
-					console.log($scope.searchInput);
-					//return obj.name.indexOf($scope.searchInput) !== -1;
-					return true;
+					if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
+						return true;
+					}
+					return obj.name.indexOf($scope.searchInput.value) !== -1;
+					//return true;
 				};
 
-				$scope._shadowModel = $scope._walk($scope.inputModel, attrs.groupProperty, filter_fn);
+				$scope._shadowModel = angular.copy($scope.inputModel);
+				$scope._shadowModel = $scope._walk($scope._shadowModel, attrs.groupProperty, filter_fn);
 				$scope._enforceIDs($scope._shadowModel);
 				$scope.filteredModel = angular.copy($scope._shadowModel);
 				delete $scope._shadowModel;
@@ -437,6 +435,12 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}
 			}, true);
 
+			$scope.$watch('searchInput.value', function(_new, _old) {
+				if(!angular.equals(_new, _old)) {
+					$scope.fillInternalModel();
+				}
+			});
+
 			/////////////////////////////// OLD CODE STARTS FROM HERE
 
 			$scope.varButtonLabel   = '';
@@ -451,14 +455,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				helperItemsLength   = 0,
 				checkBoxLayer       = '',
 				formElements        = [];
-
-			// v3.0.0
-			// clear button clicked
-			$scope.clearClicked = function( e ) {
-				return;
-				//$scope.fillInternalModel();
-				$scope.select( 'clear', e );
-			};
 
 			// List all the input elements. We need this for our keyboard navigation.
 			// This function will be called every time the filter is updated.
@@ -600,7 +596,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			// handle clicks outside the button / multi select layer
 			$scope.externalClickListener = function( e ) {
-
 				var targetsArr = element.find( e.target.tagName );
 				for (var i = 0; i < targetsArr.length; i++) {
 					if ( e.target == targetsArr[i] ) {
@@ -624,7 +619,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			// navigate using up and down arrow
 			$scope.keyboardListener = function( e ) {
-
 				var key = e.keyCode ? e.keyCode : e.which;
 				var isNavigationKey = false;
 
@@ -699,14 +693,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			$scope.removeFocusStyle = function( tabIndex ) {
 				angular.element( formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
 			};
-
-			/*********************
-			 *********************
-			 *
-			 * 1) Initializations
-			 *
-			 *********************
-			 *********************/
 
 			// attrs to $scope - attrs-$scope - attrs - $scope
 			// Copy some properties that will be used on the template. They need to be in the $scope.
@@ -833,10 +819,10 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							'ng-click="" ng-model="searchInput" ng-change="_test()" class="inputFilter"'+
+							'ng-model="searchInput.value" class="inputFilter"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="clearButton" ng-click="clearClicked( $event )" >×</button> '+
+						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" >×</button> '+
 					'</div> '+
 				'</div> '+
 				// selection items
