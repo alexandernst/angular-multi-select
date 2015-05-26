@@ -426,6 +426,8 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					$scope._flipCheck(item);
 				}
 
+				$scope._enforceChecks($scope.filteredModel);
+
 				//Trigger the onItemClick callback
 				$timeout(function() {
 					$scope.onItemClick({
@@ -434,44 +436,49 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				}, 0);
 			};
 
-			$scope.fillInternalModel = function() {
-				console.log("fillInternalModel!");
-
-				$scope._shadowModel = [];
-
-				var filter_fn = function(obj) {
-					//console.log(obj);
-					if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
-						return true;
-					}
-					return obj.name.indexOf($scope.searchInput.value) !== -1;
-					//return true;
-				};
-
-				$scope._shadowModel = angular.copy($scope.inputModel);
-				$scope._shadowModel = $scope._walk($scope._shadowModel, attrs.groupProperty, filter_fn);
-				$scope._enforceIDs($scope._shadowModel);
-				$scope.filteredModel = angular.copy($scope._shadowModel);
-				delete $scope._shadowModel;
+			$scope._filter = function(obj) {
+				//console.log(obj);
+				//TODO: diacritics
+				//TODO: fuzzy string match
+				if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
+					return true;
+				}
+				return obj.name.indexOf($scope.searchInput.value) !== -1;
 			};
 
+			$scope.fillShadowModel = function() {
+				$scope._shadowModel = angular.copy($scope.inputModel);
+				$scope._enforceIDs($scope._shadowModel);
+				$scope._enforceChecks($scope._shadowModel);
 
-			$scope.fillInternalModel();
+				$scope.fillFilteredModel();
+			};
 
+			$scope.fillFilteredModel = function() {
+				$scope.filteredModel = angular.copy($scope._shadowModel);
+				$scope.filteredModel = $scope._walk($scope.filteredModel, attrs.groupProperty, $scope._filter);
+			};
+
+			/**
+			 * When the data in our filtered model changes, we want to do several things:
+			 *
+			 * - update the button label
+			 * - TODO: update our output model
+			 */
 			$scope.$watch('filteredModel', function(_new) {
 				if(_new) {
-					$scope._enforceChecks($scope.filteredModel);
-
 					var _n_selected = Math.abs($scope._areAllChecked($scope.filteredModel));
 					$scope.buttonLabel =  _n_selected + " selected";
 					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
+
+					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 				}
 			}, true);
 
 			//Watch for search input
 			$scope.$watch('searchInput.value', function(_new, _old) {
 				if(!angular.equals(_new, _old)) {
-					$scope.fillInternalModel();
+					$scope.fillFilteredModel();
 				}
 			});
 
@@ -531,6 +538,11 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 					$scope.stopListeningKeyboardEvents = null;
 				}
 			});
+
+
+			//RUN
+			$scope.fillShadowModel();
+
 
 			/////////////////////////////// OLD CODE STARTS FROM HERE
 			$scope.lang             = {};
@@ -634,7 +646,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 						'</button>'+
 						// reset
 						'<button type="button" class="helperButton reset"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="" ng-bind-html="lang.reset">'+
+							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="fillShadowModel()" ng-bind-html="lang.reset">'+
 						'</button>' +
 					'</div>' +
 					// the search box
