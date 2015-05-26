@@ -417,18 +417,26 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			$scope._filter = function(obj) {
-				//console.log(obj);
-				//TODO: diacritics
-				//TODO: fuzzy string match
 				if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
 					return true;
 				}
 
-				return obj[attrs.itemLabel].indexOf($scope.searchInput.value) !== -1;
+				/**
+				 * TODO: While this works, it's extremely slow. Waiting for
+				 * https://github.com/a8m/angular-filter/issues/107 to get
+				 * implemented so we can refactor this a little bit.
+				 */
+				var tmp_obj = angular.extend({}, obj);
+				tmp_obj[attrs.itemLabel] = $filter('latinize')(tmp_obj[attrs.itemLabel]);
+
+				var fltr = $scope.searchInput.value;
+				fltr = $filter('latinize')(fltr);
+
+				var match = $filter('fuzzyBy')([tmp_obj], attrs.itemLabel, fltr);
+				return match.length > 0;
 			};
 
 			$scope.fillShadowModel = function() {
-				console.log("fillShadowModel");
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceIDs($scope._shadowModel);
 				$scope._enforceChecks($scope._shadowModel);
