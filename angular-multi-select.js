@@ -136,13 +136,49 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			/**
+			 * Backport of Angular 1.4.x's "merge()" method
+			 * @param dst
+			 * @param objs
+			 * @param deep
+			 * @returns {*}
+			 */
+			$scope._baseExtend = function(dst, objs, deep) {
+				var h = dst.$$hashKey;
+
+				for (var i = 0, ii = objs.length; i < ii; ++i) {
+					var obj = objs[i];
+					if (!angular.isObject(obj) && !angular.isFunction(obj)) continue;
+					var keys = Object.keys(obj);
+					for (var j = 0, jj = keys.length; j < jj; j++) {
+						var key = keys[j];
+						var src = obj[key];
+
+						if (deep && angular.isObject(src)) {
+							if (!angular.isObject(dst[key])) dst[key] = angular.isArray(src) ? [] : {};
+							$scope._baseExtend(dst[key], [src], true);
+						} else {
+							dst[key] = src;
+						}
+					}
+				}
+
+				if (h) {
+					dst.$$hashKey = h;
+				} else {
+					delete dst.$$hashKey;
+				}
+				return dst;
+			};
+
+			/**
 			 * Helper function that syncs the changes from modelA to modelB.
-			 * @param modelA
-			 * @param modelB
+			 * @param dst
+			 * @returns {*}
 			 * @private
 			 */
-			$scope._syncModels = function(modelA, modelB) {
-
+			$scope._syncModels = function(dst) {
+				var slice = [].slice;
+				return $scope._baseExtend(dst, slice.call(arguments, 1), true);
 			};
 
 			/**
