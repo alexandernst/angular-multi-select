@@ -1,2 +1,2 @@
-java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --externs libs/angular-1.3.js --js angular-multi-select.js --js_output_file angular-multi-select.min.js --warning_level VERBOSE 2>&1 | sed -e '/libs/,+3d' 
+java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --externs libs/angular-1.3.js --externs libs/jquery-1.9.js --js angular-multi-select.js --js_output_file angular-multi-select.min.js --warning_level VERBOSE 2>&1 | sed -e '/libs/,+3d' 
 csso --input angular-multi-select.css --output angular-multi-select.min.css
