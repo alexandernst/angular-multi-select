@@ -1,15 +1,15 @@
 /*
  * Angular JS Multi Select
- * Creates a dropdown-like button with checkboxes.
+ * Creates a dropdown-like widget with check-able items.
  *
- * Project started on: Tue, 14 Jan 2014 - 5:18:02 PM
+ * Project started on: 23 May 2015
  * Current version: 4.0.6
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Ignatius Steven (https://github.com/isteven)
+ * Copyright (c) 2015 Alexander Nestorov (https://github.com/alexandernst)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
