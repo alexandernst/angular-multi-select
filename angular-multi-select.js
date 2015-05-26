@@ -386,9 +386,21 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * Helper function to uncheck all items
 			 * @private
 			 */
-			$scope._uncheckAll = function(model){
+			$scope._uncheckAll = function(model) {
 				$scope._walk(model, attrs.groupProperty, function(item){
 					item[attrs.tickProperty] = false;
+					return true;
+				});
+			};
+
+			/**
+			 * Helper function to check all items
+			 * @param model
+			 * @private
+			 */
+			$scope._checkAll = function(model) {
+				$scope._walk(model, attrs.groupProperty, function(item){
+					item[attrs.tickProperty] = true;
 					return true;
 				});
 			};
@@ -635,11 +647,11 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="" ng-bind-html="lang.selectAll">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="_checkAll(filteredModel)" ng-bind-html="lang.selectAll">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="" ng-bind-html="lang.selectNone">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="_uncheckAll(filteredModel)" ng-bind-html="lang.selectNone">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="helperButton reset"' +
