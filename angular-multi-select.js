@@ -395,17 +395,14 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			//Call this function when an item is clicked
 			$scope.clickItem = function(item) {
-				if(attrs.selectionMode === 'single') {
-					if(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item)) {
-						$scope._flipCheck(item);
-					} else {
+				if(attrs.selectionMode === 'single' && $scope._areAllChecked($scope._shadowModel) !== 0) {
+					if (!(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item))) {
+						$scope._uncheckAll($scope._shadowModel);
 						$scope._uncheckAll($scope.filteredModel);
-						$scope._flipCheck(item);
 					}
-				} else {
-					$scope._flipCheck(item);
 				}
 
+				$scope._flipCheck(item);
 				$scope._enforceChecks($scope.filteredModel);
 
 				//Trigger the onItemClick callback
