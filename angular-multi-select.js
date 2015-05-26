@@ -592,6 +592,16 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 	};
 });
 
+angular_multi_select.directive('setFocus', function($timeout) {
+	return function(scope, element, attrs) {
+		scope.$watch(attrs.setFocus, function(newValue) {
+			$timeout(function() {
+				newValue && element.focus();
+			});
+		},true);
+	};
+});
+
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
@@ -643,7 +653,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							'ng-model="searchInput.value" class="inputFilter"'+
+							'ng-model="searchInput.value" class="inputFilter" set-focus="visible"'+
 						'/>'+
 						// clear button
 						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" >×</button> '+
