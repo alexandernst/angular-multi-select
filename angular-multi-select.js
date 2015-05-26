@@ -59,19 +59,14 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			translation     : '='
 		},
 
-		/*
-		 * The rest are attributes. They don't need to be parsed / binded, so we can safely access them by value.
-		 * - buttonLabel, directiveId, helperElements, itemLabel, maxLabels, orientation, selectionMode,
-		 *   tickProperty, disableProperty, groupProperty, searchProperty, maxHeight, outputProperties
-		 */
-
-		 templateUrl: 'angular-multi-select.htm',
+		templateUrl: 'angular-multi-select.htm',
 
 		link: function ( $scope, element, attrs ) {
 
 			/**
 			 * Globally used variables.
 			 */
+			$scope._shadowModel = [];
 			$scope.filteredModel = [];
 			$scope.searchInput = { value: '' }; // Won't work if not an object. Why? Fuck me if I know...
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
@@ -85,6 +80,7 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 			$scope.visible = false;
 			$scope.buttonLabel = '';
+			$scope.tickProperty = attrs.tickProperty;
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -383,7 +379,6 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 			//Call this function when an item is clicked
 			$scope.clickItem = function(item) {
-
 				if(attrs.selectionMode === 'single') {
 					if(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item)) {
 						$scope._flipCheck(item);
@@ -468,14 +463,15 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 						var key = obj.event.keyCode ? obj.event.keyCode : obj.event.which;
 
 						//ESC should close
-						//if ( key === 27 ) {
+						if ( key === 27 ) {
 
 						// next element ( tab, down & right key )
-						//} else if ( key === 40 || key === 39 || ( !e.shiftKey && key == 9 ) ) {
+						} else if ( key === 40 || key === 39 || ( !obj.event.shiftKey && key == 9 ) ) {
 
 						// prev element ( shift+tab, up & left key )
-						//} else if ( key === 38 || key === 37 || ( e.shiftKey && key == 9 ) ) {
+						} else if ( key === 38 || key === 37 || ( obj.event.shiftKey && key == 9 ) ) {
 
+						}
 						console.log("kb!");
 						/*
 						$scope.keys.forEach(function(o) {
@@ -501,26 +497,11 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			});
 
 			/////////////////////////////// OLD CODE STARTS FROM HERE
-			$scope.orientationH     = false;
-			$scope.orientationV     = true;
-			$scope.tabIndex         = 0;
 			$scope.lang             = {};
 
 			// attrs to $scope - attrs-$scope - attrs - $scope
 			// Copy some properties that will be used on the template. They need to be in the $scope.
 			$scope.directiveId      = attrs.directiveId;
-
-			// set orientation css
-			if ( typeof attrs.orientation !== 'undefined' ) {
-
-				if ( attrs.orientation.toUpperCase() === 'HORIZONTAL' ) {
-					$scope.orientationH = true;
-					$scope.orientationV = false;
-				} else {
-					$scope.orientationH = false;
-					$scope.orientationV = true;
-				}
-			}
 
 			// set max-height property if provided
 			if ( typeof attrs.maxHeight !== 'undefined' ) {
@@ -576,7 +557,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
-			"ng-class='{selected: item[tickProperty], horizontal: orientationH, vertical: orientationV, multiSelectGroup:_hasChildren(item, false) > 0}'" +
+			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0}'" +
 		">" +
 			"{{ item.name }}" +
 			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
