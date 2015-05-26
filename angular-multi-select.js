@@ -505,16 +505,16 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 						var key = obj.event.keyCode ? obj.event.keyCode : obj.event.which;
 
 						//ESC should close
-						if ( key === 27 ) {
-
+						if(key === 27) {
+							$scope.visible = false;
+							$scope.$apply();
 						// next element ( tab, down & right key )
-						} else if ( key === 40 || key === 39 || ( !obj.event.shiftKey && key == 9 ) ) {
+						} else if (key === 40 || key === 39 || (!obj.event.shiftKey && key == 9)) {
 
 						// prev element ( shift+tab, up & left key )
-						} else if ( key === 38 || key === 37 || ( obj.event.shiftKey && key == 9 ) ) {
+						} else if (key === 38 || key === 37 || (obj.event.shiftKey && key == 9)) {
 
 						}
-						console.log("kb!");
 						/*
 						$scope.keys.forEach(function(o) {
 							if(o.code !== obj.event.code) {
