@@ -33,9 +33,9 @@
 
 'use strict';
 
-var angular_multi_select = angular.module( 'angular-multi-select', ['ng'] );
+var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', function ( $sce, $timeout ) {
+angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filter', function ($sce, $timeout, $filter) {
 	return {
 		restrict: 'AE',
 
@@ -61,14 +61,16 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 
 		templateUrl: 'angular-multi-select.htm',
 
-		link: function ( $scope, element, attrs ) {
+		link: function ($scope, element, attrs) {
 
 			/**
 			 * Globally used variables.
 			 */
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
-			$scope.searchInput = { value: '' }; // Won't work if not an object. Why? Fuck me if I know...
+			$scope.searchInput = {
+				value: ''  // Won't work if not an object. Why? Fuck me if I know...
+			};
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -80,7 +82,10 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 			$scope.visible = false;
 			$scope.buttonLabel = '';
+
 			$scope.tickProperty = attrs.tickProperty;
+			$scope.groupProperty = attrs.groupProperty;
+			$scope.itemLabel = attrs.itemLabel;
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -136,49 +141,24 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 			};
 
 			/**
-			 * Backport of Angular 1.4.x's "merge()" method
-			 * @param dst
-			 * @param objs
-			 * @param deep
-			 * @returns {*}
-			 */
-			$scope._baseExtend = function(dst, objs, deep) {
-				var h = dst.$$hashKey;
-
-				for (var i = 0, ii = objs.length; i < ii; ++i) {
-					var obj = objs[i];
-					if (!angular.isObject(obj) && !angular.isFunction(obj)) continue;
-					var keys = Object.keys(obj);
-					for (var j = 0, jj = keys.length; j < jj; j++) {
-						var key = keys[j];
-						var src = obj[key];
-
-						if (deep && angular.isObject(src)) {
-							if (!angular.isObject(dst[key])) dst[key] = angular.isArray(src) ? [] : {};
-							$scope._baseExtend(dst[key], [src], true);
-						} else {
-							dst[key] = src;
-						}
-					}
-				}
-
-				if (h) {
-					dst.$$hashKey = h;
-				} else {
-					delete dst.$$hashKey;
-				}
-				return dst;
-			};
-
-			/**
 			 * Helper function that syncs the changes from modelA to modelB.
 			 * @param dst
+			 * @param src
 			 * @returns {*}
 			 * @private
 			 */
-			$scope._syncModels = function(dst) {
-				var slice = [].slice;
-				return $scope._baseExtend(dst, slice.call(arguments, 1), true);
+			$scope._syncModels = function(dst, src) {
+				$scope._walk(src, attrs.groupProperty, function(item) {
+					$scope._walk(dst, attrs.groupProperty, function(_item) {
+						if(_item[attrs.idProperty] === item[attrs.idProperty]) {
+							//Don't use extend here as it's really expensive and because
+							//the only thing that can change in an item is it's tick state.
+							_item[attrs.tickProperty] = item[attrs.tickProperty];
+						}
+						return true;
+					});
+					return true;
+				});
 			};
 
 			/**
@@ -443,10 +423,12 @@ angular_multi_select.directive( 'angularMultiSelect' , [ '$sce', '$timeout', fun
 				if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
 					return true;
 				}
-				return obj.name.indexOf($scope.searchInput.value) !== -1;
+
+				return obj[attrs.itemLabel].indexOf($scope.searchInput.value) !== -1;
 			};
 
 			$scope.fillShadowModel = function() {
+				console.log("fillShadowModel");
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceIDs($scope._shadowModel);
 				$scope._enforceChecks($scope._shadowModel);
@@ -607,12 +589,12 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
 			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0}'" +
 		">" +
-			"{{ item.name }}" +
+			"{{ item[itemLabel] }}" +
 			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item.sub' ng-include=\"'angular-multi-select-item.htm'\" >" +
+			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" >" +
 
 			"</li>" +
 		"</ul>" +
