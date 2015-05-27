@@ -99,7 +99,7 @@
 	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	min-width:278px;
-	display: none !important;
+	/*display: none !important;*/
 }
 
 /* container of helper elements */
@@ -192,6 +192,18 @@
 	display: block;
 	padding: 8px;
 	overflow: hidden;
+}
+
+.multiSelect .checkBoxContainer ul {
+	padding-left: 40px;
+}
+
+.multiSelect .checkBoxContainer > ul {
+	padding-left: 0px;
+}
+
+.multiSelect .checkBoxContainer li {
+	list-style-type: none;
 }
 
 /* ! to show / hide the checkbox layer above */
