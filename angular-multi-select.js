@@ -42,6 +42,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 		scope: {
 			// models
 			inputModel      : '=',
+			outputModel     : '=',
 
 			// settings based on attribute
 			isDisabled      : '=',
@@ -108,7 +109,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * @private
 			 */
 			$scope._walk = function(obj, key, fn) {
-
 				if(angular.isArray(obj)) {
 					var _objs = [];
 
@@ -464,7 +464,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * When the data in our filtered model changes, we want to do several things:
 			 *
 			 * - update the button label
-			 * - TODO: update our output model
+			 * - update our output model
 			 * - fill the keyboard focus array helper
 			 */
 			$scope.$watch('filteredModel', function(_new) {
@@ -474,6 +474,11 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
 
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
+
+					$scope.outputModel = $scope._walk(angular.copy($scope._shadowModel), attrs.groupProperty, function(_item) {
+						$scope.kbFocus.push(_item[attrs.idProperty]);
+						return $scope._isChecked(_item);
+					});
 
 					$scope.kbFocus = [];
 					if($scope.helperStatus.all === true) {
