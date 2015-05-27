@@ -80,10 +80,12 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				reset   : true,
 				filter  : true
 			};
+			$scope.kbFocus = [];
+			$scope.kbFocusIndex = null;
 			$scope.visible = false;
 			$scope.buttonLabel = '';
-
 			$scope.tickProperty = attrs.tickProperty;
+			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
 			$scope.itemLabel = attrs.itemLabel;
 
@@ -463,6 +465,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 *
 			 * - update the button label
 			 * - TODO: update our output model
+			 * - fill the keyboard focus array helper
 			 */
 			$scope.$watch('filteredModel', function(_new) {
 				if(_new) {
@@ -471,6 +474,25 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
 
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
+
+					$scope.kbFocus = [];
+					if($scope.helperStatus.all === true) {
+						$scope.kbFocus.push("all");
+					}
+					if($scope.helperStatus.none === true) {
+						$scope.kbFocus.push("none");
+					}
+					if($scope.helperStatus.reset === true) {
+						$scope.kbFocus.push("reset");
+					}
+					if($scope.helperStatus.filter === true) {
+						$scope.kbFocus.push("input");
+						$scope.kbFocus.push("clear");
+					}
+					$scope._walk($scope.filteredModel, attrs.groupProperty, function(_item) {
+						$scope.kbFocus.push(_item[attrs.idProperty]);
+						return true;
+					});
 				}
 			}, true);
 
@@ -484,6 +506,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			//Watch for show/hide event
 			$scope.$watch('visible', function(_new, _old) {
 				if(!angular.equals(_new, _old) && _new === true) {
+
+					//Make sure we focus the input when opened
+					$scope.kbFocusIndex = $scope.kbFocus.indexOf("input") || 0;
 
 					//Listen for mouse events
 					$scope.stopListeningMouseEvents = $scope.$on('angular-multi-select-click', function(msg, obj) {
@@ -504,26 +529,37 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					$scope.stopListeningKeyboardEvents = $scope.$on('angular-multi-select-keydown', function(msg, obj) {
 						var key = obj.event.keyCode ? obj.event.keyCode : obj.event.which;
 
-						//ESC should close
 						if(key === 27) {
+							//ESC should close
 							$scope.visible = false;
-							$scope.$apply();
-						// next element ( tab, down & right key )
-						} else if (key === 40 || key === 39 || (!obj.event.shiftKey && key == 9)) {
-
-						// prev element ( shift+tab, up & left key )
-						} else if (key === 38 || key === 37 || (obj.event.shiftKey && key == 9)) {
-
-						}
-						/*
-						$scope.keys.forEach(function(o) {
-							if(o.code !== obj.event.code) {
-								return;
+						} else if(key === 13 || key === 32) {
+							//(Un)select the element
+							var _current = $scope.kbFocus[$scope.kbFocusIndex];
+							if(angular.isNumber(_current)) {
+								$scope._walk($scope.filteredModel, attrs.groupProperty, function(item){
+									if(item[attrs.idProperty] === _current) {
+										$scope.clickItem(item);
+									}
+									return true;
+								});
 							}
-							o.action();
-							$scope.$apply();
-						});
-						*/
+						} else if(key === 40 || key === 39 || (!obj.event.shiftKey && key == 9)) {
+							//Next element ( tab, down & right key )
+							if($scope.kbFocusIndex < $scope.kbFocus.length - 1 ) {
+								$scope.kbFocusIndex++;
+							} else {
+								$scope.kbFocusIndex = 0;
+							}
+						} else if(key === 38 || key === 37 || (obj.event.shiftKey && key == 9)) {
+							//Prev element ( shift+tab, up & left key )
+							if($scope.kbFocusIndex > 0) {
+								$scope.kbFocusIndex--;
+							} else {
+								$scope.kbFocusIndex = $scope.kbFocus.length - 1
+							}
+						}
+
+						$scope.$apply();
 					});
 
 				} else if (!angular.equals(_new, _old) && _new === false){
@@ -603,9 +639,13 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 
 angular_multi_select.directive('setFocus', function($timeout) {
 	return function(scope, element, attrs) {
-		scope.$watch(attrs.setFocus, function(newValue) {
+		scope.$watch(attrs.setFocus, function(_new) {
 			$timeout(function() {
-				newValue && element.focus();
+				if(_new) {
+					element.focus();
+				} else {
+					element.blur();
+				}
 			});
 		},true);
 	};
@@ -614,7 +654,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
-			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0}'" +
+			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'" +
 		">" +
 			"{{ item[itemLabel] }}" +
 			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
@@ -647,25 +687,25 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="_checkAll(filteredModel)" ng-bind-html="lang.selectAll">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="_checkAll(filteredModel)" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="_uncheckAll(filteredModel)" ng-bind-html="lang.selectNone">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="_uncheckAll(filteredModel)" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="helperButton reset"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="fillShadowModel()" ng-bind-html="lang.reset">'+
+							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="fillShadowModel()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
 					// the search box
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							'ng-model="searchInput.value" class="inputFilter" set-focus="visible"'+
+							'ng-model="searchInput.value" class="inputFilter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" >×</button> '+
+						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
 					'</div> '+
 				'</div> '+
 
