@@ -408,7 +408,13 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			//Call this function when an item is clicked
-			$scope.clickItem = function(item) {
+			$scope.clickItem = function(item, resetFocus) {
+				resetFocus = resetFocus || false;
+
+				if(resetFocus) {
+					$scope.kbFocusIndex = null;
+				}
+
 				if(attrs.selectionMode === 'single' && $scope._areAllChecked($scope._shadowModel) !== 0) {
 					if (!(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item))) {
 						$scope._uncheckAll($scope._shadowModel);
@@ -504,6 +510,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			//Watch for search input
 			$scope.$watch('searchInput.value', function(_new, _old) {
 				if(!angular.equals(_new, _old)) {
+					$scope.kbFocusIndex = null;
 					$scope.fillFilteredModel();
 				}
 			});
@@ -550,6 +557,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							}
 						} else if(key === 40 || key === 39 || (!obj.event.shiftKey && key == 9)) {
 							//Next element ( tab, down & right key )
+							if ($scope.kbFocusIndex === null) {
+								$scope.kbFocusIndex = -1;
+							}
+
 							if($scope.kbFocusIndex < $scope.kbFocus.length - 1 ) {
 								$scope.kbFocusIndex++;
 							} else {
@@ -557,6 +568,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							}
 						} else if(key === 38 || key === 37 || (obj.event.shiftKey && key == 9)) {
 							//Prev element ( shift+tab, up & left key )
+							if ($scope.kbFocusIndex === null) {
+								$scope.kbFocusIndex = 1;
+							}
+
 							if($scope.kbFocusIndex > 0) {
 								$scope.kbFocusIndex--;
 							} else {
@@ -658,7 +673,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
-		"<div class='multiSelectItem' ng-click='clickItem(item);' " +
+		"<div class='multiSelectItem' ng-click='clickItem(item, true);' " +
 			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'" +
 		">" +
 			"{{ item[itemLabel] }}" +
