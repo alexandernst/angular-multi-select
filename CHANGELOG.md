@@ -1,3 +1,8 @@
+### v5.0.0
+##### Added / Updated
+- Major rewrite of the project.
+- The input data format has changed, please read docs.
+
 ### v4.0.6
 ##### Added / Updated
 - Ignore more files in the NPM package
