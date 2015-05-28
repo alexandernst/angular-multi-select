@@ -75,11 +75,14 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
+			var _shadow_helperElements = attrs.helperElements || "";
+			attrs.helperElements += _shadow_helperElements === "" ? "reset " : "";
+			attrs.helperElements += _shadow_helperElements === "" ? "filter " : "";
 			$scope.helperStatus     = {
-				all     : attrs.selectionMode === "multi",
-				none    : attrs.selectionMode === "multi",
-				reset   : true,
-				filter  : true
+				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) !== -1,
+				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) !== -1
 			};
 			$scope.kbFocus = [];
 			$scope.kbFocusIndex = null;
