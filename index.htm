@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 
-<html lang="en" ng-app="myApp" id="myApp">
+<html lang="en" ng-app="myApp" id="myApp" angular-multi-select-mouse-trap angular-multi-select-key-trap>
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">    
 
-    <title>AngularJs MultiSelect</title>
+    <title>AngularJs Multi Select</title>
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/simple-sidebar.css" >
     <link rel="stylesheet" href="css/style.css">   
     <link rel="stylesheet" href="highlight/styles/github.css">
-    <link rel="stylesheet" href="css/isteven-multi-select.css">                        
+    <link rel="stylesheet" href="css/angular-multi-select.css">                        
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">    
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:400,900|Roboto+Slab:400,700' type='text/css'>    
@@ -30,7 +30,8 @@
     <script src="highlight/highlight.pack.js"></script>
     <script src="js/libs/angular.min.js"></script>      
     <script src="js/libs/angular-route.min.js"></script>
-    <script src="js/libs/isteven-multi-select.js"></script>  
+    <script src="js/libs/angular-filter.min.js"></script>
+    <script src="js/libs/angular-multi-select.js"></script>  
     <script src="js/libs/paypal-button.min.js"></script>      
 
     <script src="js/app.js"></script>   
@@ -61,7 +62,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand border-bottom">                    
                     <a href="#/main">
-                        <h5>AngularJs MultiSelect &nbsp;&nbsp;<span class="fa fa-home"></span></h5>
+                        <h5>AngularJs Multi Select &nbsp;&nbsp;<span class="fa fa-home"></span></h5>
                     </a>
                 </li>
                 <li>
@@ -131,15 +132,15 @@
         <div id="page-content-wrapper">               
             <div class="container-fluid removePadding" ng-view></div>
             <div class="pull-right githubButtons">
-                <a href="https://github.com/isteven/angular-multi-select" target="_blank" class="download" onclick="ga( 'send', 'event', 'button', 'click' );">
+                <a href="https://github.com/alexandernst/angular-multi-select" target="_blank" class="download" onclick="ga( 'send', 'event', 'button', 'click' );">
                     <span class="fa fa-github fa-lg">
                     </span>
                     &nbsp; View on Github
                 </a>
                 &nbsp;
-                <iframe src="https://ghbtns.com/github-btn.html?user=isteven&repo=angular-multi-select&type=star&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>
-                <iframe src="https://ghbtns.com/github-btn.html?user=isteven&repo=angular-multi-select&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>        
-                <iframe src="https://ghbtns.com/github-btn.html?user=isteven&repo=angular-multi-select&type=watch&count=true&v=2" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>            
+                <iframe src="https://ghbtns.com/github-btn.html?user=alexandernst&repo=angular-multi-select&type=star&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>
+                <iframe src="https://ghbtns.com/github-btn.html?user=alexandernst&repo=angular-multi-select&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>        
+                <iframe src="https://ghbtns.com/github-btn.html?user=alexandernst&repo=angular-multi-select&type=watch&count=true&v=2" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="21"></iframe>            
             </div>
         </div>        
 

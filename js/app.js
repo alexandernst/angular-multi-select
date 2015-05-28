@@ -2,7 +2,8 @@
 
 var myApp = angular.module( 'myApp' , [ 
     'ngRoute',
-    'isteven-multi-select'
+    'angular.filter',
+    'angular-multi-select'
 ])
 .config([ '$routeProvider', function( $routeProvider ) {          
 
