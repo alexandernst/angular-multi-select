@@ -1,0 +1,11 @@
+.git
+.gitignore
+/doc
+/libs
+CHANGELOG.md
+compiler.jar
+LICENSE.txt
+minify.sh
+package.json
+README.md
+screenshot.png
