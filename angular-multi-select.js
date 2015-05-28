@@ -35,7 +35,7 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filter', function ($sce, $timeout, $filter) {
+angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filter', '$interpolate', function ($sce, $timeout, $filter, $interpolate) {
 	return {
 		restrict: 'AE',
 
@@ -248,6 +248,40 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				});
 
 				return _nodes;
+			};
+
+			/**
+			 * Helper function to draw each item's label
+			 * @param item
+			 * @param fmt
+			 * @returns {*}
+			 * @private
+			 */
+			$scope._createLabel = function(item) {
+
+				var _fmt = attrs.itemLabel;
+
+				//TODO: It would be nicer to make this "the Angular way"
+				//http://stackoverflow.com/questions/30503000/
+				/*
+				var _s = $interpolate.startSymbol();
+				var _e = $interpolate.endSymbol();
+
+				$interpolate.startSymbol("{|");
+				$interpolate.endSymbol("|}");
+				*/
+
+				_fmt = _fmt.replace(/\{\|/g, "{{");
+				_fmt = _fmt.replace(/\|\}/g, "}}");
+
+				var _interpolated = $interpolate(_fmt)(item);
+
+				/*
+				$interpolate.startSymbol(_s);
+				$interpolate.endSymbol(_e);
+				*/
+
+				return $sce.trustAsHtml(_interpolated);
 			};
 
 			/**
@@ -673,17 +707,13 @@ angular_multi_select.directive('setFocus', function($timeout) {
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
-		"<div class='multiSelectItem' ng-click='clickItem(item, true);' " +
-			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'" +
-		">" +
-			"{{ item[itemLabel] }}" +
-			'<span class="tickMark" ng-if="item[tickProperty] === true" ng-bind-html="icon.tickMark"></span>'+
+		"<div class='multiSelectItem' ng-click='clickItem(item, true);' ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
+			"<div ng-bind-html='_createLabel(item)'></div>" +
+			"<span class='tickMark' ng-if='item[tickProperty] === true' ng-bind-html='icon.tickMark'></span>"+
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" >" +
-
-			"</li>" +
+			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" ></li>" +
 		"</ul>" +
 		"";
 	$templateCache.put('angular-multi-select-item.htm', template);
@@ -693,12 +723,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
-			'<button id="{{directiveId}}" type="button"' +
-				'ng-click="visible = !visible"' +
-				'ng-bind-html="buttonLabel"' +
-				'ng-disabled="disable-button"' +
-			'>' +
-			'</button>' +
+			'<button type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
 			// overlay layer
 			'<div class="checkboxLayer" ng-show="visible">' +
 				// container of the helper elements
