@@ -639,10 +639,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/////////////////////////////// OLD CODE STARTS FROM HERE
 			$scope.lang             = {};
 
-			// attrs to $scope - attrs-$scope - attrs - $scope
-			// Copy some properties that will be used on the template. They need to be in the $scope.
-			$scope.directiveId      = attrs.directiveId;
-
 			// set max-height property if provided
 			if ( typeof attrs.maxHeight !== 'undefined' ) {
 				var layer = element.children().children().children()[0];
