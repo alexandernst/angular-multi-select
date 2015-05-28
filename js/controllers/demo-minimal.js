@@ -1,4 +1,4 @@
-myApp.controller( 'demoMinimum' , [ '$scope' , function ($scope) {               
+myApp.controller( 'demoMinimal' , [ '$scope' , function ($scope) {               
 	
 	$scope.modernBrowsers = [
 	{

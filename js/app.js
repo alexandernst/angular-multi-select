@@ -9,7 +9,7 @@ var myApp = angular.module( 'myApp' , [
 
     $routeProvider.when( '/main' , {
         templateUrl: 'views/main.htm', 
-        controller: 'demoMinimum'
+        controller: 'demoMinimal'
     });
 
     $routeProvider.when( '/getting-started' , {
@@ -25,19 +25,9 @@ var myApp = angular.module( 'myApp' , [
         controller: 'demoMinimum'
     });        
 
-    $routeProvider.when( '/demo-horizontal-layout' , {
-        templateUrl: 'views/demo-horizontal-layout.htm', 
-        controller: 'demoHorizontalLayout'
-    });        
-
     $routeProvider.when( '/demo-dynamic-update' , {
         templateUrl: 'views/demo-dynamic-update.htm', 
         controller: 'demoDynamicUpdate'
-    });        
-
-    $routeProvider.when( '/demo-disabling-enabling' , {
-        templateUrl: 'views/demo-disabling-enabling.htm', 
-        controller: 'demoDisablingEnabling'
     });        
 
     $routeProvider.when( '/demo-grouping' , {
