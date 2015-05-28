@@ -35,30 +35,43 @@
     </div>
 </div>
 -->
-    <p>Below are the available attributes to configure the multi-select directive. The first 5 are required.</p>    
+    <p>Below are the available attributes to configure the multi-select directive.</p>    
     <span class="configData">                
         <h5>input-model</h5> <span class="label label-primary">required</span>
         <p>
-            This is the data you pass into the directive. You can programatically do changes 
-            and the directive will refresh accordingly. For example; to reset programmatically, you can iterate over
-            this input-model and set <code>selected = false</code>. If, for any reason, you want to reset it, set it into an empty array.
-            Don't set it to null or other types.
+            This is the data you pass to the directive. A future release will be able to
+            handle changes in the data on-the-fly.
         </p>
         <p>
-            <span class="inlineTitle">Type</span>: $scope variable. Array of objects. <br />
-            <span class="inlineTitle">Default value</span>: N/A        <br />
+            <span class="inlineTitle">Type</span>: Array of objects. <br />
+            <span class="inlineTitle">Default value</span>: [] <br />
             <span class="inlineTitle">Example</span>:   <br />
-            In your view: <code>&lt;div isteven-multi-select ... input-model="inputList"&gt;&lt;/div&gt;</code>.
+            In your view: <code>&lt;div angular-multi-select ... input-model="inputList"&gt;&lt;/div&gt;</code>.
             <br />
             In your controller:
         </p>
         <pre><code>$scope.inputList = [
-    { firstName: "Peter",    lastName: "Parker",     pic: "&lt;img src='[...]/peter.png  /&gt;",   selected: false },
-    { firstName: "Mary",     lastName: "Jane",       pic: "&lt;img src='[...]/mary.png   /&gt;",   selected: false },
-    { firstName: "Bruce",    lastName: "Wayne",      pic: "&lt;img src='[...]/bruce.png  /&gt;",   selected: true  },
-    { firstName: "David",    lastName: "Banner",     pic: "&lt;img src='[...]/david.png  /&gt;",   selected: false },
-    { firstName: "Natalia",  lastName: "Romanova",   pic: "&lt;img src='[...]/nat.png    /&gt;",   selected: false },
-    { firstName: "Clark",    lastName: "Kent",       pic: "&lt;img src='[...]/clark.png  /&gt;",   selected: true  }
+	{
+		icon: '&lt;img  src="...chrome.png" /&gt;',
+		name: "Chrome"
+	},
+	{
+		icon: '&lt;img  src="...safari_browser.png" /&gt;',
+		name: "Safari"
+	},
+	{
+		icon: '&lt;img  src="...firefox-icon.png" /&gt;',
+		name: "Firefox"
+	},
+	{
+		icon: '&lt;img  src="...chromium.png" /&gt;',
+		name: "Chromium"
+	},
+	{
+		icon: '&lt;img  src="...opera.png" /&gt;',
+		name: "Opera",
+		checked: true
+	}
 ];</code></pre>
         <p>
             <span class="inlineTitle">Note</span>:
@@ -67,141 +80,45 @@
             BUTTON and INPUT tags to prevent conflicts.
         </p>
         
-        <h5>output-model</h5> <span class="label label-primary">required</span>
+        <h5>output-model</h5>
         <p>
-            Will list all the selected items. If you enable grouping, this WILL NOT include the group headers.
-            Also, this model is OUTPUT ONLY. If you want to programmatically change things, do it in the INPUT-MODEL.
+            Will list all the selected items. If you enable grouping, you'll get the exact same structure as the one you
+            providad for the input model, just filtered to "checked-only" items.
         </p>
         <p>
-            <span class="inlineTitle">Type</span>: $scope variable. Array of objects. <br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Type</span>: Array of objects. <br />
+            <span class="inlineTitle">Default value</span>: [] <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
         </p>        
 
-        <h5>button-label</h5> <span class="label label-primary">required</span>
-        <p>
-            input-model properties that you want to display on the button. 
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String. Separate multiple values by space.<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... button-label="pic firstName"&gt;&lt;/div&gt;</code>
-        </p>
-            
         <h5>item-label</h5> <span class="label label-primary">required</span>
         <p>
-            input-model properties that you use as item label. 
+            input-model properties that you want to display on each item. You should use an AngularJS-like delimiters: <code>{|</code> and <code>|}</code>
         </p>
         <p>
-            <span class="inlineTitle">Type</span>: String. Separate multiple values by space.<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>>&lt;div isteven-multi-select ... item-label="firstName lastName"&gt;&lt;/div&gt;</code>
-        <p>        
+            <span class="inlineTitle">Type</span>: String. <br />
+            <span class="inlineTitle">Default value</span>: "" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label="{| icon |} {| name |}"&gt;&lt;/div&gt;</code>
+        </p>
 
         <h5>tick-property</h5> <span class="label label-primary">required</span>
         <p>
-            input-model property with a boolean value that represents whether a checkbox is ticked or not. 
+            input-model property (of each item) with a boolean value that represents whether the item is ticked or not. 
         </p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: 
-        </p>        
-        <ul>
-            <li>
-                If <code>&lt;div isteven-multi-select ... tick-property="selected"&gt;&lt;/div&gt;</code>, then:
-                <ul>
-                    <li>selected === true, item is selected. </li>
-                    <li>selected === false, item is not selected.</li>
-                </ul>
-            </li>
-            <li>
-                If <code>>&lt;div isteven-multi-select ... tick-property="isOn"&gt;&lt;/div&gt;</code>, then:
-                <ul>
-                    <li>isOn === true, item is selected. </li>
-                    <li>isOn === false, item is not selected.</li>
-                </ul>
-            </li>
-        </ul>
-            
-        <h5>disable-property</h5>
-        <p>
-            Input-model property with a boolean value that represent whether an item is disabled or enabled. 
-            This gives you granular control over each checkbox, and it has higher priority over the "is-disabled" attribute explained later.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: 
-        </p>     
-        <ul>
-            <li>
-                If <code>&lt;div isteven-multi-select ... disable-property="thisItemIsDisabled"&gt;&lt;/div&gt;</code>, then:
-                <ul>
-                    <li>thisItemIsDisabled === true, item is disabled. </li>
-                    <li>thisItemIsDisabled === false, item is enabled.</li>
-                </ul>
-            </li>
-        </ul>                
-            
-        <h5>orientation</h5>
-        <p>Orientation of the item list.</p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Available values</span>: "vertical" | "horizontal"<br />
-            <span class="inlineTitle">Default value</span>: "vertical"<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... orientation="vertical"&gt;&lt;/div&gt;</code>.
-        </p>  
+            <span class="inlineTitle">Default value</span>: "" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
+        </p> 
         
         <h5>selection-mode</h5>
-        <p>Single or multiple selection. If not specified, the default will be "multiple".</p>
+        <p>Single or multiple selection mode. If not specified, the default will be "multiple".</p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Available values</span>: "single" | "multiple"<br />            
-            <span class="inlineTitle">Default value</span>: "multiple"<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
-        </p>  
-        
-                                   
-        <h5>max-labels</h5>
-        <p>
-            Maximum number of items that will be displayed in the dropdown button. If not specified, will display all selected items. 
+            <span class="inlineTitle">Available values</span>: "single" | "multi"<br />            
+            <span class="inlineTitle">Default value</span>: "multi"<br />            
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
         </p>
-        <p>
-            <span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "2", or "3" )<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: 
-            With the input-model above, 
-        </p>          
-        <ul>
-            <li><code>max-labels="1"</code> will display: "Bruce Wayne, ... (2)" on the button.</li>
-            <li><code>max-labels="0"</code> will display: "(2)" on the button.</li>
-        </ul>
-            
-        <h5>is-disabled</h5>
-        <p>
-            Will disable or enable all checkboxes except stated otherwise in "disable-property" above.
-            It's similar with ng-disabled, visit <a href="http://docs.angularjs.org/api/ng/directive/ngDisabled">http://docs.angularjs.org/api/ng/directive/ngDisabled</a> 
-            to learn more.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope boolean expression, or string ( "true" or "false" )<br />
-            <span class="inlineTitle">Default value</span>: false or "false"<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... is-disabled="true"&gt;&lt;/div&gt;</code>.    
-        </p>
-            
-        <h5>directive-id</h5>
-        <p>
-            Name or id for your directive, to be attached to a <code>span</code> element (parent of the button elemnet).
-            Useful if you want to debug from within the directive code and you use more than one directive in one page. 
-            Example (from within the multi-select.js): <code>console.log( 'Currently active multi-select: ' + $scope.directiveId );</code>
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... directive-id="hello1"&gt;&lt;/div&gt;</code>.  
-        </p>
-        
             
         <h5>helper-elements</h5>
         <p>
@@ -209,17 +126,16 @@
         </p>
         <p>        
             <span class="inlineTitle">Type</span>: String. Separate multiple values with space. Order of values does not matter.<br />
-            <span class="inlineTitle">Available values</span>: Combinations of "all", "none", "reset", "filter", or empty string<br />            
-            <span class="inlineTitle">Default value</span>: N/A<br />            
+            <span class="inlineTitle">Available values</span>: Combinations of "all", "noall", "none", "nonone", "reset", "noreset", "filter", "nofilter" or empty string<br />            
+            <span class="inlineTitle">Default value</span>: "reset filter" in single mode, "all none reset filter" in multi mode<br />
             <span class="inlineTitle">Example</span>:  
             <ul>
                 <li>
-                    Display "Select All" button and the filter box: <code>&lt;div isteven-multi-select ... helper-elements="all filter"&gt;&lt;/div&gt;</code>
+                    Display "Select All" button and the filter box: <code>&lt;div angular-multi-select ... helper-elements="all filter"&gt;&lt;/div&gt;</code>
                 </li>
                 <li>
-                    Display none: empty string. <code>&lt;div isteven-multi-select ... helper-elements=""&gt;&lt;/div&gt;</code>. 
+                    Display none: a string with random character(s). <code>&lt;div angular-multi-select ... helper-elements="xyz"&gt;&lt;/div&gt;</code>. 
                 </li>
-                <li>If not specified, by default will display all.</li>
             </ul>    
         </p>
                         
