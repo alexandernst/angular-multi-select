@@ -501,7 +501,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * @private
 			 */
 			$scope._filter = function(obj) {
-				if(attrs.searchProperty === "" || $scope.searchInput.value === undefined || $scope.searchInput.value === "" || $scope.searchInput.value.length < attrs.minSearchLength) {
+				if(attrs.searchProperty === "" || $scope.searchInput.value === undefined || $scope.searchInput.value === "") {
 					return true;
 				}
 
@@ -577,8 +577,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			//Watch for search input
 			$scope.$watch('searchInput.value', function(_new, _old) {
 				if(!angular.equals(_new, _old)) {
-					$scope.kbFocusIndex = null;
-					$scope.fillFilteredModel();
+					if(_new.length > attrs.minSearchLength || (_new.length < _old.length && _old.length >= 0) ) {
+						$scope.kbFocusIndex = null;
+						$scope.fillFilteredModel();
+					}
 				}
 			});
 
@@ -607,6 +609,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					//Listen for keyboard events
 					$scope.stopListeningKeyboardEvents = $scope.$on('angular-multi-select-keydown', function(msg, obj) {
 						var key = obj.event.keyCode ? obj.event.keyCode : obj.event.which;
+						var _current_index = $scope.kbFocusIndex;
+						var _refocus_input = false;
 
 						if(key === 27) {
 							//ESC should close
@@ -644,9 +648,16 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							} else {
 								$scope.kbFocusIndex = $scope.kbFocus.length - 1
 							}
+						} else {
+							_refocus_input = true;
 						}
 
 						$scope.$apply();
+						if(_refocus_input === true) {
+							$timeout(function() {
+								$scope.kbFocusIndex = _current_index;
+							}, 0);
+						}
 					});
 
 				} else if (!angular.equals(_new, _old) && _new === false){
