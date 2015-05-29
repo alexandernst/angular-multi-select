@@ -20,12 +20,6 @@
 	box-sizing: content-box;
 }
 
-/* ! create a "column" */
-.multiSelect .acol {
-	display: inline-block;
-	min-width: 12px;
-}
-
 /* ! */
 .multiSelect .inlineBlock {
 	display: inline-block;
@@ -191,7 +185,8 @@
 .multiSelect .checkBoxContainer {
 	display: block;
 	padding: 8px;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .multiSelect .checkBoxContainer ul {
@@ -204,11 +199,6 @@
 
 .multiSelect .checkBoxContainer li {
 	list-style-type: none;
-}
-
-/* ! to show / hide the checkbox layer above */
-.multiSelect .show {
-	display: block !important;
 }
 
 /* item labels */
@@ -237,14 +227,6 @@
 	border-top: 1px solid #e4e4e4;
 	border-left: 1px solid #e4e4e4;
 	border-right: 1px solid #d9d9d9;
-}
-
-.multiSelect .multiSelectItem .acol label {
-	display: inline-block;
-	padding-right: 30px;
-	margin: 0px;
-	font-weight: normal;
-	line-height: normal;
 }
 
 /* item labels focus on mouse hover */
