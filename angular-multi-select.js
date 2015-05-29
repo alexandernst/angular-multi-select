@@ -74,7 +74,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
-			attrs.minSearchLength = parseInt(attrs.minSearchLength) || 3;
+			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
 
 			$scope.icon = {
 				selectAll: '&#10003;',
@@ -126,9 +126,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * that will be included (that is, it will be filtered only if
 			 * `fn` returned `false` for all nested objects of the current
 			 * object).
-			 * @param obj
-			 * @param key
-			 * @param fn (obj)
+			 * @param {Object|Array} obj
+			 * @param {String} key
+			 * @param {function(Object)} fn
 			 * @returns {*}
 			 * @private
 			 */
@@ -168,9 +168,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function that syncs the changes from modelA to modelB.
-			 * @param dst
-			 * @param src
-			 * @returns {*}
+			 * @param {Array} dst
+			 * @param {Array} src
 			 * @private
 			 */
 			$scope._syncModels = function(dst, src) {
@@ -190,6 +189,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that will ensure that all items
 			 * have an unique ID.
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._enforceIDs = function(model) {
@@ -206,9 +206,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function used to get the parent of an item.
-			 * @param model
-			 * @param item
-			 * @returns {*}
+			 * @param {Array} model
+			 * @param {Object} item
+			 * @returns {Object}
 			 * @private
 			 */
 			$scope._getParent = function(model, item) {
@@ -237,7 +237,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function that returns all the leafs of a model.
-			 * @param model
+			 * @param {Array} model
 			 * @returns {Array}
 			 * @private
 			 */
@@ -257,7 +257,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that returns all the nodes of a model,
 			 * that is, all the items that have children.
-			 * @param model
+			 * @param {Array} model
 			 * @returns {Array}
 			 * @private
 			 */
@@ -276,8 +276,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to draw each item's label
-			 * @param item
-			 * @returns {*}
+			 * @param {Object} item
+			 * @returns {String}
 			 * @private
 			 */
 			$scope._createLabel = function(item) {
@@ -313,8 +313,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * the function will return 1 if the item contains any number
 			 * of children, without traversing all of them.
 			 *
-			 * @param item
-			 * @param recursive
+			 * @param {Object} item
+			 * @param {boolean=} recursive
 			 * @returns {number}
 			 * @private
 			 */
@@ -343,7 +343,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that checks if a single element
 			 * is checked.
-			 * @param item
+			 * @param {Object} item
 			 * @returns {boolean}
 			 * @private
 			 */
@@ -360,7 +360,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 *
 			 * Note that this function won't count as checked the items that
 			 * have children, no matter how many of their children are checked.
-			 * @param item
+			 * @param {Array|Object} item
 			 * @returns {number}
 			 * @private
 			 */
@@ -388,6 +388,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 *   that is not the case, all items will be unchecked.
 			 * - if all children of an item are checked, the item itself is
 			 *   checked (and vice versa).
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._enforceChecks = function(model) {
@@ -425,7 +426,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * and the item itself will be set to true. If all
 			 * children are checked, then they, and the item itself,
 			 * will be unchecked.
-			 * @param item
+			 * @param {Object} item
 			 * @private
 			 */
 			$scope._flipCheck = function(item) {
@@ -443,6 +444,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to uncheck all items
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._uncheckAll = function(model) {
@@ -454,7 +456,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to check all items
-			 * @param model
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._checkAll = function(model) {
@@ -464,11 +466,13 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				});
 			};
 
-			//Call this function when an item is clicked
+			/**
+			 * Call this function when an item is clicked
+			 * @param {Object} item
+			 * @param {boolean=} resetFocus
+			 */
 			$scope.clickItem = function(item, resetFocus) {
-				resetFocus = resetFocus || false;
-
-				if(resetFocus) {
+				if(resetFocus === true) {
 					$scope.kbFocusIndex = null;
 				}
 
@@ -490,6 +494,12 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}, 0);
 			};
 
+			/**
+			 * Returns true if [attrs.searchProperty} matches the search input field (latinized, fuzzy match);
+			 * @param {Object} obj
+			 * @returns {boolean}
+			 * @private
+			 */
 			$scope._filter = function(obj) {
 				if(attrs.searchProperty === "" || $scope.searchInput.value === undefined || $scope.searchInput.value === "" || $scope.searchInput.value.length < attrs.minSearchLength) {
 					return true;
