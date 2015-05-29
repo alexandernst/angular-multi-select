@@ -64,9 +64,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 		link: function ($scope, element, attrs) {
 
-			/**
-			 * Globally used variables.
-			 */
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
 			$scope.searchInput = {
@@ -75,12 +72,39 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
-			$scope.helperStatus     = {
-				all     : attrs.selectionMode === "multi",
-				none    : attrs.selectionMode === "multi",
-				reset   : true,
-				filter  : true
+			attrs.helperElements = attrs.helperElements || "reset filter";
+			attrs.searchProperty = attrs.searchProperty || "";
+			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
+
+			$scope.icon = {
+				selectAll: '&#10003;',
+				selectNone: '&times;',
+				reset: '&#8630;',
+				tickMark: $sce.trustAsHtml('&#10003;')
 			};
+
+			$scope._trans = {
+				selectAll: "Select all",
+				selectNone: "Select none",
+				reset: "Reset",
+				search: "Search..."
+			};
+			angular.extend($scope._trans, $scope.translation);
+
+			$scope.lang = {
+				selectAll: $sce.trustAsHtml($scope.icon.selectAll + '&nbsp;&nbsp;' + $scope._trans.selectAll),
+				selectNone: $sce.trustAsHtml($scope.icon.selectNone + '&nbsp;&nbsp;' + $scope._trans.selectNone),
+				reset: $sce.trustAsHtml($scope.icon.reset + '&nbsp;&nbsp;' + $scope._trans.reset),
+				search: $scope._trans.search
+			};
+
+			$scope.helperStatus     = {
+				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
+				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
+			};
+
 			$scope.kbFocus = [];
 			$scope.kbFocusIndex = null;
 			$scope.visible = false;
@@ -102,9 +126,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * that will be included (that is, it will be filtered only if
 			 * `fn` returned `false` for all nested objects of the current
 			 * object).
-			 * @param obj
-			 * @param key
-			 * @param fn (obj)
+			 * @param {Object|Array} obj
+			 * @param {String} key
+			 * @param {function(Object)} fn
 			 * @returns {*}
 			 * @private
 			 */
@@ -144,9 +168,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function that syncs the changes from modelA to modelB.
-			 * @param dst
-			 * @param src
-			 * @returns {*}
+			 * @param {Array} dst
+			 * @param {Array} src
 			 * @private
 			 */
 			$scope._syncModels = function(dst, src) {
@@ -166,6 +189,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that will ensure that all items
 			 * have an unique ID.
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._enforceIDs = function(model) {
@@ -182,9 +206,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function used to get the parent of an item.
-			 * @param model
-			 * @param item
-			 * @returns {*}
+			 * @param {Array} model
+			 * @param {Object} item
+			 * @returns {Object}
 			 * @private
 			 */
 			$scope._getParent = function(model, item) {
@@ -213,7 +237,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function that returns all the leafs of a model.
-			 * @param model
+			 * @param {Array} model
 			 * @returns {Array}
 			 * @private
 			 */
@@ -233,7 +257,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that returns all the nodes of a model,
 			 * that is, all the items that have children.
-			 * @param model
+			 * @param {Array} model
 			 * @returns {Array}
 			 * @private
 			 */
@@ -252,9 +276,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to draw each item's label
-			 * @param item
-			 * @param fmt
-			 * @returns {*}
+			 * @param {Object} item
+			 * @returns {String}
 			 * @private
 			 */
 			$scope._createLabel = function(item) {
@@ -290,8 +313,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * the function will return 1 if the item contains any number
 			 * of children, without traversing all of them.
 			 *
-			 * @param item
-			 * @param recursive
+			 * @param {Object} item
+			 * @param {boolean=} recursive
 			 * @returns {number}
 			 * @private
 			 */
@@ -320,7 +343,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function that checks if a single element
 			 * is checked.
-			 * @param item
+			 * @param {Object} item
 			 * @returns {boolean}
 			 * @private
 			 */
@@ -337,7 +360,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 *
 			 * Note that this function won't count as checked the items that
 			 * have children, no matter how many of their children are checked.
-			 * @param item
+			 * @param {Array|Object} item
 			 * @returns {number}
 			 * @private
 			 */
@@ -365,6 +388,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 *   that is not the case, all items will be unchecked.
 			 * - if all children of an item are checked, the item itself is
 			 *   checked (and vice versa).
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._enforceChecks = function(model) {
@@ -402,7 +426,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * and the item itself will be set to true. If all
 			 * children are checked, then they, and the item itself,
 			 * will be unchecked.
-			 * @param item
+			 * @param {Object} item
 			 * @private
 			 */
 			$scope._flipCheck = function(item) {
@@ -420,6 +444,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to uncheck all items
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._uncheckAll = function(model) {
@@ -431,7 +456,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 			/**
 			 * Helper function to check all items
-			 * @param model
+			 * @param {Array} model
 			 * @private
 			 */
 			$scope._checkAll = function(model) {
@@ -441,11 +466,13 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				});
 			};
 
-			//Call this function when an item is clicked
+			/**
+			 * Call this function when an item is clicked
+			 * @param {Object} item
+			 * @param {boolean=} resetFocus
+			 */
 			$scope.clickItem = function(item, resetFocus) {
-				resetFocus = resetFocus || false;
-
-				if(resetFocus) {
+				if(resetFocus === true) {
 					$scope.kbFocusIndex = null;
 				}
 
@@ -467,8 +494,14 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}, 0);
 			};
 
+			/**
+			 * Returns true if [attrs.searchProperty} matches the search input field (latinized, fuzzy match);
+			 * @param {Object} obj
+			 * @returns {boolean}
+			 * @private
+			 */
 			$scope._filter = function(obj) {
-				if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
+				if(attrs.searchProperty === "" || $scope.searchInput.value === undefined || $scope.searchInput.value === "" || $scope.searchInput.value.length < attrs.minSearchLength) {
 					return true;
 				}
 
@@ -478,12 +511,12 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				 * implemented so we can refactor this a little bit.
 				 */
 				var tmp_obj = angular.extend({}, obj);
-				tmp_obj[attrs.itemLabel] = $filter('latinize')(tmp_obj[attrs.itemLabel]);
+				tmp_obj[attrs.searchProperty] = $filter('latinize')(tmp_obj[attrs.searchProperty]);
 
 				var fltr = $scope.searchInput.value;
 				fltr = $filter('latinize')(fltr);
 
-				var match = $filter('fuzzyBy')([tmp_obj], attrs.itemLabel, fltr);
+				var match = $filter('fuzzyBy')([tmp_obj], attrs.searchProperty, fltr);
 				return match.length > 0;
 			};
 
@@ -628,49 +661,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}
 			});
 
-
-			//RUN
 			$scope.fillShadowModel();
-
-
-			/////////////////////////////// OLD CODE STARTS FROM HERE
-			$scope.lang             = {};
-
-			// attrs to $scope - attrs-$scope - attrs - $scope
-			// Copy some properties that will be used on the template. They need to be in the $scope.
-			$scope.directiveId      = attrs.directiveId;
-
-			// set max-height property if provided
-			if ( typeof attrs.maxHeight !== 'undefined' ) {
-				var layer = element.children().children().children()[0];
-				angular.element( layer ).attr( "style", "height:" + attrs.maxHeight + "; overflow-y:scroll;" );
-			}
-
-			// helper button icons.. I guess you can use html tag here if you want to.
-			$scope.icon        = {};
-			$scope.icon.selectAll  = '&#10003;';    // a tick icon
-			$scope.icon.selectNone = '&times;';     // x icon
-			$scope.icon.reset      = '&#8630;';     // undo icon
-			// this one is for the selected items
-			$scope.icon.tickMark   = '&#10003;';    // a tick icon
-
-			// configurable button labels
-			if ( typeof attrs.translation !== 'undefined' ) {
-				$scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;' + $scope.translation.selectAll );
-				$scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;' + $scope.translation.selectNone );
-				$scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;' + $scope.translation.reset );
-				$scope.lang.search          = $scope.translation.search;
-				$scope.lang.nothingSelected = $sce.trustAsHtml( $scope.translation.nothingSelected );
-			} else {
-				$scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;Select All' );
-				$scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;Select None' );
-				$scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;Reset' );
-				$scope.lang.search          = 'Search...';
-				$scope.lang.nothingSelected = 'None Selected';
-			}
-			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
-
-
 		}
 	}
 }]);
@@ -693,6 +684,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 
 angular_multi_select.directive('setFocus', function($timeout) {
 	return function(scope, element, attrs) {
+		attrs.setFocus = attrs.setFocus || false;
 		scope.$watch(attrs.setFocus, function(_new) {
 			$timeout(function() {
 				if(_new) {
@@ -707,17 +699,13 @@ angular_multi_select.directive('setFocus', function($timeout) {
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
-		"<div class='multiSelectItem' ng-click='clickItem(item, true);' " +
-			"ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'" +
-		">" +
+		"<div class='multiSelectItem' ng-click='clickItem(item, true);' ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createLabel(item)'></div>" +
 			"<span class='tickMark' ng-if='item[tickProperty] === true' ng-bind-html='icon.tickMark'></span>"+
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" >" +
-
-			"</li>" +
+			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" ></li>" +
 		"</ul>" +
 		"";
 	$templateCache.put('angular-multi-select-item.htm', template);
@@ -727,12 +715,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
-			'<button id="{{directiveId}}" type="button"' +
-				'ng-click="visible = !visible"' +
-				'ng-bind-html="buttonLabel"' +
-				'ng-disabled="disable-button"' +
-			'>' +
-			'</button>' +
+			'<button type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
 			// overlay layer
 			'<div class="checkboxLayer" ng-show="visible">' +
 				// container of the helper elements
