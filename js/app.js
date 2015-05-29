@@ -24,12 +24,12 @@ var myApp = angular.module( 'myApp' , [
         templateUrl: 'views/demo-minimum.htm', 
         controller: 'demoMinimum'
     });        
-
+/*
     $routeProvider.when( '/demo-dynamic-update' , {
         templateUrl: 'views/demo-dynamic-update.htm', 
         controller: 'demoDynamicUpdate'
     });        
-
+*/
     $routeProvider.when( '/demo-grouping' , {
         templateUrl: 'views/demo-grouping.htm', 
         controller: 'demoGrouping'
@@ -42,7 +42,7 @@ var myApp = angular.module( 'myApp' , [
 
     $routeProvider.when( '/demo-helper-elements' , {
         templateUrl: 'views/demo-helper-elements.htm', 
-        controller: 'demoMinimum'
+        controller: 'demoMinimal'
     });            
 
     $routeProvider.when( '/demo-callbacks' , {
