@@ -65,18 +65,10 @@ var myApp = angular.module( 'myApp' , [
 
     $routeProvider.when( '/breaking-changes' , {
         templateUrl: 'views/breaking-changes.htm'
-    });    
-    
-    $routeProvider.when( '/faq' , {
-        templateUrl: 'views/faq.htm'
     });
     
     $routeProvider.when( '/mit-license' , {
         templateUrl: 'views/mit-license.htm'
-    });
-
-    $routeProvider.when( '/other-cool-stuffs' , {
-        templateUrl: 'views/other-cool-stuffs.htm'
     });
     
 
