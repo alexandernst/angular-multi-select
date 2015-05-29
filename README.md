@@ -5,7 +5,7 @@ Doesn't require jQuery and works well with other Javascript libraries.
 ![Screenshot](https://raw.githubusercontent.com/alexandernst/angular-multi-select/master/screenshot.png)
 
 ### Demo & How To
-Go to http://isteven.github.io/angular-multi-select
+Go to http://alexandernst.github.io/angular-multi-select
 
 ### Current Version
 5.0.0
