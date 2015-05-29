@@ -64,9 +64,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 		link: function ($scope, element, attrs) {
 
-			/**
-			 * Globally used variables.
-			 */
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
 			$scope.searchInput = {
@@ -75,15 +72,39 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
-			var _shadow_helperElements = attrs.helperElements || "";
-			attrs.helperElements += _shadow_helperElements === "" ? "reset " : "";
-			attrs.helperElements += _shadow_helperElements === "" ? "filter " : "";
+			attrs.helperElements = attrs.helperElements || "reset filter";
+			attrs.searchProperty = attrs.searchProperty || "";
+			attrs.minSearchLength = parseInt(attrs.minSearchLength) || 3;
+
+			$scope.icon = {
+				selectAll: '&#10003;',
+				selectNone: '&times;',
+				reset: '&#8630;',
+				tickMark: $sce.trustAsHtml('&#10003;')
+			};
+
+			$scope._trans = {
+				selectAll: "Select all",
+				selectNone: "Select none",
+				reset: "Reset",
+				search: "Search..."
+			};
+			angular.extend($scope._trans, $scope.translation);
+
+			$scope.lang = {
+				selectAll: $sce.trustAsHtml($scope.icon.selectAll + '&nbsp;&nbsp;' + $scope._trans.selectAll),
+				selectNone: $sce.trustAsHtml($scope.icon.selectNone + '&nbsp;&nbsp;' + $scope._trans.selectNone),
+				reset: $sce.trustAsHtml($scope.icon.reset + '&nbsp;&nbsp;' + $scope._trans.reset),
+				search: $scope._trans.search
+			};
+
 			$scope.helperStatus     = {
 				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
 				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
 				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) !== -1,
 				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) !== -1
 			};
+
 			$scope.kbFocus = [];
 			$scope.kbFocusIndex = null;
 			$scope.visible = false;
@@ -631,45 +652,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}
 			});
 
-
-			//RUN
 			$scope.fillShadowModel();
-
-
-			/////////////////////////////// OLD CODE STARTS FROM HERE
-			$scope.lang             = {};
-
-			// set max-height property if provided
-			if ( typeof attrs.maxHeight !== 'undefined' ) {
-				var layer = element.children().children().children()[0];
-				angular.element( layer ).attr( "style", "height:" + attrs.maxHeight + "; overflow-y:scroll;" );
-			}
-
-			// helper button icons.. I guess you can use html tag here if you want to.
-			$scope.icon        = {};
-			$scope.icon.selectAll  = '&#10003;';    // a tick icon
-			$scope.icon.selectNone = '&times;';     // x icon
-			$scope.icon.reset      = '&#8630;';     // undo icon
-			// this one is for the selected items
-			$scope.icon.tickMark   = '&#10003;';    // a tick icon
-
-			// configurable button labels
-			if ( typeof attrs.translation !== 'undefined' ) {
-				$scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;' + $scope.translation.selectAll );
-				$scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;' + $scope.translation.selectNone );
-				$scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;' + $scope.translation.reset );
-				$scope.lang.search          = $scope.translation.search;
-				$scope.lang.nothingSelected = $sce.trustAsHtml( $scope.translation.nothingSelected );
-			} else {
-				$scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;Select All' );
-				$scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;Select None' );
-				$scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;Reset' );
-				$scope.lang.search          = 'Search...';
-				$scope.lang.nothingSelected = 'None Selected';
-			}
-			$scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
-
-
 		}
 	}
 }]);
