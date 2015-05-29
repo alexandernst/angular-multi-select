@@ -684,6 +684,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 
 angular_multi_select.directive('setFocus', function($timeout) {
 	return function(scope, element, attrs) {
+		attrs.setFocus = attrs.setFocus || false;
 		scope.$watch(attrs.setFocus, function(_new) {
 			$timeout(function() {
 				if(_new) {
