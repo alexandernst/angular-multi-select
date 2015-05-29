@@ -13,12 +13,11 @@
         
         <br />
         <div
-            isteven-multi-select 
+            angular-multi-select 
             input-model="modernBrowsers" 
             output-model="outputBrowsers"
-            button-label="icon name"        
-            item-label="icon name maker"        
-            tick-property="ticked"                            
+            item-label="{| icon |} {| name |}"        
+            tick-property="checked"                            
             selection-mode="single"
             helper-elements=""
             >
@@ -39,12 +38,11 @@
             <div role="tabpanel" class="tab-pane active" id="view">
                 <p>Define your directive:</p>
                 <pre><code>&lt;div
-    isteven-multi-select
+    angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
-    button-label="icon name"
-    item-label="icon name maker"
-    tick-property="ticked"
+    item-label="{| icon |} {| name |}" 
+    tick-property="checked"
     ...
     selection-mode="single"
 &gt;
@@ -60,8 +58,7 @@
                     <td>{</td>
                     <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
@@ -89,8 +86,7 @@
                     <td>{</td>
                     <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
