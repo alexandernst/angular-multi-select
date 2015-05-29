@@ -101,8 +101,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			$scope.helperStatus     = {
 				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
 				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
-				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) !== -1,
-				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) !== -1
+				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
+				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
 
 			$scope.kbFocus = [];
