@@ -33,12 +33,7 @@ var myApp = angular.module( 'myApp' , [
     $routeProvider.when( '/demo-grouping' , {
         templateUrl: 'views/demo-grouping.htm', 
         controller: 'demoGrouping'
-    });        
-
-    $routeProvider.when( '/demo-output-properties' , {
-        templateUrl: 'views/demo-output-properties.htm', 
-        controller: 'demoMinimum'
-    });        
+    });
 
     $routeProvider.when( '/demo-helper-elements' , {
         templateUrl: 'views/demo-helper-elements.htm', 
