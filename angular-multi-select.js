@@ -277,7 +277,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Helper function to draw each item's label
 			 * @param item
-			 * @param fmt
 			 * @returns {*}
 			 * @private
 			 */
