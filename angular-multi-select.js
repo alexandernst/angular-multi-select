@@ -492,7 +492,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			$scope._filter = function(obj) {
-				if($scope.searchInput.value === undefined || $scope.searchInput.value === "") {
+				if(attrs.searchProperty === "" || $scope.searchInput.value === undefined || $scope.searchInput.value === "" || $scope.searchInput.value.length < attrs.minSearchLength) {
 					return true;
 				}
 
@@ -502,12 +502,12 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				 * implemented so we can refactor this a little bit.
 				 */
 				var tmp_obj = angular.extend({}, obj);
-				tmp_obj[attrs.itemLabel] = $filter('latinize')(tmp_obj[attrs.itemLabel]);
+				tmp_obj[attrs.searchProperty] = $filter('latinize')(tmp_obj[attrs.searchProperty]);
 
 				var fltr = $scope.searchInput.value;
 				fltr = $filter('latinize')(fltr);
 
-				var match = $filter('fuzzyBy')([tmp_obj], attrs.itemLabel, fltr);
+				var match = $filter('fuzzyBy')([tmp_obj], attrs.searchProperty, fltr);
 				return match.length > 0;
 			};
 
