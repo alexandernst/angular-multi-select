@@ -70,6 +70,14 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			$scope.searchInput = {
 				value: ''  // Won't work if not an object. Why? Fuck me if I know...
 			};
+			$scope.kbFocus = [];
+			$scope.kbFocusIndex = null;
+			$scope.visible = false;
+			$scope.buttonLabel = '';
+			$scope.tickProperty = attrs.tickProperty;
+			$scope.idProperty = attrs.idProperty;
+			$scope.groupProperty = attrs.groupProperty;
+			$scope.itemLabel = attrs.itemLabel;
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -105,15 +113,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
 				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
-
-			$scope.kbFocus = [];
-			$scope.kbFocusIndex = null;
-			$scope.visible = false;
-			$scope.buttonLabel = '';
-			$scope.tickProperty = attrs.tickProperty;
-			$scope.idProperty = attrs.idProperty;
-			$scope.groupProperty = attrs.groupProperty;
-			$scope.itemLabel = attrs.itemLabel;
 
 			/**
 			 * Recursive function for iterating nested objects.
@@ -729,10 +728,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							}, 0);
 						}
 
-						//Run onOpen callback
-						$scope.onOpen();
 					});
 
+					//Run onOpen callback
+					$scope.onOpen();
 				} else if (!angular.equals(_new, _old) && _new === false){
 
 					//Stop listening for mouse events
