@@ -41,23 +41,24 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 		scope: {
 			// models
-			inputModel      : '=',
-			outputModel     : '=',
+			inputModel: '=',
+			outputModel: '=',
 
 			// settings based on attribute
-			isDisabled      : '=',
+			isDisabled: '=',
 
 			// callbacks
-			onClear         : '&',
-			onClose         : '&',
-			onItemClick     : '&',
-			onOpen          : '&',
-			onReset         : '&',
-			onSelectAll     : '&',
-			onSelectNone    : '&',
+			onClear: '&',
+			onClose: '&',
+			onSearchChange: '&',
+			onItemClick: '&',
+			onOpen: '&',
+			onReset: '&',
+			onSelectAll: '&',
+			onSelectNone: '&',
 
 			// i18n
-			translation     : '='
+			translation: '='
 		},
 
 		templateUrl: 'angular-multi-select.htm',
@@ -486,12 +487,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				$scope._flipCheck(item);
 				$scope._enforceChecks($scope.filteredModel);
 
-				//Trigger the onItemClick callback
-				$timeout(function() {
-					$scope.onItemClick({
-						data: angular.copy(item)
-					});
-				}, 0);
+				//Run onItemClick callback
+				$scope.onItemClick({
+					item: angular.copy(item)
+				});
 			};
 
 			/**
@@ -526,6 +525,41 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				$scope._enforceChecks($scope._shadowModel);
 
 				$scope.fillFilteredModel();
+			};
+
+			/**
+			 * Called when the 'select all' button is clicked
+			 */
+			$scope.selectAll = function() {
+				$scope._checkAll($scope.filteredModel);
+
+				//Run onSelectAll callback
+				$scope.onSelectAll();
+			};
+
+			/**
+			 * Called when the 'select none' button is clicked
+			 */
+			$scope.selectNone = function() {
+				$scope._uncheckAll($scope.filteredModel);
+
+				//Run onSelectNone callback
+				$scope.onSelectNone();
+			};
+
+			/**
+			 * Called when the 'reset' button is clicked
+			 */
+			$scope.reset = function() {
+				$scope.onReset();
+				$scope.fillShadowModel();
+			};
+
+			$scope.clear = function() {
+				$scope.searchInput.value = "";
+
+				//Run onClear callback
+				$scope.onClear();
 			};
 
 			$scope.fillFilteredModel = function() {
@@ -581,6 +615,11 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 						$scope.kbFocusIndex = null;
 						$scope.fillFilteredModel();
 					}
+
+					//Run onSearchChange callback
+					$scope.onSearchChange({
+						input: _new
+					});
 				}
 			});
 
@@ -653,11 +692,15 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 						}
 
 						$scope.$apply();
+
 						if(_refocus_input === true) {
 							$timeout(function() {
 								$scope.kbFocusIndex = _current_index;
 							}, 0);
 						}
+
+						//Run onOpen callback
+						$scope.onOpen();
 					});
 
 				} else if (!angular.equals(_new, _old) && _new === false){
@@ -669,6 +712,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					//Stop listening for  keyboard events
 					$scope.stopListeningKeyboardEvents();
 					$scope.stopListeningKeyboardEvents = null;
+
+					//Run onClose callback
+					$scope.onClose();
 				}
 			});
 
@@ -735,15 +781,15 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="_checkAll(filteredModel)" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="helperButton"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="_uncheckAll(filteredModel)" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
+							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="helperButton reset"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="fillShadowModel()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
+							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
 					// the search box
@@ -753,7 +799,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 							'ng-model="searchInput.value" class="inputFilter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="clearButton" ng-click="searchInput.value = \'\'" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
+						'<button type="button" class="clearButton" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
 					'</div> '+
 				'</div> '+
 
