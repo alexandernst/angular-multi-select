@@ -356,6 +356,17 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			/**
+			 *
+			 * @param item
+			 * @returns {boolean}
+			 * @private
+			 */
+			$scope._isHidden = function(item) {
+				//TODO: optimize by enforcing the property  and not running 'hasOwnProperty' method
+				return !!(item.hasOwnProperty(attrs.hiddenProperty) && item[attrs.hiddenProperty] === true);
+			};
+
+			/**
 			 * Helper function that checks if a single element
 			 * is checked.
 			 * @param {Object} item
@@ -363,6 +374,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * @private
 			 */
 			$scope._isChecked = function(item) {
+				//TODO: optimize by enforcing the property  and not running 'hasOwnProperty' method
 				return !!(item.hasOwnProperty(attrs.tickProperty) && item[attrs.tickProperty] === true);
 			};
 
@@ -805,7 +817,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item[groupProperty]' ng-include=\"'angular-multi-select-item.htm'\" ></li>" +
+			"<li ng-repeat='item in item[groupProperty] | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\" ></li>" +
 		"</ul>" +
 		"";
 	$templateCache.put('angular-multi-select-item.htm', template);
@@ -849,7 +861,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 				// selection items
 				'<div class="checkBoxContainer">'+
 					"<ul>" +
-						"<li ng-repeat='item in filteredModel' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
+						"<li ng-repeat='item in filteredModel | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 					"</ul>" +
 				'</div>'+
 			'</div>'+
