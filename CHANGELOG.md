@@ -1,6 +1,7 @@
 ### v5.0.1
 ##### Added / Updated
 - Callbacks on certain events have been restored.
+- Support dynamic data change of the input data.
 
 ### v5.0.0
 ##### Added / Updated
