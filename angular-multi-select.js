@@ -119,6 +119,17 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			/**
+			 * Helper function to inverse the result of a function called by a filter from a template
+			 * @param f
+			 * @returns {Function}
+			 */
+			$scope.not = function(f) {
+				return function(v) {
+					return !f(v);
+				}
+			};
+
+			/**
 			 * Recursive function for iterating nested objects.
 			 * This function will take an array `obj` of objects and will
 			 * traverse all object and nested object that have a property
