@@ -519,6 +519,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				return match.length > 0;
 			};
 
+			/**
+			 * This will the ran when we get input data or when the
+			 * input data is changed.
+			 */
 			$scope.fillShadowModel = function() {
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceIDs($scope._shadowModel);
@@ -555,6 +559,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				$scope.fillShadowModel();
 			};
 
+			/**
+			 * Called when the 'clear' button is clicked
+			 */
 			$scope.clear = function() {
 				$scope.searchInput.value = "";
 
@@ -562,6 +569,13 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				$scope.onClear();
 			};
 
+			/**
+			 * When a selection or a filter change happens, we re-fill
+			 * the filtered model and apply the filtering logic.
+			 * Note that we don't perform neither an enforce-ID nor enforce-checks
+			 * logic here as the shadow model (_shadowModel) is guaranteed to
+			 * be sanitized.
+			 */
 			$scope.fillFilteredModel = function() {
 				$scope.filteredModel = angular.copy($scope._shadowModel);
 				$scope.filteredModel = $scope._walk($scope.filteredModel, attrs.groupProperty, $scope._filter);
@@ -608,7 +622,11 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}
 			}, true);
 
-			//Watch for search input
+			/**
+			 * Watch for search input and trigger a re-fill of the filtered model.
+			 * The shadow model (_shadowModel) is not modified here because we want
+			 * to preserve the original state of the inputModel ('reset' button functionality)
+			 */
 			$scope.$watch('searchInput.value', function(_new, _old) {
 				if(!angular.equals(_new, _old)) {
 					if(_new.length > attrs.minSearchLength || (_new.length < _old.length && _old.length >= 0) ) {
@@ -623,7 +641,9 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}
 			});
 
-			//Watch for show/hide event
+			/**
+			 * Watch for show/hide event
+			 */
 			$scope.$watch('visible', function(_new, _old) {
 				if(!angular.equals(_new, _old) && _new === true) {
 
