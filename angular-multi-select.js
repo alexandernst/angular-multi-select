@@ -202,24 +202,6 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			/**
-			 * Helper function that will ensure that all items
-			 * have an unique ID.
-			 * @param {Array} model
-			 * @private
-			 */
-			$scope._enforceIDs = function(model) {
-				var ids = [];
-
-				$scope._walk(model, attrs.groupProperty, function(_item) {
-					if(_item.hasOwnProperty(attrs.idProperty) === false || ids.indexOf(_item[attrs.idProperty]) !== -1) {
-						_item[attrs.idProperty] = Math.floor((Math.random() * 100000000) + 1);
-					}
-					ids.push(_item[attrs.idProperty]);
-					return true;
-				});
-			};
-
-			/**
 			 * Helper function used to get the parent of an item.
 			 * @param {Array} model
 			 * @param {Object} item
@@ -356,26 +338,23 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			/**
-			 *
+			 * Helper function that checks if a  single element is hidden.
 			 * @param item
 			 * @returns {boolean}
 			 * @private
 			 */
 			$scope._isHidden = function(item) {
-				//TODO: optimize by enforcing the property  and not running 'hasOwnProperty' method
-				return !!(item.hasOwnProperty(attrs.hiddenProperty) && item[attrs.hiddenProperty] === true);
+				return item[attrs.hiddenProperty] === true;
 			};
 
 			/**
-			 * Helper function that checks if a single element
-			 * is checked.
+			 * Helper function that checks if a single element is checked.
 			 * @param {Object} item
 			 * @returns {boolean}
 			 * @private
 			 */
 			$scope._isChecked = function(item) {
-				//TODO: optimize by enforcing the property  and not running 'hasOwnProperty' method
-				return !!(item.hasOwnProperty(attrs.tickProperty) && item[attrs.tickProperty] === true);
+				return item[attrs.tickProperty] === true;
 			};
 
 			/**
@@ -405,6 +384,32 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				});
 
 				return _total === _checked ? _checked : _checked > 0 ? -_checked : 0;
+			};
+
+			/**
+			 * Helper function that ensures that all items have all properties.
+			 * Because of this, we can stop using 'hasOwnProperty', which is very expensive.
+			 * @param model
+			 * @private
+			 */
+			$scope._enforceProps = function(model) {
+
+				var ids = [];
+
+				$scope._walk(model, attrs.groupProperty, function(_item){
+					//ID property
+					if(_item.hasOwnProperty(attrs.idProperty) === false || ids.indexOf(_item[attrs.idProperty]) !== -1) {
+						_item[attrs.idProperty] = Math.floor((Math.random() * 100000000) + 1);
+					}
+					ids.push(_item[attrs.idProperty]);
+
+					//Tick property
+					_item[attrs.tickProperty] = _item[attrs.tickProperty] || false;
+
+					//Hidden property
+					_item[attrs.hiddenProperty] = _item[attrs.hiddenProperty] || false;
+					return true;
+				});
 			};
 
 			/**
@@ -551,7 +556,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 */
 			$scope.fillShadowModel = function() {
 				$scope._shadowModel = angular.copy($scope.inputModel);
-				$scope._enforceIDs($scope._shadowModel);
+				$scope._enforceProps($scope._shadowModel);
 				$scope._enforceChecks($scope._shadowModel);
 
 				$scope.fillFilteredModel();
