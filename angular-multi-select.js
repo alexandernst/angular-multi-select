@@ -582,6 +582,16 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			};
 
 			/**
+			 * This is used to initially fill the shadow model and to
+			 * handle input data change properly.
+			 */
+			$scope.$watch('inputModel', function(_new, _old) {
+				if(!_new && angular.equals(_new, _old)) return;
+
+				$scope.fillShadowModel();
+			}, true);
+
+			/**
 			 * When the data in our filtered model changes, we want to do several things:
 			 *
 			 * - update the button label
@@ -738,9 +748,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				}
 			});
 
-			$scope.fillShadowModel();
-		}
-	}
+		} //end of link function
+	}; //end of return
 }]);
 
 angular_multi_select.directive('angularMultiSelectKeyTrap', function() {
