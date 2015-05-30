@@ -1,3 +1,7 @@
+### v5.0.1
+##### Added / Updated
+- Callbacks on certain events have been restored.
+
 ### v5.0.0
 ##### Added / Updated
 - Major rewrite of the project.
@@ -5,24 +9,24 @@
 
 ### v4.0.6
 ##### Added / Updated
-- Ignore more files in the NPM package
+- Ignore more files in the NPM package.
 
 ### v4.0.5
 ##### Added / Updated
-- Fixed minified version of JS file
+- Fixed minified version of JS file.
 
 ### v4.0.4
 ##### Added / Updated
-- Add min version of the CSS and the JS files
+- Add min version of the CSS and the JS files.
 
 ### v4.0.3
 ##### Added / Updated
-- Apply some of the PRs from the original project
+- Apply some of the PRs from the original project.
 
 ### v4.0.2
 ##### Added / Updated
-- Convert spaces to tabs
-- Clean indent style
+- Convert spaces to tabs.
+- Clean indent style.
 
 ### v4.0.1
 ##### Added / Updated
@@ -42,11 +46,11 @@
 
 ### v3.0.0
 ##### Added / Updated
-- Support for AngularJs version 1.3.x (v3.0.0 also supports AngularJs 1.2.x, but beware of the breaking changes)
-- Customized text on helper elements
-- 5 new callbacks
-- You can now set minimum characters required to trigger the search functionality
-- You can now define which input-model properties to search from (previously, all input-model properties are searched)
+- Support for AngularJs version 1.3.x (v3.0.0 also supports AngularJs 1.2.x, but beware of the breaking changes).
+- Customized text on helper elements.
+- 5 new callbacks.
+- You can now set minimum characters required to trigger the search functionality.
+- You can now define which input-model properties to search from (previously, all input-model properties are searched).
 - On close, parent button will now receive focus.
 - Using proper semantics (well at least better than previous version).
 - Limited support on promise objects.
@@ -64,14 +68,14 @@
 
 ### v2.0.1
 ##### Added / Updated
-- <a href="https://github.com/isteven/angular-multi-select/issues/52">#52</a> Form tag is now properly closed
+- <a href="https://github.com/isteven/angular-multi-select/issues/52">#52</a> Form tag is now properly closed.
 
 ### v2.0.0
 ##### Added / Updated
 - Unlimited nested grouping. Group headers are clickable to select / deselect all items under the group. Group headers are filter aware, means it will only affect filtered result.
-- Helper buttons are now filter aware as well (For example, if you filter something and click 'Select All', the directive will tick all of the filtered result only. Same goes with 'Select None' and 'Reset' )
-- Supports arrow key navigation (up, down, left, right, and spacebar). 
-- New CSS styling
+- Helper buttons are now filter aware as well (For example, if you filter something and click 'Select All', the directive will tick all of the filtered result only. Same goes with 'Select None' and 'Reset' ).
+- Supports arrow key navigation (up, down, left, right, and spacebar).
+- New CSS styling.
 - default-label attribute. You can define your default text on the button when nothing is selected.
 - on-item-click attribute. This is a callback which will be triggered when a user click an item. Will pass the clicked item to the callback function.
 - on-open and on-close callbacks will now pass the multi-select element (HTML) to the callback function.
@@ -84,13 +88,13 @@
 
 ### v1.2.0
 ##### Added / Updated:
-- <a href="https://github.com/isteven/angular-multi-select/issues/19">#19</a> Default label on the dropdown button is now configurable using attribute "default-label"="..."
-- <a href="https://github.com/isteven/angular-multi-select/issues/16">#16</a> Attribute "max-labels" can now be 0. If set to 0, the dropdown button will only display "(Total: X)"
+- <a href="https://github.com/isteven/angular-multi-select/issues/19">#19</a> Default label on the dropdown button is now configurable using attribute "default-label"="...".
+- <a href="https://github.com/isteven/angular-multi-select/issues/16">#16</a> Attribute "max-labels" can now be 0. If set to 0, the dropdown button will only display "(Total: X)".
 
 ### v1.1.0
 ##### Added / Updated:
-- Added event callbacks
-- <a href="https://github.com/isteven/angular-multi-select/issues/5">#5</a> Helper elements are now configurable
+- Added event callbacks.
+- <a href="https://github.com/isteven/angular-multi-select/issues/5">#5</a> Helper elements are now configurable.
 
 ### v1.0.0
-First release
+- First release.
