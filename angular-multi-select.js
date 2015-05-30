@@ -65,6 +65,15 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 		link: function ($scope, element, attrs) {
 
+			attrs.itemLabel = attrs.itemLabel || "";
+			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
+			attrs.selectionMode = attrs.selectionMode || "multi";
+			attrs.selectionMode = attrs.selectionMode.toLowerCase();
+			attrs.helperElements = attrs.helperElements || "reset filter";
+			attrs.searchProperty = attrs.searchProperty || "";
+			attrs.hiddenProperty = attrs.hiddenProperty || "";
+			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
+
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
 			$scope.searchInput = {
@@ -78,12 +87,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
 			$scope.itemLabel = attrs.itemLabel;
-			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
-			attrs.selectionMode = attrs.selectionMode || "multi";
-			attrs.selectionMode = attrs.selectionMode.toLowerCase();
-			attrs.helperElements = attrs.helperElements || "reset filter";
-			attrs.searchProperty = attrs.searchProperty || "";
-			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
+			$scope.hiddenProperty = attrs.hiddenProperty;
 
 			$scope.icon = {
 				selectAll: '&#10003;',
