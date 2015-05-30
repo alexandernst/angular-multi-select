@@ -10,12 +10,11 @@
         </p>
         <br />
         <div 
-            isteven-multi-select 
+            angular-multi-select 
             input-model="dynamicData"
-            output-model="outputBrowsers"
-            button-label="icon name"         
-            item-label="icon name maker" 
-            tick-property="ticked" 
+            output-model="outputBrowsers"    
+            item-label="{| icon |} {| name |}" 
+            tick-property="checked"
             >
         </div>       
         <h5>Update input-model</h5>
@@ -23,15 +22,15 @@
             Click one of the buttons below to load different data into it.
         </p>        
         <p>
-            <button type="button" class="btn btn-success btn-xs" ng-click="switchSource( 'modernBrowsers' )" >Load modern browsers</button>    
-            <button type="button" class="btn btn-primary btn-xs" ng-click="switchSource( 'oldBrowsers' )" >Load old browsers</button>      
+            <button type="button" class="btn btn-success btn-xs" ng-click="switchSource('modernBrowsers')" >Load modern browsers</button>    
+            <button type="button" class="btn btn-primary btn-xs" ng-click="switchSource('oldBrowsers')" >Load old browsers</button>      
         </p>        
         <h5>Update singular data</h5>
         <p>
             You can also update a single item. Operations like these are totally valid:
             <ul>
-                <li><code>$scope.modernBrowsers[ 1 ].ticked = false</code>, or</li>
-                <li><code>$scope.modernBrowsers[ 1 ].name = 'Hola!'</code></li>
+                <li><code>$scope.modernBrowsers[ 1 ].checked = false</code>, or</li>
+                <li><code>$scope.modernBrowsers[ 1 ].name = 'Hello!'</code></li>
             </ul>
             For example, click this button below to change the name of the first chosen browser, into 'Hello World'.
         </p>        
@@ -52,12 +51,11 @@
                 <div role="tabpanel" class="tab-pane active" id="view">
                     <p>Define your directive:</p>
                     <pre><code>&lt;div
-    isteven-multi-select
+    angular-multi-select
     input-model="dynamicData"
     output-model="outputBrowsers"
-    button-label="icon name"
-    item-label="icon name maker"
-    tick-property="ticked"
+    item-label="{| icon |} {| name |}" 
+    tick-property="checked"
 &gt;
 &lt;/div&gt;
 ...
@@ -76,8 +74,7 @@
                                 <td>{</td>
                                 <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                                 <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                                <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                                <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                                <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                                 <td>}<span ng-if="$index < modernBrowsers.length - 1">,</span></td>
                             </tr>
                         </table>
@@ -92,8 +89,7 @@
                                 <td>{</td>
                                 <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                                 <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                                <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                                <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                                <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                                 <td>}<span ng-if="$index < oldBrowsers.length - 1">,</span></td>
                             </tr>
                         </table>
@@ -101,8 +97,8 @@
                     </div>                    
 
                     <p>
-                        Some extra codes here; <code>$scope.swithcSource()</code> is a function where we switch 
-                        the <code>$scope.dynamicData</code> content with modern or old browsers.
+                        Some extra code here; <code>$scope.swithcSource()</code> is a function which switches
+                        the <code>$scope.dynamicData</code> content.
                     </p>
                     <pre><code>// This will be our input model
 $scope.dynamicData = [];
@@ -135,8 +131,7 @@ $scope.switchSource( 'modernBrowsers' );</code></pre>
                     <td>{</td>
                     <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
