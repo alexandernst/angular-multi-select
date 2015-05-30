@@ -729,10 +729,10 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							}, 0);
 						}
 
-						//Run onOpen callback
-						$scope.onOpen();
 					});
 
+					//Run onOpen callback
+					$scope.onOpen();
 				} else if (!angular.equals(_new, _old) && _new === false){
 
 					//Stop listening for mouse events

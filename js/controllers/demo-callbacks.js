@@ -68,39 +68,34 @@ myApp.controller( 'demoCallbacks' , [ '$scope' , function ($scope) {
     ];
 
     $scope.fOpen = function() {
-        console.log( 'On-open' );
+        console.log('On-open');
     }
 
     $scope.fClose = function() {
-        console.log( 'On-close' );
+        console.log('On-close');
     }    
 
-    $scope.fClick = function( data ) {           
-        console.log( 'On-item-click' );        
-        console.log( 'On-item-click - data:' );        
-        console.log( data );
+    $scope.fClick = function(input) {           
+        console.log('On-item-click', input);
     }    
 
     $scope.fSelectAll = function() {
-        console.log( 'On-select-all' );
+        console.log('On-select-all');
     }
 
     $scope.fSelectNone = function() {
-        console.log( 'On-select-none' );
+        console.log('On-select-none');
     }
 
     $scope.fReset = function() {
-        console.log( 'On-reset' );
+        console.log('On-reset');
     }        
 
     $scope.fClear = function() {
-        console.log( 'On-clear' );
+        console.log('On-clear');
     }
 
-    $scope.fFilterChange = function( data ) {
-        console.log( 'On-filter-change' );
-        console.log( 'On-filter-change - keyword: ' + data.keyword );
-        console.log( 'On-filter-change - result: ' );
-        console.log( data.result );
+    $scope.fFilterChange = function(input) {
+        console.log('On-filter-change', input);
     }
 }]);

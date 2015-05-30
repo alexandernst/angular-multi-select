@@ -10,20 +10,21 @@
         <br />
 
         <div 
-            isteven-multi-select 
+            angular-multi-select 
             input-model="modernBrowsers"
             output-model="outputBrowsers"
-            button-label="icon name"         
-            item-label="icon name maker" 
-            tick-property="ticked"     
+            group-property="sub"
+            item-label="{| icon |} {| name |}" 
+            tick-property="checked"
+            search-property="name"
             on-open="fOpen()"                
             on-close="fClose()"
-            on-item-click="fClick( data )"
+            on-item-click="fClick(item)"
             on-select-all="fSelectAll()"
             on-select-none="fSelectNone()"
             on-reset="fReset()"
             on-clear="fClear()"
-            on-search-change="fSearchChange( data )"
+            on-search-change="fFilterChange(input)"
         ></div>
 
 
@@ -42,21 +43,22 @@
             <div role="tabpanel" class="tab-pane active" id="view">
                 <p>Define your directive:</p>
                 <pre><code>&lt;div
-    isteven-multi-select 
+    angular-multi-select 
     input-model="modernBrowsers"
     output-model="outputBrowsers"
-    button-label="icon name"         
-    item-label="icon name maker" 
-    tick-property="ticked"     
+    group-property="sub"
+    item-label="{| icon |} {| name |}" 
+    tick-property="checked"
+    search-property="name"
     ...
     on-open="fOpen()"                
     on-close="fClose()"
-    on-item-click="fClick( data )"
+    on-item-click="fClick(item)"
     on-select-all="fSelectAll()"
     on-select-none="fSelectNone()"
     on-reset="fReset()"
     on-clear="fClear()"
-    on-search-change="fSearchChange( data )"
+    on-search-change="fFilterChange(input)"
 &gt;
 &lt;/div&gt;</code></pre>
             </div>
@@ -70,8 +72,7 @@
                     <td>{</td>
                     <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
@@ -80,40 +81,35 @@
 
         <p>Define your callback functions:</p>
         <pre><code>$scope.fOpen = function() {
-    console.log( 'On-open' );
+    console.log('On-open');
 }
 
 $scope.fClose = function() {
-    console.log( 'On-close' );
+    console.log('On-close');
 }    
 
-$scope.fClick = function( data ) {           
-    console.log( 'On-item-click' );        
-    console.log( 'On-item-click - data:' );        
-    console.log( data );
+$scope.fClick = function(item) {           
+    console.log('On-item-click', item);
 }    
 
 $scope.fSelectAll = function() {
-    console.log( 'On-select-all' );
+    console.log('On-select-all');
 }
 
 $scope.fSelectNone = function() {
-    console.log( 'On-select-none' );
+    console.log('On-select-none');
 }
 
 $scope.fReset = function() {
-    console.log( 'On-reset' );
+    console.log('On-reset');
 }        
 
 $scope.fClear = function() {
-    console.log( 'On-clear' );
+    console.log('On-clear');
 }
 
-$scope.fSearchChange = function( data ) {
-    console.log( 'On-search-change' );
-    console.log( 'On-search-change - keyword: ' + data.keyword );
-    console.log( 'On-search-change - result: ' );
-    console.log( data.result );
+$scope.fSearchChange = function(input) {
+    console.log( 'On-search-change', input);
 }</code></pre>            
     </div>
           </div>
@@ -137,8 +133,7 @@ $scope.fSearchChange = function( data ) {
                     <td>{</td>
                     <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
