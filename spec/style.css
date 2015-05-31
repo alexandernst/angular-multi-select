@@ -1,0 +1,4 @@
+/* restore "body" styling that were changes by "jasmine.css"... */
+body { background-color: white; padding: 0; margin: 8px; }
+/* ... but remain the "jasmine.css" styling for the Jasmine reporting */
+.jasmine_reporter { background-color: #eeeeee; padding: 0; margin: 0; }

@@ -1,7 +1,8 @@
 .git
 .gitignore
-/doc
 /libs
+/node_modules
+/spec
 /src
 CHANGELOG.md
 compiler.jar
