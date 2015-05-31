@@ -2,8 +2,10 @@
 .gitignore
 /doc
 /libs
+/src
 CHANGELOG.md
 compiler.jar
+Gruntfile.js
 LICENSE.txt
 minify.sh
 package.json
