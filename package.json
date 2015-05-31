@@ -10,6 +10,9 @@
         "type": "git",
         "url": "git@github.com:alexandernst/angular-multi-select.git"
     },
+    "dependencies": {
+		"grunt-contrib-jasmine": "0.8.2"
+    },
     "keywords": [
         "angular",
         "dropdown",
