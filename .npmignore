@@ -5,10 +5,8 @@
 /spec
 /src
 CHANGELOG.md
-compiler.jar
 Gruntfile.js
 LICENSE.txt
-minify.sh
 package.json
 README.md
 screenshot.png
