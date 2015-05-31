@@ -31,11 +31,10 @@
  * --------------------------------------------------------------------------------
  */
 
-'use strict';
-
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
 angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filter', '$interpolate', function ($sce, $timeout, $filter, $interpolate) {
+	'use strict';
 	return {
 		restrict: 'AE',
 
@@ -126,7 +125,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			$scope.not = function(f) {
 				return function(v) {
 					return !f(v);
-				}
+				};
 			};
 
 			/**
@@ -454,8 +453,8 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 * checked; else it will be unchecked.
 			 *
 			 * If an item with children is passed, if none or more,
-			 * but not all, of the children is checked, all children
-			 * and the item itself will be set to true. If all
+			 * but not all, of the children are checked, all children
+			 * and the item itself will be checked. If all
 			 * children are checked, then they, and the item itself,
 			 * will be unchecked.
 			 * @param {Object} item
@@ -463,7 +462,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			 */
 			$scope._flipCheck = function(item) {
 				if($scope._hasChildren(item) > 0) {
-					var _state = !($scope._areAllChecked(item) > 0);
+					var _state = Math.abs($scope._areAllChecked(item)) === 0;
 
 					$scope._walk(item, attrs.groupProperty, function(_item) {
 						_item[attrs.tickProperty] = _state;
@@ -746,7 +745,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 							if($scope.kbFocusIndex > 0) {
 								$scope.kbFocusIndex--;
 							} else {
-								$scope.kbFocusIndex = $scope.kbFocus.length - 1
+								$scope.kbFocusIndex = $scope.kbFocus.length - 1;
 							}
 						} else {
 							_refocus_input = true;
@@ -784,6 +783,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 }]);
 
 angular_multi_select.directive('angularMultiSelectKeyTrap', function() {
+	'use strict';
 	return function(scope, elem) {
 		elem.bind('keydown', function(event) {
 			scope.$broadcast('angular-multi-select-keydown', { event: event } );
@@ -792,6 +792,7 @@ angular_multi_select.directive('angularMultiSelectKeyTrap', function() {
 });
 
 angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
+	'use strict';
 	return function(scope, elem) {
 		elem.bind('click', function(event) {
 			scope.$broadcast('angular-multi-select-click', { event: event } );
@@ -800,6 +801,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 });
 
 angular_multi_select.directive('setFocus', function($timeout) {
+	'use strict';
 	return function(scope, element, attrs) {
 		attrs.setFocus = attrs.setFocus || false;
 		scope.$watch(attrs.setFocus, function(_new) {
@@ -815,6 +817,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 });
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
+	'use strict';
 	var template = "" +
 		"<div class='multiSelectItem' ng-click='clickItem(item, true);' ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createLabel(item)'></div>" +
@@ -829,6 +832,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 }]);
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
+	'use strict';
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
