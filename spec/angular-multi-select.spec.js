@@ -1,5 +1,5 @@
 describe('Testing directive in single mode', function() {
-	var scope, element, directive, html, timeout;
+	var scope, element, html, timeout;
 
 	beforeEach(function (){
 		//load the module
