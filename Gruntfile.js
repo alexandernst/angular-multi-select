@@ -23,6 +23,19 @@ module.exports = function(grunt) {
 			}
 		},
 
+		cssmin: {
+			compress: {
+				files: [{
+					expand: true,
+					cwd: 'src/',
+					src: ['*.css', '!*.min.css'],
+					dest: "dist/",
+					ext: ".min.css",
+					extDot: 'last'
+				}]
+			}
+		},
+
 		jasmine: {
 			src: {
 				src: 'src/*.js',
@@ -42,7 +55,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			files: ['<%= jshint.files %>'],
-			tasks: ['clear', 'jshint', 'jasmine'],
+			tasks: ['clear', 'default'],
 			options: {
 				debounceDelay: 1000
 			}
@@ -51,10 +64,11 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-clear');
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'jasmine']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'jasmine']);
 
 };
