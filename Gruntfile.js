@@ -30,11 +30,11 @@ module.exports = function(grunt) {
 					helpers: 'spec/helpers/*.js',
 					specs: 'spec/*.js',
 					vendor: [
+						'node_modules/jquery/dist/jquery.js',
+						'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
 						'node_modules/angular/angular.js',
 						'node_modules/angular-mocks/angular-mocks.js',
-						'node_modules/angular-filter/dist/angular-filter.js',
-						'node_modules/jasmine-jquery/vendor/jquery/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
+						'node_modules/angular-filter/dist/angular-filter.js'
 					]
 				}
 			}
