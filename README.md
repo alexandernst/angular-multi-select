@@ -15,9 +15,10 @@ See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CH
 
 ### Building
 
-You'll need Java and CSSO installed. Java is required for running Google Closure Compiler, while CSSO is the CSS
-compressor itself. It's up to you how you'll install Java, but you must add it to your PATH. For CSSO, use the
-following command: `npm install csso -g`.
+You'll need to install Node (because you need NPM), Grunt and Bower. The first one is up to you. You can use
+your distro's package manager, binaries from Node's webpage, etc. As for the other two: `npm install -g grunt-cli bower`.
+After that you must install all dependencies: `npm install && bower install`. Last, you just need to run `grunt`
+and everything will build.
 
 ### Bug Reporting
 Please follow these steps:
