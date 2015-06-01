@@ -1,3 +1,9 @@
+### v5.0.2
+##### Added / Updated
+- Fixed a bug with 'Select All' selecting everything while in single mode.
+- Implementing support for hidden elements.
+- Implement unit tests using Jasmine.
+
 ### v5.0.1
 ##### Added / Updated
 - Callbacks have been restored.
@@ -43,7 +49,7 @@
 - <a href="https://github.com/isteven/angular-multi-select/issues/207">#207</a> (and other related issues) You can now update the directive by modifying the input-model as usual.
 
 ##### Deprecated / Breaking Changes
-- input-model behaviour is now back like v2.x.x. If you don't re-use your input-model, you should be safe. 
+- input-model behaviour is now back like v2.x.x. If you don't re-use your input-model, you should be safe.
 
 ### v3.0.0
 ##### Added / Updated
