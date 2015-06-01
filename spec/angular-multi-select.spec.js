@@ -13,6 +13,7 @@ describe('Testing directive in single mode', function() {
 			'group-property="sub" ' +
 			'tick-property="check" ' +
 			'item-label="{| name |}" ' +
+			'helper-elements="all none reset filter"' +
 			'selection-mode="single" ' +
 			'min-search-length="3" ' +
 			'search-property="name" ' +
@@ -69,18 +70,18 @@ describe('Testing directive in single mode', function() {
 	});
 
 	it("Should deselect all when clicked parent group", function() {
-		$($("div.ng-binding:contains('Closed Source')")[0]).click();
+		$("div.ng-binding:contains('Closed Source')").click();
 		expect($('.selected')).toHaveLength(0);
 	});
 
 	it("Should not mark as checked a group with more than 1 element (even hidden elements block selection!)", function() {
-		$($("div.ng-binding:contains('Closed Source')")[0]).click();
+		$("div.ng-binding:contains('Closed Source')").click();
 		expect($('.selected')).toHaveLength(0);
 
-		$($("div.ng-binding:contains('Closed Source')")[0]).click();
+		$("div.ng-binding:contains('Closed Source')").click();
 		expect($('.selected')).toHaveLength(0);
 
-		$($("div.ng-binding:contains('Open Source')")[0]).click();
+		$("div.ng-binding:contains('Open Source')").click();
 		expect($('.selected')).toHaveLength(0);
 	});
 
@@ -101,10 +102,41 @@ describe('Testing directive in single mode', function() {
 		expect($('input.inputFilter')).toBeFocused();
 	});
 
-	it("Should focus elements when using arrows");
-	it("Should react to 'select all'");
-	it("Should react to 'select none'");
-	it("Should react to 'reset'");
-	it("Should react to 'clear'");
+	it("Should focus elements when using arrows", function() {
+		var event = document.createEvent("Events");
+		event.initEvent("keydown", true, true);
+		event.which = 40;
 
+		$('button.ams_button').click();
+		scope.$broadcast('angular-multi-select-keydown', { event: event } );
+		scope.$broadcast('angular-multi-select-keydown', { event: event } );
+
+		expect($('.multiSelectFocus')).toHaveLength(1);
+	});
+
+	it("Should react to 'select all' by unselecting everything (because we're in single mode)", function() {
+		$('.ams_selectall').click();
+		expect($('.selected')).toHaveLength(0);
+	});
+
+	it("Should react to 'select none'", function() {
+		$('.ams_selectnone').click();
+		expect($('.selected')).toHaveLength(0);
+	});
+
+	it("Should react to 'reset'", function() {
+		$("div.ng-binding:contains('Internet Explorer')").click();
+		expect($('.selected')).toHaveLength(2);
+		$('.ams_reset').click();
+		expect($('.selected')).toHaveLength(3);
+	});
+
+	it("Should react to 'clear'", function() {
+		$('input.inputFilter').val("chro");
+		$('input.inputFilter').trigger("input");
+		expect($('div[ng-bind-html="_createLabel(item)"]')).toHaveLength(5);
+
+		$('.ams_clear').click();
+		expect($('div[ng-bind-html="_createLabel(item)"]')).toHaveLength(13);
+	});
 });
