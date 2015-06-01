@@ -634,6 +634,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 					$scope.buttonLabel =  _n_selected + " selected";
 					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
 
+					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
 					$scope.outputModel = $scope._walk(angular.copy($scope._shadowModel), attrs.groupProperty, function(_item) {
