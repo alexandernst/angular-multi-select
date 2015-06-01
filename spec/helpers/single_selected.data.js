@@ -1,4 +1,4 @@
-var test_data = [
+var single_test_data = [
 	{
 		name: "Modern browsers",
 		hidden: false,
