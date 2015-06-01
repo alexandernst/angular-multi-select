@@ -15,9 +15,9 @@ See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CH
 
 ### Building
 
-You'll need to install Node (because you need NPM), Grunt and Bower. The first one is up to you. You can use
-your distro's package manager, binaries from Node's webpage, etc. As for the other two: `npm install -g grunt-cli bower`.
-After that you must install all dependencies: `npm install && bower install`. Last, you just need to run `grunt`
+You'll need to install Node (because you need NPM) and Grunt. The first one is up to you. You can use
+your distro's package manager, binaries from Node's webpage, etc. As for the second one: `npm install -g grunt-cli`.
+After that you must install all dependencies: `npm install`. Last, you just need to run `grunt`
 and everything will build.
 
 ### Bug Reporting
