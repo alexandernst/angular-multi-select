@@ -1,6 +1,5 @@
 .git
 .gitignore
-/bower_components
 /node_modules
 /spec
 CHANGELOG.md
