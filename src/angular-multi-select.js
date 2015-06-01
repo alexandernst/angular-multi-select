@@ -836,7 +836,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template =
 		'<span class="multiSelect inlineBlock">' +
 			// main button
-			'<button type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
+			'<button class="ams_button" type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
 			// overlay layer
 			'<div class="checkboxLayer" ng-show="visible">' +
 				// container of the helper elements
