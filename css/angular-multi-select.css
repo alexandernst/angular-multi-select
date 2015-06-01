@@ -185,7 +185,8 @@
 .multiSelect .checkBoxContainer {
 	display: block;
 	padding: 8px;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .multiSelect .checkBoxContainer ul {
