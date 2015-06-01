@@ -1,0 +1,30 @@
+{
+	"name": "angular-multi-select",
+	"version": "5.0.1",
+	"homepage": "https://github.com/alexandernst/angular-multi-select",
+	"authors": [
+	"Alexander Nestorov <alexandernst@gmail.com>"
+	],
+	"description": "A multi select dropdown directive for AngularJS",
+	"main": "angular-multi-select.js",
+	"moduleType": [
+		"es6",
+		"globals"
+	],
+	"keywords": [
+		"angular",
+		"dropdown",
+		"multi",
+		"select",
+		"multiselect"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"bower_components",
+		"node_modules"
+	],
+	"dependencies": {
+		"jasmine-jquery": "2.1.0"
+	}
+}
