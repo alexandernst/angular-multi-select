@@ -845,15 +845,15 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					// container of the first 3 buttons, select all, none and reset
 					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
-						'<button type="button" class="helperButton"' +
+						'<button type="button" class="helperButton ams_selectall"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
-						'<button type="button" class="helperButton"' +
+						'<button type="button" class="helperButton ams_selectnone"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
-						'<button type="button" class="helperButton reset"' +
+						'<button type="button" class="helperButton reset ams_reset"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
@@ -861,10 +861,10 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							'ng-model="searchInput.value" class="inputFilter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
+							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="clearButton" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
+						'<button type="button" class="clearButton ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
 					'</div> '+
 				'</div> '+
 
