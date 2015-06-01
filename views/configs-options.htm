@@ -1,21 +1,21 @@
 <div class="row">
     <div class="col-sm-12">
-        <h3 class="pageHeading">Configuration & Options</h3>                    
+        <h3 class="pageHeading">Configuration & Options</h3>
 <!--
 <div class="row">
     <div class="col-sm-12">
         <h5>Full spec</h5>
-        <pre><code>&lt;div 
-    multi-select 
-    input-model="$scope.arrOfObjects"       
+        <pre><code>&lt;div
+    multi-select
+    input-model="$scope.arrOfObjects"
     output-model="$scope.arrOfObjects2"
-    button-label="property1 property2 ..."  
+    button-label="property1 property2 ..."
     item-label="property1 property2 ..."
-    tick-property="property3" 
+    tick-property="property3"
     disable-property="property4"
     orientation="horizontal | vertical"
     selection-mode="multiple | single"
-    max-labels="999"     
+    max-labels="999"
     directive-id="..."
     is-disabled="true | false"
     helper-elements="all none reset filter"
@@ -35,8 +35,8 @@
     </div>
 </div>
 -->
-    <p>Below are the available attributes to configure the multi-select directive.</p>    
-    <span class="configData">                
+    <p>Below are the available attributes to configure the multi-select directive.</p>
+    <span class="configData">
         <h5>input-model</h5> <span class="label label-primary">required</span>
         <p>
             This is the data you pass to the directive.
@@ -74,11 +74,11 @@
 ];</code></pre>
         <p>
             <span class="inlineTitle">Note</span>:
-            There might be some limitations on what HTML tags you can use (Use common sense. For example, flash animation 
-            most likely won't work on the button label). It's highly suggested that you don't use 
+            There might be some limitations on what HTML tags you can use (Use common sense. For example, flash animation
+            most likely won't work on the button label). It's highly suggested that you don't use
             BUTTON and INPUT tags to prevent conflicts.
         </p>
-        
+
         <h5>output-model</h5>
         <p>
             Will list all the selected items. If you enable grouping, you'll get the exact same structure as the one you
@@ -88,7 +88,7 @@
             <span class="inlineTitle">Type</span>: Array of objects. <br />
             <span class="inlineTitle">Default value</span>: [] <br />
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
-        </p>        
+        </p>
 
         <h5>item-label</h5> <span class="label label-primary">required</span>
         <p>
@@ -100,9 +100,21 @@
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label="{| icon |} {| name |}"&gt;&lt;/div&gt;</code>
         </p>
 
+        <h5>hidden-property</h5>
+        <p>
+            input-model property (of each item) with a boolean value that represents whether the item is hidden or not. Note that even if an element
+            is hidden, it will still count for tick logic (selecting a group with 1 visible and 1 hidden element, in single mode, won't select the
+            visible element).
+        </p>
+        <p>
+            <span class="inlineTitle">Type</span>: String<br />
+            <span class="inlineTitle">Default value</span>: "" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... hidden-property="is_hidden"&gt;&lt;/div&gt;</code>
+        </p>
+
         <h5>tick-property</h5> <span class="label label-primary">required</span>
         <p>
-            input-model property (of each item) with a boolean value that represents whether the item is ticked or not. 
+            input-model property (of each item) with a boolean value that represents whether the item is ticked or not.
         </p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
@@ -128,66 +140,66 @@
             <span class="inlineTitle">Type</span>: String<br />
             <span class="inlineTitle">Default value</span>: "" <br />
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... group-property="sub"&gt;&lt;/div&gt;</code>
-        </p> 
-        
+        </p>
+
         <h5>selection-mode</h5>
         <p>Single or multiple selection mode. If not specified, the default will be "multiple".</p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Available values</span>: "single" | "multi"<br />            
-            <span class="inlineTitle">Default value</span>: "multi"<br />            
+            <span class="inlineTitle">Available values</span>: "single" | "multi"<br />
+            <span class="inlineTitle">Default value</span>: "multi"<br />
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
         </p>
-            
+
         <h5>helper-elements</h5>
         <p>
             Define which helper buttons (Select all, none, reset, filter box) to be displayed.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: String. Separate multiple values with space. Order of values does not matter.<br />
-            <span class="inlineTitle">Available values</span>: Combinations of "all", "noall", "none", "nonone", "reset", "noreset", "filter", "nofilter" or empty string<br />            
+            <span class="inlineTitle">Available values</span>: Combinations of "all", "noall", "none", "nonone", "reset", "noreset", "filter", "nofilter" or empty string<br />
             <span class="inlineTitle">Default value</span>: "reset filter" in single mode, "all none reset filter" in multi mode<br />
-            <span class="inlineTitle">Example</span>:  
+            <span class="inlineTitle">Example</span>:
             <ul>
                 <li>
                     Display "Select All" button and the filter box: <code>&lt;div angular-multi-select ... helper-elements="all filter"&gt;&lt;/div&gt;</code>
                 </li>
                 <li>
-                    Display none: a string with random character(s). <code>&lt;div angular-multi-select ... helper-elements="xyz"&gt;&lt;/div&gt;</code>. 
+                    Display none: a string with random character(s). <code>&lt;div angular-multi-select ... helper-elements="xyz"&gt;&lt;/div&gt;</code>.
                 </li>
-            </ul>    
-        </p>             
+            </ul>
+        </p>
 
         <h5>search-property</h5> <span class="label label-warning">New! v3.0.0</span>
         <p>
             Set which input-model property should be searched. If none is set, search won't work properly.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: String<br />
             <span class="inlineTitle">Default value</span>: ""<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... search-property="name"&gt;&lt;/div&gt;</code>.  
-        </p>    
-        
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... search-property="name"&gt;&lt;/div&gt;</code>.
+        </p>
+
         <h5>min-search-length</h5> <span class="label label-warning">New! v3.0.0</span>
         <p>
             Set the minimum characters required to trigger search action.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "3", or "5" ).<br />
-            <span class="inlineTitle">Default value</span>: 3<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.  
-        </p>     
+            <span class="inlineTitle">Default value</span>: 3<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.
+        </p>
 
         <h5>translation</h5> <span class="label label-warning">New! v3.0.0</span>
         <p>
             Use custom text on the helper elements. You can use different text. You don't have too define
             the text of all items, as both new and default texts will be merged.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope object<br />
-            <span class="inlineTitle">Default value</span>: {}<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... translation="localLang"&gt;&lt;/div&gt;</code>.  
-        </p>            
+            <span class="inlineTitle">Default value</span>: {}<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... translation="localLang"&gt;&lt;/div&gt;</code>.
+        </p>
         <p>
             In your controller:
             <pre ><code>$scope.localLang = {
@@ -203,83 +215,83 @@
         <p>
             A $scope function to call on multi-select open. You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-open="funcOpen()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-open="funcOpen()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-close</h5>
         <p>
-            A $scope function to call on multi-select close (be it by clicking the button or clicking outside the multi-select element). 
+            A $scope function to call on multi-select close (be it by clicking the button or clicking outside the multi-select element).
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-close="funcClose()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-close="funcClose()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-item-click</h5>
         <p>
-            A $scope function to call when user click on an item. Triggered AFTER the item is clicked.            
+            A $scope function to call when user click on an item. Triggered AFTER the item is clicked.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: Will pass a singular object of the clicked item<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-item-click="funcClick( data )"&gt;&lt;/div&gt;</code>.              
-        </p>        
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: Will pass a singular object of the clicked item<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-item-click="funcClick( data )"&gt;&lt;/div&gt;</code>.
+        </p>
 
-        <h5>on-select-all</h5> 
+        <h5>on-select-all</h5>
         <p>
             A $scope function to call when "select all" button is clicked.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-all="funcSelectAll()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-all="funcSelectAll()"&gt;&lt;/div&gt;</code>.
         </p>
 
-        <h5>on-select-none</h5> 
+        <h5>on-select-none</h5>
         <p>
             A $scope function to call when "select none" button is clicked.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-none="funcSelectNone()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-none="funcSelectNone()"&gt;&lt;/div&gt;</code>.
         </p>
 
-        <h5>on-reset</h5> 
+        <h5>on-reset</h5>
         <p>
             A $scope function to call when "reset" button is clicked.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-reset="funcReset()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-reset="funcReset()"&gt;&lt;/div&gt;</code>.
         </p>
 
-        <h5>on-clear</h5> 
+        <h5>on-clear</h5>
         <p>
             A $scope function to call when the "x" button in filter field is clicked.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: N/A<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-clear="funcClear()"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: N/A<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-clear="funcClear()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-search-change</h5>
@@ -287,11 +299,11 @@
             A $scope function to call when you type in the search field.
             You need to define this function in your controller.
         </p>
-        <p>        
+        <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />            
-            <span class="inlineTitle">Parameter</span>: Will pass the string that you type and the result<br />            
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-filter-change="funcFilterChange( data )"&gt;&lt;/div&gt;</code>.              
+            <span class="inlineTitle">Default value</span>: N/A<br />
+            <span class="inlineTitle">Parameter</span>: Will pass the string that you type and the result<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-filter-change="funcFilterChange( data )"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>output-properties</h5> <span class="label label-warning">New! v4.0.0</span>
@@ -308,7 +320,7 @@
         </span>
     </div>
 </div>
-<script>    
+<script>
     $(document).ready(function() {
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
