@@ -1,3 +1,8 @@
+### v5.0.5
+##### Added / Updated
+- Require grunt-contrib-jasmine >=v0.7.0
+- Require jasmine-jquery >= 2.0.0
+
 ### v5.0.4
 ##### Added / Updated
 - Require grunt-contrib-uglify >=v0.5.0
