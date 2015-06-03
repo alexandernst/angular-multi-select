@@ -1,3 +1,7 @@
+### v5.0.4
+##### Added / Updated
+- Require grunt-contrib-uglify >=v0.5.0
+
 ### v5.0.3
 ##### Added / Updated
 - Require grunt-contrib-cssmin >=v0.10.0
