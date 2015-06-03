@@ -1,3 +1,7 @@
+### v5.0.3
+##### Added / Updated
+- Require grunt-contrib-cssmin >=v0.10.0
+
 ### v5.0.2
 ##### Added / Updated
 - Fixed a bug with 'Select All' selecting everything while in single mode.
