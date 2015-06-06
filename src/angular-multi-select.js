@@ -293,7 +293,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				_fmt = _fmt.replace(/\{\|/g, "{{");
 				_fmt = _fmt.replace(/\|\}/g, "}}");
 
-				var _interpolated = $interpolate(_fmt)(item);
+				var _interpolated = $interpolate(_fmt)( angular.extend({}, $scope.$parent, item) );
 
 				/*
 				$interpolate.startSymbol(_s);

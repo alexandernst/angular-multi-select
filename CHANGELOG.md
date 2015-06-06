@@ -1,3 +1,7 @@
+### v5.0.6
+##### Added / Updated
+- Now it's possible to use vars from the parent scope in the item's label text
+
 ### v5.0.5
 ##### Added / Updated
 - Require grunt-contrib-jasmine >=v0.7.0
