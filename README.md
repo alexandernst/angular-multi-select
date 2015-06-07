@@ -1,8 +1,9 @@
+![Logo](https://raw.githubusercontent.com/alexandernst/angular-multi-select/master/assets/logo_small.png)
 # AngularJS MultiSelect [![Build Status](https://travis-ci.org/alexandernst/angular-multi-select.svg?branch=master)](https://travis-ci.org/alexandernst/angular-multi-select)
 Pure AngularJS directive which creates a dropdown button with multiple or single selections.
 Doesn't require jQuery and works well with other Javascript libraries.
 
-![Screenshot](https://raw.githubusercontent.com/alexandernst/angular-multi-select/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/alexandernst/angular-multi-select/master/assets/screenshot.png)
 
 ### Demo & How To
 Go to http://alexandernst.github.io/angular-multi-select
