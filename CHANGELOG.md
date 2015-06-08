@@ -1,3 +1,7 @@
+### v5.0.7
+##### Added / Updated
+- The dropdown is closed after selecting an item if in single mode
+
 ### v5.0.6
 ##### Added / Updated
 - Now it's possible to use vars from the parent scope in the item's label text
