@@ -1,30 +1,30 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Grouping</h3> 
+        <h3 class="pageHeading">Demo > Grouping</h3>
 
         <p>Grouping</p>
-        <div 
-            angular-multi-select 
+        <div
+            angular-multi-select
             input-model="webBrowsersGrouped"
             output-model="outputBrowsers1"
-            item-label="{| icon |} {| name |}" 
+            item-label="{| icon |} {| name |}"
             search-property="name"
-            tick-property="checked"           
+            tick-property="checked"
             group-property="sub"
             >
         </div>
 
         <h5>Grouping is done by nested additional arrays of objects in your input-model</h5>
         <p>
-            First, in your directive declaration, set a grouping marker using the <code>group-property</code>, 
+            First, in your directive declaration, set a grouping marker using the <code>group-property</code>,
             let's say <code>group-property="sub"</code>. This is our group marker.
-            Now, in your controller, grouping is made by nesting some objects in your input-model array with 
+            Now, in your controller, grouping is made by nesting some objects in your input-model array with
             this <code>sub</code> key.
             Example:
         </p>
             <pre><code>$scope.data = [
-    {   
+    {
         name: 'People',
         sub: [
             {
@@ -49,14 +49,14 @@
 ];</code></pre>
 
         <p>
-            The directive will take care of indentation of grouped items. It supports infinite nested grouping. 
-            You can use HTML tags on groups as usual. Clicking the group header will select/deselect 
+            The directive will take care of indentation of grouped items. It supports infinite nested grouping.
+            You can use HTML tags on groups as usual. Clicking the group header will select/deselect
             all visible items under that particular group EXCEPT on single selection-mode, in which case it will
             deselect everything, then try to select the group if that group contains only 1 sub-item.
         </p>
         <p>
             Below is the code to recreate the multi-select example:
-        </p>        
+        </p>
         <div role="tabpanel">
 
           <!-- Nav tabs -->
@@ -88,45 +88,45 @@
             {
                 name: '&lt;strong&gt;Modern Web Browsers&lt;/strong&gt;',
                 sub: [
-                    { 
-                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32/opera.png" /&gt;',                         
-                        name: 'Opera',              
+                    {
+                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32/opera.png" /&gt;',
+                        name: 'Opera',
                         checked: true
                     },
-                    { 
-                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32/internet_explorer.png" /&gt;',             
-                        name: 'Internet Explorer',  
-                        checked: false   
+                    {
+                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32/internet_explorer.png" /&gt;',
+                        name: 'Internet Explorer',
+                        checked: false
                     },
-                    { 
-                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/humano2/32x32/apps/firefox-icon.png" /&gt;',         
-                        name: 'Firefox',            
-                        checked: true    
+                    {
+                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/humano2/32x32/apps/firefox-icon.png" /&gt;',
+                        name: 'Firefox',
+                        checked: true
                     },
-                    { 
-                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32x32/safari_browser.png" /&gt;',             
-                        name: 'Safari',             
-                        checked: false   
+                    {
+                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32x32/safari_browser.png" /&gt;',
+                        name: 'Safari',
+                        checked: false
                     },
-                    { 
-                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/32/chrome.png" /&gt;',  
-                        name: 'Chrome',             
-                        checked: true   
+                    {
+                        icon: '&lt;img  src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/32/chrome.png" /&gt;',
+                        name: 'Chrome',
+                        checked: true
                     },
                 ]
             },
             {
                 name: '&lt;strong&gt;Classic Web Browsers&lt;/strong&gt;',
                 sub: [
-                    { 
-                        icon: '&lt;img  src="http://www.ucdmc.ucdavis.edu/apps/error/nojavascript/images/netscape_icon.jpg" /&gt;',      
-                        name: 'Netscape Navigator', 
-                        checked: true    
+                    {
+                        icon: '&lt;img  src="http://www.ucdmc.ucdavis.edu/apps/error/nojavascript/images/netscape_icon.jpg" /&gt;',
+                        name: 'Netscape Navigator',
+                        checked: true
                     },
-                    { 
-                        icon: '&lt;img  src="http://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Amaya_logo_65x50.png/48px-Amaya_logo_65x50.png" /&gt;',             
-                        name: 'Amaya',  
-                        checked: true   
+                    {
+                        icon: '&lt;img  src="http://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Amaya_logo_65x50.png/48px-Amaya_logo_65x50.png" /&gt;',
+                        name: 'Amaya',
+                        checked: true
                     },
                     {
                         icon: '&lt;img  src="http://upload.wikimedia.org/wikipedia/commons/8/8c/WorldWideWeb_Icon.png" /&gt;',
@@ -138,15 +138,15 @@
         ]
     }
 ];</pre></code>
-            
+
         </div>
     </div>
 </div>
 
-<script>    
+<script>
     $(document).ready(function() {
         $('pre code').each(function(i, block) {
             hljs.highlightBlock(block);
-        });      
+        });
     });
 </script>

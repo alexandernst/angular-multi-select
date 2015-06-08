@@ -1,23 +1,23 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Helper Elements</h3>        
+        <h3 class="pageHeading">Demo > Helper Elements</h3>
 
         <p>
-            You can define which helper elements to be displayed by using attribute <code>helper-elements</code>, such as:            
+            You can define which helper elements to be displayed by using attribute <code>helper-elements</code>, such as:
         </p>
         <div
-            angular-multi-select 
-            input-model="modernBrowsers" 
+            angular-multi-select
+            input-model="modernBrowsers"
             output-model="outputBrowsers"
-            item-label="{| icon |} {| name |}"        
+            item-label="{| icon |} {| name |}"
             search-property="name"
             tick-property="checked"
             group-property="sub"
             helper-elements="all none noreset nofilter"
             >
-        </div>          
-        
+        </div>
+
         <p>&nbsp;</p>
         <div role="tabpanel">
 
@@ -35,7 +35,7 @@
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
-    item-label="{| icon |} {| name |}" 
+    item-label="{| icon |} {| name |}"
     tick-property="checked"
     ...
     helper-elements="all none noreset nofilter"
@@ -58,7 +58,7 @@
                 </tr>
             </table>
             ];
-        </div>  
+        </div>
             </div>
           </div>
 
@@ -77,12 +77,12 @@
                 <li><code>helper-elements="all none"</code>: will display the "Select all" and "Select none" buttons</li>
                 <li><code>helper-elements="xyz"</code>: will display no helper elements at all</li>
                 <li><code>helper-elements=""</code>: will display "Reset" and "Search" helper elements if in single mode or everything if in multi mode.</li>
-            </ul>            
+            </ul>
         </p>
-    </div>        
+    </div>
 </div>
 
-<script>    
+<script>
     $(document).ready(function() {
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);

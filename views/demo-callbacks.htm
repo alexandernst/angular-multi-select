@@ -1,23 +1,23 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Callbacks</h3>        
+        <h3 class="pageHeading">Demo > Callbacks</h3>
 
         <p>
             The directive provides 8 (eight) callbacks. Open your browser's console to see the output.
         </p>
-        
+
         <br />
 
-        <div 
-            angular-multi-select 
+        <div
+            angular-multi-select
             input-model="modernBrowsers"
             output-model="outputBrowsers"
             group-property="sub"
-            item-label="{| icon |} {| name |}" 
+            item-label="{| icon |} {| name |}"
             tick-property="checked"
             search-property="name"
-            on-open="fOpen()"                
+            on-open="fOpen()"
             on-close="fClose()"
             on-item-click="fClick(item)"
             on-select-all="fSelectAll()"
@@ -43,15 +43,15 @@
             <div role="tabpanel" class="tab-pane active" id="view">
                 <p>Define your directive:</p>
                 <pre><code>&lt;div
-    angular-multi-select 
+    angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
     group-property="sub"
-    item-label="{| icon |} {| name |}" 
+    item-label="{| icon |} {| name |}"
     tick-property="checked"
     search-property="name"
     ...
-    on-open="fOpen()"                
+    on-open="fOpen()"
     on-close="fClose()"
     on-item-click="fClick(item)"
     on-select-all="fSelectAll()"
@@ -77,7 +77,7 @@
                 </tr>
             </table>
             ];
-        </div>  
+        </div>
 
         <p>Define your callback functions:</p>
         <pre><code>$scope.fOpen = function() {
@@ -86,11 +86,11 @@
 
 $scope.fClose = function() {
     console.log('On-close');
-}    
+}
 
-$scope.fClick = function(item) {           
+$scope.fClick = function(item) {
     console.log('On-item-click', item);
-}    
+}
 
 $scope.fSelectAll = function() {
     console.log('On-select-all');
@@ -102,7 +102,7 @@ $scope.fSelectNone = function() {
 
 $scope.fReset = function() {
     console.log('On-reset');
-}        
+}
 
 $scope.fClear = function() {
     console.log('On-clear');
@@ -110,7 +110,7 @@ $scope.fClear = function() {
 
 $scope.fSearchChange = function(input) {
     console.log( 'On-search-change', input);
-}</code></pre>            
+}</code></pre>
     </div>
           </div>
 
@@ -119,11 +119,11 @@ $scope.fSearchChange = function(input) {
 </div>
 
 <div class="row">
-    <div class="col-sm-12">              
+    <div class="col-sm-12">
         <h5>Output model</h5>
         <p>
-            Look at the <code>output-model</code> below to see the values getting updated 
-            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity. 
+            Look at the <code>output-model</code> below to see the values getting updated
+            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
         </p>
         <div class="fauxCode hljs xml">
             $scope.outputBrowsers = [
@@ -138,18 +138,18 @@ $scope.fSearchChange = function(input) {
                 </tr>
             </table>
             ];
-        </div>                
+        </div>
 
         <h5>Learn more</h5>
         </p>
-            Open the <code>/docs/js/controllers/demo-callbacks.js</code>, as well as this view 
+            Open the <code>/docs/js/controllers/demo-callbacks.js</code>, as well as this view
             <code>docs/views/demo-callbacks.htm</code>to learn the code directly.
         </p>
 
-    </div>        
+    </div>
 </div>
 
-<script>    
+<script>
     $(document).ready(function() {
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);

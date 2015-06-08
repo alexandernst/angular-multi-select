@@ -1,25 +1,25 @@
 <div class="row">
     <div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Minimum</h3>        
+        <h3 class="pageHeading">Demo > Minimum</h3>
 
         <p>
-            This is the minimum configuration required by the directive. 
-            Just define your input and output, choose the input-object's property that you want to use as 
+            This is the minimum configuration required by the directive.
+            Just define your input and output, choose the input-object's property that you want to use as
             item & button labels, as well as the property that represents the selection state of an item.
-            For most of you, this would be enough. 
+            For most of you, this would be enough.
         </p>
-        
+
         <br />
         <div
-            isteven-multi-select 
-            input-model="modernBrowsers" 
+            isteven-multi-select
+            input-model="modernBrowsers"
             output-model="outputBrowsers"
-            button-label="icon name"        
-            item-label="icon name maker"        
-            tick-property="ticked"                
+            button-label="icon name"
+            item-label="icon name maker"
+            tick-property="ticked"
             >
-        </div>  
+        </div>
 
         <p>&nbsp;</p>
 
@@ -61,7 +61,7 @@
                 </tr>
             </table>
             ];
-        </div>  
+        </div>
             </div>
           </div>
 
@@ -70,11 +70,11 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12">              
+    <div class="col-sm-12">
         <h5>Output model</h5>
         <p>
-            Look at the <code>output-model</code> below to see the values getting updated 
-            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity. 
+            Look at the <code>output-model</code> below to see the values getting updated
+            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
         </p>
         <div class="fauxCode hljs xml">
             $scope.outputBrowsers = [
@@ -90,11 +90,11 @@
                 </tr>
             </table>
             ];
-        </div>                
-    </div>        
+        </div>
+    </div>
 </div>
 
-<script>    
+<script>
     $(document).ready(function() {
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
