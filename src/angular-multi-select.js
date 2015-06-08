@@ -710,12 +710,15 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					//Listen for mouse events
 					$scope.stopListeningMouseEvents = $scope.$on('angular-multi-select-click', function(msg, obj) {
 						var inside = false;
-						angular.forEach($(obj.event.target).parents(), function(parent) {
-							if(inside === true) return;
-							if($(parent).attr("angular-multi-select") !== undefined) {
+						var el = obj.event.target;
+						while(el) {
+							if(angular.element(el).attr("angular-multi-select") !== undefined) {
 								inside = true;
+								break;
 							}
-						});
+							el = el.parentNode;
+						}
+
 						if(inside === false){
 							$scope.visible = false;
 							$scope.$apply();
