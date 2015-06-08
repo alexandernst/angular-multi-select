@@ -1,3 +1,7 @@
+### v5.0.9
+##### Added / Updated
+- jQuery is not required anymore.
+
 ### v5.0.8
 ##### Added / Updated
 - Close all other instances of the widget before opening it.
