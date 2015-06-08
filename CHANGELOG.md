@@ -1,10 +1,14 @@
+### v5.0.8
+##### Added / Updated
+- Close all other instances of the widget before opening it.
+
 ### v5.0.7
 ##### Added / Updated
-- The dropdown is closed after selecting an item if in single mode
+- The dropdown is closed after selecting an item if in single mode.
 
 ### v5.0.6
 ##### Added / Updated
-- Now it's possible to use vars from the parent scope in the item's label text
+- Now it's possible to use vars from the parent scope in the item's label text.
 
 ### v5.0.5
 ##### Added / Updated
