@@ -827,9 +827,9 @@ angular_multi_select.directive('setFocus', function($timeout) {
 		scope.$watch(attrs.setFocus, function(_new) {
 			$timeout(function() {
 				if(_new) {
-					element.focus();
+					element[0].focus();
 				} else {
-					element.blur();
+					element[0].blur();
 				}
 			});
 		},true);
