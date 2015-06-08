@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.0.7
+ * Current version: 5.0.8
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filter', '$interpolate', function ($sce, $timeout, $filter, $interpolate) {
+angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', function ($rootScope, $sce, $timeout, $filter, $interpolate) {
 	'use strict';
 	return {
 		restrict: 'AE',
@@ -690,11 +690,22 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 			/**
 			 * Watch for show/hide event
 			 */
+			$rootScope.$on('angular-multi-select-on-visible-change', function(msg, obj) {
+				if($scope.$id !== obj.id && obj.visible === true && $scope.visible === true) {
+					$scope.visible = !$scope.visible;
+				}
+			});
 			$scope.$watch('visible', function(_new, _old) {
 				if(!angular.equals(_new, _old) && _new === true) {
 
 					//Make sure we focus the input when opened
 					$scope.kbFocusIndex = $scope.kbFocus.indexOf("input") || 0;
+
+					//Make sre to close other instances of the widget
+					$rootScope.$emit('angular-multi-select-on-visible-change', {
+						visible: $scope.visible,
+						id: $scope.$id
+					});
 
 					//Listen for mouse events
 					$scope.stopListeningMouseEvents = $scope.$on('angular-multi-select-click', function(msg, obj) {
