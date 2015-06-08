@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 4.0.6
+ * Current version: 5.0.7
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -293,7 +293,7 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 				_fmt = _fmt.replace(/\{\|/g, "{{");
 				_fmt = _fmt.replace(/\|\}/g, "}}");
 
-				var _interpolated = $interpolate(_fmt)(item);
+				var _interpolated = $interpolate(_fmt)( angular.extend({}, $scope.$parent, item) );
 
 				/*
 				$interpolate.startSymbol(_s);
@@ -516,6 +516,11 @@ angular_multi_select.directive('angularMultiSelect', ['$sce', '$timeout', '$filt
 
 				$scope._flipCheck(item);
 				$scope._enforceChecks($scope.filteredModel);
+
+				//Close if in single mode
+				if(attrs.selectionMode === "single") {
+					$scope.visible = false;
+				}
 
 				//Run onItemClick callback
 				$scope.onItemClick({
