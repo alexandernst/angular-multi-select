@@ -1,3 +1,7 @@
+### v5.1.1
+##### Added / Updated
+- Performance optimizations (stop $interpolating on each rendered item).
+
 ### v5.1.0
 ##### Added / Updated
 - Simplify interpolation process and start using curly braces for it.

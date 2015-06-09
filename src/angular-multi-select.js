@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.1.0
+ * Current version: 5.1.1
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -85,6 +85,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
 			$scope.itemLabel = element.attr(attrs.$attr.itemLabel);
+			$scope._interpolatedItemLabel = $interpolate($scope.itemLabel);
 			$scope.hiddenProperty = attrs.hiddenProperty;
 
 			$scope.icon = {
@@ -277,7 +278,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope._createLabel = function(item) {
 				var obj = angular.extend({}, $scope.$parent, item);
-				var _interpolated = $interpolate($scope.itemLabel)(obj);
+				var _interpolated = $scope._interpolatedItemLabel(obj);
 
 				return $sce.trustAsHtml(_interpolated);
 			};
