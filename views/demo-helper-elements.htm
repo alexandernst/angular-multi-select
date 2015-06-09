@@ -10,7 +10,7 @@
             angular-multi-select
             input-model="modernBrowsers"
             output-model="outputBrowsers"
-            item-label="{| icon |} {| name |}"
+            item-label="{{ icon }} {{ name }}"
             search-property="name"
             tick-property="checked"
             group-property="sub"
@@ -35,7 +35,7 @@
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
-    item-label="{| icon |} {| name |}"
+    item-label="{{ icon }} {{ name }}"
     tick-property="checked"
     ...
     helper-elements="all none noreset nofilter"

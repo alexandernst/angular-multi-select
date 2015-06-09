@@ -13,14 +13,14 @@
             angular-multi-select
             input-model="dynamicData"
             output-model="outputBrowsers"
-            item-label="{| icon |} {| name |}"
+            item-label="{{ icon }} {{ name }}"
             tick-property="checked"
             >
         </div>
         <h5>Update input-model</h5>
         <p>
             Click one of the buttons below to load different data into it.
-        </p>        
+        </p>
         <p>
             <button type="button" class="btn btn-success btn-xs" ng-click="switchSource('modernBrowsers')" >Load modern browsers</button>
             <button type="button" class="btn btn-primary btn-xs" ng-click="switchSource('oldBrowsers')" >Load old browsers</button>
@@ -54,7 +54,7 @@
     angular-multi-select
     input-model="dynamicData"
     output-model="outputBrowsers"
-    item-label="{| icon |} {| name |}"
+    item-label="{{ icon }} {{ name }}"
     tick-property="checked"
 &gt;
 &lt;/div&gt;
