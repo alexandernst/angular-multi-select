@@ -1,3 +1,7 @@
+### v5.1.0
+##### Added / Updated
+- Simplify interpolation process and start using curly braces for it.
+
 ### v5.0.9
 ##### Added / Updated
 - jQuery is not required anymore.
