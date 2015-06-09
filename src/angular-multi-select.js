@@ -64,7 +64,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 		link: function ($scope, element, attrs) {
 
-			attrs.itemLabel = attrs.itemLabel || "";
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
@@ -85,7 +84,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.tickProperty = attrs.tickProperty;
 			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
-			$scope.itemLabel = attrs.itemLabel;
+			$scope.itemLabel = element.attr(attrs.$attr.itemLabel);
 			$scope.hiddenProperty = attrs.hiddenProperty;
 
 			$scope.icon = {
@@ -277,28 +276,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._createLabel = function(item) {
-
-				var _fmt = attrs.itemLabel;
-
-				//TODO: It would be nicer to make this "the Angular way"
-				//http://stackoverflow.com/questions/30503000/
-				/*
-				var _s = $interpolate.startSymbol();
-				var _e = $interpolate.endSymbol();
-
-				$interpolate.startSymbol("{|");
-				$interpolate.endSymbol("|}");
-				*/
-
-				_fmt = _fmt.replace(/\{\|/g, "{{");
-				_fmt = _fmt.replace(/\|\}/g, "}}");
-
-				var _interpolated = $interpolate(_fmt)( angular.extend({}, $scope.$parent, item) );
-
-				/*
-				$interpolate.startSymbol(_s);
-				$interpolate.endSymbol(_e);
-				*/
+				var obj = angular.extend({}, $scope.$parent, item);
+				var _interpolated = $interpolate($scope.itemLabel)(obj);
 
 				return $sce.trustAsHtml(_interpolated);
 			};
