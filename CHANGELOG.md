@@ -1,6 +1,10 @@
+### v5.1.3
+##### Added / Updated
+- jQuery is still needed for development and testing.
+
 ### v5.1.2
 ##### Added / Updated
-- Remove jQuery from the dependencies in package.json
+- Remove jQuery from the dependencies in package.json.
 
 ### v5.1.1
 ##### Added / Updated
