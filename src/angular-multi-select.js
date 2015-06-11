@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.1.3
+ * Current version: 5.1.4
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------

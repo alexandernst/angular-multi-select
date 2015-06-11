@@ -1,3 +1,7 @@
+### v5.1.4
+##### Added / Updated
+- Output model wasn't updated when everything was deselected.
+
 ### v5.1.3
 ##### Added / Updated
 - jQuery is still needed for development and testing.
