@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.1.4
+ * Current version: 5.1.5
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -777,6 +777,22 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					//Run onClose callback
 					$scope.onClose();
 				}
+			});
+
+			/**
+			 * Destroy the directive and stop listening to events if the
+			 * directive gets removed from the DOM
+			 */
+			element.on("$destroy", function() {
+				if($scope.stopListeningMouseEvents) {
+					$scope.stopListeningMouseEvents();
+				}
+				if($scope.stopListeningKeyboardEvents) {
+					$scope.stopListeningKeyboardEvents();
+				}
+				$scope._shadowModel = [];
+				$scope.filteredModel = [];
+				$scope.$destroy();
 			});
 
 		} //end of link function
