@@ -1,3 +1,7 @@
+### v5.1.5
+##### Added / Updated
+- Handle destroy event (prevent possible memory leak).
+
 ### v5.1.4
 ##### Added / Updated
 - Output model wasn't updated when everything was deselected.
