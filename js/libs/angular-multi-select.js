@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.1.1
+ * Current version: 5.1.4
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -622,10 +622,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
-					$scope.outputModel = $scope._walk(angular.copy($scope._shadowModel), attrs.groupProperty, function(_item) {
+					var _tmp = $scope._walk(angular.copy($scope._shadowModel), attrs.groupProperty, function(_item) {
 						$scope.kbFocus.push(_item[attrs.idProperty]);
 						return $scope._isChecked(_item);
 					});
+					$scope.outputModel = _tmp === null ? [] : _tmp;
 
 					$scope.kbFocus = [];
 					if($scope.helperStatus.all === true) {
