@@ -1,3 +1,7 @@
+### v5.1.6
+##### Added / Updated
+- Trigger callbacks after applying all the changes (on next tick).
+
 ### v5.1.5
 ##### Added / Updated
 - Handle destroy event (prevent possible memory leak).

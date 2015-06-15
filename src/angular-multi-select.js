@@ -503,9 +503,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				}
 
 				//Run onItemClick callback
-				$scope.onItemClick({
-					item: angular.copy(item)
-				});
+				$timeout(function() {
+					$scope.onItemClick({
+						item: angular.copy(item)
+					});
+				}, 0);
 			};
 
 			/**
@@ -553,7 +555,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope._checkAll($scope.filteredModel);
 
 				//Run onSelectAll callback
-				$scope.onSelectAll();
+				$timeout(function() {
+					$scope.onSelectAll();
+				}, 0);
 			};
 
 			/**
@@ -563,15 +567,19 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope._uncheckAll($scope.filteredModel);
 
 				//Run onSelectNone callback
-				$scope.onSelectNone();
+				$timeout(function() {
+					$scope.onSelectNone();
+				}, 0);
 			};
 
 			/**
 			 * Called when the 'reset' button is clicked
 			 */
 			$scope.reset = function() {
-				$scope.onReset();
 				$scope.fillShadowModel();
+				$timeout(function() {
+					$scope.onReset();
+				}, 0);
 			};
 
 			/**
@@ -581,7 +589,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope.searchInput.value = "";
 
 				//Run onClear callback
-				$scope.onClear();
+				$timeout(function() {
+					$scope.onClear();
+				}, 0);
 			};
 
 			/**
@@ -662,9 +672,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					}
 
 					//Run onSearchChange callback
-					$scope.onSearchChange({
-						input: _new
-					});
+					$timeout(function() {
+						$scope.onSearchChange({
+							input: _new
+						});
+					}, 0);
 				}
 			});
 
@@ -763,7 +775,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					});
 
 					//Run onOpen callback
-					$scope.onOpen();
+					$timeout(function() {
+						$scope.onOpen();
+					}, 0);
 				} else if (!angular.equals(_new, _old) && _new === false){
 
 					//Stop listening for mouse events
@@ -775,7 +789,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					$scope.stopListeningKeyboardEvents = null;
 
 					//Run onClose callback
-					$scope.onClose();
+					$timeout(function() {
+						$scope.onClose();
+					}, 0);
 				}
 			});
 
