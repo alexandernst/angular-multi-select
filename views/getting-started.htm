@@ -84,7 +84,7 @@ element, because mouse/keyboard events could be blocked by a 3rd party code.
 
     <p>As an attribute.</p>
 
-        <pre><code>&lt;div
+        <pre><code ng-non-bindable>&lt;div
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
@@ -98,7 +98,7 @@ element, because mouse/keyboard events could be blocked by a 3rd party code.
 
         <p>... or as an element, but be careful with browser compatibility.</p>
 
-        <pre><code>&lt;angular-multi-select
+        <pre><code ng-non-bindable>&lt;angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
     item-label="{{ icon }} {{ name }}"

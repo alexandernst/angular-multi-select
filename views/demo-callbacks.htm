@@ -42,7 +42,7 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="view">
                 <p>Define your directive:</p>
-                <pre><code>&lt;div
+                <pre><code ng-non-bindable>&lt;div
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
@@ -70,9 +70,9 @@
                 <tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
                     <td>&nbsp;</td>
                     <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
+                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value" ng-non-bindable>"{{removeHost(row.icon)}}"</span>,</td>
+                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
@@ -131,9 +131,9 @@ $scope.fSearchChange = function(input) {
                 <tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
                     <td>&nbsp;</td>
                     <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
+                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value" ng-non-bindable>"{{removeHost(row.icon)}}"</span>,</td>
+                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
+                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
                 </tr>
             </table>
