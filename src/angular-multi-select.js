@@ -776,6 +776,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 					//Run onOpen callback
 					$timeout(function() {
+						$scope._open_pos();
 						$scope.onOpen();
 					}, 0);
 				} else if (!angular.equals(_new, _old) && _new === false){
@@ -790,6 +791,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 					//Run onClose callback
 					$timeout(function() {
+						$scope._close_pos();
 						$scope.onClose();
 					}, 0);
 				}
@@ -810,6 +812,38 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope.filteredModel = [];
 				$scope.$destroy();
 			});
+
+			/**
+			 * Open the layer on top or to the left of the button if there is
+			 * no enough space.
+			 */
+			$scope._open_pos = function() {
+				var ams_layer = angular.element(element[0].querySelector(".ams_layer"));
+				var _bounds = ams_layer[0].getBoundingClientRect();
+
+				var classes = "";
+				if(window.innerHeight - _bounds.top - _bounds.height < 0) {
+					classes += "position_top ";
+				}
+
+				if(window.innerWidth - _bounds.left - _bounds.width < 0) {
+					classes += "position_left ";
+				}
+
+				ams_layer.addClass(classes);
+			};
+
+			/**
+			 * We need to remove the classes after closing and not before
+			 * opening because we could hit a race condition while calculing
+			 * the width/height of the layer
+			 */
+			$scope._close_pos = function() {
+				var ams_layer = angular.element(element[0].querySelector(".ams_layer"));
+
+				ams_layer.removeClass("position_top");
+				ams_layer.removeClass("position_left");
+			};
 
 		} //end of link function
 	}; //end of return

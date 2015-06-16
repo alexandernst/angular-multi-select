@@ -76,6 +76,20 @@
 	min-width:278px;
 }
 
+.ams .ams_layer.position_top {
+	transform: translate(0, -100%);
+	top: 0;
+}
+
+.ams .ams_layer.position_left {
+	transform: translate(-100%, 0);
+	left: 100%;
+}
+
+.ams .ams_layer.position_left.position_top {
+	transform: translate(-100%, -100%);
+}
+
 /* container of helper elements */
 .ams .ams_helpers_container {
 	border-bottom: 1px solid #ddd;
