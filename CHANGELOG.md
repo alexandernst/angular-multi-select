@@ -1,6 +1,7 @@
-### v5.1.6
+### v5.2.0
 ##### Added / Updated
 - Trigger callbacks after applying all the changes (on next tick).
+- Show the layer on the left/top of the button if there is no enough space.
 
 ### v5.1.5
 ##### Added / Updated
