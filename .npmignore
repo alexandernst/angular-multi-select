@@ -1,5 +1,6 @@
 .git
 .gitignore
+/demo
 /node_modules
 /spec
 CHANGELOG.md
