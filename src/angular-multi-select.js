@@ -92,7 +92,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				selectAll: '&#10003;',
 				selectNone: '&times;',
 				reset: '&#8630;',
-				tickMark: $sce.trustAsHtml('&#10003;')
+				tick: $sce.trustAsHtml('&#10003;')
 			};
 
 			$scope._trans = {
@@ -852,9 +852,9 @@ angular_multi_select.directive('setFocus', function($timeout) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
-		"<div class='multiSelectItem' ng-click='clickItem(item, true);' ng-class='{selected: item[tickProperty], multiSelectGroup:_hasChildren(item, false) > 0, multiSelectFocus: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
+		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_group:_hasChildren(item, false) > 0, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createLabel(item)'></div>" +
-			"<span class='tickMark' ng-if='item[tickProperty] === true' ng-bind-html='icon.tickMark'></span>"+
+			"<span class='ams_tick' ng-if='item[tickProperty] === true' ng-bind-html='icon.tick'></span>" +
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
@@ -867,41 +867,41 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template =
-		'<span class="multiSelect inlineBlock">' +
+		'<span class="ams">' +
 			// main button
-			'<button class="ams_button" type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
+			'<button class="ams_btn" type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
 			// overlay layer
-			'<div class="checkboxLayer" ng-show="visible">' +
+			'<div class="ams_layer" ng-show="visible">' +
 				// container of the helper elements
-				'<div class="helperContainer" ng-if="helperStatus.filter || helperStatus.all || helperStatus.none || helperStatus.reset ">' +
+				'<div class="ams_helpers_container" ng-if="helperStatus.filter || helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 					// container of the first 3 buttons, select all, none and reset
-					'<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
+					'<div class="ams_row" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
-						'<button type="button" class="helperButton ams_selectall"' +
+						'<button type="button" class="ams_helper_btn ams_selectall"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
-						'<button type="button" class="helperButton ams_selectnone"' +
+						'<button type="button" class="ams_helper_btn ams_selectnone"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
-						'<button type="button" class="helperButton reset ams_reset"' +
+						'<button type="button" class="ams_helper_btn reset ams_reset"' +
 							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
 					// the search box
-					'<div class="line" style="position:relative" ng-if="helperStatus.filter">'+
+					'<div class="ams_row ams_search" ng-if="helperStatus.filter">'+
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
 							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="clearButton ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
+						'<button type="button" class="ams_helper_btn ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
 					'</div> '+
 				'</div> '+
 
 				// selection items
-				'<div class="checkBoxContainer">'+
+				'<div class="ams_items_container">'+
 					"<ul>" +
 						"<li ng-repeat='item in filteredModel | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 					"</ul>" +
