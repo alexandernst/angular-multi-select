@@ -29,9 +29,12 @@
 			input-model="modernBrowsers"
 			output-model="outputBrowsers"
 			item-label="{{ icon }} {{ name }}"
-			selection-mode="single"
+			selection-mode="multi"
 			tick-property="checked"
 			helper-elements="all none reset filter"
+			button-label="{{ icon }} {{ name }}"
+			button-label-separator='[", ","!?"]'
+			button-template="angular-multi-select-btn-data.htm"
 		>
 		</div>
 

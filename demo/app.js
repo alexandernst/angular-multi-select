@@ -25,7 +25,8 @@ app.controller('MainCtrl', function($scope) {
 			sub: [
 				{
 					icon: '<img  src="https://cdn0.iconfinder.com/data/icons/fatcow/32x32/safari_browser.png" />',
-					name: "Safari"
+					name: "Safari",
+					checked: true
 				},
 				{
 					icon: '<img  src="https://cdn1.iconfinder.com/data/icons/logotypes/32/opera-32.png" />',
@@ -38,7 +39,7 @@ app.controller('MainCtrl', function($scope) {
 
 	$scope.$watch("outputBrowsers", function(_new, _old) {
 		if(_new && !angular.equals(_new, _old)) {
-		    //console.log(_new);
+			console.log(_new);
 		}
 	}, true);
 
