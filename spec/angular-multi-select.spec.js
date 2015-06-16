@@ -51,53 +51,53 @@ describe('Testing directive in single mode', function() {
 	});
 
 	it('Should create the items layer & container', function() {
-		expect(element).toContainElement('div.checkboxLayer');
-		expect(element).toContainElement('div.checkBoxContainer');
+		expect(element).toContainElement('div.ams_layer');
+		expect(element).toContainElement('div.ams_items_container');
 	});
 
 	it('Should contain 3 main categories', function() {
-		expect($('div.checkboxLayer > div')).toHaveLength(2);
-		expect($('div.checkBoxContainer > ul > li')).toHaveLength(3);
-		expect($('div.checkBoxContainer > ul > li > div > div')).toContainText("Modern browsers");
+		expect($('div.ams_layer > div')).toHaveLength(2);
+		expect($('div.ams_items_container > ul > li')).toHaveLength(3);
+		expect($('div.ams_items_container > ul > li > div > div')).toContainText("Modern browsers");
 	});
 
 	it("Should handle 'hidden' items correctly", function() {
-		expect($('.multiSelectItem')).toHaveLength(13);
+		expect($('.ams_item')).toHaveLength(13);
 	});
 
 	it("Only 1 element (and all it's parents) should be checked", function() {
-		expect($('.selected')).toHaveLength(3);
+		expect($('.ams_selected')).toHaveLength(3);
 	});
 
 	it("Should deselect all when clicked parent group", function() {
-		$(".multiSelectItem > div:contains('Closed Source')").click();
-		expect($('.selected')).toHaveLength(0);
+		$(".ams_item > div:contains('Closed Source')").click();
+		expect($('.ams_selected')).toHaveLength(0);
 	});
 
 	it("When a group is clicked, should not mark itself as checked if it contains more than 1 element (even hidden elements block selection!)", function() {
-		$(".multiSelectItem > div:contains('Closed Source')").click();
-		expect($('.selected')).toHaveLength(0);
+		$(".ams_item > div:contains('Closed Source')").click();
+		expect($('.ams_selected')).toHaveLength(0);
 
-		$(".multiSelectItem > div:contains('Closed Source')").click();
-		expect($('.selected')).toHaveLength(0);
+		$(".ams_item > div:contains('Closed Source')").click();
+		expect($('.ams_selected')).toHaveLength(0);
 
-		$(".multiSelectItem > div:contains('Open Source')").click();
-		expect($('.selected')).toHaveLength(0);
+		$(".ams_item > div:contains('Open Source')").click();
+		expect($('.ams_selected')).toHaveLength(0);
 	});
 
 	it("Should filter correctly when searching", function() {
 		$('input.inputFilter').val("chro");
 		$('input.inputFilter').trigger("input");
-		expect($('.multiSelectItem')).toHaveLength(5);
+		expect($('.ams_item')).toHaveLength(5);
 	});
 
 	it("Should be visible when the button is clicked", function() {
-		$('button.ams_button').click();
-		expect('div.checkboxLayer').toBeVisible();
+		$('button.ams_btn').click();
+		expect('div.ams_layer').toBeVisible();
 	});
 
 	it("Should focus the input when opened", function() {
-		$('button.ams_button').click();
+		$('button.ams_btn').click();
 		timeout.flush();
 		expect($('input.inputFilter')).toBeFocused();
 	});
@@ -107,37 +107,37 @@ describe('Testing directive in single mode', function() {
 		event.initEvent("keydown", true, true);
 		event.which = 40;
 
-		$('button.ams_button').click();
+		$('button.ams_btn').click();
 		scope.$broadcast('angular-multi-select-keydown', { event: event } );
 		scope.$broadcast('angular-multi-select-keydown', { event: event } );
 
-		expect($('.multiSelectFocus')).toHaveLength(1);
+		expect($('.ams_focused')).toHaveLength(1);
 	});
 
 	it("Should react to 'select all' by unselecting everything (because we're in single mode)", function() {
 		$('.ams_selectall').click();
-		expect($('.selected')).toHaveLength(0);
+		expect($('.ams_selected')).toHaveLength(0);
 	});
 
 	it("Should react to 'select none'", function() {
 		$('.ams_selectnone').click();
-		expect($('.selected')).toHaveLength(0);
+		expect($('.ams_selected')).toHaveLength(0);
 	});
 
 	it("Should react to 'reset'", function() {
-		$(".multiSelectItem > div:contains('Internet Explorer')").click();
-		expect($('.selected')).toHaveLength(2);
+		$(".ams_item > div:contains('Internet Explorer')").click();
+		expect($('.ams_selected')).toHaveLength(2);
 		$('.ams_reset').click();
-		expect($('.selected')).toHaveLength(3);
+		expect($('.ams_selected')).toHaveLength(3);
 	});
 
 	it("Should react to 'clear'", function() {
 		$('input.inputFilter').val("chro");
 		$('input.inputFilter').trigger("input");
-		expect($('.multiSelectItem')).toHaveLength(5);
+		expect($('.ams_item')).toHaveLength(5);
 
 		$('.ams_clear').click();
-		expect($('.multiSelectItem')).toHaveLength(13);
+		expect($('.ams_item')).toHaveLength(13);
 	});
 });
 
@@ -190,27 +190,27 @@ describe('Testing directive in multi mode', function() {
 	});
 
 	it("4 elements (and all their parents) should be checked", function() {
-		expect($('.selected')).toHaveLength(8);
+		expect($('.ams_selected')).toHaveLength(8);
 	});
 
 	it("Should deselect all when clicked parent group", function() {
-		$(".multiSelectItem > div:contains('Open Source')").click();
-		expect($('.selected', ".multiSelectItem > div:contains('Open Source')" )).toHaveLength(0);
+		$(".ams_item > div:contains('Open Source')").click();
+		expect($('.ams_selected', ".ams_item > div:contains('Open Source')" )).toHaveLength(0);
 	});
 
 	it("Should select all when a group with no checked children is clicked", function() {
-		$(".multiSelectItem > div:contains('Modern browsers')").click().click();
-		expect($('.selected', "li:contains('Modern browsers')" )).toHaveLength(7);
+		$(".ams_item > div:contains('Modern browsers')").click().click();
+		expect($('.ams_selected', "li:contains('Modern browsers')" )).toHaveLength(7);
 	});
 
 	it("Should deselect all when a group is clicked, if all elements are selected", function() {
-		$(".multiSelectItem > div:contains('Modern browsers')").click();
-		expect($('.selected', "li:contains('Modern browsers')" )).toHaveLength(0);
+		$(".ams_item > div:contains('Modern browsers')").click();
+		expect($('.ams_selected', "li:contains('Modern browsers')" )).toHaveLength(0);
 	});
 
 	it("Should react to 'select all' by selecting everything", function() {
 		$('.ams_selectall').click();
-		expect($('.selected')).toHaveLength(13);
+		expect($('.ams_selected')).toHaveLength(13);
 	});
 
 	it("Should react to 'select none' by unselecting everything", function() {
