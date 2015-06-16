@@ -17,11 +17,14 @@
 		<div
 			angular-multi-select
 			on-item-click="clicked(item)"
+			group-property="sub"
 			input-model="modernBrowsers"
 			output-model="outputBrowsers"
 			item-label="{{ icon }} {{ name }}"
 			selection-mode="single"
-			tick-property="checked">
+			tick-property="checked"
+			helper-elements="all none reset filter"
+		>
 		</div>
 
 	</body>
