@@ -46,10 +46,6 @@ describe('Testing directive in single mode', function() {
 		expect(element).not.toBeEmpty();
 	});
 
-	it('Should create a button', function() {
-		expect(element).toContainElement('button[ng-bind-html="buttonLabel"]');
-	});
-
 	it('Should create the items layer & container', function() {
 		expect(element).toContainElement('div.ams_layer');
 		expect(element).toContainElement('div.ams_items_container');
