@@ -50,6 +50,7 @@ module.exports = function(grunt) {
 			src: {
 				src: 'src/*.js',
 				options: {
+					styles: 'src/*.css',
 					helpers: 'spec/helpers/*.js',
 					specs: 'spec/*.js',
 					vendor: [

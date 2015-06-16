@@ -1,3 +1,7 @@
+### v5.2.1
+##### Added / Updated
+- Bring back button customization.
+
 ### v5.2.0
 ##### Added / Updated
 - Trigger callbacks after applying all the changes (on next tick).

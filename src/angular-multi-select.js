@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.2.0
+ * Current version: 5.2.1
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -70,6 +70,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
 			attrs.hiddenProperty = attrs.hiddenProperty || "";
+			attrs.buttonLabelSeparator = attrs.buttonLabelSeparator || '[", ", ""]';
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
 
 			$scope._shadowModel = [];
@@ -80,12 +81,15 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.kbFocus = [];
 			$scope.kbFocusIndex = null;
 			$scope.visible = false;
-			$scope.buttonLabel = '';
 			$scope.tickProperty = attrs.tickProperty;
 			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
 			$scope.itemLabel = element.attr(attrs.$attr.itemLabel);
 			$scope._interpolatedItemLabel = $interpolate($scope.itemLabel);
+			$scope.buttonLabel =  attrs.hasOwnProperty("buttonLabel") ? element.attr(attrs.$attr.buttonLabel) : "";
+			$scope._interpolatedButtonLabel = $interpolate($scope.buttonLabel);
+			$scope.buttonTemplate = attrs.buttonTemplate;
+			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
 
 			$scope.icon = {
@@ -96,6 +100,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._trans = {
+				selected: "selected",
 				selectAll: "Select all",
 				selectNone: "Select none",
 				reset: "Reset",
@@ -270,6 +275,20 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				});
 
 				return _nodes;
+			};
+
+			$scope._createButtonLabel = function(objs, index) {
+				//"{{ objs.length == 1 ? '' : $last ? buttonLabelSeparator[1] : buttonLabelSeparator[0] }}" +
+				var obj = objs[index];
+
+				var _interpolated = $scope._interpolatedButtonLabel(obj);
+
+				var _s = "";
+				if(objs.length > 1) {
+					_s += index == objs.length - 1 ? $scope.buttonLabelSeparator[1] : $scope.buttonLabelSeparator[0];
+				}
+
+				return $sce.trustAsHtml(_interpolated + _s);
 			};
 
 			/**
@@ -627,10 +646,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope.$watch('filteredModel', function(_new) {
 				if(_new) {
-					var _n_selected = Math.abs($scope._areAllChecked($scope.filteredModel));
-					$scope.buttonLabel =  _n_selected + " selected";
-					$scope.buttonLabel = $sce.trustAsHtml( $scope.buttonLabel + '<span class="caret"></span>' );
-
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
@@ -888,6 +903,24 @@ angular_multi_select.directive('setFocus', function($timeout) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
+		"<div class='ams_btn_template_repeat'>{{ Math.abs(_areAllChecked(filteredModel)) }} {{ _trans.selected }}</div>" +
+		"<span class='caret'></span>" +
+		"";
+	$templateCache.put('angular-multi-select-btn-count.htm', template);
+}]);
+
+angular_multi_select.run(['$templateCache', function($templateCache) {
+	'use strict';
+	var template = "" +
+		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(outputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
+		"<span class='caret'></span>" +
+		"";
+	$templateCache.put('angular-multi-select-btn-data.htm', template);
+}]);
+
+angular_multi_select.run(['$templateCache', function($templateCache) {
+	'use strict';
+	var template = "" +
 		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_group:_hasChildren(item, false) > 0, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createItemLabel(item)'></div>" +
 			"<span class='ams_tick' ng-if='item[tickProperty] === true' ng-bind-html='icon.tick'></span>" +
@@ -905,7 +938,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template =
 		'<span class="ams">' +
 			// main button
-			'<button class="ams_btn" type="button" ng-click="visible = !visible" ng-bind-html="buttonLabel"></button>' +
+			"<button class='ams_btn' type='button' ng-click='visible = !visible'><div class='ams_btn_template' ng-include src='buttonTemplate'></div></button>" +
 			// overlay layer
 			'<div class="ams_layer" ng-show="visible">' +
 				// container of the helper elements

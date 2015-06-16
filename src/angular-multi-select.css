@@ -46,9 +46,9 @@
 	color: #999;
 }
 
-/* button: clicked */
-.ams .buttonClicked {
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+.ams > .ams_btn .ams_btn_template_repeat {
+	float: left;
+	white-space: pre;
 }
 
 /* downward pointing arrow */
