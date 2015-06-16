@@ -70,7 +70,7 @@
                 <tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
                     <td>&nbsp;</td>
                     <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value" ng-non-bindable>"{{removeHost(row.icon)}}"</span>,</td>
+                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
                     <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
@@ -131,7 +131,7 @@ $scope.fSearchChange = function(input) {
                 <tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
                     <td>&nbsp;</td>
                     <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value" ng-non-bindable>"{{removeHost(row.icon)}}"</span>,</td>
+                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
                     <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
                     <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
                     <td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
