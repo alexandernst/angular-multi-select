@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-			files: ['<%= jshint.files %>', 'demo/*'],
+			files: ['<%= jshint.files %>', 'src/*.css', 'demo/*'],
 			tasks: ['clear'],
 			options: {
 				debounceDelay: 1000,
