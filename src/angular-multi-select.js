@@ -881,7 +881,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 					element[0].blur();
 				}
 			});
-		},true);
+		}, true);
 	};
 });
 
