@@ -117,6 +117,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
 
+			$scope.Math = window.Math;
+
 			/**
 			 * Helper function to inverse the result of a function called by a filter from a template
 			 * @param f
