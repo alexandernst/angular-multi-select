@@ -1,7 +1,17 @@
 module.exports = function(grunt) {
 
+	var LIVERELOAD_PORT = 35729;
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+
+		connect: {
+			server: {
+				options: {
+					livereload: LIVERELOAD_PORT
+				}
+			}
+		},
 
 		jshint: {
 			files: ['Gruntfile.js', 'src/*.js', 'spec/*.js', 'spec/helpers/*.js'],
@@ -54,10 +64,11 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-			files: ['<%= jshint.files %>'],
-			tasks: ['clear', 'default'],
+			files: ['<%= jshint.files %>', 'demo/*'],
+			tasks: ['clear'],
 			options: {
-				debounceDelay: 1000
+				debounceDelay: 1000,
+				livereload: LIVERELOAD_PORT
 			}
 		}
 	});
@@ -67,8 +78,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-clear');
 
+	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
 	grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'jasmine']);
 
 };
