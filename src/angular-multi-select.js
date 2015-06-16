@@ -276,7 +276,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @returns {String}
 			 * @private
 			 */
-			$scope._createLabel = function(item) {
+			$scope._createItemLabel = function(item) {
 				var obj = angular.extend({}, $scope.$parent, item);
 				var _interpolated = $scope._interpolatedItemLabel(obj);
 
@@ -887,7 +887,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
 		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_group:_hasChildren(item, false) > 0, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
-			"<div ng-bind-html='_createLabel(item)'></div>" +
+			"<div ng-bind-html='_createItemLabel(item)'></div>" +
 			"<span class='ams_tick' ng-if='item[tickProperty] === true' ng-bind-html='icon.tick'></span>" +
 		"</div>" +
 
