@@ -489,7 +489,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					$scope.kbFocusIndex = null;
 				}
 
-				if(attrs.selectionMode === 'single' && $scope._areAllChecked($scope._shadowModel) !== 0) {
+				if(attrs.selectionMode === "single" && $scope._areAllChecked($scope._shadowModel) !== 0) {
 					if (!(($scope._hasChildren(item, false) === 0 || $scope._hasChildren(item) === 1) && $scope._isChecked(item))) {
 						$scope._uncheckAll($scope._shadowModel);
 						$scope._uncheckAll($scope.filteredModel);
@@ -894,7 +894,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
-			"<li ng-repeat='item in item[groupProperty] | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\" ></li>" +
+			"<li ng-repeat='item in item[groupProperty] | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 		"</ul>" +
 		"";
 	$templateCache.put('angular-multi-select-item.htm', template);
