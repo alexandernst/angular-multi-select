@@ -70,6 +70,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
 			attrs.hiddenProperty = attrs.hiddenProperty || "";
+			attrs.buttonTemplate = attrs.buttonTemplate || "angular-multi-select-btn-count.htm";
 			attrs.buttonLabelSeparator = attrs.buttonLabelSeparator || '[", ", ""]';
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
 
