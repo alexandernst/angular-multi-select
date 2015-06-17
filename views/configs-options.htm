@@ -100,16 +100,17 @@
             <span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ icon }} {{ name }}"&gt;&lt;/div&gt;</code>
         </p>
 
-        <h5>hidden-property</h5>
+        <h5>button-template</h5>
         <p>
-            input-model property (of each item) with a boolean value that represents whether the item is hidden or not. Note that even if an element
-            is hidden, it will still count for tick logic (selecting a group with 1 visible and 1 hidden element, in single mode, won't select the
-            visible element).
+            A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
+            default templates: <code>angular-multi-select-btn-count.htm</code>, which will render the number of selected items followed by the word "selected" (or
+            translation, if available) and <code>angular-multi-select-btn-data.htm</code>, which will render each of the selected items following the
+            <code>button-label</code> and <code>button-label-separator</code> you provide.
         </p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... hidden-property="is_hidden"&gt;&lt;/div&gt;</code>
+            <span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
         </p>
 
         <h5>tick-property</h5> <span class="label label-primary">required</span>
@@ -151,6 +152,18 @@
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
         </p>
 
+        <h5>hidden-property</h5>
+        <p>
+            input-model property (of each item) with a boolean value that represents whether the item is hidden or not. Note that even if an element
+            is hidden, it will still count for tick logic (selecting a group with 1 visible and 1 hidden element, in single mode, won't select the
+            visible element).
+        </p>
+        <p>
+            <span class="inlineTitle">Type</span>: String<br />
+            <span class="inlineTitle">Default value</span>: "" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... hidden-property="is_hidden"&gt;&lt;/div&gt;</code>
+        </p>
+
         <h5>helper-elements</h5>
         <p>
             Define which helper buttons (Select all, none, reset, filter box) to be displayed.
@@ -170,7 +183,7 @@
             </ul>
         </p>
 
-        <h5>search-property</h5> <span class="label label-warning">New! v3.0.0</span>
+        <h5>search-property</h5>
         <p>
             Set which input-model property should be searched. If none is set, search won't work properly.
         </p>
@@ -180,7 +193,7 @@
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... search-property="name"&gt;&lt;/div&gt;</code>.
         </p>
 
-        <h5>min-search-length</h5> <span class="label label-warning">New! v3.0.0</span>
+        <h5>min-search-length</h5>
         <p>
             Set the minimum characters required to trigger search action.
         </p>
@@ -190,7 +203,7 @@
             <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.
         </p>
 
-        <h5>translation</h5> <span class="label label-warning">New! v3.0.0</span>
+        <h5>translation</h5>
         <p>
             Use custom text on the helper elements. You can use different text. You don't have too define
             the text of all items, as both new and default texts will be merged.
@@ -203,6 +216,7 @@
         <p>
             In your controller:
             <pre ><code>$scope.localLang = {
+    selected        : "selected",
     selectAll       : "Tick all",
     selectNone      : "Tick none",
     reset           : "Undo all",
@@ -210,7 +224,6 @@
 }</code></pre>
         </p>
 
-        <!--
         <h5>on-open</h5>
         <p>
             A $scope function to call on multi-select open. You need to define this function in your controller.
@@ -219,7 +232,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-open="funcOpen()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-open="fOpen()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-close</h5>
@@ -231,7 +244,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-close="funcClose()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-close="fClose()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-item-click</h5>
@@ -242,8 +255,8 @@
         <p>
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: Will pass a singular object of the clicked item<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-item-click="funcClick( data )"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Parameter</span>: Will pass a copy of the clicked item<br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-item-click="fClick(item)"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-select-all</h5>
@@ -255,7 +268,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-all="funcSelectAll()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-all="fSelectAll()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-select-none</h5>
@@ -267,7 +280,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-select-none="funcSelectNone()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-none="fSelectNone()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-reset</h5>
@@ -279,7 +292,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-reset="funcReset()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-reset="fReset()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-clear</h5>
@@ -291,7 +304,7 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-clear="funcClear()"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-clear="fClear()"&gt;&lt;/div&gt;</code>.
         </p>
 
         <h5>on-search-change</h5>
@@ -303,19 +316,8 @@
             <span class="inlineTitle">Type</span>: $scope function<br />
             <span class="inlineTitle">Default value</span>: N/A<br />
             <span class="inlineTitle">Parameter</span>: Will pass the string that you type and the result<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... on-filter-change="funcFilterChange( data )"&gt;&lt;/div&gt;</code>.
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-filter-change="fFilterChange(input)"&gt;&lt;/div&gt;</code>.
         </p>
-
-        <h5>output-properties</h5> <span class="label label-warning">New! v4.0.0</span>
-        <p>
-            Set what model properties you want to have in your output-model
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String. Separate multiple values by space.<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div isteven-multi-select ... output-properties="firstName pic selected"&gt;&lt;/div&gt;</code>
-        </p>
-        -->
 
         </span>
     </div>
