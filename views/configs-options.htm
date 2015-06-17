@@ -100,6 +100,16 @@
             <span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ icon }} {{ name }}"&gt;&lt;/div&gt;</code>
         </p>
 
+        <h5>tick-property</h5> <span class="label label-primary">required</span>
+        <p>
+            input-model property (of each item) with a boolean value that represents whether the item is ticked or not.
+        </p>
+        <p>
+            <span class="inlineTitle">Type</span>: String<br />
+            <span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
+        </p>
+
         <h5>button-template</h5>
         <p>
             A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
@@ -109,18 +119,31 @@
         </p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
+            <span class="inlineTitle">Default value</span>: "angular-multi-select-btn-count.htm" <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-template="angular-multi-select-btn-data.htm"&gt;&lt;/div&gt;</code>
         </p>
 
-        <h5>tick-property</h5> <span class="label label-primary">required</span>
+        <h5>button-label</h5>
         <p>
-            input-model property (of each item) with a boolean value that represents whether the item is ticked or not.
+            A string that determines the format by which every object from the output model will be rendered in the button label. Same rules as in <code>item-label</code> apply.
+            This is used only when <code>button-template</code> is set to <code>angular-multi-select-btn-data.htm</code>.
         </p>
         <p>
             <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
+            <span class="inlineTitle">Default value</span>: "" <br />
+            <span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ name }}"&gt;&lt;/div&gt;</code>
+        </p>
+
+        <h5>button-label-separator</h5>
+        <p>
+            You can supply an array (stringified) that holds two elements. The first element would be used to separate each object when rendered in the button label, while
+            the second one will be placed at the end of the label, after all objects have been rendered. The default value's output is like <code>Item 1, Item 2, Item 3</code>.
+            The array's items must be contained inside doble quotes.
+        </p>
+        <p>
+            <span class="inlineTitle">Type</span>: String<br />
+            <span class="inlineTitle">Default value</span>: '[", ", ""]' <br />
+            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label-separator='[" | ", "!"]'&gt;&lt;/div&gt;</code>
         </p>
 
         <h5>id-property</h5>
