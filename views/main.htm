@@ -14,8 +14,11 @@
             input-model="modernBrowsers"
             output-model="anyOutput"
             item-label="{{ icon }} {{ name }}"
+            button-template="angular-multi-select-btn-data.htm"
+            button-label="{{ icon }} {{ name }}"
+            button-label-separator='[", ", "."]'
             search-property="name"
-            tick-property="checked"
+            tick-property="check"
             group-property="sub"
         >
         </div>

@@ -9,7 +9,7 @@ var myApp = angular.module( 'myApp' , [
 
 	$routeProvider.when( '/main' , {
 		templateUrl: 'views/main.htm',
-		controller: 'demoMinimal'
+		controller: 'demoFull'
 	});
 
 	$routeProvider.when( '/getting-started' , {
@@ -30,6 +30,11 @@ var myApp = angular.module( 'myApp' , [
 		controller: 'demoDynamicUpdate'
 	});
 
+	$routeProvider.when( '/demo-button-styling' , {
+		templateUrl: 'views/demo-button-styling.htm',
+		controller: 'demoGrouping'
+	});
+
 	$routeProvider.when( '/demo-grouping' , {
 		templateUrl: 'views/demo-grouping.htm',
 		controller: 'demoGrouping'
@@ -37,7 +42,7 @@ var myApp = angular.module( 'myApp' , [
 
 	$routeProvider.when( '/demo-helper-elements' , {
 		templateUrl: 'views/demo-helper-elements.htm',
-		controller: 'demoMinimal'
+		controller: 'demoGrouping'
 	});
 
 	$routeProvider.when( '/demo-callbacks' , {
