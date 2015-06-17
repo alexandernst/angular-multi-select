@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.0
+ * Current version: 5.3.1
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -832,14 +832,26 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var ams_layer = angular.element(element[0].querySelector(".ams_layer"));
 				var _bounds = ams_layer[0].getBoundingClientRect();
 
+				var body = document.body;
+				var docElem = document.documentElement;
+				var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+				var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+
+				var clientTop = docElem.clientTop || body.clientTop || 0;
+				var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+				var _dist_to_top_border = Math.round(_bounds.top +  scrollTop - clientTop);
+				var _dist_to_left_border = Math.round(_bounds.left + scrollLeft - clientLeft);
+
+				var _dist_to_bottom_border = window.innerHeight - _dist_to_top_border - _bounds.height;
+				var _dist_to_right_border = window.innerWidth - _dist_to_left_border - _bounds.width;
+
 				var classes = "";
-				var _dist_to_x = window.innerHeight - _bounds.top;
-				if(_dist_to_x - _bounds.height < 0 && _dist_to_x > _bounds.height) {
+				if(_dist_to_bottom_border < 0 && _dist_to_top_border >= _bounds.height) {
 					classes += "position_top ";
 				}
 
-				var _dist_to_y = window.innerWidth - _bounds.left;
-				if(_dist_to_y - _bounds.width < 0 && _dist_to_y > _bounds.width) {
+				if(_dist_to_right_border < 0 && _dist_to_left_border > _bounds.width) {
 					classes += "position_left ";
 				}
 

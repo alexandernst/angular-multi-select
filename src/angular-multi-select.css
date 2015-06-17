@@ -6,6 +6,10 @@
 	display: inline-block;
 }
 
+.ams {
+	position: relative;
+}
+
 /* create a "row" */
 .ams .ams_row {
 	padding:  2px 0px 4px 0px;
@@ -78,7 +82,7 @@
 
 .ams .ams_layer.position_top {
 	transform: translate(0, -100%);
-	top: 0;
+	top: -6px; /* The shadow height */
 }
 
 .ams .ams_layer.position_left {
