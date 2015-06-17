@@ -1,39 +1,39 @@
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Helper Elements</h3>
+		<h3 class="pageHeading">Demo > Helper Elements</h3>
 
-        <p>
-            You can define which helper elements to be displayed by using attribute <code>helper-elements</code>, such as:
-        </p>
-        <div
-            angular-multi-select
-            input-model="modernBrowsers"
-            output-model="outputBrowsers"
-            item-label="{{ icon }} {{ name }}"
-            search-property="name"
-            tick-property="checked"
-            group-property="sub"
-            helper-elements="all none noreset nofilter"
-            >
-        </div>
+		<p>
+			You can define which helper elements to be displayed by using attribute <code>helper-elements</code>, such as:
+		</p>
+		<div
+			angular-multi-select
+			input-model="webBrowsersGrouped"
+			output-model="outputBrowsers"
+			item-label="{{ icon }} {{ name }}"
+			search-property="name"
+			tick-property="checked"
+			group-property="sub"
+			helper-elements="all none noreset nofilter"
+			>
+		</div>
 
-        <p>&nbsp;</p>
-        <div role="tabpanel">
+		<p>&nbsp;</p>
+		<div role="tabpanel">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
-            <li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
-          </ul>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+				<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
+			</ul>
 
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="view">
-                <p>Define your directive:</p>
-                <pre><code ng-non-bindable>&lt;div
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="view">
+					<p>Define your directive:</p>
+					<pre><code ng-non-bindable>&lt;div
     angular-multi-select
-    input-model="modernBrowsers"
+    input-model="webBrowsersGrouped"
     output-model="outputBrowsers"
     item-label="{{ icon }} {{ name }}"
     tick-property="checked"
@@ -41,51 +41,51 @@
     helper-elements="all none noreset nofilter"
 &gt;
 &lt;/div&gt;</code></pre>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="controller">
-                <p>Define your input-model:</p>
-        <div class="fauxCode hljs xml">
-            $scope.modernBrowsers = [
-            <table>
-                <tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
-                    <td>&nbsp;</td>
-                    <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">maker</span>: <span class="hljs-value" ng-non-bindable>"{{row.maker}}"</span>,</td>
-                    <td><span class="hljs-attribute">ticked</span>: <span class="hljs-value" ng-non-bindable>{{row.ticked}}</span></td>
-                    <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
-                </tr>
-            </table>
-            ];
-        </div>
-            </div>
-          </div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your input-model:</p>
+						<div class="fauxCode hljs xml">
+							$scope.outputBrowsers = [
+							<table>
+								<tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
+									<td>&nbsp;</td>
+									<td>{</td>
+									<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+									<td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
+									<td><span class="hljs-attribute">maker</span>: <span class="hljs-value">"{{row.maker}}"</span>,</td>
+									<td><span class="hljs-attribute">ticked</span>: <span class="hljs-value">{{row.ticked}}</span></td>
+									<td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
+								</tr>
+							</table>
+							];
+						</div>
+				</div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h5>Other examples</h5>
-        <p>
-            The attribute accepts a combination of "all none filter reset", in space separated string. Example:
-            <ul>
-                <li><code>helper-elements="filter"</code>: will display the search (filter) field only</li>
-                <li><code>helper-elements="all none"</code>: will display the "Select all" and "Select none" buttons</li>
-                <li><code>helper-elements="xyz"</code>: will display no helper elements at all</li>
-                <li><code>helper-elements=""</code>: will display "Reset" and "Search" helper elements if in single mode or everything if in multi mode.</li>
-            </ul>
-        </p>
-    </div>
+		<h5>Other examples</h5>
+		<p>
+			The attribute accepts a combination of "all none filter reset", in space separated string. Example:
+			<ul>
+				<li><code>helper-elements="filter"</code>: will display the search (filter) field only</li>
+				<li><code>helper-elements="all none"</code>: will display the "Select all" and "Select none" buttons</li>
+				<li><code>helper-elements="xyz"</code>: will display no helper elements at all</li>
+				<li><code>helper-elements=""</code>: will display "Reset" and "Search" helper elements if in single mode or everything if in multi mode.</li>
+			</ul>
+		</p>
+	</div>
 </div>
 
 <script>
-    $(document).ready(function() {
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    });
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
 </script>

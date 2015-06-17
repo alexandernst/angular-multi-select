@@ -1,354 +1,322 @@
 <div class="row">
-    <div class="col-sm-12">
-        <h3 class="pageHeading">Configuration & Options</h3>
-<!--
-<div class="row">
-    <div class="col-sm-12">
-        <h5>Full spec</h5>
-        <pre><code>&lt;div
-    multi-select
-    input-model="$scope.arrOfObjects"
-    output-model="$scope.arrOfObjects2"
-    button-label="property1 property2 ..."
-    item-label="property1 property2 ..."
-    tick-property="property3"
-    disable-property="property4"
-    orientation="horizontal | vertical"
-    selection-mode="multiple | single"
-    max-labels="999"
-    directive-id="..."
-    is-disabled="true | false"
-    helper-elements="all none reset filter"
-    default-label="..."
-    on-open="$scope.function()"
-    on-close="$scope.function()"
-    on-item-click="$scope.function( data )"
-    on-select-all="$scope.function()"
-    on-select-none="$scope.function()"
-    on-reset="$scope.function()"
-    on-clear="$scope.function()"
-    on-filter-change="$scope.function()"
-    i18n="$scope.object"
-&gt;
-&lt;/div&gt;
-</code></pre>
-    </div>
-</div>
--->
-    <p>Below are the available attributes to configure the multi-select directive.</p>
-    <span class="configData">
-        <h5>input-model</h5> <span class="label label-primary">required</span>
-        <p>
-            This is the data you pass to the directive.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: Array of objects. <br />
-            <span class="inlineTitle">Default value</span>: [] <br />
-            <span class="inlineTitle">Example</span>:   <br />
-            In your view: <code>&lt;div angular-multi-select ... input-model="inputList"&gt;&lt;/div&gt;</code>.
-            <br />
-            In your controller:
-        </p>
-        <pre><code>$scope.inputList = [
-	{
-		icon: '&lt;img  src="...chrome.png" /&gt;',
-		name: "Chrome"
-	},
-	{
-		icon: '&lt;img  src="...safari_browser.png" /&gt;',
-		name: "Safari"
-	},
-	{
-		icon: '&lt;img  src="...firefox-icon.png" /&gt;',
-		name: "Firefox"
-	},
-	{
-		icon: '&lt;img  src="...chromium.png" /&gt;',
-		name: "Chromium"
-	},
-	{
-		icon: '&lt;img  src="...opera.png" /&gt;',
-		name: "Opera",
-		checked: true
-	}
+	<div class="col-sm-12">
+		<h3 class="pageHeading">Configuration & Options</h3>
+
+		<p>Below are the available attributes to configure the multi-select directive.</p>
+		<span class="configData">
+
+			<h5>input-model</h5> <span class="label label-primary">required</span>
+			<p>
+				This is the data you pass to the directive.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: Array of objects. <br />
+				<span class="inlineTitle">Default value</span>: [] <br />
+				<span class="inlineTitle">Example</span>:   <br />
+				In your view: <code>&lt;div angular-multi-select ... input-model="inputList"&gt;&lt;/div&gt;</code>.
+				<br />
+				In your controller:
+			</p>
+			<pre><code>$scope.inputList = [
+    {
+    	icon: '&lt;img  src="...chrome.png" /&gt;',
+    	name: "Chrome"
+    },
+    {
+    	icon: '&lt;img  src="...safari_browser.png" /&gt;',
+    	name: "Safari"
+    },
+    {
+    	icon: '&lt;img  src="...firefox-icon.png" /&gt;',
+    	name: "Firefox"
+    },
+    {
+    	icon: '&lt;img  src="...chromium.png" /&gt;',
+    	name: "Chromium"
+    },
+    {
+    	icon: '&lt;img  src="...opera.png" /&gt;',
+    	name: "Opera",
+    	checked: true
+    }
 ];</code></pre>
-        <p>
-            <span class="inlineTitle">Note</span>:
-            There might be some limitations on what HTML tags you can use (Use common sense. For example, flash animation
-            most likely won't work on the button label). It's highly suggested that you don't use
-            BUTTON and INPUT tags to prevent conflicts.
-        </p>
+			<p>
+				<span class="inlineTitle">Note</span>:
+				There might be some limitations on what HTML tags you can use (Use common sense. For example, flash animation
+				most likely won't work on the button label). It's highly suggested that you don't use
+				BUTTON and INPUT tags to prevent conflicts.
+			</p>
 
-        <h5>output-model</h5> <span class="label label-primary">required</span>
-        <p>
-            Will list all the selected items. If you enable grouping, you'll get the exact same structure as the one you
-            providad for the input model, just filtered to "checked-only" items.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: Array of objects. <br />
-            <span class="inlineTitle">Default value</span>: [] <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>output-model</h5> <span class="label label-primary">required</span>
+			<p>
+				Will list all the selected items. If you enable grouping, you'll get the exact same structure as the one you
+				providad for the input model, just filtered to "checked-only" items.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: Array of objects. <br />
+				<span class="inlineTitle">Default value</span>: [] <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>item-label</h5> <span class="label label-primary">required</span>
-        <p>
-            input-model properties that you want to display on each item. You should use curly brackets for delimiters: <code ng-non-bindable>{{</code> and <code>}}</code>
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String. <br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ icon }} {{ name }}"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>item-label</h5> <span class="label label-primary">required</span>
+			<p>
+				input-model properties that you want to display on each item. You should use curly brackets for delimiters: <code ng-non-bindable>{{</code> and <code>}}</code>
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String. <br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ icon }} {{ name }}"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>tick-property</h5> <span class="label label-primary">required</span>
-        <p>
-            input-model property (of each item) with a boolean value that represents whether the item is ticked or not.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>tick-property</h5> <span class="label label-primary">required</span>
+			<p>
+				input-model property (of each item) with a boolean value that represents whether the item is ticked or not.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>button-template</h5>
-        <p>
-            A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
-            default templates: <code>angular-multi-select-btn-count.htm</code>, which will render the number of selected items followed by the word "selected" (or
-            translation, if available) and <code>angular-multi-select-btn-data.htm</code>, which will render each of the selected items following the
-            <code>button-label</code> and <code>button-label-separator</code> you provide.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "angular-multi-select-btn-count.htm" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-template="angular-multi-select-btn-data.htm"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>button-template</h5>
+			<p>
+				A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
+				default templates: <code>angular-multi-select-btn-count.htm</code>, which will render the number of selected items followed by the word "selected" (or
+				translation, if available) and <code>angular-multi-select-btn-data.htm</code>, which will render each of the selected items following the
+				<code>button-label</code> and <code>button-label-separator</code> you provide.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "angular-multi-select-btn-count.htm" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-template="angular-multi-select-btn-data.htm"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>button-label</h5>
-        <p>
-            A string that determines the format by which every object from the output model will be rendered in the button label. Same rules as in <code>item-label</code> apply.
-            This is used only when <code>button-template</code> is set to <code>angular-multi-select-btn-data.htm</code>.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ name }}"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>button-label</h5>
+			<p>
+				A string that determines the format by which every object from the output model will be rendered in the button label. Same rules as in <code>item-label</code> apply.
+				This is used only when <code>button-template</code> is set to <code>angular-multi-select-btn-data.htm</code>.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ name }}"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>button-label-separator</h5>
-        <p>
-            You can supply an array (stringified) that holds two elements. The first element would be used to separate each object when rendered in the button label, while
-            the second one will be placed at the end of the label, after all objects have been rendered. The default value's output is like <code>Item 1, Item 2, Item 3</code>.
-            The array's items must be contained inside doble quotes.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: '[", ", ""]' <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label-separator='[" | ", "!"]'&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>button-label-separator</h5>
+			<p>
+				You can supply an array (stringified) that holds two elements. The first element would be used to separate each object when rendered in the button label, while
+				the second one will be placed at the end of the label, after all objects have been rendered. The default value's output is like <code>Item 1, Item 2, Item 3</code>.
+				The array's items must be contained inside doble quotes.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: '[", ", ""]' <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label-separator='[" | ", "!"]'&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>id-property</h5>
-        <p>
-            This holds the unique identifier of each item in your input value. If you don't pass one, a random ID will be used for each item.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>id-property</h5>
+			<p>
+				This holds the unique identifier of each item in your input value. If you don't pass one, a random ID will be used for each item.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>group-property</h5>
-        <p>
-            This holds the name of the key of each item than contains an array with childrens.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... group-property="sub"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>group-property</h5>
+			<p>
+				This holds the name of the key of each item than contains an array with childrens.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... group-property="sub"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>selection-mode</h5>
-        <p>Single or multiple selection mode. If not specified, the default will be "multiple".</p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Available values</span>: "single" | "multi"<br />
-            <span class="inlineTitle">Default value</span>: "multi"<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>selection-mode</h5>
+			<p>Single or multiple selection mode. If not specified, the default will be "multiple".</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Available values</span>: "single" | "multi"<br />
+				<span class="inlineTitle">Default value</span>: "multi"<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>hidden-property</h5>
-        <p>
-            input-model property (of each item) with a boolean value that represents whether the item is hidden or not. Note that even if an element
-            is hidden, it will still count for tick logic (selecting a group with 1 visible and 1 hidden element, in single mode, won't select the
-            visible element).
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: "" <br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... hidden-property="is_hidden"&gt;&lt;/div&gt;</code>
-        </p>
+			<h5>hidden-property</h5>
+			<p>
+				input-model property (of each item) with a boolean value that represents whether the item is hidden or not. Note that even if an element
+				is hidden, it will still count for tick logic (selecting a group with 1 visible and 1 hidden element, in single mode, won't select the
+				visible element).
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... hidden-property="is_hidden"&gt;&lt;/div&gt;</code>
+			</p>
 
-        <h5>helper-elements</h5>
-        <p>
-            Define which helper buttons (Select all, none, reset, filter box) to be displayed.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String. Separate multiple values with space. Order of values does not matter.<br />
-            <span class="inlineTitle">Available values</span>: Combinations of "all", "noall", "none", "nonone", "reset", "noreset", "filter", "nofilter" or empty string<br />
-            <span class="inlineTitle">Default value</span>: "reset filter" in single mode, "all none reset filter" in multi mode<br />
-            <span class="inlineTitle">Example</span>:
-            <ul>
-                <li>
-                    Display "Select All" button and the filter box: <code>&lt;div angular-multi-select ... helper-elements="all filter"&gt;&lt;/div&gt;</code>
-                </li>
-                <li>
-                    Display none: a string with random character(s). <code>&lt;div angular-multi-select ... helper-elements="xyz"&gt;&lt;/div&gt;</code>.
-                </li>
-            </ul>
-        </p>
+			<h5>helper-elements</h5>
+			<p>
+				Define which helper buttons (Select all, none, reset, filter box) to be displayed.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String. Separate multiple values with space. Order of values does not matter.<br />
+				<span class="inlineTitle">Available values</span>: Combinations of "all", "noall", "none", "nonone", "reset", "noreset", "filter", "nofilter" or empty string<br />
+				<span class="inlineTitle">Default value</span>: "reset filter" in single mode, "all none reset filter" in multi mode<br />
+				<span class="inlineTitle">Example</span>:
+				<ul>
+					<li>
+						Display "Select All" button and the filter box: <code>&lt;div angular-multi-select ... helper-elements="all filter"&gt;&lt;/div&gt;</code>
+					</li>
+					<li>
+						Display none: a string with random character(s). <code>&lt;div angular-multi-select ... helper-elements="xyz"&gt;&lt;/div&gt;</code>.
+					</li>
+				</ul>
+			</p>
 
-        <h5>search-property</h5>
-        <p>
-            Set which input-model property should be searched. If none is set, search won't work properly.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: String<br />
-            <span class="inlineTitle">Default value</span>: ""<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... search-property="name"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>search-property</h5>
+			<p>
+				Set which input-model property should be searched. If none is set, search won't work properly.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: ""<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... search-property="name"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>min-search-length</h5>
-        <p>
-            Set the minimum characters required to trigger search action.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "3", or "5" ).<br />
-            <span class="inlineTitle">Default value</span>: 3<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>min-search-length</h5>
+			<p>
+				Set the minimum characters required to trigger search action.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "3", or "5" ).<br />
+				<span class="inlineTitle">Default value</span>: 3<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>translation</h5>
-        <p>
-            Use custom text on the helper elements. You can use different text. You don't have too define
-            the text of all items, as both new and default texts will be merged.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope object<br />
-            <span class="inlineTitle">Default value</span>: {}<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... translation="localLang"&gt;&lt;/div&gt;</code>.
-        </p>
-        <p>
-            In your controller:
-            <pre ><code>$scope.localLang = {
-    selected        : "selected",
-    selectAll       : "Tick all",
-    selectNone      : "Tick none",
-    reset           : "Undo all",
-    search          : "Type here to search...",
+			<h5>translation</h5>
+			<p>
+				Use custom text on the helper elements. You can use different text. You don't have too define
+				the text of all items, as both new and default texts will be merged.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope object<br />
+				<span class="inlineTitle">Default value</span>: {}<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... translation="localLang"&gt;&lt;/div&gt;</code>.
+			</p>
+			<p>
+				In your controller:
+				<pre ><code>$scope.localLang = {
+    selected    : "selected",
+    selectAll   : "Tick all",
+    selectNone  : "Tick none",
+    reset       : "Undo all",
+    search      : "Type here to search...",
 }</code></pre>
-        </p>
+			</p>
 
-        <h5>on-open</h5>
-        <p>
-            A $scope function to call on multi-select open. You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-open="fOpen()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-open</h5>
+			<p>
+				A $scope function to call on multi-select open. You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-open="fOpen()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-close</h5>
-        <p>
-            A $scope function to call on multi-select close (be it by clicking the button or clicking outside the multi-select element).
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-close="fClose()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-close</h5>
+			<p>
+				A $scope function to call on multi-select close (be it by clicking the button or clicking outside the multi-select element).
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-close="fClose()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-item-click</h5>
-        <p>
-            A $scope function to call when user click on an item. Triggered AFTER the item is clicked.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: Will pass a copy of the clicked item<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-item-click="fClick(item)"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-item-click</h5>
+			<p>
+				A $scope function to call when user click on an item. Triggered AFTER the item is clicked.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: Will pass a copy of the clicked item<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-item-click="fClick(item)"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-select-all</h5>
-        <p>
-            A $scope function to call when "select all" button is clicked.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-all="fSelectAll()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-select-all</h5>
+			<p>
+				A $scope function to call when "select all" button is clicked.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-all="fSelectAll()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-select-none</h5>
-        <p>
-            A $scope function to call when "select none" button is clicked.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-none="fSelectNone()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-select-none</h5>
+			<p>
+				A $scope function to call when "select none" button is clicked.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-select-none="fSelectNone()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-reset</h5>
-        <p>
-            A $scope function to call when "reset" button is clicked.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-reset="fReset()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-reset</h5>
+			<p>
+				A $scope function to call when "reset" button is clicked.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-reset="fReset()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-clear</h5>
-        <p>
-            A $scope function to call when the "x" button in filter field is clicked.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: N/A<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-clear="fClear()"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-clear</h5>
+			<p>
+				A $scope function to call when the "x" button in filter field is clicked.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: N/A<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-clear="fClear()"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        <h5>on-search-change</h5>
-        <p>
-            A $scope function to call when you type in the search field.
-            You need to define this function in your controller.
-        </p>
-        <p>
-            <span class="inlineTitle">Type</span>: $scope function<br />
-            <span class="inlineTitle">Default value</span>: N/A<br />
-            <span class="inlineTitle">Parameter</span>: Will pass the string that you type and the result<br />
-            <span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-filter-change="fFilterChange(input)"&gt;&lt;/div&gt;</code>.
-        </p>
+			<h5>on-search-change</h5>
+			<p>
+				A $scope function to call when you type in the search field.
+				You need to define this function in your controller.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: $scope function<br />
+				<span class="inlineTitle">Default value</span>: N/A<br />
+				<span class="inlineTitle">Parameter</span>: Will pass the string that you type and the result<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... on-filter-change="fFilterChange(input)"&gt;&lt;/div&gt;</code>.
+			</p>
 
-        </span>
-    </div>
+		</span>
+	</div>
 </div>
 <script>
-    $(document).ready(function() {
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    });
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
 </script>

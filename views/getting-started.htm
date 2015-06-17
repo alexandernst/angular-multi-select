@@ -1,13 +1,13 @@
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h3 class="pageHeading">Getting Started</h3>
+		<h3 class="pageHeading">Getting Started</h3>
 
-        <h5>Include the required files</h5>
+		<h5>Include the required files</h5>
 
-        <p>First things first:</p>
+		<p>First things first:</p>
 
-        <pre><code>&lt;!DOCTYPE html&gt;
+		<pre><code>&lt;!DOCTYPE html&gt;
 &lt;html ng-app="myApp" id="myApp" angular-multi-select-mouse-trap angular-multi-select-key-trap&gt;
     &lt;head&gt;
         ...
@@ -17,36 +17,35 @@
         &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.4/angular-filter.min.js"&gt;&lt;/script&gt;
         &lt;script src="angular-multi-select.js"&gt;&lt;/script&gt;
         ...
-    &lt;head&gt;</code></pre>
-
-    </div>
+&lt;head&gt;</code></pre>
+	</div>
 </div>
 
 It is very important to place <code>angular-multi-select-mouse-trap</code> and <code>angular-multi-select-key-trap</code> directives in the <code>&lt;html&gt;</code>
 element, because mouse/keyboard events could be blocked by a 3rd party code.
 
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h5>Initiate your AngularJs app & load the module</h5>
+		<h5>Initiate your AngularJs app & load the module</h5>
 
-        <p>
-            You should be familiar with this <code>app.js</code> file, in which you initiate your AngularJs app. So let's put our directive module there and load it, such as:
-        </p>
+		<p>
+			You should be familiar with this <code>app.js</code> file, in which you initiate your AngularJs app. So let's put our directive module there and load it, such as:
+		</p>
 
-        <pre><code>var myApp = angular.module( "myApp", [ "angular-multi-select" ]);</code></pre>
+		<pre><code>var myApp = angular.module( "myApp", [ "angular-multi-select" ]);</code></pre>
 
-        <h5>In your controller</h5>
+		<h5>In your controller</h5>
 
-        <p>
-            In your controller, define a <code>$scope</code> variable as the input-model. This is our "ng-model",
-            so to speak.
-        </p>
-        <p>
-            <span class="label label-primary">Note</span> The input-model can be an array of nested objects (check <a href="#/demo-grouping">Grouping</a>).
-        </p>
+		<p>
+			In your controller, define a <code>$scope</code> variable as the input-model. This is our "ng-model",
+			so to speak.
+		</p>
+		<p>
+			<span class="label label-primary">Note</span> The input-model can be an array of nested objects (check <a href="#/demo-grouping">Grouping</a>).
+		</p>
 
-        <pre><code>$scope.modernBrowsers = [
+		<pre><code>$scope.modernBrowsers = [
 	{
 		icon: '&lt;img  src="...chrome.png" /&gt;',
 		name: "Chrome"
@@ -69,67 +68,67 @@ element, because mouse/keyboard events could be blocked by a 3rd party code.
 		checked: true
 	}
 ]; </code></pre>
-    </div>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <h5>In your view</h5>
-        <p>Let's now define the directive with a minimal required options.</p>
-    </div>
+	<div class="col-sm-12">
+		<h5>In your view</h5>
+		<p>Let's now define the directive with a minimal required options.</p>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-6">
+	<div class="col-sm-6">
 
-    <p>As an attribute.</p>
+	<p>As an attribute.</p>
 
-        <pre><code ng-non-bindable>&lt;div
-    angular-multi-select
-    input-model="modernBrowsers"
-    output-model="outputBrowsers"
-    item-label="{{ icon }} {{ name }}"
-    tick-property="checked"&gt;
+		<pre><code ng-non-bindable>&lt;div
+	angular-multi-select
+	input-model="modernBrowsers"
+	output-model="outputBrowsers"
+	item-label="{{ icon }} {{ name }}"
+	tick-property="checked"&gt;
 &lt;/div&gt;</code></pre>
 
-    </div>
+	</div>
 
-    <div class="col-sm-6">
+	<div class="col-sm-6">
 
-        <p>... or as an element, but be careful with browser compatibility.</p>
+		<p>... or as an element, but be careful with browser compatibility.</p>
 
-        <pre><code ng-non-bindable>&lt;angular-multi-select
-    input-model="modernBrowsers"
-    output-model="outputBrowsers"
-    item-label="{{ icon }} {{ name }}"
-    tick-property="checked"
+		<pre><code ng-non-bindable>&lt;angular-multi-select
+	input-model="modernBrowsers"
+	output-model="outputBrowsers"
+	item-label="{{ icon }} {{ name }}"
+	tick-property="checked"
 &gt;
 &lt;/angular-multi-select&gt;</code></pre>
 
-    </div>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <p>By now you should have dropdown widget like the one you saw earlier on the front page.</p>
+	<div class="col-sm-12">
+		<p>By now you should have dropdown widget like the one you saw earlier on the front page.</p>
 
-        <h5>Getting the selected items</h5>
+		<h5>Getting the selected items</h5>
 
-        <p>
-        Just iterate over the <code>$scope.outputBrowsers</code> in your controller.
+		<p>
+		Just iterate over the <code>$scope.outputBrowsers</code> in your controller.
 <pre><code>angular.forEach( $scope.outputBrowsers, function( value, key ) {
-    /* do your stuff here */
+	/* do your stuff here */
 });</code></pre>
 </p>
 
 <p>That's it! Go to the <a href="#/configs-options">Configs & Options</a> section to read more</p>
-    </div>
+	</div>
 </div>
 
 <script>
-    $(document).ready(function() {
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    });
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
 </script>

@@ -1,44 +1,44 @@
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Single Selection Mode</h3>
+		<h3 class="pageHeading">Demo > Single Selection Mode</h3>
 
-        <p>
-            By default, single selection mode will only show reset button and the search field.
-            In the example below, all helper elements are hidden - it now looks like a normal drop down menu.
-        </p>
-        <p>
-            Go to <a href="#/configs-options">configs & options</a> section and find "helper-elements" to learn how to hide the helper elements.
-        </p>
+		<p>
+			By default, single selection mode will only show reset button and the search field.
+			In the example below, all helper elements are hidden - it now looks like a normal drop down menu.
+		</p>
+		<p>
+			Go to <a href="#/configs-options">configs & options</a> section and find "helper-elements" to learn how to hide the helper elements.
+		</p>
 
-        <br />
-        <div
-            angular-multi-select
-            input-model="modernBrowsers"
-            output-model="outputBrowsers"
-            item-label="{{ icon }} {{ name }}"
-            search-property="name"
-            tick-property="checked"
-            selection-mode="single"
-            helper-elements=""
-            >
-        </div>
+		<br />
+		<div
+			angular-multi-select
+			input-model="modernBrowsers"
+			output-model="outputBrowsers"
+			item-label="{{ icon }} {{ name }}"
+			search-property="name"
+			tick-property="checked"
+			selection-mode="single"
+			helper-elements=""
+			>
+		</div>
 
-        <p>&nbsp;</p>
+		<p>&nbsp;</p>
 
-        <div role="tabpanel">
+		<div role="tabpanel">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
-            <li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
-          </ul>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+				<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
+			</ul>
 
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="view">
-                <p>Define your directive:</p>
-                <pre><code ng-non-bindable>&lt;div
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="view">
+					<p>Define your directive:</p>
+					<pre><code ng-non-bindable>&lt;div
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
@@ -48,58 +48,58 @@
     selection-mode="single"
 &gt;
 &lt;/div&gt;</code></pre>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="controller">
-                <p>Define your input-model:</p>
-        <div class="fauxCode hljs xml">
-            $scope.modernBrowsers = [
-            <table>
-                <tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
-                    <td>&nbsp;</td>
-                    <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
-                    <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
-                </tr>
-            </table>
-            ];
-        </div>
-            </div>
-          </div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your input-model:</p>
+			<div class="fauxCode hljs xml">
+				$scope.modernBrowsers = [
+				<table>
+					<tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
+						<td>&nbsp;</td>
+						<td>{</td>
+						<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+						<td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
+						<td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
+						<td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
+					</tr>
+				</table>
+				];
+			</div>
+				</div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <h5>Output model</h5>
-        <p>
-            Look at the <code>output-model</code> below to see the values getting updated
-            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
-        </p>
-        <div class="fauxCode hljs xml">
-            $scope.outputBrowsers = [
-            <table>
-                <tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
-                    <td>&nbsp;</td>
-                    <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
-                    <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
-                </tr>
-            </table>
-            ];
-        </div>
-    </div>
+	<div class="col-sm-12">
+		<h5>Output model</h5>
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
+		</p>
+		<div class="fauxCode hljs xml">
+			$scope.outputBrowsers = [
+			<table>
+				<tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
+					<td>&nbsp;</td>
+					<td>{</td>
+					<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+					<td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
+					<td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
+					<td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
+				</tr>
+			</table>
+			];
+		</div>
+	</div>
 </div>
 
 <script>
-    $(document).ready(function() {
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    });
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
 </script>

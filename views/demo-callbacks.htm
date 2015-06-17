@@ -1,54 +1,54 @@
 <div class="row">
-    <div class="col-sm-12">
+	<div class="col-sm-12">
 
-        <h3 class="pageHeading">Demo > Callbacks</h3>
+		<h3 class="pageHeading">Demo > Callbacks</h3>
 
-        <p>
-            The directive provides 8 (eight) callbacks. Open your browser's console to see the output.
-        </p>
+		<p>
+			The directive provides 8 (eight) callbacks. Open your browser's console to see the output.
+		</p>
 
-        <br />
+		<br />
 
-        <div
-            angular-multi-select
-            input-model="modernBrowsers"
-            output-model="outputBrowsers"
-            group-property="sub"
-            item-label="{{ icon }} {{ name }}"
-            tick-property="checked"
-            search-property="name"
-            on-open="fOpen()"
-            on-close="fClose()"
-            on-item-click="fClick(item)"
-            on-select-all="fSelectAll()"
-            on-select-none="fSelectNone()"
-            on-reset="fReset()"
-            on-clear="fClear()"
-            on-search-change="fFilterChange(input)"
-        ></div>
+		<div
+			angular-multi-select
+			input-model="modernBrowsers"
+			output-model="outputBrowsers"
+			group-property="sub"
+			item-label="{{ icon }} {{ name }}"
+			tick-property="check"
+			search-property="name"
+			on-open="fOpen()"
+			on-close="fClose()"
+			on-item-click="fClick(item)"
+			on-select-all="fSelectAll()"
+			on-select-none="fSelectNone()"
+			on-reset="fReset()"
+			on-clear="fClear()"
+			on-search-change="fFilterChange(input)"
+		></div>
 
 
-        <p>&nbsp;</p>
+		<p>&nbsp;</p>
 
-        <div role="tabpanel">
+		<div role="tabpanel">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
-            <li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
-          </ul>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+				<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
+			</ul>
 
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="view">
-                <p>Define your directive:</p>
-                <pre><code ng-non-bindable>&lt;div
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="view">
+					<p>Define your directive:</p>
+					<pre><code ng-non-bindable>&lt;div
     angular-multi-select
     input-model="modernBrowsers"
     output-model="outputBrowsers"
     group-property="sub"
     item-label="{{ icon }} {{ name }}"
-    tick-property="checked"
+    tick-property="check"
     search-property="name"
     ...
     on-open="fOpen()"
@@ -61,98 +61,98 @@
     on-search-change="fFilterChange(input)"
 &gt;
 &lt;/div&gt;</code></pre>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="controller">
-                <p>Define your input-model:</p>
-        <div class="fauxCode hljs xml">
-            $scope.modernBrowsers = [
-            <table>
-                <tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
-                    <td>&nbsp;</td>
-                    <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
-                    <td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
-                </tr>
-            </table>
-            ];
-        </div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your input-model:</p>
+			<div class="fauxCode hljs xml">
+				$scope.modernBrowsers = [
+				<table>
+					<tr class="hljs-tag" ng-repeat="row in modernBrowsers" >
+						<td>&nbsp;</td>
+						<td>{</td>
+						<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+						<td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
+						<td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
+						<td>}<span ng-if="$index < modernWebBrowsers.length - 1">,</span></td>
+					</tr>
+				</table>
+				];
+			</div>
 
-        <p>Define your callback functions:</p>
-        <pre><code>$scope.fOpen = function() {
-    console.log('On-open');
-}
+			<p>Define your callback functions:</p>
+			<pre><code>$scope.fOpen = function() {
+		console.log('On-open');
+	}
 
-$scope.fClose = function() {
-    console.log('On-close');
-}
+	$scope.fClose = function() {
+		console.log('On-close');
+	}
 
-$scope.fClick = function(item) {
-    console.log('On-item-click', item);
-}
+	$scope.fClick = function(item) {
+		console.log('On-item-click', item);
+	}
 
-$scope.fSelectAll = function() {
-    console.log('On-select-all');
-}
+	$scope.fSelectAll = function() {
+		console.log('On-select-all');
+	}
 
-$scope.fSelectNone = function() {
-    console.log('On-select-none');
-}
+	$scope.fSelectNone = function() {
+		console.log('On-select-none');
+	}
 
-$scope.fReset = function() {
-    console.log('On-reset');
-}
+	$scope.fReset = function() {
+		console.log('On-reset');
+	}
 
-$scope.fClear = function() {
-    console.log('On-clear');
-}
+	$scope.fClear = function() {
+		console.log('On-clear');
+	}
 
-$scope.fSearchChange = function(input) {
-    console.log( 'On-search-change', input);
-}</code></pre>
-    </div>
-          </div>
+	$scope.fSearchChange = function(input) {
+		console.log( 'On-search-change', input);
+	}</code></pre>
+		</div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <h5>Output model</h5>
-        <p>
-            Look at the <code>output-model</code> below to see the values getting updated
-            as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
-        </p>
-        <div class="fauxCode hljs xml">
-            $scope.outputBrowsers = [
-            <table>
-                <tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
-                    <td>&nbsp;</td>
-                    <td>{</td>
-                    <td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-                    <td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-                    <td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
-                    <td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
-                </tr>
-            </table>
-            ];
-        </div>
+	<div class="col-sm-12">
+		<h5>Output model</h5>
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive. Icons in the objects are actually full HTML <code>img</code> tag, shortened for simplicity.
+		</p>
+		<div class="fauxCode hljs xml">
+			$scope.outputBrowsers = [
+			<table>
+				<tr class="hljs-tag" ng-repeat="row in outputBrowsers" >
+					<td>&nbsp;</td>
+					<td>{</td>
+					<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+					<td><span class="hljs-attribute">name</span>: <span class="hljs-value">"{{row.name}}"</span>,</td>
+					<td><span class="hljs-attribute">checked</span>: <span class="hljs-value">{{row.checked}}</span></td>
+					<td>}<span ng-if="$index < outputBrowsers.length - 1">,</span></td>
+				</tr>
+			</table>
+			];
+		</div>
 
-        <h5>Learn more</h5>
-        </p>
-            Open the <code>/docs/js/controllers/demo-callbacks.js</code>, as well as this view
-            <code>docs/views/demo-callbacks.htm</code>to learn the code directly.
-        </p>
+		<h5>Learn more</h5>
+		</p>
+			Open the <code>/docs/js/controllers/demo-callbacks.js</code>, as well as this view
+			<code>docs/views/demo-callbacks.htm</code>to learn the code directly.
+		</p>
 
-    </div>
+	</div>
 </div>
 
 <script>
-    $(document).ready(function() {
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-    });
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
 </script>
