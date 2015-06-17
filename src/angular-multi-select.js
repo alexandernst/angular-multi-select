@@ -840,11 +840,13 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var _bounds = ams_layer[0].getBoundingClientRect();
 
 				var classes = "";
-				if(window.innerHeight - _bounds.top - _bounds.height < 0) {
+				var _dist_to_x = window.innerHeight - _bounds.top;
+				if(_dist_to_x - _bounds.height < 0 && _dist_to_x > _bounds.height) {
 					classes += "position_top ";
 				}
 
-				if(window.innerWidth - _bounds.left - _bounds.width < 0) {
+				var _dist_to_y = window.innerWidth - _bounds.left;
+				if(_dist_to_y - _bounds.width < 0 && _dist_to_y > _bounds.width) {
 					classes += "position_left ";
 				}
 
