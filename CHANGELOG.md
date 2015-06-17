@@ -1,3 +1,8 @@
+### v5.3.0
+##### Added / Updated
+- Button icons are part of the CSS now.
+- Removed the icons config.
+
 ### v5.2.1
 ##### Added / Updated
 - Bring back button customization.
