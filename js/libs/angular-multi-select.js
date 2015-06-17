@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.2.1
+ * Current version: 5.3.0
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -93,13 +93,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
 
-			$scope.icon = {
-				selectAll: '&#10003;',
-				selectNone: '&times;',
-				reset: '&#8630;',
-				tick: $sce.trustAsHtml('&#10003;')
-			};
-
 			$scope._trans = {
 				selected: "selected",
 				selectAll: "Select all",
@@ -110,9 +103,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			angular.extend($scope._trans, $scope.translation);
 
 			$scope.lang = {
-				selectAll: $sce.trustAsHtml($scope.icon.selectAll + '&nbsp;&nbsp;' + $scope._trans.selectAll),
-				selectNone: $sce.trustAsHtml($scope.icon.selectNone + '&nbsp;&nbsp;' + $scope._trans.selectNone),
-				reset: $sce.trustAsHtml($scope.icon.reset + '&nbsp;&nbsp;' + $scope._trans.reset),
+				selectAll: $sce.trustAsHtml($scope._trans.selectAll),
+				selectNone: $sce.trustAsHtml($scope._trans.selectNone),
+				reset: $sce.trustAsHtml($scope._trans.reset),
 				search: $scope._trans.search
 			};
 
@@ -840,11 +833,13 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var _bounds = ams_layer[0].getBoundingClientRect();
 
 				var classes = "";
-				if(window.innerHeight - _bounds.top - _bounds.height < 0) {
+				var _dist_to_x = window.innerHeight - _bounds.top;
+				if(_dist_to_x - _bounds.height < 0 && _dist_to_x > _bounds.height) {
 					classes += "position_top ";
 				}
 
-				if(window.innerWidth - _bounds.left - _bounds.width < 0) {
+				var _dist_to_y = window.innerWidth - _bounds.left;
+				if(_dist_to_y - _bounds.width < 0 && _dist_to_y > _bounds.width) {
 					classes += "position_left ";
 				}
 
@@ -924,7 +919,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_group:_hasChildren(item, false) > 0, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createItemLabel(item)'></div>" +
-			"<span class='ams_tick' ng-if='item[tickProperty] === true' ng-bind-html='icon.tick'></span>" +
+			"<span class='ams_tick' ng-if='item[tickProperty] === true'></span>" +
 		"</div>" +
 
 		"<ul ng-if='item.sub'>" +
@@ -966,7 +961,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
 						'/>'+
 						// clear button
-						'<button type="button" class="ams_helper_btn ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'">×</button> '+
+						'<button type="button" class="ams_helper_btn ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'"></button> '+
 					'</div> '+
 				'</div> '+
 

@@ -111,6 +111,26 @@
 	margin: 0px 4px 8px 0px;
 }
 
+.ams .ams_selectall:before {
+	content: '✓\00a0\00a0';
+}
+
+.ams .ams_selectnone:before {
+	content: '×\00a0\00a0';
+}
+
+.ams .ams_reset:before {
+	content: '↶\00a0\00a0';
+}
+
+.ams .ams_clear:before {
+	content: '×';
+}
+
+.ams .ams_tick:before {
+	content: '✓'
+}
+
 .ams .ams_helper_btn.reset {
 	float: right;
 	margin-right: 0px;
