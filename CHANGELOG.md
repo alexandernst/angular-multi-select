@@ -1,6 +1,7 @@
 ### v5.2.1
 ##### Added / Updated
 - Bring back button customization.
+- Now the container layer will be placed on top or on the right of the button if there is no enough space.
 
 ### v5.2.0
 ##### Added / Updated
