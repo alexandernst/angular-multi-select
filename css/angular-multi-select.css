@@ -2,31 +2,20 @@
  * Don't modify things marked with ! - unless you know what you're doing
  */
 
-/* ! vertical layout */
-.multiSelect .vertical {
-	float: none;
+[angular-multi-select] {
+	display: inline-block;
 }
 
-/* ! horizontal layout */
-.multiSelect .horizontal:not(.multiSelectGroup) {
-	float: left;
-}
-
-/* ! create a "row" */
-.multiSelect .line {
+/* create a "row" */
+.ams .ams_row {
 	padding:  2px 0px 4px 0px;
 	max-height: 30px;
 	overflow: hidden;
 	box-sizing: content-box;
 }
 
-/* ! */
-.multiSelect .inlineBlock {
-	display: inline-block;
-}
-
 /* the multiselect button */
-.multiSelect > button {
+.ams > .ams_btn {
 	display: inline-block;
 	position: relative;
 	text-align: center;
@@ -40,38 +29,30 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
 	white-space:normal;
 	background-color: #fff;
 	background-image: linear-gradient(#fff, #f7f7f7);
 }
 
 /* button: hover */
-.multiSelect > button:hover {
+.ams > .ams_btn:hover {
 	background-image: linear-gradient(#fff, #e9e9e9);
 }
 
 /* button: disabled */
-.multiSelect > button:disabled {
+.ams > .ams_btn:disabled {
 	background-image: linear-gradient(#fff, #fff);
 	border: 1px solid #ddd;
 	color: #999;
 }
 
-/* button: clicked */
-.multiSelect .buttonClicked {
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-/* labels on the button */
-.multiSelect .buttonLabel {
-	display: inline-block;
-	padding: 5px 0px 5px 0px;
+.ams > .ams_btn .ams_btn_template_repeat {
+	float: left;
+	white-space: pre;
 }
 
 /* downward pointing arrow */
-.multiSelect .caret {
+.ams .caret {
 	display: inline-block;
 	width: 0;
 	height: 0;
@@ -84,7 +65,7 @@
 }
 
 /* the main checkboxes and helper layer */
-.multiSelect .checkboxLayer {
+.ams .ams_layer {
 	background-color: #fff;
 	position: absolute;
 	z-index: 999;
@@ -93,17 +74,30 @@
 	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	min-width:278px;
-	/*display: none !important;*/
+}
+
+.ams .ams_layer.position_top {
+	transform: translate(0, -100%);
+	top: 0;
+}
+
+.ams .ams_layer.position_left {
+	transform: translate(-100%, 0);
+	left: 100%;
+}
+
+.ams .ams_layer.position_left.position_top {
+	transform: translate(-100%, -100%);
 }
 
 /* container of helper elements */
-.multiSelect .helperContainer {
+.ams .ams_helpers_container {
 	border-bottom: 1px solid #ddd;
 	padding: 8px 8px 0px 8px;
 }
 
 /* helper buttons (select all, none, reset); */
-.multiSelect .helperButton {
+.ams .ams_helper_btn {
 	display: inline;
 	text-align: center;
 	cursor: pointer;
@@ -114,67 +108,62 @@
 	color: #666;
 	background-color: #f1f1f1;
 	line-height: 1.6;
-	margin: 0px 0px 8px 0px;
+	margin: 0px 4px 8px 0px;
 }
 
-.multiSelect .helperButton.reset{
+.ams .ams_helper_btn.reset {
 	float: right;
+	margin-right: 0px;
 }
 
-.multiSelect .helperButton:not( .reset ) {
-	margin-right: 4px;
-}
-
-/* clear button */
-.multiSelect .clearButton {
-	position: absolute;
-	display: inline;
-	text-align: center;
-	cursor: pointer;
-	border: 1px solid #ccc;
-	height: 22px;
-	width: 22px;
-	font-size: 13px;
-	border-radius: 2px;
-	color: #666;
-	background-color: #f1f1f1;
-	line-height: 1.4;
-	right : 2px;
-	top: 4px;
+.ams .ams_search {
+	position:relative;
 }
 
 /* filter */
-.multiSelect .inputFilter {
+.ams .inputFilter {
 	border-radius: 2px;
 	border: 1px solid #ccc;
 	height: 26px;
 	font-size: 14px;
 	width:100%;
 	padding-left:7px;
-	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	box-sizing: border-box;         /* Opera/IE 8+ */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	color: #888;
 	margin: 0px 0px 8px 0px;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 			box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 }
 
+/* clear button */
+.ams .ams_clear {
+	position: absolute;
+	display: inline;
+	height: 22px;
+	width: 22px;
+	margin-right: 0px;
+	line-height: 1.4;
+	right : 2px;
+	top: 4px;
+}
+
 /* helper elements on hover & focus */
-.multiSelect .clearButton:hover,
-.multiSelect .helperButton:hover {
+.ams .ams_clear:hover,
+.ams .ams_clear:hover {
 	border: 1px solid #ccc;
 	color: #999;
 	background-color: #f4f4f4;
 }
-.multiSelect .helperButton:disabled {
+.ams .ams_helper_btn:disabled {
 	color: #ccc;
 	border: 1px solid #ddd;
 }
 
-.multiSelect .clearButton:focus,
-.multiSelect .helperButton:focus,
-.multiSelect .inputFilter:focus {
+.ams .ams_clear:focus,
+.ams .ams_helper_btn:focus,
+.ams .inputFilter:focus {
 	border: 1px solid #66AFE9 !important;
 	outline: 0;
 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
@@ -182,27 +171,32 @@
 }
 
 /* container of multi select items */
-.multiSelect .checkBoxContainer {
+.ams .ams_items_container {
 	display: block;
 	padding: 8px;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
 
-.multiSelect .checkBoxContainer ul {
+.ams .ams_items_container > ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.ams .ams_items_container ul {
 	padding-left: 40px;
 }
 
-.multiSelect .checkBoxContainer > ul {
+.ams .ams_items_container > ul {
 	padding-left: 0px;
 }
 
-.multiSelect .checkBoxContainer li {
+.ams .ams_items_container li {
 	list-style-type: none;
 }
 
 /* item labels */
-.multiSelect .multiSelectItem {
+.ams .ams_item {
 	display: block;
 	padding: 3px;
 	color: #444;
@@ -216,12 +210,15 @@
 	position: relative;
 	min-width:278px;
 	min-height: 32px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* Styling on selected items */
-.multiSelect .multiSelectItem:not(.multiSelectGroup).selected
-{
-	background-image: linear-gradient( #e9e9e9, #f1f1f1 );
+.ams .ams_item:not(.ams_group).ams_selected {
+	background-image: linear-gradient(#e9e9e9, #f1f1f1);
 	color: #555;
 	cursor: pointer;
 	border-top: 1px solid #e4e4e4;
@@ -230,37 +227,36 @@
 }
 
 /* item labels focus on mouse hover */
-.multiSelect .multiSelectItem:hover,
-.multiSelect .multiSelectGroup:hover {
-	background-image: linear-gradient( #c1c1c1, #999 ) !important;
+.ams .ams_item:hover,
+.ams .ams_group:hover {
+	background-image: linear-gradient(#c1c1c1, #999) !important;
 	color: #fff !important;
 	cursor: pointer;
 	border: 1px solid #ccc !important;
 }
 
 /* item labels focus using keyboard */
-.multiSelect .multiSelectFocus {
-	background-image: linear-gradient( #c1c1c1, #999 ) !important;
+.ams .ams_focused {
+	background-image: linear-gradient(#c1c1c1, #999) !important;
 	color: #fff !important;
 	cursor: pointer;
 	border: 1px solid #ccc !important;
 }
 
 /* change mouse pointer into the pointing finger */
-.multiSelect .multiSelectItem span:hover,
-.multiSelect .multiSelectGroup span:hover
-{
+.ams .ams_item span:hover,
+.ams .ams_group span:hover {
 	cursor: pointer;
 }
 
 /* ! group labels */
-.multiSelect .multiSelectGroup {
+.ams .ams_group {
 	display: block;
 	clear: both;
 }
 
-/* right-align the tick mark (&#10004;) */
-.multiSelect .tickMark {
+/* right-align the tick mark */
+.ams .ams_tick {
 	display:inline-block;
 	position: absolute;
 	right: 10px;
@@ -269,7 +265,7 @@
 }
 
 /* hide the original HTML checkbox away */
-.multiSelect .checkbox {
+.ams .checkbox {
 	color: #ddd !important;
 	position: absolute;
 	left: -9999px;
@@ -277,15 +273,15 @@
 }
 
 /* checkboxes currently disabled */
-.multiSelect .disabled,
-.multiSelect .disabled:hover,
-.multiSelect .disabled label input:hover ~ span {
+.ams .disabled,
+.ams .disabled:hover,
+.ams .disabled label input:hover ~ span {
 	color: #c4c4c4 !important;
 	cursor: not-allowed !important;
 }
 
 /* If you use images in button / checkbox label, you might want to change the image style here. */
-.multiSelect img {
+.ams img {
 	vertical-align: middle;
 	margin-bottom:0px;
 	max-height: 22px;
