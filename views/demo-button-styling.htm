@@ -25,17 +25,17 @@
 
 		<div role="tabpanel">
 
-		  <!-- Nav tabs -->
-		  <ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
-			<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
-		  </ul>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+				<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
+			</ul>
 
-		  <!-- Tab panes -->
-		  <div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="view">
-				<p>Define your directive:</p>
-				<pre><code ng-non-bindable>&lt;div
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="view">
+					<p>Define your directive:</p>
+					<pre><code ng-non-bindable>&lt;div
     angular-multi-select
     input-model="webBrowsersGrouped"
     output-model="outputBrowsers"
@@ -47,25 +47,25 @@
     group-property="sub"
 &gt;
 &lt;/div&gt;</code></pre>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your input-model:</p>
+					<div class="fauxCode hljs xml">
+						$scope.webBrowsersGrouped = [
+						<table>
+							<tr class="hljs-tag" ng-repeat="row in webBrowsersGrouped" >
+								<td>&nbsp;</td>
+								<td>{</td>
+								<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
+								<td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
+								<td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
+								<td>}<span ng-if="$index < webBrowsersGrouped.length - 1">,</span></td>
+							</tr>
+						</table>
+						];
+					</div>
+				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="controller">
-				<p>Define your input-model:</p>
-		<div class="fauxCode hljs xml">
-			$scope.webBrowsersGrouped = [
-			<table>
-				<tr class="hljs-tag" ng-repeat="row in webBrowsersGrouped" >
-					<td>&nbsp;</td>
-					<td>{</td>
-					<td><span class="hljs-attribute">icon</span>: <span class="hljs-value">"{{removeHost(row.icon)}}"</span>,</td>
-					<td><span class="hljs-attribute">name</span>: <span class="hljs-value" ng-non-bindable>"{{row.name}}"</span>,</td>
-					<td><span class="hljs-attribute">checked</span>: <span class="hljs-value" ng-non-bindable>{{row.checked}}</span></td>
-					<td>}<span ng-if="$index < webBrowsersGrouped.length - 1">,</span></td>
-				</tr>
-			</table>
-			];
-		</div>
-			</div>
-		  </div>
 
 		</div>
 	</div>
