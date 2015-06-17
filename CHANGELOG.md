@@ -1,3 +1,7 @@
+### v5.3.1
+##### Added / Updated
+- Fix smart positioning not working quite as expected.
+
 ### v5.3.0
 ##### Added / Updated
 - Button icons are part of the CSS now.
