@@ -297,7 +297,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._createButtonLabel = function(objs, index) {
-				//"{{ objs.length == 1 ? '' : $last ? buttonLabelSeparator[1] : buttonLabelSeparator[0] }}" +
 				var obj = objs[index];
 
 				var _interpolated = $scope._interpolatedButtonLabel(obj);
