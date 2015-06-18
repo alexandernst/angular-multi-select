@@ -7,6 +7,7 @@ describe('Testing directive in single mode', function() {
 
 		//set our view html.
 		html = '<div angular-multi-select ' +
+			'translation="localLang"' +
 			'hidden-property="hidden" ' +
 			'input-model="items" ' +
 			'output-model="x" ' +
@@ -31,6 +32,13 @@ describe('Testing directive in single mode', function() {
 			$compile(element)($rootScope);
 
 			element.scope().items = single_test_data;
+			element.scope().localLang = {
+				selected: " seleccionado",
+				selectAll: "Todo",
+				selectNone: "Nada",
+				reset: "Resetear",
+				search: "Escribe aqui para buscar..."
+			};
 			element.scope().$digest();
 
 			$(document.body).append(element);
@@ -140,6 +148,13 @@ describe('Testing directive in single mode', function() {
 
 		$('.ams_clear').click();
 		expect($('.ams_item')).toHaveLength(13);
+	});
+
+	it("Should be able to use i18n strings", function() {
+		expect($('.ams_selectall')).toContainHtml("Todo");
+		expect($('.ams_selectnone')).toContainHtml("Nada");
+		expect($('.ams_reset')).toContainHtml("Resetear");
+		expect($('.ams_filter')).toHaveAttr("placeholder", "Escribe aqui para buscar...");
 	});
 });
 
