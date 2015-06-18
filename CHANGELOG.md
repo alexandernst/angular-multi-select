@@ -1,3 +1,7 @@
+### v5.3.2
+##### Added / Updated
+- The directive now exports a simple API that can be used for control purpose.
+
 ### v5.3.1
 ##### Added / Updated
 - Fix smart positioning not working quite as expected.
