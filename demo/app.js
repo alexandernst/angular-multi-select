@@ -1,6 +1,6 @@
 var app = angular.module('app', ["angular-multi-select"]);
 
-app.controller('MainCtrl', function($scope) {
+app.controller('MainCtrl', function($scope, $timeout) {
 
 	$scope.modernBrowsers = [
 		{
@@ -11,6 +11,7 @@ app.controller('MainCtrl', function($scope) {
 					name: "Chrome"
 				},
 				{
+					id: 2,
 					icon: '<img  src="https://cdn2.iconfinder.com/data/icons/humano2/32x32/apps/firefox-icon.png" />',
 					name: "Firefox"
 				},
@@ -39,13 +40,35 @@ app.controller('MainCtrl', function($scope) {
 
 	$scope.$watch("outputBrowsers", function(_new, _old) {
 		if(_new && !angular.equals(_new, _old)) {
-			console.log(_new);
+			//console.log(_new);
 		}
 	}, true);
 
-	$scope.clicked = function(item) {
-		console.log($scope.outputBrowsers);
-		console.log(item);
+	$scope.localLang = {
+		selected: " seleccionado",
+		selectAll: "Todo",
+		selectNone: "Nada",
+		reset: "Resetear",
+		search: "Escribe aqui para buscar..."
 	}
+
+	$scope.clicked = function(item) {
+		//console.log($scope.outputBrowsers);
+		//console.log(item);
+	}
+
+	$scope.api = {};
+
+	$timeout(function() {
+		$scope.api.open();
+	}, 2000);
+
+	$timeout(function() {
+		$scope.api.select_none();
+	}, 2700);
+
+	$timeout(function() {
+		$scope.api.select(2);
+	}, 3500);
 
 });
