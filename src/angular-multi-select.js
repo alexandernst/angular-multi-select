@@ -199,6 +199,34 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			/**
+			 * Helper function that returns an item by matching the passed id.
+			 * @param {String|int} id
+			 * @param {mixed} model
+			 * @returns {Object}
+			 * @private
+			 */
+			$scope._getItemById = function(id, model) {
+				/*
+				 * This will make changes only to the filtered model, which is
+				 * what 99% of the developers would expect. However, the other
+				 * 1% might want to select and modify items from the shadow
+				 * model. Does that makes sense? Should they be able to do that?
+				 */
+				model = model || $scope.filteredModel;
+
+				var item = null;
+
+				$scope._walk(model, attrs.groupProperty, function(_item) {
+					if(_item[attrs.idProperty] === id) {
+						item = _item;
+					}
+					return true;
+				});
+
+				return item;
+			};
+
+			/**
 			 * Helper function used to get the parent of an item.
 			 * @param {Array} model
 			 * @param {Object} item
