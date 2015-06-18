@@ -12,7 +12,7 @@ describe('Testing directive in single mode', function() {
 			'output-model="x" ' +
 			'group-property="sub" ' +
 			'tick-property="check" ' +
-			'item-label="{{ name }}" ' +
+			'item-label="{{ icon }}{{ name }}" ' +
 			'helper-elements="all none reset filter"' +
 			'selection-mode="single" ' +
 			'min-search-length="3" ' +
@@ -49,6 +49,12 @@ describe('Testing directive in single mode', function() {
 	it('Should create the items layer & container', function() {
 		expect(element).toContainElement('div.ams_layer');
 		expect(element).toContainElement('div.ams_items_container');
+	});
+
+	it('Should create the item label according to the specified in "item-label"', function() {
+		var item = $('.ams_item:not(.ams_group) > .ams_tick').prev();
+		expect(item).toContainElement("img");
+		expect(item).toContainText("Chrome");
 	});
 
 	it('Should contain 3 main categories', function() {
