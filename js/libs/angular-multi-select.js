@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.0
+ * Current version: 5.3.2
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -39,12 +39,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 		restrict: 'AE',
 
 		scope: {
+			//api
+			api: '=',
+
 			// models
 			inputModel: '=',
 			outputModel: '=',
-
-			// settings based on attribute
-			isDisabled: '=',
 
 			// callbacks
 			onClear: '&',
@@ -92,6 +92,39 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.buttonTemplate = attrs.buttonTemplate;
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
+
+			if($scope.api !== undefined) {
+				$scope.api =  {
+					select_all: function() {
+						$scope.selectAll();
+					},
+					select_none: function() {
+						$scope.selectNone();
+					},
+					select: function(id) {
+						var item = $scope._getItemById(id);
+						if(item !== null) {
+							$scope.clickItem(item, true);
+						}
+					},
+					reset: function() {
+						$scope.reset();
+					},
+					clear: function() {
+						$scope.clear();
+					},
+					open: function() {
+						$timeout(function() {
+							$scope.visible = true;
+						}, 0);
+					},
+					close: function() {
+						$timeout(function() {
+							$scope.visible = false;
+						}, 0);
+					}
+				};
+			}
 
 			$scope._trans = {
 				selected: "selected",
@@ -202,6 +235,34 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			/**
+			 * Helper function that returns an item by matching the passed id.
+			 * @param {String|int} id
+			 * @param {mixed} model
+			 * @returns {Object}
+			 * @private
+			 */
+			$scope._getItemById = function(id, model) {
+				/*
+				 * This will make changes only to the filtered model, which is
+				 * what 99% of the developers would expect. However, the other
+				 * 1% might want to select and modify items from the shadow
+				 * model. Does that makes sense? Should they be able to do that?
+				 */
+				model = model || $scope.filteredModel;
+
+				var item = null;
+
+				$scope._walk(model, attrs.groupProperty, function(_item) {
+					if(_item[attrs.idProperty] === id) {
+						item = _item;
+					}
+					return true;
+				});
+
+				return item;
+			};
+
+			/**
 			 * Helper function used to get the parent of an item.
 			 * @param {Array} model
 			 * @param {Object} item
@@ -272,7 +333,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._createButtonLabel = function(objs, index) {
-				//"{{ objs.length == 1 ? '' : $last ? buttonLabelSeparator[1] : buttonLabelSeparator[0] }}" +
 				var obj = objs[index];
 
 				var _interpolated = $scope._interpolatedButtonLabel(obj);
@@ -832,14 +892,26 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var ams_layer = angular.element(element[0].querySelector(".ams_layer"));
 				var _bounds = ams_layer[0].getBoundingClientRect();
 
+				var body = document.body;
+				var docElem = document.documentElement;
+				var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+				var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+
+				var clientTop = docElem.clientTop || body.clientTop || 0;
+				var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+
+				var _dist_to_top_border = Math.round(_bounds.top +  scrollTop - clientTop);
+				var _dist_to_left_border = Math.round(_bounds.left + scrollLeft - clientLeft);
+
+				var _dist_to_bottom_border = window.innerHeight - _dist_to_top_border - _bounds.height;
+				var _dist_to_right_border = window.innerWidth - _dist_to_left_border - _bounds.width;
+
 				var classes = "";
-				var _dist_to_x = window.innerHeight - _bounds.top;
-				if(_dist_to_x - _bounds.height < 0 && _dist_to_x > _bounds.height) {
+				if(_dist_to_bottom_border < 0 && _dist_to_top_border >= _bounds.height) {
 					classes += "position_top ";
 				}
 
-				var _dist_to_y = window.innerWidth - _bounds.left;
-				if(_dist_to_y - _bounds.width < 0 && _dist_to_y > _bounds.width) {
+				if(_dist_to_right_border < 0 && _dist_to_left_border > _bounds.width) {
 					classes += "position_left ";
 				}
 
@@ -943,15 +1015,15 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="ams_row" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="ams_helper_btn ams_selectall"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
+							'ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="ams_helper_btn ams_selectnone"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
+							'ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="ams_helper_btn reset ams_reset"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
+							'ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
 					// the search box
