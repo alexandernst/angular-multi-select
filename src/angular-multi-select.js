@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.1
+ * Current version: 5.3.2
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -39,6 +39,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 		restrict: 'AE',
 
 		scope: {
+			//api
+			api: '=',
+
 			// models
 			inputModel: '=',
 			outputModel: '=',
@@ -89,6 +92,39 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.buttonTemplate = attrs.buttonTemplate;
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
+
+			if($scope.api !== undefined) {
+				$scope.api =  {
+					select_all: function() {
+						$scope.selectAll();
+					},
+					select_none: function() {
+						$scope.selectNone();
+					},
+					select: function(id) {
+						var item = $scope._getItemById(id);
+						if(item !== null) {
+							$scope.clickItem(item, true);
+						}
+					},
+					reset: function() {
+						$scope.reset();
+					},
+					clear: function() {
+						$scope.clear();
+					},
+					open: function() {
+						$timeout(function() {
+							$scope.visible = true;
+						}, 0);
+					},
+					close: function() {
+						$timeout(function() {
+							$scope.visible = false;
+						}, 0);
+					}
+				};
+			}
 
 			$scope._trans = {
 				selected: "selected",
