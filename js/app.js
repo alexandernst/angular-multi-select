@@ -30,6 +30,11 @@ var myApp = angular.module( 'myApp' , [
 		controller: 'demoDynamicUpdate'
 	});
 
+	$routeProvider.when( '/demo-api' , {
+		templateUrl: 'views/demo-api.htm',
+		controller: 'demoApi'
+	});
+
 	$routeProvider.when( '/demo-button-styling' , {
 		templateUrl: 'views/demo-button-styling.htm',
 		controller: 'demoGrouping'

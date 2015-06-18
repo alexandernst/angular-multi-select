@@ -74,8 +74,8 @@
 			</p>
 			<p>
 				<span class="inlineTitle">Type</span>: String<br />
-				<span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
-				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
 			</p>
 
 			<h5>button-template</h5>
@@ -114,14 +114,25 @@
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label-separator='[" | ", "!"]'&gt;&lt;/div&gt;</code>
 			</p>
 
-			<h5>id-property</h5>
+			<h5>api</h5>
 			<p>
-				This holds the unique identifier of each item in your input value. If you don't pass one, a random ID will be used for each item.
+				This holds an object that will be filled with the exposed functions from the directive's API.
 			</p>
 			<p>
 				<span class="inlineTitle">Type</span>: String<br />
 				<span class="inlineTitle">Default value</span>: "" <br />
-				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... api="my_object"&gt;&lt;/div&gt;</code>
+			</p>
+
+			<h5>id-property</h5>
+			<p>
+				This holds the unique identifier of each item in your input value. If you don't pass one, a random ID will be used for each item.
+				This is useful if you plan to select items using the exported API.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "angular-multi-select-id" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... id-property="my_id"&gt;&lt;/div&gt;</code>
 			</p>
 
 			<h5>group-property</h5>

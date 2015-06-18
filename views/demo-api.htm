@@ -1,0 +1,104 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Demo > API</h3>
+
+		<p>
+			The directive can export some helper functions in the form of a nice little API that
+			you can use to control the directive. This is the complete list of exported functions:
+			<ul>
+				<li><code>select_all()</code></li>
+				<li><code>select_none()</code></li>
+				<li><code>select(id)</code></li>
+				<li><code>reset()</code></li>
+				<li><code>clear()</code></li>
+				<li><code>open()</code></li>
+				<li><code>close()</code></li>
+			</ul>
+		</p>
+		<br />
+		<div class="row">
+			<div class="col-sm-3">
+				<div
+					angular-multi-select
+					api="api"
+					id-property="id"
+					input-model="modernBrowsers"
+					output-model="outputBrowsers"
+					item-label="{{ icon }} {{ name }}"
+					tick-property="checked"
+					>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<h5>Update input-model</h5>
+				<p>
+					Click one of the buttons below to load different data into it.
+				</p>
+				<p>
+					<button type="button" class="btn btn-success btn-xs" ng-click="open()" >Open</button>
+					<button type="button" class="btn btn-success btn-xs" ng-click="close()" >Close</button>
+					<button type="button" class="btn btn-primary btn-xs" ng-click="select_ff()" >Select Firefox</button>
+				</p>
+			</div>
+		</div>
+
+		<br />
+		<div role="tabpanel">
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+				<li role="presentation"><a data-target="#controller" aria-controls="profile" role="tab" data-toggle="tab">Controller</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="view">
+					<p>Define your directive:</p>
+					<pre><code ng-non-bindable>&lt;div
+    angular-multi-select
+    api="api"
+    id-property="id"
+    input-model="modernBrowsers"
+    output-model="outputBrowsers"
+    item-label="{{ icon }} {{ name }}"
+    tick-property="checked"
+&gt;
+&lt;/div&gt;
+...
+&lt;!-- The buttons to do data operation --&gt;
+&lt;button type="button" class="btn btn-success btn-xs" ng-click="open()" >Open&lt;/button&gt;
+&lt;button type="button" class="btn btn-success btn-xs" ng-click="close()" >Close&lt;/button&gt;
+&lt;button type="button" class="btn btn-primary btn-xs" ng-click="select_ff()" >Select Firefox&lt;/button&gt;</code></pre>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>
+						<code>$scope.api</code> is the object that holds the exported API functions.
+					</p>
+					<pre><code>
+$scope.open = function() {
+    $scope.api.open();
+};
+
+$scope.close = function() {
+    $scope.api.close();
+};
+
+$scope.select_ff = function() {
+    $scope.api.select(1);
+    $scope.api.open();
+}</code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
