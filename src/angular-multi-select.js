@@ -43,9 +43,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			inputModel: '=',
 			outputModel: '=',
 
-			// settings based on attribute
-			isDisabled: '=',
-
 			// callbacks
 			onClear: '&',
 			onClose: '&',
@@ -955,15 +952,15 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					'<div class="ams_row" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
 						// select all
 						'<button type="button" class="ams_helper_btn ams_selectall"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
+							'ng-if="helperStatus.all" ng-click="selectAll()" ng-bind-html="lang.selectAll" set-focus="kbFocus[kbFocusIndex] === \'all\'"">' +
 						'</button>'+
 						// select none
 						'<button type="button" class="ams_helper_btn ams_selectnone"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
+							'ng-if="helperStatus.none" ng-click="selectNone()" ng-bind-html="lang.selectNone" set-focus="kbFocus[kbFocusIndex] === \'none\'">' +
 						'</button>'+
 						// reset
 						'<button type="button" class="ams_helper_btn reset ams_reset"' +
-							'ng-disabled="isDisabled" ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
+							'ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
 						'</button>' +
 					'</div>' +
 					// the search box
