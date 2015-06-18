@@ -235,3 +235,84 @@ describe('Testing directive in multi mode', function() {
 		expect($('.selected')).toHaveLength(0);
 	});
 });
+
+describe('Testing directive button label customization and API', function() {
+	var scope, element, html, timeout;
+
+	beforeEach(function (){
+		//load the module
+		module('angular-multi-select');
+
+		//set our view html.
+		html = '<div angular-multi-select ' +
+			'api="api"' +
+			'id-property="id"' +
+			'hidden-property="hidden" ' +
+			'input-model="items" ' +
+			'output-model="x" ' +
+			'group-property="sub" ' +
+			'tick-property="check" ' +
+			'item-label="{{ name }}" ' +
+			'helper-elements="all none reset filter"' +
+			'selection-mode="multi" ' +
+			'button-label="{{ icon }} {{ name }}"' +
+			'button-label-separator=\'[", ","!?"]\'' +
+			'button-template="angular-multi-select-btn-data.htm"' +
+		'></div>';
+
+		inject(function($compile, $rootScope, $timeout) {
+			//create a scope (you could just use $rootScope, I suppose)
+			scope = $rootScope;
+			timeout = $timeout;
+
+			//get the jqLite or jQuery element
+			element = angular.element(html);
+
+			//compile the element into a function to process the view.
+			$compile(element)($rootScope);
+
+			element.scope().items = multi_test_data;
+			element.scope().api = {};
+			element.scope().$digest();
+
+			$(document.body).append(element);
+		});
+	});
+
+	afterEach(function() {
+		element.remove();
+		elementn = null;
+	});
+
+	it('Should be able to open/close the directive using the exposed API', function() {
+		element.scope().api.open();
+		timeout.flush();
+		expect('div.ams_layer').toBeVisible();
+
+		element.scope().api.close();
+		timeout.flush();
+		expect('div.ams_layer').not.toBeVisible();
+	});
+
+	it('Should be able to select all using the exposed API', function() {
+		element.scope().api.select_all();
+		timeout.flush();
+		expect('.ams_selected').toHaveLength(13);
+	});
+
+	it('Should be able to deselect all using the exposed API', function() {
+		element.scope().api.select_none();
+		timeout.flush();
+		expect('.ams_selected').toHaveLength(0);
+	});
+
+	it('Should be able to select an item by it\'s ID using the exposed API', function() {
+		element.scope().api.select_none();
+		timeout.flush();
+
+		element.scope().api.select(42);
+		timeout.flush();
+		var item = $('.ams_item:not(.ams_group) > .ams_tick').prev();
+		expect(item).toContainText("Chromium");
+	});
+});

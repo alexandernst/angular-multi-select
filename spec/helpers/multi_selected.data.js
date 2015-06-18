@@ -27,6 +27,7 @@ var multi_test_data = [
 						check: true
 					},
 					{
+						id: 42,
 						icon: '<img  src="https://cdn2.iconfinder.com/data/icons/new_google_product_icons_by_carlosjj-dwke/32/chromium.png" />',
 						name: "Chromium"
 					},
