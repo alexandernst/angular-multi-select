@@ -17,6 +17,20 @@
 			</ul>
 		</p>
 		<br />
+		<p>
+			Because the API object is filled at runtime, you'll have to wait until the directive is done
+			rendering/executing. If you're using the API inside some function triggered by the user, you'll
+			probably be fine, but if you're using it while your controller is starting, you'd need to wrap
+			your code inside a <code>$timeout</code>:
+
+			Example:
+
+			<code>
+				$timeout(function() {
+					$scope.api.select(42);
+				}, 0);
+			</code>
+		</p>
 		<div class="row">
 			<div class="col-sm-3">
 				<div
