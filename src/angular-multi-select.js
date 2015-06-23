@@ -152,6 +152,45 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.Math = window.Math;
 
 			/**
+			 * Backport for Angular 1.3.x of Angular 1.4.x's "merge()" function.
+			 * @param dst
+			 * @param objs
+			 * @param deep
+			 * @returns {*}
+			 */
+			$scope.baseExtend = function(dst, objs, deep) {
+				var h = dst.$$hashKey;
+
+				for (var i = 0, ii = objs.length; i < ii; ++i) {
+					var obj = objs[i];
+					if (!angular.isObject(obj) && !angular.isFunction(obj)) continue;
+					var keys = Object.keys(obj);
+					for (var j = 0, jj = keys.length; j < jj; j++) {
+						var key = keys[j];
+						var src = obj[key];
+
+						if (deep && angular.isObject(src)) {
+							if (!angular.isObject(dst[key])) dst[key] = angular.isArray(src) ? [] : {};
+							$scope.baseExtend(dst[key], [src], true);
+						} else {
+							dst[key] = src;
+						}
+					}
+				}
+
+				if (h) {
+					dst.$$hashKey = h;
+				} else {
+					delete dst.$$hashKey;
+				}
+				return dst;
+			};
+
+			$scope.merge = function(dst) {
+				return $scope.baseExtend(dst, [].slice.call(arguments, 1), true);
+			};
+
+			/**
 			 * Helper function to inverse the result of a function called by a filter from a template
 			 * @param f
 			 * @returns {Function}
