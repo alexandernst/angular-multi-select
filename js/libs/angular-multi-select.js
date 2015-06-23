@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.2
+ * Current version: 5.3.3
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -150,6 +150,45 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope.Math = window.Math;
+
+			/**
+			 * Backport for Angular 1.3.x of Angular 1.4.x's "merge()" function.
+			 * @param dst
+			 * @param objs
+			 * @param deep
+			 * @returns {*}
+			 */
+			$scope.baseExtend = function(dst, objs, deep) {
+				var h = dst.$$hashKey;
+
+				for (var i = 0, ii = objs.length; i < ii; ++i) {
+					var obj = objs[i];
+					if (!angular.isObject(obj) && !angular.isFunction(obj)) continue;
+					var keys = Object.keys(obj);
+					for (var j = 0, jj = keys.length; j < jj; j++) {
+						var key = keys[j];
+						var src = obj[key];
+
+						if (deep && angular.isObject(src)) {
+							if (!angular.isObject(dst[key])) dst[key] = angular.isArray(src) ? [] : {};
+							$scope.baseExtend(dst[key], [src], true);
+						} else {
+							dst[key] = src;
+						}
+					}
+				}
+
+				if (h) {
+					dst.$$hashKey = h;
+				} else {
+					delete dst.$$hashKey;
+				}
+				return dst;
+			};
+
+			$scope.merge = function(dst) {
+				return $scope.baseExtend(dst, [].slice.call(arguments, 1), true);
+			};
 
 			/**
 			 * Helper function to inverse the result of a function called by a filter from a template
@@ -333,9 +372,19 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._createButtonLabel = function(objs, index) {
-				var obj = objs[index];
+				var _interpolate_obj = objs[index];
 
-				var _interpolated = $scope._interpolatedButtonLabel(obj);
+				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
+					var _scope = {};
+					for(var p in $scope.$parent) {
+						if($scope.$parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof($scope.$parent[p]) !== "function") {
+							_scope[p] = $scope.$parent[p];
+						}
+					}
+					_interpolate_obj = $scope.merge({}, _scope, _interpolate_obj);
+				}
+
+				var _interpolated = $scope._interpolatedButtonLabel(_interpolate_obj);
 
 				var _s = "";
 				if(objs.length > 1) {
@@ -952,7 +1001,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 	};
 });
 
-angular_multi_select.directive('setFocus', function($timeout) {
+angular_multi_select.directive('setFocus', ["$timeout", function($timeout) {
 	'use strict';
 	return function(scope, element, attrs) {
 		attrs.setFocus = attrs.setFocus || false;
@@ -966,7 +1015,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 			});
 		}, true);
 	};
-});
+}]);
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
