@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.3
+ * Current version: 5.3.4
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -1029,6 +1029,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
+		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(outputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
 		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(outputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
 		"<span class='caret'></span>" +
 		"";
