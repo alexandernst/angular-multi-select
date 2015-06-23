@@ -1,3 +1,7 @@
+### v5.3.4
+##### Added / Updated
+- Show that none is selected in btn-data.htm template when nothing is selected.
+
 ### v5.3.3
 ##### Added / Updated
 - Fix a bug causing the 'setFocus' directive not receiving '$timeout' when minified.
