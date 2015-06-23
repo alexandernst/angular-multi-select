@@ -1,3 +1,8 @@
+### v5.3.3
+##### Added / Updated
+- Fix a bug causing the 'setFocus' directive not receiving '$timeout' when minified.
+- Now the button label can be styled with any variable from the item itself or from the parent scope.
+
 ### v5.3.2
 ##### Added / Updated
 - The directive now exports a simple API that can be used for control purpose.
