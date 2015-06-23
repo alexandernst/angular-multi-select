@@ -991,7 +991,7 @@ angular_multi_select.directive('angularMultiSelectMouseTrap', function() {
 	};
 });
 
-angular_multi_select.directive('setFocus', function($timeout) {
+angular_multi_select.directive('setFocus', ["$timeout", function($timeout) {
 	'use strict';
 	return function(scope, element, attrs) {
 		attrs.setFocus = attrs.setFocus || false;
@@ -1005,7 +1005,7 @@ angular_multi_select.directive('setFocus', function($timeout) {
 			});
 		}, true);
 	};
-});
+}]);
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
