@@ -372,9 +372,19 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._createButtonLabel = function(objs, index) {
-				var obj = objs[index];
+				var _interpolate_obj = objs[index];
 
-				var _interpolated = $scope._interpolatedButtonLabel(obj);
+				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
+					var _scope = {};
+					for(var p in $scope.$parent) {
+						if($scope.$parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof($scope.$parent[p]) !== "function") {
+							_scope[p] = $scope.$parent[p];
+						}
+					}
+					_interpolate_obj = $scope.merge({}, _scope, _interpolate_obj);
+				}
+
+				var _interpolated = $scope._interpolatedButtonLabel(_interpolate_obj);
 
 				var _s = "";
 				if(objs.length > 1) {
