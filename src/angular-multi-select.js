@@ -223,12 +223,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				if(angular.isArray(obj)) {
 					var _objs = [];
 
-					angular.forEach(obj, function(_obj) {
-						var _tmp_obj = $scope._walk(_obj, key, fn);
-						if(_tmp_obj !== null) {
+					for(var _idx in obj) {
+						var _tmp_obj = $scope._walk(obj[_idx], key, fn);
+						if (_tmp_obj !== null) {
 							_objs.push(_tmp_obj);
 						}
-					});
+					}
 
 					return _objs.length > 0 ? _objs : null;
 				} else if(angular.isObject(obj)) {
@@ -237,12 +237,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 					if (obj.hasOwnProperty(key) && angular.isArray(obj[key]) ) {
 						var sub = [];
-						angular.forEach(obj[key], function(v) {
-							var new_obj = $scope._walk(v, key, fn);
-							if( new_obj !== null ) {
-								sub.push( new_obj );
+
+						for(var _idx in obj[key]) {
+							var new_obj = $scope._walk(obj[key][_idx], key, fn);
+							if (new_obj !== null) {
+								sub.push(new_obj);
 							}
-						});
+						}
+
 						if(sub.length !== obj[key].length){
 							obj[key] = sub;
 						}
@@ -260,17 +262,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._syncModels = function(dst, src) {
-				$scope._walk(src, attrs.groupProperty, function(item) {
-					$scope._walk(dst, attrs.groupProperty, function(_item) {
-						if(_item[attrs.idProperty] === item[attrs.idProperty]) {
-							//Don't use extend here as it's really expensive and because
-							//the only thing that can change in an item is it's tick state.
-							_item[attrs.tickProperty] = item[attrs.tickProperty];
-						}
-						return true;
-					});
-					return true;
-				});
+				$scope.merge(dst, src);
 			};
 
 			/**
@@ -531,24 +523,24 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var _leafs = $scope._getLeafs(model);
 
 				var _break = false;
-				angular.forEach(_leafs, function(_item) {
-					if(_break === true) return;
-					var _state = $scope._isChecked(_item);
+				for(var _idx in _leafs) {
+					var _state = $scope._isChecked(_leafs[_idx]);
 
-					if(_state) _n_checked++;
+					if (_state) _n_checked++;
 
-					if(_n_checked > 1 && attrs.selectionMode === "single") {
+					if (_n_checked > 1 && attrs.selectionMode === "single") {
 						_break = true;
 						$scope._uncheckAll(model);
+						break;
 					}
-				});
+				}
 
 				if(_break === true) return;
 
 				var _nodes  = $scope._getNodes(model);
-				angular.forEach(_nodes, function(_node) {
-					_node[attrs.tickProperty] = $scope._areAllChecked(_node) !== 0;
-				});
+				for(_idx in _nodes) {
+					_nodes[_idx][attrs.tickProperty] = $scope._areAllChecked(_nodes[_idx]) !== 0;
+				}
 			};
 
 			/**
@@ -619,7 +611,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				}
 
 				$scope._flipCheck(item);
-				$scope._enforceChecks($scope.filteredModel);
 
 				//Close if in single mode
 				if(attrs.selectionMode === "single") {
@@ -747,8 +738,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * - update our output model
 			 * - fill the keyboard focus array helper
 			 */
-			$scope.$watch('filteredModel', function(_new) {
-				if(_new) {
+			$scope.$watch('filteredModel', function(_new, _old) {
+				if(_new && _new !== _old) {
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
@@ -1021,8 +1012,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
 		"<div class='ams_btn_template_repeat'>{{ Math.abs(_areAllChecked(filteredModel)) }} {{ _trans.selected }}</div>" +
-		"<span class='caret'></span>" +
-		"";
+		"<span class='caret'></span>";
 	$templateCache.put('angular-multi-select-btn-count.htm', template);
 }]);
 
@@ -1031,8 +1021,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 	var template = "" +
 		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(outputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
 		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(outputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
-		"<span class='caret'></span>" +
-		"";
+		"<span class='caret'></span>";
 	$templateCache.put('angular-multi-select-btn-data.htm', template);
 }]);
 
@@ -1046,8 +1035,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 
 		"<ul ng-if='item.sub'>" +
 			"<li ng-repeat='item in item[groupProperty] | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
-		"</ul>" +
-		"";
+		"</ul>";
 	$templateCache.put('angular-multi-select-item.htm', template);
 }]);
 
@@ -1073,28 +1061,27 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 						'</button>'+
 						// reset
 						'<button type="button" class="ams_helper_btn reset ams_reset"' +
-							'ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">'+
+							'ng-if="helperStatus.reset" ng-click="reset()" ng-bind-html="lang.reset" set-focus="kbFocus[kbFocusIndex] === \'reset\'">' +
 						'</button>' +
 					'</div>' +
 					// the search box
-					'<div class="ams_row ams_search" ng-if="helperStatus.filter">'+
+					'<div class="ams_row ams_search" ng-if="helperStatus.filter">' +
 						// textfield
 						'<input placeholder="{{ lang.search }}" type="text"' +
-							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"'+
-						'/>'+
+							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"' +
+						'/>' +
 						// clear button
-						'<button type="button" class="ams_helper_btn ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'"></button> '+
-					'</div> '+
-				'</div> '+
+						'<button type="button" class="ams_helper_btn ams_clear" ng-click="clear()" set-focus="kbFocus[kbFocusIndex] === \'clear\'"></button> ' +
+					'</div> ' +
+				'</div> ' +
 
 				// selection items
-				'<div class="ams_items_container">'+
+				'<div class="ams_items_container">' +
 					"<ul>" +
 						"<li ng-repeat='item in filteredModel | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 					"</ul>" +
 				'</div>'+
 			'</div>'+
-		'</div>'+
-	'</span>';
+		'</span>';
 	$templateCache.put('angular-multi-select.htm', template);
 }]);

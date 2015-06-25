@@ -200,11 +200,7 @@
 	padding: 8px;
 	overflow-x: hidden;
 	overflow-y: auto;
-}
-
-.ams .ams_items_container > ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	height: 50vh;
 }
 
 .ams .ams_items_container ul {
@@ -212,6 +208,8 @@
 }
 
 .ams .ams_items_container > ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
 	padding-left: 0px;
 }
 
