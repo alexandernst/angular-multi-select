@@ -1,3 +1,7 @@
+### v5.3.5
+##### Added / Updated
+- Small performance improvements
+
 ### v5.3.4
 ##### Added / Updated
 - Show that none is selected in btn-data.htm template when nothing is selected.
