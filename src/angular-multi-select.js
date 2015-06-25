@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.4
+ * Current version: 5.3.5
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -220,10 +220,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._walk = function(obj, key, fn) {
+				var _idx;
 				if(angular.isArray(obj)) {
 					var _objs = [];
 
-					for(var _idx in obj) {
+					for(_idx in obj) {
 						var _tmp_obj = $scope._walk(obj[_idx], key, fn);
 						if (_tmp_obj !== null) {
 							_objs.push(_tmp_obj);
@@ -238,7 +239,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					if (obj.hasOwnProperty(key) && angular.isArray(obj[key]) ) {
 						var sub = [];
 
-						for(var _idx in obj[key]) {
+						for(_idx in obj[key]) {
 							var new_obj = $scope._walk(obj[key][_idx], key, fn);
 							if (new_obj !== null) {
 								sub.push(new_obj);
@@ -739,7 +740,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * - fill the keyboard focus array helper
 			 */
 			$scope.$watch('filteredModel', function(_new, _old) {
-				if(_new && _new !== _old) {
+				if(_new) {
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
