@@ -200,7 +200,7 @@
 	padding: 8px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 50vh;
+	max-height: 50vh;
 }
 
 .ams .ams_items_container ul {
