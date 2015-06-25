@@ -1,6 +1,10 @@
+### v5.3.6
+##### Added / Updated
+- Don't force the height of the items layer.
+
 ### v5.3.5
 ##### Added / Updated
-- Small performance improvements
+- Small performance improvements.
 
 ### v5.3.4
 ##### Added / Updated
