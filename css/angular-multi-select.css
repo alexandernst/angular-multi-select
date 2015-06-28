@@ -6,6 +6,10 @@
 	display: inline-block;
 }
 
+.ams {
+	position: relative;
+}
+
 /* create a "row" */
 .ams .ams_row {
 	padding:  2px 0px 4px 0px;
@@ -78,7 +82,7 @@
 
 .ams .ams_layer.position_top {
 	transform: translate(0, -100%);
-	top: 0;
+	top: -6px; /* The shadow height */
 }
 
 .ams .ams_layer.position_left {
@@ -196,11 +200,7 @@
 	padding: 8px;
 	overflow-x: hidden;
 	overflow-y: auto;
-}
-
-.ams .ams_items_container > ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	max-height: 50vh;
 }
 
 .ams .ams_items_container ul {
@@ -208,6 +208,8 @@
 }
 
 .ams .ams_items_container > ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
 	padding-left: 0px;
 }
 
