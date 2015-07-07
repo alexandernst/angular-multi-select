@@ -100,6 +100,29 @@
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... preselect-value="543"&gt;&lt;/div&gt;</code>
 			</p>
 
+			<h5>single-output-prop</h5>
+			<p>
+				Instead of <code>output-model</code>, you can use <code>single-output-prop</code> and <code>single-output-model</code> attributes to assign
+				the first item of the output data to a model/variable. This attribute holds the property of the data/object that should be used. If null, the entire
+				object will be used.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... single-output-prop="custom_key"&gt;&lt;/div&gt;</code>
+			</p>
+
+			<h5>single-output-model</h5>
+			<p>
+				This should be used with <code>single-output-prop</code>. This links a variable in your scope to the first item of the output data of the
+				directive.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... single-output-model="data_holder"&gt;&lt;/div&gt;</code>
+			</p>
+
 			<h5>button-template</h5>
 			<p>
 				A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
