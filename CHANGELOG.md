@@ -1,14 +1,18 @@
+### v5.3.11
+##### Added / Updated
+- Allow setting a limit to the number of selected items.
+
 ### v5.3.10
 ##### Added / Updated
-- Improve performance
+- Improve performance.
 
 ### v5.3.9
 ##### Added / Updated
-- Make it possible to map a single object/value to an output model
+- Make it possible to map a single object/value to an output model.
 
 ### v5.3.8
 ##### Added / Updated
-- Make it possible to pre-select items via properties
+- Make it possible to pre-select items via properties.
 
 ### v5.3.7
 ##### Added / Updated
