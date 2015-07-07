@@ -1,3 +1,7 @@
+### v5.3.8
+##### Added / Updated
+- Make it possible to pre-select items via properties
+
 ### v5.3.7
 ##### Added / Updated
 - Scan all $parents when creating labels for the button or for the items.
