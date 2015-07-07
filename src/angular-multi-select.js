@@ -66,6 +66,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
+			attrs.selectionMode = attrs.selectionMode === "1" ? "single" : attrs.selectionMode;
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
@@ -146,8 +147,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope.helperStatus     = {
-				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
-				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode !== "single",
+				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode !== "single",
 				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
 				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
@@ -505,14 +506,16 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			/**
-			 * Helper function that checks if all nested objects are
-			 * checked. Returns:
+			 * Helper function that checks if the nested objects of first
+			 * level are checked. Returns:
 			 * - +N if all are checked, N being the number of checked items.
 			 * - 0 if none is checked.
 			 * - -N if some are checked, N being the number of checked items.
 			 *
 			 * Note that this function won't count as checked the items that
-			 * have children, no matter how many of their children are checked.
+			 * are unchecked, but have checked children, no matter how many
+			 * of the children are checked.
+			 *
 			 * @param {Array|Object} item
 			 * @returns {number}
 			 * @private
@@ -573,17 +576,30 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope._enforceChecks = function(model) {
 				var _n_checked = 0;
 				var _leafs = $scope._getLeafs(model);
+				var _checked_idxs = [];
+
+				_leafs.sort(function (a, b) {
+					return a._check_time > b._check_time;
+				});
 
 				var _break = false;
 				for(var _idx in _leafs) {
 					var _state = $scope._isChecked(_leafs[_idx]);
 
-					if (_state) _n_checked++;
+					if (_state) {
+						_n_checked++;
+						_checked_idxs.push(_idx);
+					}
 
 					if (_n_checked > 1 && attrs.selectionMode === "single") {
 						_break = true;
 						$scope._uncheckAll(model);
 						break;
+					}
+
+					if (attrs.selectionMode !== "single" && attrs.selectionMode !== "multi" && _n_checked > parseInt(attrs.selectionMode)) {
+						_n_checked--;
+						$scope._uncheck(_leafs[_checked_idxs.shift()]);
 					}
 				}
 
@@ -617,8 +633,21 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						return true;
 					});
 				} else {
-					item[attrs.tickProperty] = !$scope._isChecked(item);
+					if(!$scope._isChecked(item)) {
+						$scope._check(item);
+					} else {
+						$scope._uncheck(item);
+					}
 				}
+			};
+
+			/**
+			 * Helper function to uncheck a single item
+			 * @param item
+			 * @private
+			 */
+			$scope._uncheck = function(item) {
+				item[attrs.tickProperty] = false;
 			};
 
 			/**
@@ -628,9 +657,19 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope._uncheckAll = function(model) {
 				$scope._walk(model, attrs.groupProperty, function(item){
-					item[attrs.tickProperty] = false;
+					$scope._uncheck(item);
 					return true;
 				});
+			};
+
+			/**
+			 * Helper function to check a single item
+			 * @param item
+			 * @private
+			 */
+			$scope._check = function(item) {
+				item[attrs.tickProperty] = true;
+				item._check_time = (new Date()).getTime();
 			};
 
 			/**
@@ -640,7 +679,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope._checkAll = function(model) {
 				$scope._walk(model, attrs.groupProperty, function(item){
-					item[attrs.tickProperty] = true;
+					$scope._check(item);
 					return true;
 				});
 			};
