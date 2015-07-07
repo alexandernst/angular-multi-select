@@ -1,3 +1,7 @@
+### v5.3.10
+##### Added / Updated
+- Improve performance
+
 ### v5.3.9
 ##### Added / Updated
 - Make it possible to map a single object/value to an output model
