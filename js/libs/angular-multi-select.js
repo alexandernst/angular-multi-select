@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.8
+ * Current version: 5.3.10
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', function ($rootScope, $sce, $timeout, $filter, $interpolate) {
+angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', '$cacheFactory', function ($rootScope, $sce, $timeout, $filter, $interpolate, $cacheFactory) {
 	'use strict';
 	return {
 		restrict: 'AE',
@@ -75,6 +75,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
 			attrs.preselectProp = attrs.preselectProp || "";
 			attrs.preselectValue = attrs.preselectValue || "";
+			attrs.singleOutputProp = attrs.singleOutputProp || "";
 
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
@@ -152,6 +153,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope.Math = window.Math;
+
+			//Cache holders
+			$scope.uuid = Math.random() + "_";
+			$scope.c_items_labels = $cacheFactory($scope.uuid + "item_labels");
+			$scope.c_button_label = $cacheFactory($scope.uuid + "button_label");
+			$scope.c_has_children = $cacheFactory($scope.uuid + "has_children");
 
 			/**
 			 * Backport for Angular 1.3.x of Angular 1.4.x's "merge()" function.
@@ -367,6 +374,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope._createButtonLabel = function(objs, index) {
+				var _cache = $scope.c_button_label.get(objs.length + "_" + objs[index][attrs.idProperty] + "_" + index);
+				if(_cache !== undefined) return _cache;
+
 				var _interpolate_obj = objs[index];
 				var _parent = null;
 
@@ -394,7 +404,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					_s += index == objs.length - 1 ? $scope.buttonLabelSeparator[1] : $scope.buttonLabelSeparator[0];
 				}
 
-				return $sce.trustAsHtml(_interpolated + _s);
+				var _html = $sce.trustAsHtml(_interpolated + _s);
+				$scope.c_button_label.put(objs.length + "_" + objs[index][attrs.idProperty] + "_" + index, _html);
+
+				return _html;
 			};
 
 			/**
@@ -404,6 +417,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._createItemLabel = function(item) {
+				var _cache = $scope.c_items_labels.get(item[attrs.idProperty]);
+				if(_cache !== undefined) return _cache;
+
 				var obj = item;
 				var _parent = null;
 
@@ -425,8 +441,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				}
 
 				var _interpolated = $scope._interpolatedItemLabel(obj);
+				var _html = $sce.trustAsHtml(_interpolated);
+				$scope.c_items_labels.put(item[attrs.idProperty], _html);
 
-				return $sce.trustAsHtml(_interpolated);
+				return _html;
 			};
 
 			/**
@@ -452,6 +470,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					return 1;
 				}
 
+				var _cache = $scope.c_has_children.get(item[attrs.idProperty]);
+				if(_cache !== undefined) return _cache;
+
 				var _n_children = -1;
 
 				$scope._walk(item, attrs.groupProperty, function() {
@@ -459,6 +480,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					return true;
 				});
 
+				$scope.c_button_label.put(item[attrs.idProperty], _n_children);
 				return _n_children;
 			};
 
@@ -768,6 +790,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.$watch('inputModel', function(_new, _old) {
 				if(!_new && angular.equals(_new, _old)) return;
 
+				$scope.c_items_labels.removeAll();
+				$scope.c_button_label.removeAll();
+				$scope.c_has_children.removeAll();
+
 				$scope.fillShadowModel();
 			}, true);
 
@@ -788,6 +814,16 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						return $scope._isChecked(_item);
 					});
 					$scope.outputModel = _tmp === null ? [] : _tmp;
+
+					//Output a single model too, if dev asked for it
+					if($scope.singleOutputModel !== undefined) {
+						var _obj = $scope.outputModel[0];
+						var _v = _obj;
+						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
+							_v = _obj[attrs.singleOutputProp];
+						}
+						$scope.singleOutputModel = _v;
+					}
 
 					$scope.kbFocus = [];
 					if($scope.helperStatus.all === true) {
