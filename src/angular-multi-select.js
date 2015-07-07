@@ -73,6 +73,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.buttonTemplate = attrs.buttonTemplate || "angular-multi-select-btn-count.htm";
 			attrs.buttonLabelSeparator = attrs.buttonLabelSeparator || '[", ", ""]';
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
+			attrs.preselectProp = attrs.preselectProp || "";
+			attrs.preselectValue = attrs.preselectValue || "";
 
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
@@ -686,6 +688,17 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.fillShadowModel = function() {
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceProps($scope._shadowModel);
+
+				//Pre-select
+				if(attrs.preselectProp !== "" && attrs.preselectValue !== "") {
+					$scope._walk($scope._shadowModel, attrs.groupProperty, function(_item) {
+						if(_item.hasOwnProperty(attrs.preselectProp) && _item[attrs.preselectProp] === attrs.preselectValue) {
+							_item[attrs.tickProperty] = true;
+						}
+						return true;
+					});
+				}
+
 				$scope._enforceChecks($scope._shadowModel);
 
 				$scope.fillFilteredModel();
