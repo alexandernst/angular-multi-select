@@ -75,6 +75,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
 			attrs.preselectProp = attrs.preselectProp || "";
 			attrs.preselectValue = attrs.preselectValue || "";
+			attrs.singleOutputProp = attrs.singleOutputProp || "";
 
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
@@ -788,6 +789,16 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						return $scope._isChecked(_item);
 					});
 					$scope.outputModel = _tmp === null ? [] : _tmp;
+
+					//Output a single model too, if dev asked for it
+					if($scope.singleOutputModel !== undefined) {
+						var _obj = $scope.outputModel[0];
+						var _v = _obj;
+						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
+							_v = _obj[attrs.singleOutputProp];
+						}
+						$scope.singleOutputModel = _v;
+					}
 
 					$scope.kbFocus = [];
 					if($scope.helperStatus.all === true) {
