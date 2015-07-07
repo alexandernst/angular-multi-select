@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.5
+ * Current version: 5.3.7
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -366,15 +366,23 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 			$scope._createButtonLabel = function(objs, index) {
 				var _interpolate_obj = objs[index];
+				var _parent = null;
 
 				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
-					var _scope = {};
-					for(var p in $scope.$parent) {
-						if($scope.$parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof($scope.$parent[p]) !== "function") {
-							_scope[p] = $scope.$parent[p];
+					_parent = $scope.$parent;
+
+					while(_parent !== null) {
+
+						var _scope = {};
+						for(var p in _parent) {
+							if(_parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof(_parent[p]) !== "function") {
+								_scope[p] = _parent[p];
+							}
 						}
+
+						_interpolate_obj = $scope.merge({}, _scope, _interpolate_obj);
+						_parent = _parent.hasOwnProperty("$parent") && $scope.$parent !== undefined ? _parent.$parent : null;
 					}
-					_interpolate_obj = $scope.merge({}, _scope, _interpolate_obj);
 				}
 
 				var _interpolated = $scope._interpolatedButtonLabel(_interpolate_obj);
@@ -394,7 +402,26 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._createItemLabel = function(item) {
-				var obj = angular.extend({}, $scope.$parent, item);
+				var obj = item;
+				var _parent = null;
+
+				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
+					_parent = $scope.$parent;
+
+					while(_parent !== null) {
+
+						var _scope = {};
+						for(var p in _parent) {
+							if(_parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof(_parent[p]) !== "function") {
+								_scope[p] = _parent[p];
+							}
+						}
+
+						obj = $scope.merge({}, _scope, obj);
+						_parent = _parent.hasOwnProperty("$parent") && $scope.$parent !== undefined ? _parent.$parent : null;
+					}
+				}
+
 				var _interpolated = $scope._interpolatedItemLabel(obj);
 
 				return $sce.trustAsHtml(_interpolated);
