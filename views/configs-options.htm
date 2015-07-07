@@ -191,10 +191,13 @@
 			</p>
 
 			<h5>selection-mode</h5>
-			<p>Single or multiple selection mode. If not specified, the default will be "multiple".</p>
+			<p>
+				Single or multiple selection mode. If not specified, the default will be "multi". If a number is passed, the mode would be set to "multi" and the number
+				of selected items will be limited to that number.
+			</p>
 			<p>
 				<span class="inlineTitle">Type</span>: String<br />
-				<span class="inlineTitle">Available values</span>: "single" | "multi"<br />
+				<span class="inlineTitle">Available values</span>: "single" | "multi" | "integer"<br />
 				<span class="inlineTitle">Default value</span>: "multi"<br />
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... selection-mode="single"&gt;&lt;/div&gt;</code>.
 			</p>
