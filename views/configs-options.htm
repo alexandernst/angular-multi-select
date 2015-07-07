@@ -78,6 +78,28 @@
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... tick-property="checked"&gt;&lt;/div&gt;</code>
 			</p>
 
+			<h5>preselect-prop</h5>
+			<p>
+				Using this, you can pre-select an item from your input model even if none of the items have the <code>checked<code> property set to <code>true</code>.
+				This property holds the key that an item should have to be considered as a possible preselected item. Aside from the key itself, the item should also
+				contain a value assigned to that item and that value should match <code>preselect-value</code>.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... preselect-prop="custom_key"&gt;&lt;/div&gt;</code>
+			</p>
+
+			<h5>preselect-value</h5>
+			<p>
+				The value that should match <code>preselect-prop</code> for the item to be preselected.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String<br />
+				<span class="inlineTitle">Default value</span>: "" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... preselect-value="543"&gt;&lt;/div&gt;</code>
+			</p>
+
 			<h5>button-template</h5>
 			<p>
 				A string representing the url of a template that will be used to render the button's label. It can be a template of your own or one of the 2
