@@ -1,3 +1,8 @@
+### v5.3.7
+##### Added / Updated
+- Scan all $parents when creating labels for the button or for the items.
+- Don't copy AngularJS internal values when creating labels.
+
 ### v5.3.6
 ##### Added / Updated
 - Don't force the height of the items layer.
