@@ -700,7 +700,6 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				}
 
 				$scope._enforceChecks($scope._shadowModel);
-
 				$scope.fillFilteredModel();
 			};
 
