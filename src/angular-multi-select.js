@@ -891,6 +891,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					});
 					_tmp = _tmp === null ? [] : _tmp;
 
+					var _new_shadowOutputModel = angular.copy(_tmp);
+					if(!$scope.deepCompare(angular.copy($scope._shadowOutputModel), _new_shadowOutputModel)) {
+						$scope._shadowOutputModel = _new_shadowOutputModel;
+					}
+
+					//If 'output-model-props' was specified, remove the keys we don't need
 					var _shadow = angular.copy(_tmp);
 					if(attrs.outputModelProps.length > 0) {
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
@@ -1217,8 +1223,8 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
-		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(outputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
-		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(outputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
+		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(_shadowOutputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
+		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(_shadowOutputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
 		"<span class='caret'></span>";
 	$templateCache.put('angular-multi-select-btn-data.htm', template);
 }]);
