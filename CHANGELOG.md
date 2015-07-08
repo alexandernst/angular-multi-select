@@ -1,3 +1,7 @@
+### v5.3.12
+##### Added / Updated
+- Make it possible to configure the output model data
+
 ### v5.3.11
 ##### Added / Updated
 - Allow setting a limit to the number of selected items.
