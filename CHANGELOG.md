@@ -1,6 +1,10 @@
+### v5.3.13
+##### Added / Updated
+- Fix a bug with single output model mode.
+
 ### v5.3.12
 ##### Added / Updated
-- Make it possible to configure the output model data
+- Make it possible to configure the output model data.
 
 ### v5.3.11
 ##### Added / Updated
