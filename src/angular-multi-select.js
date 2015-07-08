@@ -79,10 +79,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.preselectValue = attrs.preselectValue || "";
 			attrs.singleOutputProp = attrs.singleOutputProp || "";
 			attrs.outputModelProps = attrs.outputModelProps || "";
-			if(attrs.outputModelProps !== "") {
-				attrs.outputModelProps = attrs.outputModelProps.replace(/\s+/g, "");
-				attrs.outputModelProps = attrs.outputModelProps.split(",");
-			} else {
+			try {
+				attrs.outputModelProps = JSON.parse(attrs.outputModelProps);
+			} catch(e) {
 				attrs.outputModelProps = [];
 			}
 			attrs.outputModelType = attrs.outputModelType || "objects";
@@ -783,10 +782,15 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceProps($scope._shadowModel);
 
-				//Pre-select
-				if(attrs.preselectProp !== "" && attrs.preselectValue !== "") {
+				try {
+					attrs.preselectValue = JSON.parse(attrs.preselectValue);
+				} catch(e) {
+					attrs.preselectValue = [attrs.preselectValue];
+				}
+				if(attrs.preselectProp !== "" && !angular.equals(attrs.preselectValue, [""])) {
+					//Pre-select
 					$scope._walk($scope._shadowModel, attrs.groupProperty, function(_item) {
-						if(_item.hasOwnProperty(attrs.preselectProp) && _item[attrs.preselectProp] === attrs.preselectValue) {
+						if(_item.hasOwnProperty(attrs.preselectProp) && attrs.preselectValue.indexOf(_item[attrs.preselectProp]) !== -1) {
 							_item[attrs.tickProperty] = true;
 						}
 						return true;
