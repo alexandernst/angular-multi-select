@@ -77,6 +77,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.preselectProp = attrs.preselectProp || "";
 			attrs.preselectValue = attrs.preselectValue || "";
 			attrs.singleOutputProp = attrs.singleOutputProp || "";
+			attrs.outputModelProps = attrs.outputModelProps || "";
+			if(attrs.outputModelProps !== "") {
+				attrs.outputModelProps = attrs.outputModelProps.replace(/\s+/g, "");
+				attrs.outputModelProps = attrs.outputModelProps.split(",");
+			} else {
+				attrs.outputModelProps = [];
+			}
+			attrs.outputModelType = attrs.outputModelType || "objects";
 
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
@@ -852,11 +860,53 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						$scope.kbFocus.push(_item[attrs.idProperty]);
 						return $scope._isChecked(_item);
 					});
-					$scope.outputModel = _tmp === null ? [] : _tmp;
+					_tmp = _tmp === null ? [] : _tmp;
+
+					var _shadow = angular.copy(_tmp);
+					if(attrs.outputModelProps.length > 0) {
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							angular.forEach(_item, function(v, k) {
+								if(attrs.outputModelProps.indexOf(k) === -1) {
+									delete _item[k];
+								}
+							});
+							return true;
+						});
+					}
+
+					if(attrs.outputModelType === "arrays" && attrs.outputModelProps.length > 0) {
+						//Convert the output model in an array of arrays. Each "sub-array" should contain
+						//the values of the, what it is now, data object.
+						var _arrays = [];
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							var _new = [];
+							angular.forEach(attrs.outputModelProps, function(v) {
+								_new.push(_item[v]);
+							});
+							_arrays.push(_new);
+							return true;
+						});
+						_shadow = _arrays;
+					} else if(attrs.outputModelType === "array" && attrs.outputModelProps.length > 0) {
+						//Convert the output model in a single array with the values of each of the, what it is now,
+						//data object.
+						var _array = [];
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							angular.forEach(attrs.outputModelProps, function(v) {
+								_array.push(_item[v]);
+							});
+							return true;
+						});
+						_shadow = _array;
+					} else {
+						//We already have the data
+					}
+
+					$scope.outputModel = _shadow;
 
 					//Output a single model too, if dev asked for it
-					if($scope.singleOutputModel !== undefined) {
-						var _obj = $scope.outputModel[0];
+					if($scope.singleOutputModel !== undefined && _tmp.length > 0) {
+						var _obj = _tmp[0];
 						var _v = _obj;
 						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
 							_v = _obj[attrs.singleOutputProp];
