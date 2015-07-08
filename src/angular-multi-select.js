@@ -903,7 +903,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						//We already have the data
 					}
 
-					$scope.outputModel = _shadow;
+					if($scope.outputModel === undefined) {
+						$scope.outputModel = _shadow;
+					} else {
+						$scope.outputModel = $scope.merge($scope.outputModel, _shadow);
+					}
 
 					//Output a single model too, if dev asked for it
 					if($scope.singleOutputModel !== undefined && _tmp.length > 0) {
@@ -1233,7 +1237,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					// the search box
 					'<div class="ams_row ams_search" ng-if="helperStatus.filter">' +
 						// textfield
-						'<input placeholder="{{ lang.search }}" type="text"' +
+						'<input placeholder="{{ lang.search }}" type="text" ' +
 							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"' +
 						'/>' +
 						// clear button
