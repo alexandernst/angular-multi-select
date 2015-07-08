@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.10
+ * Current version: 5.3.12
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -66,6 +66,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
+			attrs.selectionMode = attrs.selectionMode === "1" ? "single" : attrs.selectionMode;
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
@@ -76,6 +77,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.preselectProp = attrs.preselectProp || "";
 			attrs.preselectValue = attrs.preselectValue || "";
 			attrs.singleOutputProp = attrs.singleOutputProp || "";
+			attrs.outputModelProps = attrs.outputModelProps || "";
+			if(attrs.outputModelProps !== "") {
+				attrs.outputModelProps = attrs.outputModelProps.replace(/\s+/g, "");
+				attrs.outputModelProps = attrs.outputModelProps.split(",");
+			} else {
+				attrs.outputModelProps = [];
+			}
+			attrs.outputModelType = attrs.outputModelType || "objects";
 
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
@@ -146,8 +155,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope.helperStatus     = {
-				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode === "multi",
-				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode === "multi",
+				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode !== "single",
+				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode !== "single",
 				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
 				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
@@ -505,14 +514,16 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			/**
-			 * Helper function that checks if all nested objects are
-			 * checked. Returns:
+			 * Helper function that checks if the nested objects of first
+			 * level are checked. Returns:
 			 * - +N if all are checked, N being the number of checked items.
 			 * - 0 if none is checked.
 			 * - -N if some are checked, N being the number of checked items.
 			 *
 			 * Note that this function won't count as checked the items that
-			 * have children, no matter how many of their children are checked.
+			 * are unchecked, but have checked children, no matter how many
+			 * of the children are checked.
+			 *
 			 * @param {Array|Object} item
 			 * @returns {number}
 			 * @private
@@ -573,17 +584,30 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope._enforceChecks = function(model) {
 				var _n_checked = 0;
 				var _leafs = $scope._getLeafs(model);
+				var _checked_idxs = [];
+
+				_leafs.sort(function (a, b) {
+					return a._check_time > b._check_time;
+				});
 
 				var _break = false;
 				for(var _idx in _leafs) {
 					var _state = $scope._isChecked(_leafs[_idx]);
 
-					if (_state) _n_checked++;
+					if (_state) {
+						_n_checked++;
+						_checked_idxs.push(_idx);
+					}
 
 					if (_n_checked > 1 && attrs.selectionMode === "single") {
 						_break = true;
 						$scope._uncheckAll(model);
 						break;
+					}
+
+					if (attrs.selectionMode !== "single" && attrs.selectionMode !== "multi" && _n_checked > parseInt(attrs.selectionMode)) {
+						_n_checked--;
+						$scope._uncheck(_leafs[_checked_idxs.shift()]);
 					}
 				}
 
@@ -617,8 +641,21 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						return true;
 					});
 				} else {
-					item[attrs.tickProperty] = !$scope._isChecked(item);
+					if(!$scope._isChecked(item)) {
+						$scope._check(item);
+					} else {
+						$scope._uncheck(item);
+					}
 				}
+			};
+
+			/**
+			 * Helper function to uncheck a single item
+			 * @param item
+			 * @private
+			 */
+			$scope._uncheck = function(item) {
+				item[attrs.tickProperty] = false;
 			};
 
 			/**
@@ -628,9 +665,19 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope._uncheckAll = function(model) {
 				$scope._walk(model, attrs.groupProperty, function(item){
-					item[attrs.tickProperty] = false;
+					$scope._uncheck(item);
 					return true;
 				});
+			};
+
+			/**
+			 * Helper function to check a single item
+			 * @param item
+			 * @private
+			 */
+			$scope._check = function(item) {
+				item[attrs.tickProperty] = true;
+				item._check_time = (new Date()).getTime();
 			};
 
 			/**
@@ -640,7 +687,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 */
 			$scope._checkAll = function(model) {
 				$scope._walk(model, attrs.groupProperty, function(item){
-					item[attrs.tickProperty] = true;
+					$scope._check(item);
 					return true;
 				});
 			};
@@ -813,11 +860,53 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						$scope.kbFocus.push(_item[attrs.idProperty]);
 						return $scope._isChecked(_item);
 					});
-					$scope.outputModel = _tmp === null ? [] : _tmp;
+					_tmp = _tmp === null ? [] : _tmp;
+
+					var _shadow = angular.copy(_tmp);
+					if(attrs.outputModelProps.length > 0) {
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							angular.forEach(_item, function(v, k) {
+								if(attrs.outputModelProps.indexOf(k) === -1) {
+									delete _item[k];
+								}
+							});
+							return true;
+						});
+					}
+
+					if(attrs.outputModelType === "arrays" && attrs.outputModelProps.length > 0) {
+						//Convert the output model in an array of arrays. Each "sub-array" should contain
+						//the values of the, what it is now, data object.
+						var _arrays = [];
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							var _new = [];
+							angular.forEach(attrs.outputModelProps, function(v) {
+								_new.push(_item[v]);
+							});
+							_arrays.push(_new);
+							return true;
+						});
+						_shadow = _arrays;
+					} else if(attrs.outputModelType === "array" && attrs.outputModelProps.length > 0) {
+						//Convert the output model in a single array with the values of each of the, what it is now,
+						//data object.
+						var _array = [];
+						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							angular.forEach(attrs.outputModelProps, function(v) {
+								_array.push(_item[v]);
+							});
+							return true;
+						});
+						_shadow = _array;
+					} else {
+						//We already have the data
+					}
+
+					$scope.outputModel = _shadow;
 
 					//Output a single model too, if dev asked for it
-					if($scope.singleOutputModel !== undefined) {
-						var _obj = $scope.outputModel[0];
+					if($scope.singleOutputModel !== undefined && _tmp.length > 0) {
+						var _obj = _tmp[0];
 						var _v = _obj;
 						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
 							_v = _obj[attrs.singleOutputProp];
