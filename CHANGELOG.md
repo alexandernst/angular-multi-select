@@ -1,3 +1,8 @@
+### v5.3.14
+##### Added / Updated
+- Avoid nesting changes inside a $digest.
+- Allow to preselect multiple values
+
 ### v5.3.13
 ##### Added / Updated
 - Fix a bug with single output model mode.

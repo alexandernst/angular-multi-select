@@ -1,6 +1,6 @@
 {
 	"name": "angular-multi-select",
-	"version": "5.3.13",
+	"version": "5.3.14",
 	"description": "A multi select dropdown directive for AngularJS",
 	"main": [
 		"angular-multi-select.js",
