@@ -901,7 +901,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					if(attrs.outputModelProps.length > 0) {
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							angular.forEach(_item, function(v, k) {
-								if(attrs.outputModelProps.indexOf(k) === -1) {
+								if(attrs.outputModelProps.indexOf(k) === -1 && k !== attrs.groupProperty) {
 									delete _item[k];
 								}
 							});
