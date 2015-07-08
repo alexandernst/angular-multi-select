@@ -104,6 +104,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.buttonTemplate = attrs.buttonTemplate;
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
+			$scope.outputModel = $scope.outputModel || [];
 
 			if($scope.api !== undefined) {
 				$scope.api =  {
@@ -909,12 +910,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						});
 					}
 
+					//If the type of output was specified, format the data accordingly
 					if(attrs.outputModelType === "arrays" && attrs.outputModelProps.length > 0) {
 						//Convert the output model in an array of arrays. Each "sub-array" should contain
 						//the values of the, what it is now, data object.
 						var _arrays = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							var _new = [];
+							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
 							angular.forEach(attrs.outputModelProps, function(v) {
 								_new.push(_item[v]);
 							});
@@ -927,6 +930,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						//data object.
 						var _array = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
 							angular.forEach(attrs.outputModelProps, function(v) {
 								_array.push(_item[v]);
 							});
@@ -937,10 +941,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						//We already have the data
 					}
 
-					if($scope.outputModel === undefined) {
+					//We need to make a copy of the object as 'outputModel' contains AngularJS internal keys/values
+					var _current_output_model = angular.copy($scope.outputModel);
+					if(!$scope.deepCompare(_current_output_model, _shadow)) {
 						$scope.outputModel = _shadow;
-					} else {
-						$scope.outputModel = $scope.merge($scope.outputModel, _shadow);
 					}
 
 					//Output a single model too, if dev asked for it
