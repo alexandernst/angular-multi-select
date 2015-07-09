@@ -1,3 +1,7 @@
+### v5.3.15
+##### Added / Updated
+- Make the single output model mode return a leaf.
+
 ### v5.3.14
 ##### Added / Updated
 - Avoid nesting changes inside a $digest.
