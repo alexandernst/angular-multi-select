@@ -1,3 +1,7 @@
+### v5.3.16
+##### Added / Updated
+- Fix a bug when filtering/searching.
+
 ### v5.3.15
 ##### Added / Updated
 - Make the single output model mode return a leaf.
