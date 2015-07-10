@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.12
+ * Current version: 5.3.15
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -45,6 +45,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			// models
 			inputModel: '=',
 			outputModel: '=',
+			singleOutputModel: '=',
 
 			// callbacks
 			onClear: '&',
@@ -78,10 +79,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.preselectValue = attrs.preselectValue || "";
 			attrs.singleOutputProp = attrs.singleOutputProp || "";
 			attrs.outputModelProps = attrs.outputModelProps || "";
-			if(attrs.outputModelProps !== "") {
-				attrs.outputModelProps = attrs.outputModelProps.replace(/\s+/g, "");
-				attrs.outputModelProps = attrs.outputModelProps.split(",");
-			} else {
+			try {
+				attrs.outputModelProps = JSON.parse(attrs.outputModelProps);
+			} catch(e) {
 				attrs.outputModelProps = [];
 			}
 			attrs.outputModelType = attrs.outputModelType || "objects";
@@ -104,6 +104,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.buttonTemplate = attrs.buttonTemplate;
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
+			$scope.outputModel = $scope.outputModel || [];
 
 			if($scope.api !== undefined) {
 				$scope.api =  {
@@ -206,6 +207,30 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 			$scope.merge = function(dst) {
 				return $scope.baseExtend(dst, [].slice.call(arguments, 1), true);
+			};
+
+			$scope.deepCompare = function(x, y){
+				if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
+				// after this just checking type of one would be enough
+				if (x.constructor !== y.constructor) { return false; }
+				// if they are functions, they should exactly refer to same one (because of closures)
+				if (x instanceof Function) { return x === y; }
+				// if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
+				if (x instanceof RegExp) { return x === y; }
+				if (x === y || x.valueOf() === y.valueOf()) { return true; }
+				if (Array.isArray(x) && x.length !== y.length) { return false; }
+
+				// if they are dates, they must had equal valueOf
+				if (x instanceof Date) { return false; }
+
+				// if they are strictly equal, they both need to be object at least
+				if (!(x instanceof Object)) { return false; }
+				if (!(y instanceof Object)) { return false; }
+
+				// recursive object equality check
+				var p = Object.keys(x);
+				return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
+					p.every(function (i) { return $scope.deepCompare(x[i], y[i]); });
 			};
 
 			/**
@@ -758,10 +783,15 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope._shadowModel = angular.copy($scope.inputModel);
 				$scope._enforceProps($scope._shadowModel);
 
-				//Pre-select
-				if(attrs.preselectProp !== "" && attrs.preselectValue !== "") {
+				try {
+					attrs.preselectValue = JSON.parse(attrs.preselectValue);
+				} catch(e) {
+					attrs.preselectValue = [attrs.preselectValue];
+				}
+				if(attrs.preselectProp !== "" && !angular.equals(attrs.preselectValue, [""])) {
+					//Pre-select
 					$scope._walk($scope._shadowModel, attrs.groupProperty, function(_item) {
-						if(_item.hasOwnProperty(attrs.preselectProp) && _item[attrs.preselectProp] === attrs.preselectValue) {
+						if(_item.hasOwnProperty(attrs.preselectProp) && attrs.preselectValue.indexOf(_item[attrs.preselectProp]) !== -1) {
 							_item[attrs.tickProperty] = true;
 						}
 						return true;
@@ -862,11 +892,17 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					});
 					_tmp = _tmp === null ? [] : _tmp;
 
+					var _new_shadowOutputModel = angular.copy(_tmp);
+					if(!$scope.deepCompare(angular.copy($scope._shadowOutputModel), _new_shadowOutputModel)) {
+						$scope._shadowOutputModel = _new_shadowOutputModel;
+					}
+
+					//If 'output-model-props' was specified, remove the keys we don't need
 					var _shadow = angular.copy(_tmp);
 					if(attrs.outputModelProps.length > 0) {
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							angular.forEach(_item, function(v, k) {
-								if(attrs.outputModelProps.indexOf(k) === -1) {
+								if(attrs.outputModelProps.indexOf(k) === -1 && k !== attrs.groupProperty) {
 									delete _item[k];
 								}
 							});
@@ -874,12 +910,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						});
 					}
 
+					//If the type of output was specified, format the data accordingly
 					if(attrs.outputModelType === "arrays" && attrs.outputModelProps.length > 0) {
 						//Convert the output model in an array of arrays. Each "sub-array" should contain
 						//the values of the, what it is now, data object.
 						var _arrays = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							var _new = [];
+							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
 							angular.forEach(attrs.outputModelProps, function(v) {
 								_new.push(_item[v]);
 							});
@@ -892,6 +930,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						//data object.
 						var _array = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
+							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
 							angular.forEach(attrs.outputModelProps, function(v) {
 								_array.push(_item[v]);
 							});
@@ -902,11 +941,18 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 						//We already have the data
 					}
 
-					$scope.outputModel = _shadow;
+					//We need to make a copy of the object as 'outputModel' contains AngularJS internal keys/values
+					var _current_output_model = angular.copy($scope.outputModel);
+					if(!$scope.deepCompare(_current_output_model, _shadow)) {
+						$scope.outputModel = _shadow;
+					}
 
 					//Output a single model too, if dev asked for it
 					if($scope.singleOutputModel !== undefined && _tmp.length > 0) {
 						var _obj = _tmp[0];
+						if($scope._hasChildren(_obj) !== 0) {
+							_obj = $scope._getLeafs(_obj)[0];
+						}
 						var _v = _obj;
 						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
 							_v = _obj[attrs.singleOutputProp];
@@ -1184,8 +1230,8 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
-		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(outputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
-		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(outputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
+		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(_shadowOutputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
+		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(_shadowOutputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
 		"<span class='caret'></span>";
 	$templateCache.put('angular-multi-select-btn-data.htm', template);
 }]);
@@ -1232,7 +1278,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					// the search box
 					'<div class="ams_row ams_search" ng-if="helperStatus.filter">' +
 						// textfield
-						'<input placeholder="{{ lang.search }}" type="text"' +
+						'<input placeholder="{{ lang.search }}" type="text" ' +
 							'ng-model="searchInput.value" class="inputFilter ams_filter" set-focus="kbFocus[kbFocusIndex] === \'input\'"' +
 						'/>' +
 						// clear button
