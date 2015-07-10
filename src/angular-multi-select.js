@@ -589,8 +589,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					//Tick property
 					_item[attrs.tickProperty] = _item[attrs.tickProperty] || false;
 
+					//Tick time property
+					_item._check_time = 0;
+
 					//Hidden property
 					_item[attrs.hiddenProperty] = _item[attrs.hiddenProperty] || false;
+
 					return true;
 				});
 			};
@@ -638,10 +642,9 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 				if(_break === true) return;
 
-				var _nodes  = $scope._getNodes(model);
-				for(_idx in _nodes) {
-					_nodes[_idx][attrs.tickProperty] = $scope._areAllChecked(_nodes[_idx]) !== 0;
-				}
+				angular.forEach($scope._getNodes(model), function(item) {
+					item[attrs.tickProperty] = $scope._areAllChecked(item) !== 0;
+				});
 			};
 
 			/**
@@ -662,7 +665,11 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					var _state = Math.abs($scope._areAllChecked(item)) === 0;
 
 					$scope._walk(item, attrs.groupProperty, function(_item) {
-						_item[attrs.tickProperty] = _state;
+						if(_state) {
+							$scope._check(_item);
+						} else {
+							$scope._uncheck(_item);
+						}
 						return true;
 					});
 				} else {
@@ -792,7 +799,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					//Pre-select
 					$scope._walk($scope._shadowModel, attrs.groupProperty, function(_item) {
 						if(_item.hasOwnProperty(attrs.preselectProp) && attrs.preselectValue.indexOf(_item[attrs.preselectProp]) !== -1) {
-							_item[attrs.tickProperty] = true;
+							$scope._check(_item);
 						}
 						return true;
 					});
