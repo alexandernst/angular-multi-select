@@ -306,7 +306,24 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * @private
 			 */
 			$scope._syncModels = function(dst, src) {
-				$scope.merge(dst, src);
+				/*
+				 * We can't use $scope.merge() here as that will wipe
+				 * the elements that are in the src but not in the dst model.
+				 * We need to iterate over the src and dst items at the same
+				 * time and apply changes only when both items exist and the
+				 * tick property is different.
+				 */
+				$scope._walk(src, attrs.groupProperty, function(item) {
+					$scope._walk(dst, attrs.groupProperty, function(_item) {
+						if(_item[attrs.idProperty] === item[attrs.idProperty]) {
+							//Don't use extend here as it's really expensive and because
+							//the only thing that can change in an item is it's tick state.
+							_item[attrs.tickProperty] = item[attrs.tickProperty];
+						}
+						return true;
+					});
+					return true;
+				});
 			};
 
 			/**
