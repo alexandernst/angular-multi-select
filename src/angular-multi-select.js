@@ -891,11 +891,13 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.$watch('inputModel', function(_new, _old) {
 				if(!_new && angular.equals(_new, _old)) return;
 
-				$scope.c_items_labels.removeAll();
-				$scope.c_button_label.removeAll();
-				$scope.c_has_children.removeAll();
+				$timeout(function() {
+					$scope.c_items_labels.removeAll();
+					$scope.c_button_label.removeAll();
+					$scope.c_has_children.removeAll();
 
-				$scope.fillShadowModel();
+					$scope.fillShadowModel();
+				}, 0);
 			}, true);
 
 			/**
