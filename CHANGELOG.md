@@ -1,3 +1,8 @@
+### v5.3.17
+##### Added / Updated
+- Wait for DOM ops to finish before starting the directive. (delay-start)
+- Better handle wrong values for 'preselect-value'.
+
 ### v5.3.16
 ##### Added / Updated
 - Fix a bug when filtering/searching.
