@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.3.16
+ * Current version: 5.3.18
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -75,17 +75,18 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			attrs.buttonTemplate = attrs.buttonTemplate || "angular-multi-select-btn-count.htm";
 			attrs.buttonLabelSeparator = attrs.buttonLabelSeparator || '[", ", ""]';
 			attrs.minSearchLength = parseInt(attrs.minSearchLength, 10) || 3;
-			attrs.preselectProp = attrs.preselectProp || "";
-			attrs.preselectValue = attrs.preselectValue || "";
-			attrs.singleOutputProp = attrs.singleOutputProp || "";
-			attrs.outputModelProps = attrs.outputModelProps || "";
-			try {
-				attrs.outputModelProps = JSON.parse(attrs.outputModelProps);
-			} catch(e) {
-				attrs.outputModelProps = [];
-			}
-			attrs.outputModelType = attrs.outputModelType || "objects";
 
+			$scope.delayStart = parseInt(attrs.delayStart) || 0;
+			$scope.preselectProp = attrs.preselectProp || "";
+			$scope.singleOutputProp = attrs.singleOutputProp || "";
+			$scope.preselectValue = attrs.preselectValue || "";
+			$scope.outputModelProps = attrs.outputModelProps || "";
+			try {
+				$scope.outputModelProps = JSON.parse($scope.outputModelProps);
+			} catch(e) {
+				$scope.outputModelProps = [];
+			}
+			$scope.outputModelType = attrs.outputModelType || "objects";
 			$scope._shadowModel = [];
 			$scope.filteredModel = [];
 			$scope.searchInput = {
@@ -808,14 +809,14 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				$scope._enforceProps($scope._shadowModel);
 
 				try {
-					attrs.preselectValue = JSON.parse(attrs.preselectValue);
+					$scope.preselectValue = JSON.parse($scope.preselectValue);
 				} catch(e) {
-					attrs.preselectValue = [attrs.preselectValue];
+					$scope.preselectValue = [$scope.preselectValue];
 				}
-				if(attrs.preselectProp !== "" && !angular.equals(attrs.preselectValue, [""])) {
+				if($scope.preselectProp !== "" && angular.isArray($scope.preselectValue) && !angular.equals($scope.preselectValue, [""])) {
 					//Pre-select
 					$scope._walk($scope._shadowModel, attrs.groupProperty, function(_item) {
-						if(_item.hasOwnProperty(attrs.preselectProp) && attrs.preselectValue.indexOf(_item[attrs.preselectProp]) !== -1) {
+						if(_item.hasOwnProperty($scope.preselectProp) && $scope.preselectValue.indexOf(_item[$scope.preselectProp]) !== -1) {
 							$scope._check(_item);
 						}
 						return true;
@@ -893,9 +894,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 				$scope.c_items_labels.removeAll();
 				$scope.c_button_label.removeAll();
+
 				$scope.c_has_children.removeAll();
 
-				$scope.fillShadowModel();
+				$timeout(function() {
+					$scope.fillShadowModel();
+				}, $scope.delayStart);
 			}, true);
 
 			/**
@@ -906,7 +910,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * - fill the keyboard focus array helper
 			 */
 			$scope.$watch('filteredModel', function(_new, _old) {
-				if(_new) {
+				if(!$scope.deepCompare(_new, _old)) {
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
@@ -923,10 +927,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 					//If 'output-model-props' was specified, remove the keys we don't need
 					var _shadow = angular.copy(_tmp);
-					if(attrs.outputModelProps.length > 0) {
+					if($scope.outputModelProps.length > 0) {
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							angular.forEach(_item, function(v, k) {
-								if(attrs.outputModelProps.indexOf(k) === -1 && k !== attrs.groupProperty) {
+								if($scope.outputModelProps.indexOf(k) === -1 && k !== attrs.groupProperty) {
 									delete _item[k];
 								}
 							});
@@ -935,27 +939,27 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					}
 
 					//If the type of output was specified, format the data accordingly
-					if(attrs.outputModelType === "arrays" && attrs.outputModelProps.length > 0) {
+					if($scope.outputModelType === "arrays" && $scope.outputModelProps.length > 0) {
 						//Convert the output model in an array of arrays. Each "sub-array" should contain
 						//the values of the, what it is now, data object.
 						var _arrays = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							var _new = [];
 							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
-							angular.forEach(attrs.outputModelProps, function(v) {
+							angular.forEach($scope.outputModelProps, function(v) {
 								_new.push(_item[v]);
 							});
 							_arrays.push(_new);
 							return true;
 						});
 						_shadow = _arrays;
-					} else if(attrs.outputModelType === "array" && attrs.outputModelProps.length > 0) {
+					} else if($scope.outputModelType === "array" && $scope.outputModelProps.length > 0) {
 						//Convert the output model in a single array with the values of each of the, what it is now,
 						//data object.
 						var _array = [];
 						$scope._walk(_shadow, attrs.groupProperty, function(_item) {
 							if($scope._hasChildren(_item) !== 0) return; //We want only leafs, for now...
-							angular.forEach(attrs.outputModelProps, function(v) {
+							angular.forEach($scope.outputModelProps, function(v) {
 								_array.push(_item[v]);
 							});
 							return true;
@@ -978,8 +982,8 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 							_obj = $scope._getLeafs(_obj)[0];
 						}
 						var _v = _obj;
-						if(attrs.singleOutputProp !== "" && _obj.hasOwnProperty(attrs.singleOutputProp)) {
-							_v = _obj[attrs.singleOutputProp];
+						if($scope.singleOutputProp !== "" && _obj.hasOwnProperty($scope.singleOutputProp)) {
+							_v = _obj[$scope.singleOutputProp];
 						}
 						$scope.singleOutputModel = _v;
 					}
