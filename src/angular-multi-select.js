@@ -892,11 +892,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.$watch('inputModel', function(_new, _old) {
 				if(!_new && angular.equals(_new, _old)) return;
 
-				$timeout(function() {
-					$scope.c_items_labels.removeAll();
-					$scope.c_button_label.removeAll();
+				$scope.c_items_labels.removeAll();
+				$scope.c_button_label.removeAll();
 
-					$scope.c_has_children.removeAll();
+				$scope.c_has_children.removeAll();
+
+				$timeout(function() {
 					$scope.fillShadowModel();
 				}, $scope.delayStart);
 			}, true);
@@ -909,7 +910,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			 * - fill the keyboard focus array helper
 			 */
 			$scope.$watch('filteredModel', function(_new, _old) {
-				if(_new) {
+				if(!$scope.deepCompare(_new, _old)) {
 					$scope._enforceChecks($scope.filteredModel);
 					$scope._syncModels($scope._shadowModel, $scope.filteredModel);
 
