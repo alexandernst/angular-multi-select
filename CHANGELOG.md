@@ -1,5 +1,9 @@
 ### v5.3.17
 ##### Added / Updated
+- Avoid out of time outputModel replacement.
+
+### v5.3.17
+##### Added / Updated
 - Wait for DOM ops to finish before starting the directive. (delay-start)
 - Better handle wrong values for 'preselect-value'.
 
