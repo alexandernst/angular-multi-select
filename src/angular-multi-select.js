@@ -117,7 +117,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					},
 					select: function(id) {
 						var item = $scope._getItemById(id);
-						if(item !== null) {
+						if(item !== null && !$scope._isChecked(item)) {
 							$scope.clickItem(item, true);
 						}
 					},
