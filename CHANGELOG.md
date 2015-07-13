@@ -1,4 +1,8 @@
-### v5.3.17
+### v5.3.19
+##### Added / Updated
+- Do not uncheck items if they are already checked when using the 'select' API method.
+
+### v5.3.18
 ##### Added / Updated
 - Avoid out of time outputModel replacement.
 
