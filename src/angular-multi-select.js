@@ -110,22 +110,32 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			if($scope.api !== undefined) {
 				$scope.api =  {
 					select_all: function() {
-						$scope.selectAll();
+						$timeout(function() {
+							$scope.selectAll();
+						}, 0);
 					},
 					select_none: function() {
-						$scope.selectNone();
+						$timeout(function() {
+							$scope.selectNone();
+						}, 0);
 					},
 					select: function(id) {
-						var item = $scope._getItemById(id);
-						if(item !== null && !$scope._isChecked(item)) {
-							$scope.clickItem(item, true);
-						}
+						$timeout(function() {
+							var item = $scope._getItemById(id);
+							if(item !== null && !$scope._isChecked(item)) {
+								$scope.clickItem(item, true);
+							}
+						}, 0);
 					},
 					reset: function() {
-						$scope.reset();
+						$timeout(function() {
+							$scope.reset();
+						}, 0);
 					},
 					clear: function() {
-						$scope.clear();
+						$timeout(function() {
+							$scope.clear();
+						}, 0);
 					},
 					open: function() {
 						$timeout(function() {
