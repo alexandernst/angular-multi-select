@@ -1,3 +1,7 @@
+### v5.3.20
+##### Added / Updated
+- Wrap API calls inside a 0 $timeout.
+
 ### v5.3.19
 ##### Added / Updated
 - Do not uncheck items if they are already checked when using the 'select' API method.
