@@ -1,3 +1,7 @@
+### v5.3.21
+##### Added / Updated
+- Empty selection should trigger an empty string single-output-model.
+
 ### v5.3.20
 ##### Added / Updated
 - Wrap API calls inside a 0 $timeout.
