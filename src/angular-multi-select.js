@@ -986,8 +986,12 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 					}
 
 					//Output a single model too, if dev asked for it
-					if($scope.singleOutputModel !== undefined && _tmp.length > 0) {
-						var _obj = _tmp[0];
+					if($scope.singleOutputModel !== undefined) {
+						var _obj = _tmp.pop() || {};
+						if(Object.keys(_obj).length === 0) {
+							_obj[$scope.singleOutputProp] = "";
+						}
+
 						if($scope._hasChildren(_obj) !== 0) {
 							_obj = $scope._getLeafs(_obj)[0];
 						}
