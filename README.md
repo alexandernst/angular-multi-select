@@ -13,6 +13,16 @@ Go to http://alexandernst.github.io/angular-multi-select
 ### Change Log
 See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CHANGELOG.md">CHANGELOG.md</a>.
 
+### Installing
+
+You can download this library from `npm` or `bower`.
+
+    npm install angular-multi-select
+
+or
+
+    bower install angular-multi-select-alexandernst
+
 ### Building
 
 You'll need to install Node (because you need NPM) and Grunt. The first one is up to you. You can use
