@@ -1,0 +1,25 @@
+{
+  "name": "angular-multi-select",
+  "version": "5.4.0",
+  "homepage": "https://github.com/alexandernst/angular-multi-select",
+  "authors": [
+    "Alexander Nestorov <alexandernst@gmail.com>"
+  ],
+  "description": "A multi select dropdown directive for AngularJS",
+  "main": "angular-multi-select.js",
+  "keywords": [
+    "angular",
+    "dropdown",
+    "multi",
+    "select",
+    "multiselect"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
