@@ -13,7 +13,7 @@ describe('Testing directive in single mode', function() {
 			'output-model="x" ' +
 			'group-property="sub" ' +
 			'tick-property="check" ' +
-			'item-label="{{ icon }}{{ name }}" ' +
+			'item-label="<[ icon ]><[ name ]>" ' +
 			'helper-elements="all none reset filter"' +
 			'selection-mode="single" ' +
 			'min-search-length="3" ' +
@@ -191,7 +191,7 @@ describe('Testing directive in multi mode', function() {
 			'output-model="x" ' +
 			'group-property="sub" ' +
 			'tick-property="check" ' +
-			'item-label="{{ name }}" ' +
+			'item-label="<[ name ]>" ' +
 			'helper-elements="all none reset filter"' +
 			'selection-mode="multi" ' +
 			'min-search-length="3" ' +
@@ -278,10 +278,10 @@ describe('Testing directive button label customization and API', function() {
 			'output-model="x" ' +
 			'group-property="sub" ' +
 			'tick-property="check" ' +
-			'item-label="{{ name }}" ' +
+			'item-label="<[ name ]>" ' +
 			'helper-elements="all none reset filter"' +
 			'selection-mode="multi" ' +
-			'button-label="{{ icon }} {{ name }}"' +
+			'button-label="<[ icon ]> <[ name ]>"' +
 			'button-label-separator=\'[", ","!?"]\'' +
 			'button-template="angular-multi-select-btn-data.htm"' +
 		'></div>';
