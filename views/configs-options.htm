@@ -60,12 +60,14 @@
 
 			<h5>item-label</h5> <span class="label label-primary">required</span>
 			<p>
-				input-model properties that you want to display on each item. You should use curly brackets for delimiters: <code ng-non-bindable>{{</code> and <code>}}</code>
+				input-model properties that you want to display on each item. You should use the following delimiters <code><[</code> and <code>]></code> for
+				interpolation of the current item/object, or curly braces (<code ng-non-bindable>{{</code> and <code ng-non-bindable>}}</code>) for variables in your
+				application scope.
 			</p>
 			<p>
 				<span class="inlineTitle">Type</span>: String. <br />
 				<span class="inlineTitle">Default value</span>: "" <br />
-				<span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ icon }} {{ name }}"&gt;&lt;/div&gt;</code>
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label="<[ icon ]> <[ name ]>"&gt;&lt;/div&gt;</code>
 			</p>
 
 			<h5>tick-property</h5> <span class="label label-primary">required</span>
@@ -144,7 +146,7 @@
 			<p>
 				<span class="inlineTitle">Type</span>: String<br />
 				<span class="inlineTitle">Default value</span>: "" <br />
-				<span class="inlineTitle">Example</span>: <code ng-non-bindable>&lt;div angular-multi-select ... button-label="{{ name }}"&gt;&lt;/div&gt;</code>
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... button-label="<[ name ]>"&gt;&lt;/div&gt;</code>
 			</p>
 
 			<h5>button-label-separator</h5>
