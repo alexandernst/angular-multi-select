@@ -65,6 +65,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 
 		link: function ($scope, element, attrs) {
 
+			$scope.interpolate = function(data) {
+				return $interpolate(data.replace(/<\[/g, "{{").replace(/]>/g, "}}"));
+			};
+
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode === "1" ? "single" : attrs.selectionMode;
@@ -98,10 +102,10 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			$scope.tickProperty = attrs.tickProperty;
 			$scope.idProperty = attrs.idProperty;
 			$scope.groupProperty = attrs.groupProperty;
-			$scope.itemLabel = element.attr(attrs.$attr.itemLabel);
-			$scope._interpolatedItemLabel = $interpolate($scope.itemLabel);
-			$scope.buttonLabel =  attrs.hasOwnProperty("buttonLabel") ? element.attr(attrs.$attr.buttonLabel) : "";
-			$scope._interpolatedButtonLabel = $interpolate($scope.buttonLabel);
+			$scope.itemLabel = attrs.hasOwnProperty("itemLabel") ? attrs.itemLabel : "";
+			$scope._interpolatedItemLabel = $scope.interpolate($scope.itemLabel);
+			$scope.buttonLabel =  attrs.hasOwnProperty("buttonLabel") ? attrs.buttonLabel : "";
+			$scope._interpolatedButtonLabel = $scope.interpolate($scope.buttonLabel);
 			$scope.buttonTemplate = attrs.buttonTemplate;
 			$scope.buttonLabelSeparator = JSON.parse(attrs.buttonLabelSeparator);
 			$scope.hiddenProperty = attrs.hiddenProperty;
@@ -439,27 +443,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var _cache = $scope.c_button_label.get(objs.length + "_" + objs[index][attrs.idProperty] + "_" + index);
 				if(_cache !== undefined) return _cache;
 
-				var _interpolate_obj = objs[index];
-				var _parent = null;
-
-				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
-					_parent = $scope.$parent;
-
-					while(_parent !== null) {
-
-						var _scope = {};
-						for(var p in _parent) {
-							if(_parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof(_parent[p]) !== "function") {
-								_scope[p] = _parent[p];
-							}
-						}
-
-						_interpolate_obj = $scope.merge({}, _scope, _interpolate_obj);
-						_parent = _parent.hasOwnProperty("$parent") && $scope.$parent !== undefined ? _parent.$parent : null;
-					}
-				}
-
-				var _interpolated = $scope._interpolatedButtonLabel(_interpolate_obj);
+				var _interpolated = $scope._interpolatedButtonLabel(objs[index]);
 
 				var _s = "";
 				if(objs.length > 1) {
@@ -482,27 +466,7 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				var _cache = $scope.c_items_labels.get(item[attrs.idProperty]);
 				if(_cache !== undefined) return _cache;
 
-				var obj = item;
-				var _parent = null;
-
-				if($scope.hasOwnProperty("$parent") && $scope.$parent !== undefined) {
-					_parent = $scope.$parent;
-
-					while(_parent !== null) {
-
-						var _scope = {};
-						for(var p in _parent) {
-							if(_parent.hasOwnProperty(p) && p !== "this" && p[0] !== "$" && typeof(_parent[p]) !== "function") {
-								_scope[p] = _parent[p];
-							}
-						}
-
-						obj = $scope.merge({}, _scope, obj);
-						_parent = _parent.hasOwnProperty("$parent") && $scope.$parent !== undefined ? _parent.$parent : null;
-					}
-				}
-
-				var _interpolated = $scope._interpolatedItemLabel(obj);
+				var _interpolated = $scope._interpolatedItemLabel(item);
 				var _html = $sce.trustAsHtml(_interpolated);
 				$scope.c_items_labels.put(item[attrs.idProperty], _html);
 
