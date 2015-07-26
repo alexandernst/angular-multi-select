@@ -1,3 +1,8 @@
+### v5.4.0
+##### Added / Updated
+- Major performance improvement by removing the scan/merge parent scopes.
+- The item label and button label syntax has changed. Please check docs before upgrading.
+
 ### v5.3.21
 ##### Added / Updated
 - Empty selection should trigger an empty string single-output-model.
