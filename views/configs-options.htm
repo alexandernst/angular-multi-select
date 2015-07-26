@@ -58,6 +58,39 @@
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model="outputData"&gt;&lt;/div&gt;</code>.
 			</p>
 
+			<h5>output-model-props</h5>
+			<p>
+				This specifies the desired values in the output model. Basically, you can tell the directive what values you want to see in the
+				output model. <br />
+				This should contain a valid JSON-parseable string containing the keys you want in the output model. By default the output model
+				will contain everything from your original data. <br />
+				NOTE: Valid JSON-parseable string means that you should use single quiotes as the attribute's value delimiters and double quiotes
+				inside. <br />
+				Valid: <code>output-model-props='["foo", "bar"]'</code> <br />
+				Invalid: <code>output-model-props="['foo', 'bar']"</code>
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: JSON-parseable string <br />
+				<span class="inlineTitle">Default value</span>: '' <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model-props='["name", "icon"]'&gt;&lt;/div&gt;</code>.
+			</p>
+
+			<h5>output-model-type</h5>
+			<p>
+				This should be used with <code>output-model-props</code>.
+				Specifies the type of desired return value. There are three possible options: <code>objects</code>, <code>arrays</code> and <code>array</code>. <br />
+				<code>objects</code> will return an array of objects, and each object will contain the keys/values of the selected items. This is the default bahavior. <br />
+				<code>arrays</code> will return an array of arrays, and each array will contain only the values of the keys (of each selected item)
+				specified in <code>output-model-props</code>, in that order. <br />
+				<code>array</code> will return a single array that will contain the values of the keys (of each selected item) specified in <code>output-model-props</code>,
+				in that order.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: String <br />
+				<span class="inlineTitle">Default value</span>: "objects" <br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... output-model-type="arrays"&gt;&lt;/div&gt;</code>.
+			</p>
+
 			<h5>item-label</h5> <span class="label label-primary">required</span>
 			<p>
 				input-model properties that you want to display on each item. You should use the following delimiters <code><[</code> and <code>]></code> for
@@ -253,6 +286,16 @@
 				<span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "3", or "5" ).<br />
 				<span class="inlineTitle">Default value</span>: 3<br />
 				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... min-search-length="3"&gt;&lt;/div&gt;</code>.
+			</p>
+
+			<h5>delay-start</h5>
+			<p>
+				You can delay the start of the directive by N ms.
+			</p>
+			<p>
+				<span class="inlineTitle">Type</span>: Integer-parseable string ( Such as "3", or "5" ).<br />
+				<span class="inlineTitle">Default value</span>: 0<br />
+				<span class="inlineTitle">Example</span>: <code>&lt;div angular-multi-select ... delay-start="500"&gt;&lt;/div&gt;</code>.
 			</p>
 
 			<h5>translation</h5>
