@@ -1,3 +1,7 @@
+### v5.4.1
+##### Added / Updated
+- Disable outline on the directive. (CSS)
+
 ### v5.4.0
 ##### Added / Updated
 - Major performance improvement by removing the scan/merge parent scopes.

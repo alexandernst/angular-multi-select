@@ -24,6 +24,7 @@
 	position: relative;
 	text-align: center;
 	cursor: pointer;
+	outline: none;
 	border: 1px solid #c6c6c6;
 	padding: 1px 8px 1px 8px;
 	font-size: 14px;
