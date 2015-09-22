@@ -2,6 +2,9 @@ module.exports = function(grunt) {
 
 	var LIVERELOAD_PORT = 35729;
 
+	// Load grunt tasks automatically
+	require('load-grunt-tasks')(grunt);
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
@@ -10,6 +13,20 @@ module.exports = function(grunt) {
 				options: {
 					livereload: LIVERELOAD_PORT
 				}
+			}
+		},
+
+		copy: {
+			dist: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: 'src/',
+					dest: 'dist/',
+					src: [
+						'**/*.{css,js}'
+					]
+				}]
 			}
 		},
 
@@ -54,11 +71,11 @@ module.exports = function(grunt) {
 					helpers: 'spec/helpers/*.js',
 					specs: 'spec/*.js',
 					vendor: [
-						'node_modules/jquery/dist/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js',
-						'node_modules/angular-filter/dist/angular-filter.js'
+						'bower_components/jquery/dist/jquery.js',
+						'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+						'bower_components/angular/angular.js',
+						'bower_components/angular-mocks/angular-mocks.js',
+						'bower_components/angular-filter/dist/angular-filter.js'
 					]
 				}
 			}
@@ -84,6 +101,6 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('tests', ['jshint', 'jasmine']);
 	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
-	grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'jasmine']);
+	grunt.registerTask('default', ['jshint', 'jasmine', 'uglify', 'cssmin', 'copy:dist']);
 
 };
