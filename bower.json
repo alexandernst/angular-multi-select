@@ -8,7 +8,7 @@
   "description": "A multi select dropdown directive for AngularJS",
   "main": [
     "dist/angular-multi-select.js",
-    "dist/angular-multi-select"
+    "dist/angular-multi-select.css"
   ],
   "keywords": [
     "angular",
