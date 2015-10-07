@@ -174,10 +174,10 @@ angular_multi_select.directive('angularMultiSelect',
 			};
 
 			$scope.helperStatus = {
-				all: hasHelperElementOption('all') ? true : hasHelperElementOption('noall') ? false : attrs.selectionMode !== "single",
-				none: hasHelperElementOption('none') ? true : hasHelperElementOption('nonone') ? false : attrs.selectionMode !== "single",
-				reset: hasHelperElementOption('reset') ? true : !hasHelperElementOption('noreset'),
-				filter: hasHelperElementOption('filter') ? true : !hasHelperElementOption('nofilter')
+				all: hasHelperElementOption('all') || !hasHelperElementOption('noall') || attrs.selectionMode !== "single",
+				none: hasHelperElementOption('none') || !hasHelperElementOption('nonone') || attrs.selectionMode !== "single",
+				reset: hasHelperElementOption('reset') || !hasHelperElementOption('noreset'),
+				filter: hasHelperElementOption('filter') || !hasHelperElementOption('nofilter')
 			};
 
 			function hasHelperElementOption(helperElement) {
