@@ -173,24 +173,16 @@ angular_multi_select.directive('angularMultiSelect',
 				search: $scope._trans.search
 			};
 
-			$scope.helperStatus     = {
-				all: attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1
-					? true
-					: attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1
-						? false
-						: attrs.selectionMode !== "single",
-				none: attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1
-					? true
-					: attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1
-						? false
-						: attrs.selectionMode !== "single",
-				reset: attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1
-					? true
-					: attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
-				filter: attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1
-					? true
-					: attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
+			$scope.helperStatus = {
+				all: hasHelperElementOption('all') ? true : hasHelperElementOption('noall') ? false : attrs.selectionMode !== "single",
+				none: hasHelperElementOption('none') ? true : hasHelperElementOption('nonone') ? false : attrs.selectionMode !== "single",
+				reset: hasHelperElementOption('reset') ? true : !hasHelperElementOption('noreset'),
+				filter: hasHelperElementOption('filter') ? true : !hasHelperElementOption('nofilter')
 			};
+
+			function hasHelperElementOption(helperElement) {
+				return attrs.helperElements.search(new RegExp("\\b" + helperElement + "\\b")) !== -1;
+			}
 
 			$scope.Math = window.Math;
 
