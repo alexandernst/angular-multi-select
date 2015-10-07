@@ -33,7 +33,10 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', '$cacheFactory', function ($rootScope, $sce, $timeout, $filter, $interpolate, $cacheFactory) {
+angular_multi_select.directive('angularMultiSelect',
+	['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', '$cacheFactory',
+	function ($rootScope, $sce, $timeout, $filter, $interpolate, $cacheFactory) {
+
 	'use strict';
 	return {
 		restrict: 'AE',
@@ -171,10 +174,22 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 			};
 
 			$scope.helperStatus     = {
-				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode !== "single",
-				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode !== "single",
-				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
-				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
+				all: attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1
+					? true
+					: attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1
+						? false
+						: attrs.selectionMode !== "single",
+				none: attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1
+					? true
+					: attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1
+						? false
+						: attrs.selectionMode !== "single",
+				reset: attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1
+					? true
+					: attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
+				filter: attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1
+					? true
+					: attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
 			};
 
 			$scope.Math = window.Math;
