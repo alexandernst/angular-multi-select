@@ -33,7 +33,10 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['ng', 'angular.filter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', '$cacheFactory', function ($rootScope, $sce, $timeout, $filter, $interpolate, $cacheFactory) {
+angular_multi_select.directive('angularMultiSelect',
+	['$rootScope', '$sce', '$timeout', '$filter', '$interpolate', '$cacheFactory',
+	function ($rootScope, $sce, $timeout, $filter, $interpolate, $cacheFactory) {
+
 	'use strict';
 	return {
 		restrict: 'AE',
@@ -170,11 +173,15 @@ angular_multi_select.directive('angularMultiSelect', ['$rootScope', '$sce', '$ti
 				search: $scope._trans.search
 			};
 
-			$scope.helperStatus     = {
-				all     : attrs.helperElements.search(new RegExp(/\ball\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoall\b/)) !== -1 ? false : attrs.selectionMode !== "single",
-				none    : attrs.helperElements.search(new RegExp(/\bnone\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnonone\b/)) !== -1 ? false : attrs.selectionMode !== "single",
-				reset   : attrs.helperElements.search(new RegExp(/\breset\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnoreset\b/)) === -1,
-				filter  : attrs.helperElements.search(new RegExp(/\bfilter\b/)) !== -1 ? true : attrs.helperElements.search(new RegExp(/\bnofilter\b/)) === -1
+			$scope._hasHelperElementOption = function(helperElement) {
+				return attrs.helperElements.search(new RegExp("\\b" + helperElement + "\\b")) !== -1;
+			};
+
+			$scope.helperStatus = {
+				all: $scope._hasHelperElementOption('all') ? true : $scope._hasHelperElementOption('noall') ? false : attrs.selectionMode !== "single",
+				none: $scope._hasHelperElementOption('none') ? true : $scope._hasHelperElementOption('nonone') ? false : attrs.selectionMode !== "single",
+				reset: $scope._hasHelperElementOption('reset') ? true : !$scope._hasHelperElementOption('noreset'),
+				filter: $scope._hasHelperElementOption('filter') ? true : !$scope._hasHelperElementOption('nofilter')
 			};
 
 			$scope.Math = window.Math;
