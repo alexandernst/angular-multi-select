@@ -1,3 +1,19 @@
+### v5.5.3
+##### Added / Updated
+- Wrong tag.
+
+### v5.5.2
+##### Added / Updated
+- Wrong tag.
+
+### v5.5.1
+##### Added / Updated
+- Wrong tag.
+
+### v5.5.0
+##### Added / Updated
+- Changed dist directory.
+
 ### v5.4.1
 ##### Added / Updated
 - Disable outline on the directive. (CSS)
