@@ -557,7 +557,7 @@ angular_multi_select.directive('angularMultiSelect',
 				var _checked = 0, _total = 0;
 
 				$scope._walk(item, attrs.groupProperty, function(_item) {
-					if($scope._hasChildren(_item, false) === 0) {
+					if($scope._hasChildren(_item, false) === 0  || !attrs.toggleChildren) {
 						if($scope._isChecked(_item)) {
 							_checked++;
 						}
