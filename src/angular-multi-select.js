@@ -76,7 +76,7 @@ angular_multi_select.directive('angularMultiSelect',
 			attrs.selectionMode = attrs.selectionMode || "multi";
 			attrs.selectionMode = attrs.selectionMode === "1" ? "single" : attrs.selectionMode;
 			attrs.selectionMode = attrs.selectionMode.toLowerCase();
-			attrs.toggleChildren = true;
+			attrs.toggleChildren = attrs.toggleChildren === "false" ? false : true;
 			attrs.helperElements = attrs.helperElements || "reset filter";
 			attrs.searchProperty = attrs.searchProperty || "";
 			attrs.hiddenProperty = attrs.hiddenProperty || "";
