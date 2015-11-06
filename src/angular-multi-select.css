@@ -132,8 +132,21 @@
 	content: '×';
 }
 
-.ams .ams_tick:before {
-	content: '✓'
+.ams .ams_tick:before,
+.ams .ams_group.ams_all_children_checked .ams_tick:before {
+  border: none;
+  color: #555;
+  content: '✓';
+  font-size: 10px;
+  padding: 0;
+}
+
+.ams .ams_group .ams_tick:before {
+  border: solid 1px #777;
+  color: #777;
+  content: '—';
+  font-size: 8px;
+  padding: 2px 3px;
 }
 
 .ams .ams_helper_btn.reset {
