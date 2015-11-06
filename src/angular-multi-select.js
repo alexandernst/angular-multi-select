@@ -565,6 +565,8 @@ angular_multi_select.directive('angularMultiSelect',
 					}
 					return true;
 				});
+				
+				item.allChecked = _total > 0 && _total === _checked;
 
 				return _total === _checked ? _checked : _checked > 0 ? -_checked : 0;
 			};
