@@ -248,7 +248,7 @@
 	box-sizing: border-box;
 }
 
-.ams.ams-left .ams_item {
+.ams-left .ams_item {
   padding-left: 30px;
 }
 
@@ -308,7 +308,7 @@
 	cursor: pointer;
 }
 
-.ams.ams-left .ams_tick {
+.ams-left .ams_tick {
   left: 10px;
 }
 
