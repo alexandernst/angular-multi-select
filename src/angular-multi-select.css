@@ -134,19 +134,15 @@
 
 .ams .ams_tick:before,
 .ams .ams_group.ams_all_children_checked .ams_tick:before {
-  border: none;
   color: #555;
   content: '✓';
   font-size: 10px;
-  padding: 0;
 }
 
 .ams .ams_group .ams_tick:before {
-  border: solid 1px #777;
   color: #777;
   content: '—';
   font-size: 8px;
-  padding: 2px 3px;
 }
 
 .ams .ams_helper_btn.reset {
@@ -252,6 +248,10 @@
 	box-sizing: border-box;
 }
 
+.ams.ams-left .ams_item {
+  padding-left: 30px;
+}
+
 /* Styling on selected items */
 .ams .ams_item:not(.ams_group).ams_selected {
 	background-image: linear-gradient(#e9e9e9, #f1f1f1);
@@ -306,6 +306,10 @@
 	position: absolute;
 	left: -9999px;
 	cursor: pointer;
+}
+
+.ams.ams-left .ams_tick {
+  left: 10px;
 }
 
 /* checkboxes currently disabled */
