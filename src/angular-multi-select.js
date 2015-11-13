@@ -1255,7 +1255,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 angular_multi_select.run(['$templateCache', function($templateCache) {
 	'use strict';
 	var template = "" +
-		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_all_children_checked: item.allChecked, ams_group:_hasChildren(item, false) > 0, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
+		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_all_children_checked: item.allChecked, ams_group:_hasChildren(item, false) > 0 && toggleChildren, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createItemLabel(item)'></div>" +
 			"<span class='ams_tick' ng-if='item[tickProperty] === true'></span>" +
 		"</div>" +
