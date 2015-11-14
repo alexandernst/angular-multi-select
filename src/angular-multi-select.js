@@ -69,7 +69,7 @@ angular_multi_select.directive('angularMultiSelect',
 		link: function ($scope, element, attrs) {
 
 			$scope.interpolate = function(data) {
-				return $interpolate(data.replace(/<\[/g, "{{").replace(/]>/g, "}}"));
+				return $interpolate(data.replace(/<\[/g, $interpolate.startSymbol()).replace(/]>/g, $interpolate.endSymbol()));
 			};
 
 			attrs.idProperty = attrs.idProperty || "angular-multi-select-id";
@@ -565,7 +565,7 @@ angular_multi_select.directive('angularMultiSelect',
 					}
 					return true;
 				});
-				
+
 				item.allChecked = _total > 0 && _total === _checked;
 
 				return _total === _checked ? _checked : _checked > 0 ? -_checked : 0;
@@ -1235,26 +1235,29 @@ angular_multi_select.directive('setFocus', ["$timeout", function($timeout) {
 	};
 }]);
 
-angular_multi_select.run(['$templateCache', function($templateCache) {
+angular_multi_select.run(['$templateCache', '$interpolate', function($templateCache, $interpolate) {
 	'use strict';
+
+	var replaceInterpolation = function(str) {
+		var startSymbol = $interpolate.startSymbol();
+		var endSymbol = $interpolate.endSymbol();
+		return str.replace(/\{\{/g, startSymbol).replace(/\}\}/g, endSymbol);
+	};
+
 	var template = "" +
 		"<div class='ams_btn_template_repeat'>{{ Math.abs(_areAllChecked(filteredModel)) }} {{ _trans.selected }}</div>" +
 		"<span class='caret'></span>";
+	template = replaceInterpolation(template);
 	$templateCache.put('angular-multi-select-btn-count.htm', template);
-}]);
 
-angular_multi_select.run(['$templateCache', function($templateCache) {
-	'use strict';
-	var template = "" +
+	template = "" +
 		"<div class='ams_btn_template_repeat' ng-show='(_getLeafs(_shadowOutputModel) | filter:search ).length === 0'>0 {{ _trans.selected }}</div>" +
 		"<div class='ams_btn_template_repeat' ng-repeat='obj in objs = (_getLeafs(_shadowOutputModel) | filter:search )' ng-bind-html='_createButtonLabel(objs, \$index)'></div>" +
 		"<span class='caret'></span>";
+	template = replaceInterpolation(template);
 	$templateCache.put('angular-multi-select-btn-data.htm', template);
-}]);
 
-angular_multi_select.run(['$templateCache', function($templateCache) {
-	'use strict';
-	var template = "" +
+	template = "" +
 		"<div class='ams_item' ng-click='clickItem(item, true);' ng-class='{ams_selected: item[tickProperty], ams_all_children_checked: item.allChecked, ams_group:_hasChildren(item, false) > 0 && toggleChildren, ams_focused: kbFocus[kbFocusIndex] === item[idProperty]}'>" +
 			"<div ng-bind-html='_createItemLabel(item)'></div>" +
 			"<span class='ams_tick' ng-if='item[tickProperty] === true'></span>" +
@@ -1263,12 +1266,10 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 		"<ul ng-if='item.sub'>" +
 			"<li ng-repeat='item in item[groupProperty] | filter: not(_isHidden)' ng-include=\"'angular-multi-select-item.htm'\"></li>" +
 		"</ul>";
+	template = replaceInterpolation(template);
 	$templateCache.put('angular-multi-select-item.htm', template);
-}]);
 
-angular_multi_select.run(['$templateCache', function($templateCache) {
-	'use strict';
-	var template =
+	template =
 		'<span class="ams">' +
 			// main button
 			"<button class='ams_btn' type='button' ng-click='visible = !visible'><div class='ams_btn_template' ng-include src='buttonTemplate'></div></button>" +
@@ -1310,5 +1311,6 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 				'</div>'+
 			'</div>'+
 		'</span>';
+	template = replaceInterpolation(template);
 	$templateCache.put('angular-multi-select.htm', template);
 }]);
