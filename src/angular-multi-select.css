@@ -111,7 +111,6 @@
 	text-align: center;
 	cursor: pointer;
 	border: 1px solid #ccc;
-	height: 26px;
 	font-size: 13px;
 	border-radius: 2px;
 	color: #666;
@@ -179,8 +178,6 @@
 .ams .ams_clear {
 	position: absolute;
 	display: inline;
-	height: 22px;
-	width: 22px;
 	margin-right: 0px;
 	line-height: 1.4;
 	right: 2px;
