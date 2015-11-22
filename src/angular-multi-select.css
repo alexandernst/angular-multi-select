@@ -12,7 +12,7 @@
 
 /* create a "row" */
 .ams .ams_row {
-	padding:  2px 0px 4px 0px;
+	padding: 2px 0px 4px 0px;
 	max-height: 30px;
 	overflow: hidden;
 	box-sizing: content-box;
@@ -28,13 +28,13 @@
 	border: 1px solid #c6c6c6;
 	padding: 1px 8px 1px 8px;
 	font-size: 14px;
-	min-height : 38px !important;
+	min-height: 38px !important;
 	border-radius: 4px;
 	color: #555;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	white-space:normal;
+	white-space: normal;
 	background-color: #fff;
 	background-image: linear-gradient(#fff, #f7f7f7);
 }
@@ -61,7 +61,7 @@
 	display: inline-block;
 	width: 0;
 	height: 0;
-	margin: 0px 0px 1px 12px  !important;
+	margin: 0px 0px 1px 12px !important;
 	vertical-align: middle;
 	border-top: 4px solid #333;
 	border-right: 4px solid transparent;
@@ -78,7 +78,7 @@
 	border-radius: 4px;
 	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-	min-width:278px;
+	min-width: 278px;
 }
 
 .ams .ams_layer.position_top {
@@ -134,15 +134,15 @@
 
 .ams .ams_tick:before,
 .ams .ams_group.ams_all_children_checked .ams_tick:before {
-  color: #555;
-  content: '✓';
-  font-size: 10px;
+	color: #555;
+	content: '✓';
+	font-size: 10px;
 }
 
 .ams .ams_group .ams_tick:before {
-  color: #777;
-  content: '—';
-  font-size: 8px;
+	color: #777;
+	content: '—';
+	font-size: 8px;
 }
 
 .ams .ams_helper_btn.reset {
@@ -151,7 +151,7 @@
 }
 
 .ams .ams_search {
-	position:relative;
+	position: relative;
 }
 
 /* filter */
@@ -160,15 +160,15 @@
 	border: 1px solid #ccc;
 	height: 26px;
 	font-size: 14px;
-	width:100%;
-	padding-left:7px;
+	width: 100%;
+	padding-left: 7px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	color: #888;
 	margin: 0px 0px 8px 0px;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-			box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 }
 
 /* clear button */
@@ -179,7 +179,7 @@
 	width: 22px;
 	margin-right: 0px;
 	line-height: 1.4;
-	right : 2px;
+	right: 2px;
 	top: 4px;
 }
 
@@ -201,7 +201,7 @@
 	border: 1px solid #66AFE9 !important;
 	outline: 0;
 	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
-			box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
+	box-shadow: inset 0 0 1px rgba(0,0,0,.065), 0 0 5px rgba(102, 175, 233, .6) !important;
 }
 
 /* container of multi select items */
@@ -242,14 +242,13 @@
 	position: relative;
 	min-width:278px;
 	min-height: 32px;
-
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
 .ams-left .ams_item {
-  padding-left: 30px;
+	padding-left: 30px;
 }
 
 /* Styling on selected items */
@@ -293,7 +292,7 @@
 
 /* right-align the tick mark */
 .ams .ams_tick {
-	display:inline-block;
+	display: inline-block;
 	position: absolute;
 	right: 10px;
 	top: 7px;
@@ -309,7 +308,7 @@
 }
 
 .ams-left .ams_tick {
-  left: 10px;
+	left: 10px;
 }
 
 /* checkboxes currently disabled */
@@ -323,7 +322,7 @@
 /* If you use images in button / checkbox label, you might want to change the image style here. */
 .ams img {
 	vertical-align: middle;
-	margin-bottom:0px;
+	margin-bottom: 0px;
 	max-height: 22px;
-	max-width:22px;
+	max-width: 22px;
 }
