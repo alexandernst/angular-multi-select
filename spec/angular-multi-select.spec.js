@@ -345,4 +345,17 @@ describe('Testing directive button label customization and API', function() {
 		var item = $('.ams_item:not(.ams_group) > .ams_tick').prev();
 		expect(item).toContainText("Chromium");
 	});
+
+  it('Should be able to select many items by their\'s IDs using the exposed API', function() {
+    timeout.flush();
+    element.scope().api.select_none();
+    timeout.flush();
+
+    var ids = [42,43];
+
+    element.scope().api.select(ids);
+    timeout.flush();
+
+    expect('.ams_selected').toHaveLength(2);
+  });
 });

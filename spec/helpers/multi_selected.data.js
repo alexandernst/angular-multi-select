@@ -32,6 +32,7 @@ var multi_test_data = [
 						name: "Chromium"
 					},
 					{
+            id: 43,
 						icon: '<img  src="https://cdn1.iconfinder.com/data/icons/logotypes/32/opera-32.png" />',
 						name: "Opera",
 						check: true
