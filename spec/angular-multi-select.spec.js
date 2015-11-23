@@ -351,12 +351,12 @@ describe('Testing directive button label customization and API', function() {
     element.scope().api.select_none();
     timeout.flush();
 
-    var ids = [42,43];
+    var ids = [41,42];
     element.scope().api.select_many(ids);
     timeout.flush();
 
     var items = $('.ams_item:not(.ams_group) > .ams_tick').prev();
     expect(items).toContainText("Chromium");
-    expect(items).toContainText("Opera");
+    expect(items).toContainText("Firefox");
   });
 });

@@ -22,6 +22,7 @@ var multi_test_data = [
 				name: "Open Source",
 				sub: [
 					{
+						id: 41,
 						icon: '<img  src="https://cdn2.iconfinder.com/data/icons/humano2/32x32/apps/firefox-icon.png" />',
 						name: "Firefox",
 						check: true
@@ -32,7 +33,6 @@ var multi_test_data = [
 						name: "Chromium"
 					},
 					{
-            id: 43,
 						icon: '<img  src="https://cdn1.iconfinder.com/data/icons/logotypes/32/opera-32.png" />',
 						name: "Opera",
 						check: true
