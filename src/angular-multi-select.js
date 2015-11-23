@@ -135,16 +135,16 @@ angular_multi_select.directive('angularMultiSelect',
 							}
 						}, 0);
 					},
-          select_many: function (ids) {
-            $timeout(function() {
-              angular.forEach(ids, function (id) {
-                var item = $scope._getItemById(id);
-                if (item !== null && !$scope._isChecked(item)) {
-                  $scope.clickItem(item, true);
-                }
-              }, 0);
-            });
-          },
+					select_many: function (ids) {
+						$timeout(function() {
+							angular.forEach(ids, function (id) {
+								var item = $scope._getItemById(id);
+								if (item !== null && !$scope._isChecked(item)) {
+									$scope.clickItem(item, true);
+								}
+							}, 0);
+						});
+					},
 					reset: function() {
 						$timeout(function() {
 							$scope.reset();

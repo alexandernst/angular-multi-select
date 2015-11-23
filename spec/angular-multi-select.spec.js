@@ -346,17 +346,17 @@ describe('Testing directive button label customization and API', function() {
 		expect(item).toContainText("Chromium");
 	});
 
-  it('Should be able to select many items by their\'s IDs using the exposed API', function() {
-    timeout.flush();
-    element.scope().api.select_none();
-    timeout.flush();
+	it('Should be able to select many items by their\'s IDs using the exposed API', function() {
+		timeout.flush();
+		element.scope().api.select_none();
+		timeout.flush();
 
-    var ids = [41,42];
-    element.scope().api.select_many(ids);
-    timeout.flush();
+		var ids = [41,42];
+		element.scope().api.select_many(ids);
+		timeout.flush();
 
-    var items = $('.ams_item:not(.ams_group) > .ams_tick').prev();
-    expect(items).toContainText("Chromium");
-    expect(items).toContainText("Firefox");
-  });
+		var items = $('.ams_item:not(.ams_group) > .ams_tick').prev();
+		expect(items).toContainText("Chromium");
+		expect(items).toContainText("Firefox");
+	});
 });
