@@ -25,6 +25,7 @@ myApp.controller( 'demoApi' , [ '$scope' , function ($scope) {
 			checked: false
 		},
 		{
+			id: 2,
 			icon: '<img  src="https://cdn1.iconfinder.com/data/icons/fatcow/32x32/safari_browser.png" />',
 			name: 'Safari',
 			checked: false
@@ -47,5 +48,9 @@ myApp.controller( 'demoApi' , [ '$scope' , function ($scope) {
 	$scope.select_ff = function() {
 		$scope.api.select(1);
 		$scope.api.open();
+	};
+
+	$scope.select_many = function() {
+		$scope.api.select_many([1,2]);
 	}
 }]);

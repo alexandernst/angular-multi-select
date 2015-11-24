@@ -10,6 +10,7 @@
 				<li><code>select_all()</code></li>
 				<li><code>select_none()</code></li>
 				<li><code>select(id)</code></li>
+				<li><code>select(array_with_ids)</code></li>
 				<li><code>reset()</code></li>
 				<li><code>clear()</code></li>
 				<li><code>open()</code></li>
@@ -53,6 +54,7 @@
 					<button type="button" class="btn btn-success btn-xs" ng-click="open()" >Open</button>
 					<button type="button" class="btn btn-success btn-xs" ng-click="close()" >Close</button>
 					<button type="button" class="btn btn-primary btn-xs" ng-click="select_ff()" >Select Firefox</button>
+					<button type="button" class="btn btn-primary btn-xs" ng-click="select_many()" >Select Firefox and Safari</button>
 				</p>
 			</div>
 		</div>
@@ -98,11 +100,13 @@ $scope.open = function() {
 $scope.close = function() {
     $scope.api.close();
 };
-
+$scope.select_many = function() {
+    $scope.api.select_many([1,2]);
+}
 $scope.select_ff = function() {
     $scope.api.select(1);
     $scope.api.open();
-}</code></pre>
+};</code></pre>
 				</div>
 			</div>
 		</div>
