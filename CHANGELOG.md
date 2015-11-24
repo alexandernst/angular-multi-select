@@ -1,3 +1,10 @@
+### v5.5.4
+##### Added / Updated
+- Possibility to turn off automatic toggling of children/parents.
+- CSS cleanup.
+- Possibility to use non-default interpolation symbols.
+- New API method that allows selection of various items at the same time.
+
 ### v5.5.3
 ##### Added / Updated
 - Wrong tag.
