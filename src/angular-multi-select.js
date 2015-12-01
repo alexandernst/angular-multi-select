@@ -804,7 +804,7 @@ angular_multi_select.directive('angularMultiSelect',
 
 				try {
 					var val = JSON.parse($scope.preselectValue);
-					$scope.preselectValue = angular.isString(val) ? [val] : val;
+					$scope.preselectValue = angular.isArray(val) ? val : [val];
 				} catch(e) {
 					$scope.preselectValue = '';
 				}
