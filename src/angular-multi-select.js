@@ -803,7 +803,8 @@ angular_multi_select.directive('angularMultiSelect',
 				$scope._enforceProps($scope._shadowModel);
 
 				try {
-					$scope.preselectValue = JSON.parse($scope.preselectValue);
+					var val = JSON.parse($scope.preselectValue);
+					$scope.preselectValue = angular.isArray(val) ? val : [val];
 				} catch(e) {
 					$scope.preselectValue = [$scope.preselectValue];
 				}
