@@ -295,13 +295,15 @@ angular_multi_select.directive('angularMultiSelect',
 			 * @returns {*}
 			 * @private
 			 */
+			$scope._walkedPath = [];
 			$scope._walk = function(obj, key, fn) {
 				var _idx;
+				var fnd = (function(d, o, n) { return fn(o, n, d); }).bind(this, {});
 				if(angular.isArray(obj)) {
 					var _objs = [];
 
 					for(_idx in obj) {
-						var _tmp_obj = $scope._walk(obj[_idx], key, fn);
+						var _tmp_obj = $scope._walk(obj[_idx], key, fnd);
 						if (_tmp_obj !== null) {
 							_objs.push(_tmp_obj);
 						}
@@ -310,17 +312,19 @@ angular_multi_select.directive('angularMultiSelect',
 					return _objs.length > 0 ? _objs : null;
 				} else if(angular.isObject(obj)) {
 					fn = fn || function(){ return true; };
-					var should_be_returned = fn(obj);
+					var should_be_returned = fn(obj, $scope._walkedPath.join('>'));
 
 					if (obj.hasOwnProperty(key) && angular.isArray(obj[key]) ) {
 						var sub = [];
+						$scope._walkedPath.push($scope._interpolatedItemLabel(obj));
 
 						for(_idx in obj[key]) {
-							var new_obj = $scope._walk(obj[key][_idx], key, fn);
+							var new_obj = $scope._walk(obj[key][_idx], key, fnd);
 							if (new_obj !== null) {
 								sub.push(new_obj);
 							}
 						}
+						$scope._walkedPath.pop();
 
 						if(sub.length !== obj[key].length){
 							obj[key] = sub;
@@ -339,22 +343,18 @@ angular_multi_select.directive('angularMultiSelect',
 			 * @private
 			 */
 			$scope._syncModels = function(dst, src) {
-				/*
-				 * We can't use $scope.merge() here as that will wipe
-				 * the elements that are in the src but not in the dst model.
-				 * We need to iterate over the src and dst items at the same
-				 * time and apply changes only when both items exist and the
-				 * tick property is different.
-				 */
-				$scope._walk(src, attrs.groupProperty, function(item) {
-					$scope._walk(dst, attrs.groupProperty, function(_item) {
-						if(_item[attrs.idProperty] === item[attrs.idProperty]) {
-							//Don't use extend here as it's really expensive and because
-							//the only thing that can change in an item is it's tick state.
-							_item[attrs.tickProperty] = item[attrs.tickProperty];
-						}
-						return true;
-					});
+				var tree = {};
+				$scope._walk(src, attrs.groupProperty, function (o, e) {
+					if (typeof tree[e] === "undefined") tree[e] = {};
+					var label = $scope._interpolatedItemLabel(o);
+					tree[e][label] = o[attrs.tickProperty];
+					return true;
+				});
+				$scope._walk(dst, attrs.groupProperty, function (o, e) {
+					var label = $scope._interpolatedItemLabel(o);
+					if (tree[e] && o[attrs.tickProperty] !== tree[e][label]) {
+					    o[attrs.tickProperty] = tree[e][label];
+					}
 					return true;
 				});
 			};
@@ -769,6 +769,21 @@ angular_multi_select.directive('angularMultiSelect',
 			};
 
 			/**
+			 * De-duplicates entries in a group. Returns true if this object is the first in this group.
+			 * @param {Object} obj
+			 * @param {Array} path
+			 * @param {Object} dupes
+			 * @returns {boolean}
+			 * @private
+			 */
+			$scope._dedup = function(obj, path, dupes) {
+				if (typeof dupes === "undefined") return true;
+				var label = $scope._interpolatedItemLabel(obj);
+				if (dupes[label]) return false;
+				else return (dupes[label] = true);
+			};
+
+			/**
 			 * Returns true if [attrs.searchProperty} matches the search input field (latinized, fuzzy match);
 			 * @param {Object} obj
 			 * @returns {boolean}
@@ -877,6 +892,7 @@ angular_multi_select.directive('angularMultiSelect',
 			 */
 			$scope.fillFilteredModel = function() {
 				$scope.filteredModel = angular.copy($scope._shadowModel);
+				$scope.filteredModel = $scope._walk($scope.filteredModel, attrs.groupProperty, $scope._dedup);
 				$scope.filteredModel = $scope._walk($scope.filteredModel, attrs.groupProperty, $scope._filter);
 			};
 
@@ -915,7 +931,7 @@ angular_multi_select.directive('angularMultiSelect',
 					});
 					_tmp = _tmp === null ? [] : _tmp;
 
-					var _new_shadowOutputModel = angular.copy(_tmp);
+					var _new_shadowOutputModel = $scope._walk(angular.copy(_tmp), attrs.groupProperty, $scope._dedup);
 					if(!$scope.deepCompare(angular.copy($scope._shadowOutputModel), _new_shadowOutputModel)) {
 						$scope._shadowOutputModel = _new_shadowOutputModel;
 					}
