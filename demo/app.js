@@ -8,16 +8,23 @@ app.controller('MainCtrl', function($scope, $timeout) {
 			sub: [
 				{
 					icon: '<img  src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/32/chrome.png" />',
-					name: "Chrome"
+					name: "Chrome",
+					engine: "Blink"
 				},
 				{
 					id: 2,
 					icon: '<img  src="https://cdn2.iconfinder.com/data/icons/humano2/32x32/apps/firefox-icon.png" />',
-					name: "Firefox"
+					name: "Firefox",
+					engine: "Gecko"
+				},
+				{
+					icon: '<img  src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/32/chrome.png" />',
+					name: "Chrome"
 				},
 				{
 					icon: '<img  src="https://cdn2.iconfinder.com/data/icons/new_google_product_icons_by_carlosjj-dwke/32/chromium.png" />',
-					name: "Chromium"
+					name: "Chromium",
+					engine: "Blink"
 				}
 			]
 		},
@@ -27,11 +34,18 @@ app.controller('MainCtrl', function($scope, $timeout) {
 				{
 					icon: '<img  src="https://cdn0.iconfinder.com/data/icons/fatcow/32x32/safari_browser.png" />',
 					name: "Safari",
+					engine: "Blink",
 					checked: true
+				},
+				{
+					icon: '<img  src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/32/chrome.png" />',
+					name: "Chrome",
+					engine: "Blink"
 				},
 				{
 					icon: '<img  src="https://cdn1.iconfinder.com/data/icons/logotypes/32/opera-32.png" />',
 					name: "Opera",
+					engine: "Blink",
 					checked: true
 				}
 			]
