@@ -1,3 +1,7 @@
+### v5.5.5
+##### Added / Updated
+- Revert PR 44. NPM and Bower should stay separated.
+
 ### v5.5.4
 ##### Added / Updated
 - Possibility to turn off automatic toggling of children/parents.
