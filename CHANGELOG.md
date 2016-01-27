@@ -1,3 +1,11 @@
+### v5.5.7
+##### Added / Updated
+- Unit tests fixes
+
+### v5.5.6
+##### Added / Updated
+- Bower fixes
+
 ### v5.5.5
 ##### Added / Updated
 - Fix malformed bower.json
