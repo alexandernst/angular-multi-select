@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.5.5
+ * Current version: 5.5.6
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -803,7 +803,8 @@ angular_multi_select.directive('angularMultiSelect',
 				$scope._enforceProps($scope._shadowModel);
 
 				try {
-					$scope.preselectValue = JSON.parse($scope.preselectValue);
+					var val = JSON.parse($scope.preselectValue);
+					$scope.preselectValue = angular.isArray(val) ? val : [val];
 				} catch(e) {
 					$scope.preselectValue = [$scope.preselectValue];
 				}

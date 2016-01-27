@@ -1,5 +1,9 @@
 ### v5.5.5
 ##### Added / Updated
+- Fix malformed bower.json
+
+### v5.5.5
+##### Added / Updated
 - Revert PR 44. NPM and Bower should stay separated.
 
 ### v5.5.4
