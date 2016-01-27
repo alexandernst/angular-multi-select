@@ -47,8 +47,8 @@ angular_multi_select.directive('angularMultiSelect',
 
 			// models
 			inputModel: '=',
-			outputModel: '=',
-			singleOutputModel: '=',
+			outputModel: '=?',
+			singleOutputModel: '=?',
 
 			// callbacks
 			onClear: '&',
