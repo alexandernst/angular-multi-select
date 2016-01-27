@@ -1,3 +1,7 @@
+### v5.5.8
+##### Added / Updated
+- Make output models optional for better Angular (1.4.9+) compatibility.
+
 ### v5.5.7
 ##### Added / Updated
 - Unit tests fixes

@@ -3,7 +3,7 @@
  * Creates a dropdown-like widget with check-able items.
  *
  * Project started on: 23 May 2015
- * Current version: 5.5.7
+ * Current version: 5.5.8
  *
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -47,8 +47,8 @@ angular_multi_select.directive('angularMultiSelect',
 
 			// models
 			inputModel: '=',
-			outputModel: '=',
-			singleOutputModel: '=',
+			outputModel: '=?',
+			singleOutputModel: '=?',
 
 			// callbacks
 			onClear: '&',
