@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Angular Multi Select Demo</title>
+		<link rel="stylesheet" href="../src/style.css" />
+		<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.8/angular.js" data-semver="1.4.8"></script>
+		<script src="../src/angular-multi-select.js"></script>
+		<script src="../specs/data/full_data.js"></script>
+		<script src="app.js"></script>
+	</head>
+
+	<body ng-controller="MainCtrl">
+
+        <div class="container">
+
+            <div
+                ng-repeat="item in items"
+                class="item level_{{ item.level }}"
+                ng-class="item.open ? 'open' : 'closed'"
+            >
+                <div class="caret {{ get_open_class(item) }}"></div>
+                <div>{{ item.text }} ({{ item.value }}) | {{ item.children }} | </div>
+                <div class="check {{ get_checked_class(item) }}"></div>
+            </div>
+            <br>
+
+        </div>
+
+	</body>
+
+</html>

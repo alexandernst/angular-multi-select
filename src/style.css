@@ -1,0 +1,77 @@
+/* Put your css in here */
+
+.container {
+	border: 1px solid black;
+	background: #75715E;
+	color: #D8D8D8;
+}
+
+.item {
+	display: flex;
+	padding: 2px;
+}
+
+/*
+ ██████  ██████  ███████ ███    ██ ███████ ██████      ███████ ████████  █████  ████████ ███████
+██    ██ ██   ██ ██      ████   ██ ██      ██   ██     ██         ██    ██   ██    ██    ██
+██    ██ ██████  █████   ██ ██  ██ █████   ██   ██     ███████    ██    ███████    ██    █████
+██    ██ ██      ██      ██  ██ ██ ██      ██   ██          ██    ██    ██   ██    ██    ██
+ ██████  ██      ███████ ██   ████ ███████ ██████      ███████    ██    ██   ██    ██    ███████
+*/
+.item .caret {
+	margin-right: 5px;
+}
+
+.item .caret.open::before {
+	content: '▾';
+}
+
+.item .caret.closed::before {
+	content: '▸';
+}
+
+/*
+ ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ███████ ████████  █████  ████████ ███████
+██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██         ██    ██   ██    ██    ██
+██      ███████ █████   ██      █████   █████   ██   ██     ███████    ██    ███████    ██    █████
+██      ██   ██ ██      ██      ██  ██  ██      ██   ██          ██    ██    ██   ██    ██    ██
+ ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ███████    ██    ██   ██    ██    ███████
+*/
+.item .check.checked::before {
+	content: '✓';
+	color: green;
+}
+
+.item .check.unchecked::before {
+	content: '✗';
+	color: red;
+}
+
+.item .check.mixed::before {
+	content: '~';
+	color: orange;
+}
+
+.level_0 {
+	padding-left: 20px;
+}
+
+.level_1 {
+	padding-left: 40px;
+}
+
+.level_2 {
+	padding-left: 60px;
+}
+
+.level_3 {
+	padding-left: 80px;
+}
+
+.level_4 {
+	padding-left: 100px;
+}
+
+.level_5 {
+	padding-left: 120px;
+}

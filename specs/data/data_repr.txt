@@ -1,0 +1,49 @@
+/*
+ * The full_data.js data represents a tree that should look like this:
+ *
+├A
+├B
+└───┐
+	├C
+├D
+└───┐
+	├E
+	├F
+├G
+└───┐
+	├H
+	├I
+	└───┐
+		├J
+		├K
+	├L
+	├M
+├N
+└───┐
+	├O
+	├P
+	└───┐
+		├Q
+		└───┐
+			├R
+			└───┐
+				├S
+			├T
+		├U
+	├V
+├W
+├X
+└───┐
+	├Y
+	├Z
+*
+*/
+
+// Required fields
+//
+// * text      <--- the only mandatory field
+// * value     <--- will be defaulted to the value of text property if empty/not present
+// * id        <--- will be auto-generated if not present
+// * checked   <--- will be defaulted to false if empty/not present. will be removed if children is valid.
+// * children  <--- array of children; will de removed if not an array.
+//
