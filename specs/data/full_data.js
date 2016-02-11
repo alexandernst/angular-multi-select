@@ -1,6 +1,6 @@
 var full_data = [
 	{ text: 'A', value: 'a', id: 1},
-	{ text: 'B', value: 'b', id: 2, children: [
+	{ text: 'B', value: 'b', id: 2, open: true, children: [
 		{ text: 'C', value: 'c', id: 3, checked: true}
 	]},
 	{ text: 'D', value: 'd', id: 4, children: [
@@ -16,10 +16,10 @@ var full_data = [
 		{ text: 'L', value: 'l', id: 12},
 		{ text: 'M', value: 'm', id: 13}
 	]},
-	{ text: 'N', value: 'n', id: 14, children: [
+	{ text: 'N', value: 'n', id: 14, open: true, children: [
 		{ text: 'O', value: 'o', id: 15},
-		{ text: 'P', value: 'p', id: 16, children: [
-			{ text: 'Q', value: 'q', id: 17, children: [
+		{ text: 'P', value: 'p', id: 16, open: true, children: [
+			{ text: 'Q', value: 'q', id: 17, open: true, children: [
 				{ text: 'R', value: 'r', id: 18, children: [
 					{ text: 'S', value: 's', id: 19, checked: true}
 				]},

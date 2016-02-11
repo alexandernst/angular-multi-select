@@ -17,11 +17,10 @@
 
             <div
                 ng-repeat="item in items"
-                class="item level_{{ item.level }}"
-                ng-class="item.open ? 'open' : 'closed'"
+                class="item level_{{ item.level }} {{ get_type_class(item) }} {{ get_open_class(item) }}"
             >
                 <div class="caret {{ get_open_class(item) }}"></div>
-                <div>{{ item.text }} ({{ item.value }}) | {{ item.children }} | </div>
+                <div>{{ item.text }} ({{ item.value }}) | {{ item.children }} | {{ item.tree_visibility }} </div>
                 <div class="check {{ get_checked_class(item) }}"></div>
             </div>
             <br>

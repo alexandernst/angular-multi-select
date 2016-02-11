@@ -2,8 +2,8 @@
 
 .container {
 	border: 1px solid black;
-	background: #75715E;
-	color: #D8D8D8;
+	background: #BFBFBD;
+	color: DimGrey;
 }
 
 .item {
@@ -19,14 +19,15 @@
  ██████  ██      ███████ ██   ████ ███████ ██████      ███████    ██    ██   ██    ██    ███████
 */
 .item .caret {
+	width: 10px;
 	margin-right: 5px;
 }
 
-.item .caret.open::before {
+.item:not(.leaf) .caret.open::before {
 	content: '▾';
 }
 
-.item .caret.closed::before {
+.item:not(.leaf) .caret.closed::before {
 	content: '▸';
 }
 
@@ -49,7 +50,7 @@
 
 .item .check.mixed::before {
 	content: '~';
-	color: orange;
+	color: yellow;
 }
 
 .level_0 {

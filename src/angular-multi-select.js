@@ -10,17 +10,12 @@ angular_multi_select.factory("stylesHelper", function() {
 			if (typeof(item.checked) === "boolean" ) {
 				return item.checked ? "checked" : "unchecked";
 			} else {
-				switch (item.checked) {
-					case -1:
-					return "unchecked";
-					case 0:
-					return "mixed";
-					case 1:
-					return "checked";
-					default:
-					return "unknown";
-				}
+				return item.checked < 0 ? 'unchecked' : item.checked > 0 ? 'checked' : 'mixed';
 			}
+		},
+
+		get_type_class: function (item) {
+			return item.children === 0 ? 'leaf' : 'node';
 		}
 	};
 });
@@ -47,7 +42,7 @@ angular_multi_select.factory("dataConverter", function() {
 				for (var i = 0; i < items.length; i++) {
 					var item = items[i];
 
-					if (item.constructor.toString().indexOf("Array") != -1) return (correct = false);
+					if (item.constructor.toString().indexOf("Array") !== -1) return (correct = false);
 
 					// Check for the 2 main fields (text and value)
 					// If value is not present, set it to text's value
@@ -58,6 +53,10 @@ angular_multi_select.factory("dataConverter", function() {
 					// If not present, assign one
 					if (!item.hasOwnProperty('id') || ids.indexOf(item.id) !== -1) item.id = gen_id();
 					ids.push(item.id);
+
+					// Check for open field.
+					// If open field doesn't exist or is not "true", set to false
+					if (!item.hasOwnProperty('open') || item.open !== true) item.open = false;
 
 					// Check for children field.
 					// If not an array or empty array, remove it.
@@ -97,6 +96,7 @@ angular_multi_select.factory("dataConverter", function() {
 					final_item.text = item.text;
 					final_item.value = item.value;
 					final_item.id = item.id;
+					final_item.open = item.open;
 					if (item.hasOwnProperty('checked') && typeof(item.checked) === "boolean") {
 						final_item.checked = item.checked;
 					} else {
@@ -111,8 +111,7 @@ angular_multi_select.factory("dataConverter", function() {
 					final_item.children = 0;
 					final_item.parents_id = [];
 
-					//TODO: calculate state
-					final_item.open = true;            // should be set per request
+					//TODO: calculate visibility
 					final_item.tree_visibility = true; // should be set per request
 
 					final_data.push(final_item);
@@ -149,6 +148,9 @@ angular_multi_select.factory("dataConverter", function() {
 			for (i = 0; i < final_data.length; i++) {
 				item = final_data[i];
 
+				// If this is a root element, it should be visible
+				if (item.level === 0) item.tree_visibility = true;
+
 				// we are guaranteed to have a checked property for leafs
 				// if the current item is a leaf, it won't have children, hence skip
 				if (typeof(item.checked) === "boolean") continue;
@@ -159,8 +161,14 @@ angular_multi_select.factory("dataConverter", function() {
 				for (j = i + 1; j < final_data.length; j++) {
 					var child = final_data[j];
 
+					// Decide if children should be visible in the tree
+					if (item.level === child.level - 1) {
+						child.tree_visibility = item.open;
+					}
+
 					if (item.level >= child.level) break;
 
+					// Logic that decides the checked state of node items
 					if (child.checked === true) {
 						counter++;
 					} else if (child.checked === false) {
@@ -172,6 +180,11 @@ angular_multi_select.factory("dataConverter", function() {
 					item.children++;
 				}
 
+				// If the number of unchecked and null (undefined if checked) elements
+				// equals to the number of children, then the current item should be
+				// unchecked. If the number of checked and null elements equals to the
+				// number of children, then the current item should be checked. Else,
+				// it should be marked as mixed state.
 				if (item.children === Math.abs(counter) + counter_null) {
 					item.checked = counter > 0 ? 1 : -1; //all unchecked or all checked
 				} else {

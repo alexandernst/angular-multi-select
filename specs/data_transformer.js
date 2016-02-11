@@ -32,6 +32,9 @@ describe('Testing data converter service', function() {
 
 			var res4 = dataConverter.check_prerequisites(short_data_4);
 			expect(res4).toEqual(short_data_after_check_prerequisites_4);
+
+			var res5 = dataConverter.check_prerequisites(short_data_5);
+			expect(res5).toEqual(short_data_after_check_prerequisites_5);
 		}));
 	});
 
