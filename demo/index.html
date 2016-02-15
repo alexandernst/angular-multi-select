@@ -5,27 +5,45 @@
 		<meta charset="utf-8" />
 		<title>Angular Multi Select Demo</title>
 		<link rel="stylesheet" href="../src/style.css" />
-		<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.8/angular.js" data-semver="1.4.8"></script>
+		<script src="../node_modules/angular/angular.js"></script>
+		<script src="../src/angular-multi-select-data-converter.js"></script>
 		<script src="../src/angular-multi-select.js"></script>
 		<script src="../specs/data/full_data.js"></script>
+		<script src="../node_modules/lokijs/src/lokijs.js"></script>
 		<script src="app.js"></script>
 	</head>
 
 	<body ng-controller="MainCtrl">
 
-        <div class="container">
+		<div class="container">
 
-            <div
-                ng-repeat="item in items"
-                class="item level_{{ item.level }} {{ get_type_class(item) }} {{ get_open_class(item) }}"
-            >
-                <div class="caret {{ get_open_class(item) }}"></div>
-                <div>{{ item.text }} ({{ item.value }}) | {{ item.children }} | {{ item.tree_visibility }} </div>
-                <div class="check {{ get_checked_class(item) }}"></div>
-            </div>
-            <br>
+			<div
+				ng-repeat="item in items track by item.id"
+				class="item level_{{ item.level }}
+					{{ angularMultiSelectStylesHelper.get_type_class(item) }}
+					{{ angularMultiSelectStylesHelper.get_open_class(item) }}"
+			>
+				<!-- Caret -->
+				<div
+					class="caret {{ angularMultiSelectStylesHelper.get_open_class(item) }}"
+					ng-click="angularMultiSelect.toggle_open_node(item)"
+				></div>
 
-        </div>
+				<!-- Text of the element -->
+				<div>
+					{{ item.text }} ({{ item.value }}) | Marcados {{ item.checked_children }} de {{ item.children_leafs }} leafs (y {{ item.children_nodes }} nodes) | {{ item.tree_visibility }}
+				</div>
+
+				<!-- Check holder -->
+				<div
+					class="check {{ angularMultiSelectStylesHelper.get_checked_class(item) }}"
+					ng-click="angularMultiSelect.toggle_check_node(item)"
+				>
+				</div>
+			</div>
+			<br>
+
+		</div>
 
 	</body>
 
