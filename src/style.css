@@ -21,6 +21,11 @@
 .item .caret {
 	width: 10px;
 	margin-right: 5px;
+	cursor: pointer;
+}
+
+.item.leaf .caret {
+	cursor: default;
 }
 
 .item:not(.leaf) .caret.open::before {
@@ -38,6 +43,10 @@
 ██      ██   ██ ██      ██      ██  ██  ██      ██   ██          ██    ██    ██   ██    ██    ██
  ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ███████    ██    ██   ██    ██    ███████
 */
+.item .check {
+	cursor: pointer;
+}
+
 .item .check.checked::before {
 	content: '✓';
 	color: green;
