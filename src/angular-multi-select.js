@@ -10,7 +10,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	var on_data_change_fn;
 
 	var collection = db.addCollection('items', {
-		indices: ['id', 'parents_id', 'checked']
+		indices: ['id', 'parents_id', 'checked', 'level']
 	});
 
 	var on_data_change = function (fn) {
@@ -300,7 +300,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				.find({
 					'$and': [
 						{ 'parents_id': { '$contains': item.id } },
-						//{ 'level': {'$gte': item.level + 1 } },
+						{ 'level': {'$gte': item.level + 1 } },
 						{ 'checked': {'$in': [0, -1, false] } }
 					]
 				})
@@ -397,7 +397,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				.find({
 					'$and': [
 						{ 'parents_id': { '$contains': item.id } },
-						//{ 'level': {'$gte': item.level + 1 } },
+						{ 'level': {'$gte': item.level + 1 } },
 						{ 'checked': {'$in': [0, 1, true] } }
 					]
 				})
