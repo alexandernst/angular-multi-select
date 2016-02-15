@@ -3,7 +3,7 @@ var angular_multi_select = angular.module('angular-multi-select', []);
 angular_multi_select.factory('angularMultiSelect', function () {
 
 	/*
-	 * Initiate the database and setup index fields
+	 * Initiate the database and setup index fields.
 	 */
 	var db = new loki();
 	var main_ctx = this;
@@ -17,7 +17,17 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		main_ctx.on_data_change_fn = fn;
 	}
 
+	/*
+	██ ███    ██ ███████ ███████ ██████  ████████
+	██ ████   ██ ██      ██      ██   ██    ██
+	██ ██ ██  ██ ███████ █████   ██████     ██
+	██ ██  ██ ██      ██ ██      ██   ██    ██
+	██ ██   ████ ███████ ███████ ██   ██    ██
+	*/
 	var insert = function (items) {
+		/*
+		 * Iterate over an array of items and insert them.
+		 */
 		if (Array.isArray(items)) {
 			for (var i = 0; i < items.length; i++) {
 				this.collection.insert(items[i]);
@@ -35,6 +45,9 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	 ██████  ███████    ██        ██       ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 	*/
 	var get_full_tree = function () {
+		/*
+		 * Get the entire set of data currently inserted in Loki.
+		 */
 		console.time("get_full_tree");
 
 		var tree = this.collection
@@ -55,6 +68,9 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	 ██████  ███████    ██          ████   ██ ███████ ██ ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 	*/
 	var get_visible_tree = function () {
+		/*
+		 * Get only the visible elements from Loki.
+		 */
 		console.time("get_visible_tree");
 
 		var tree =  this.collection
@@ -76,6 +92,10 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	   ██     ██████   ██████   ██████  ███████ ███████      ██████  ██      ███████ ██   ████
 	*/
 	var toggle_open_node = function (item) {
+		/*
+		 * Toggle the open/closed state of an element.
+		 * Note that leafs are not supposed to be toggleable.
+		 */
 		if (item.children_leafs === 0) return;
 
 		if (item.open === true) {
@@ -95,6 +115,16 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	 ██████  ██      ███████ ██   ████     ██   ████  ██████  ██████  ███████
 	*/
 	var open_node = function (item) {
+		/*
+		 * Open an item.
+		 * First, mark the item itself as open, then find all
+		 * the children items of that item and iterate over the
+		 * results. For each item:
+		 *
+		 * Ff the item is a node and it's closed, we'll create
+		 * a rule such that it will skip the next N items on the
+		 * result. Else mark the item as visible.
+		 */
 		console.time("open_node");
 
 		var skip = 0;
@@ -139,6 +169,11 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	 ██████ ███████  ██████  ███████ ███████     ██   ████  ██████  ██████  ███████
 	*/
 	var close_node = function (item) {
+		/*
+		 * Close an item.
+		 * First, mark the item itself as closed, then find all
+		 * children and mark then as invisible.
+		 */
 		console.time("close_node");
 
 		this.collection
@@ -172,6 +207,18 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	   ██     ██████   ██████   ██████  ███████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
 	*/
 	var toggle_check_node = function (item) {
+		/*
+		 * Toggle the checked state on an item.
+		 * Note that there are, in total, 5 different states:
+		 *
+		 * true: checked leaf.
+		 * false: unchecked leaf.
+		 * -1: all children leafs of the node are unchecked.
+		 * 0: at least one children leaf of the node is checked.
+		 * 1: all children leafs of the node are checked.
+		 *
+		 * If the node/item is (fully) checked, uncheck, else check.
+		 */
 		switch (item.checked) {
 			case 1:
 			case true:
@@ -196,6 +243,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	*/
 	var check_node = function (item) {
 		/*
+		 * Set an item as checked.
 		 * If the passed item is a leaf:
 		 *     1. Mark it as checked.
 		 *     2. Search all parent nodes,
@@ -391,7 +439,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		insert: insert,
 
 		get_full_tree: get_full_tree,
-		
+
 		get_visible_tree: get_visible_tree,
 
 		toggle_open_node: toggle_open_node,
