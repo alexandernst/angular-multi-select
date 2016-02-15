@@ -310,6 +310,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 						obj.checked = true;
 					} else {
 						obj.checked = 1;
+						obj.checked_children = obj.children_leafs;
 					}
 				});
 
@@ -372,7 +373,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				} else {
 					obj.checked = -1;
 					obj.checked_children = 0;
-					diff_checked_children = obj.checked_children;
+					diff_checked_children = currently_checked_children - obj.checked_children;
 				}
 			});
 
