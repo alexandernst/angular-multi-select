@@ -2,7 +2,14 @@ var angular_multi_select = angular.module('angular-multi-select', []);
 
 angular_multi_select.factory('angularMultiSelect', function () {
 
-	var AngularMultiSelect = function () {
+	var AngularMultiSelect = function (ops) {
+		ops = ops || {};
+		this.DEBUG             = ops.DEBUG             || false;
+		this.ID_PROPERTY       = ops.ID_PROPERTY       || 'id';
+		this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || 'open';
+		this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || 'checked';
+		this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || 'children';
+
 		/*
 		 * Initiate the database and setup index fields.
 		 */
@@ -87,7 +94,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		/*
 		 * Get the entire set of data currently inserted in Loki.
 		 */
-		console.time("get_full_tree");
+		if (this.DEBUG === true) console.time("get_full_tree");
 
 		var tree = this.collection
 			.chain()
@@ -95,7 +102,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 			.simplesort("order", false)
 			.data();
 
-		console.time("get_full_tree");
+		if (this.DEBUG === true) console.time("get_full_tree");
 		return tree;
 	};
 
@@ -110,7 +117,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		/*
 		 * Get only the visible elements from Loki.
 		 */
-		console.time("get_visible_tree");
+		if (this.DEBUG === true) console.time("get_visible_tree");
 
 		var tree =  this.collection
 			.chain()
@@ -119,7 +126,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 			.simplesort("order", false)
 			.data();
 
-		console.timeEnd("get_visible_tree");
+		if (this.DEBUG === true) console.timeEnd("get_visible_tree");
 		return tree;
 	};
 
@@ -164,7 +171,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		 * a rule such that it will skip the next N items on the
 		 * result. Else mark the item as visible.
 		 */
-		console.time("open_node");
+		if (this.DEBUG === true) console.time("open_node");
 
 		var skip = 0;
 
@@ -197,7 +204,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				obj.tree_visibility = true;
 			});
 
-		console.timeEnd("open_node");
+		if (this.DEBUG === true) console.timeEnd("open_node");
 	};
 
 	/*
@@ -213,7 +220,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		 * First, mark the item itself as closed, then find all
 		 * children and mark then as invisible.
 		 */
-		console.time("close_node");
+		if (this.DEBUG === true) console.time("close_node");
 
 		this.collection
 			.chain()
@@ -235,7 +242,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				obj.tree_visibility = false;
 			});
 
-		console.timeEnd("close_node");
+		if (this.DEBUG === true) console.timeEnd("close_node");
 	};
 
 	/*
@@ -299,7 +306,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		 *        N is the difference between the checked leafs of the nodes we're checking
 		 *        before and after the operation.
 		 */
-		console.time("check_node");
+		if (this.DEBUG === true) console.time("check_node");
 
 		var ctx = this;
 		var diff_checked_children = 0;
@@ -369,7 +376,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				});
 		}
 
-		console.timeEnd("check_node");
+		if (this.DEBUG === true) console.timeEnd("check_node");
 	};
 
 	/*
@@ -397,7 +404,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		 *        N is the difference between the checked leafs of the nodes we're checking
 		 *        before and after the operation.
 		 */
-		console.time("uncheck_node");
+		if (this.DEBUG === true) console.time("uncheck_node");
 
 		var ctx = this;
 		var diff_checked_children = 0;
@@ -466,7 +473,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				});
 		}
 
-		console.timeEnd("uncheck_node");
+		if (this.DEBUG === true) console.timeEnd("uncheck_node");
 	};
 
 	return AngularMultiSelect;

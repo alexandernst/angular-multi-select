@@ -18,13 +18,8 @@ app.controller('MainCtrl', [
 		$scope.angularMultiSelect = ams;
 		$scope.angularMultiSelectStylesHelper = angularMultiSelectStylesHelper;
 
-		console.time('check_prerequisites');
 		var checked_data = dc.check_prerequisites(full_data);
-		console.timeEnd('check_prerequisites');
-
-		console.time('to_internal');
 		var internal_data = dc.to_internal(checked_data);
-		console.timeEnd('to_internal');
 
 		ams.insert(internal_data);
 

@@ -4,6 +4,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', f
 
 	var DataConverter = function (ops) {
 		ops = ops || {};
+		this.DEBUG             = ops.DEBUG             || false;
 		this.ID_PROPERTY       = ops.ID_PROPERTY       || 'id';
 		this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || 'open';
 		this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || 'checked';
@@ -11,6 +12,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', f
 	};
 
 	DataConverter.prototype.check_prerequisites = function (data) {
+		if (this.DEBUG === true) console.time('check_prerequisites');
+
 		if (!Array.isArray(data)) return false;
 
 		var ids = [];
@@ -61,11 +64,15 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', f
 
 		process_items(data);
 
+		if (this.DEBUG === true) console.timeEnd('check_prerequisites');
+
 		// Return data array or false if something is wrong.
 		return correct ? data : correct;
 	};
 
 	DataConverter.prototype.to_internal = function (data) {
+
+		if (this.DEBUG === true) console.time('to_internal');
 
 		var order = 1;
 		var ctx = this;
@@ -180,6 +187,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', f
 
 			item.checked_children = counter_checked;
 		}
+
+		if (this.DEBUG === true) console.timeEnd('to_internal');
 
 		return final_data;
 	};
