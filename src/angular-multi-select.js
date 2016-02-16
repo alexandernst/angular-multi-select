@@ -2,19 +2,58 @@ var angular_multi_select = angular.module('angular-multi-select', []);
 
 angular_multi_select.factory('angularMultiSelect', function () {
 
+	var AngularMultiSelect = function () {
+		/*
+		 * Initiate the database and setup index fields.
+		 */
+		this.db = new loki();
+		this.collection = this.db.addCollection('angular-multi-select', {
+			indices: ['id', 'parents_id', 'checked', 'level']
+		});
+
+		this.on_data_change_fn = null;
+		this.on_visual_change_fn = null;
+	};
+
 	/*
-	 * Initiate the database and setup index fields.
-	 */
-	var db = new loki();
-	var main_ctx = this;
-	var on_data_change_fn;
+	 ██████  ███    ██     ██████   █████  ████████  █████       ██████ ██   ██  █████  ███    ██  ██████  ███████
+	██    ██ ████   ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ████   ██ ██       ██
+	██    ██ ██ ██  ██     ██   ██ ███████    ██    ███████     ██      ███████ ███████ ██ ██  ██ ██   ███ █████
+	██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
+	 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
+	*/
+	AngularMultiSelect.prototype.on_data_change = function (fn) {
+		/*
+		 * Will be executed when the data in one or more of the items in the
+		 * tree is changed. Changes such as open/close (visibility related)
+		 * won't trigger this function.
+		 *
+		 * Note that this method will be ran only once after applying
+		 * multiple data updates if there are more than one, like for example
+		 * when checking a node that has multiple children.
+		 */
+		this.on_data_change_fn = fn;
+	};
 
-	var collection = db.addCollection('items', {
-		indices: ['id', 'parents_id', 'checked', 'level']
-	});
 
-	var on_data_change = function (fn) {
-		main_ctx.on_data_change_fn = fn;
+	/*
+	 ██████  ███    ██     ██    ██ ██ ███████ ██    ██  █████  ██           ██████ ██   ██  █████  ███    ██  ██████  ███████
+	██    ██ ████   ██     ██    ██ ██ ██      ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ████   ██ ██       ██
+	██    ██ ██ ██  ██     ██    ██ ██ ███████ ██    ██ ███████ ██          ██      ███████ ███████ ██ ██  ██ ██   ███ █████
+	██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
+	 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
+	*/
+	AngularMultiSelect.prototype.on_visual_change = function (fn) {
+		/*
+		* Will be executed when the tree changed somehow, visually speaking.
+		* This function could be triggered by an open/close action for example.
+		* Changes such as un/checking an item won't trigger this function.
+		*
+		* Note that this method will be ran only once, after applying all the
+		* visual changes required by the action, like for example when closing
+		* a node that has multiple children.
+		*/
+		this.on_visual_change_fn = fn;
 	}
 
 	/*
@@ -24,7 +63,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██ ██  ██ ██      ██ ██      ██   ██    ██
 	██ ██   ████ ███████ ███████ ██   ██    ██
 	*/
-	var insert = function (items) {
+	AngularMultiSelect.prototype.insert = function (items) {
 		/*
 		 * Iterate over an array of items and insert them.
 		 */
@@ -44,7 +83,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██    ██ ██         ██        ██      ██    ██ ██      ██             ██    ██   ██ ██      ██
 	 ██████  ███████    ██        ██       ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 	*/
-	var get_full_tree = function () {
+	AngularMultiSelect.prototype.get_full_tree = function () {
 		/*
 		 * Get the entire set of data currently inserted in Loki.
 		 */
@@ -67,7 +106,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██    ██ ██         ██         ██  ██  ██      ██ ██ ██   ██ ██      ██             ██    ██   ██ ██      ██
 	 ██████  ███████    ██          ████   ██ ███████ ██ ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 	*/
-	var get_visible_tree = function () {
+	AngularMultiSelect.prototype.get_visible_tree = function () {
 		/*
 		 * Get only the visible elements from Loki.
 		 */
@@ -91,7 +130,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	   ██    ██    ██ ██    ██ ██    ██ ██      ██          ██    ██ ██      ██      ██  ██ ██
 	   ██     ██████   ██████   ██████  ███████ ███████      ██████  ██      ███████ ██   ████
 	*/
-	var toggle_open_node = function (item) {
+	AngularMultiSelect.prototype.toggle_open_node = function (item) {
 		/*
 		 * Toggle the open/closed state of an element.
 		 * Note that leafs are not supposed to be toggleable.
@@ -104,7 +143,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 			this.open_node(item);
 		}
 
-		main_ctx.on_data_change_fn();
+		if (this.on_visual_change_fn !== null) this.on_visual_change_fn();
 	};
 
 	/*
@@ -114,7 +153,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██    ██ ██      ██      ██  ██ ██     ██  ██ ██ ██    ██ ██   ██ ██
 	 ██████  ██      ███████ ██   ████     ██   ████  ██████  ██████  ███████
 	*/
-	var open_node = function (item) {
+	AngularMultiSelect.prototype.open_node = function (item) {
 		/*
 		 * Open an item.
 		 * First, mark the item itself as open, then find all
@@ -168,7 +207,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██      ██      ██    ██      ██ ██          ██  ██ ██ ██    ██ ██   ██ ██
 	 ██████ ███████  ██████  ███████ ███████     ██   ████  ██████  ██████  ███████
 	*/
-	var close_node = function (item) {
+	AngularMultiSelect.prototype.close_node = function (item) {
 		/*
 		 * Close an item.
 		 * First, mark the item itself as closed, then find all
@@ -206,7 +245,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	   ██    ██    ██ ██    ██ ██    ██ ██      ██          ██      ██   ██ ██      ██      ██  ██
 	   ██     ██████   ██████   ██████  ███████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
 	*/
-	var toggle_check_node = function (item) {
+	AngularMultiSelect.prototype.toggle_check_node = function (item) {
 		/*
 		 * Toggle the checked state on an item.
 		 * Note that there are, in total, 5 different states:
@@ -231,7 +270,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 				break;
 		}
 
-		main_ctx.on_data_change_fn();
+		if (this.on_data_change_fn !== null) this.on_data_change_fn();
 	};
 
 	/*
@@ -241,7 +280,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 	 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 	*/
-	var check_node = function (item) {
+	AngularMultiSelect.prototype.check_node = function (item) {
 		/*
 		 * Set an item as checked.
 		 * If the passed item is a leaf:
@@ -340,7 +379,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 	██    ██ ██  ██ ██ ██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 	 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 	*/
-	var uncheck_node = function (item) {
+	AngularMultiSelect.prototype.uncheck_node = function (item) {
 		/*
 		 * If the passed item is a leaf:
 		 *     1. Mark it as unchecked.
@@ -430,31 +469,7 @@ angular_multi_select.factory('angularMultiSelect', function () {
 		console.timeEnd("uncheck_node");
 	};
 
-	return {
-		db: db,
-
-		collection: collection,
-
-		on_data_change: on_data_change,
-
-		insert: insert,
-
-		get_full_tree: get_full_tree,
-
-		get_visible_tree: get_visible_tree,
-
-		toggle_open_node: toggle_open_node,
-
-		open_node: open_node,
-
-		close_node: close_node,
-
-		toggle_check_node: toggle_check_node,
-
-		check_node: check_node,
-
-		uncheck_node: uncheck_node
-	};
+	return AngularMultiSelect;
 });
 
 var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', []);
