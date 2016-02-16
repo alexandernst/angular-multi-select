@@ -28,8 +28,7 @@ var short_data_after_check_prerequisites = [
 ///////////////////////////////////////////////////////////////////////////////
 
 /*
- * Test if check_prerequisites can generate unique IDs and
- * the 'value' field.
+ * Test if check_prerequisites can generate unique IDs.
  */
 
 var short_data_2 = [
@@ -44,13 +43,13 @@ var short_data_2 = [
 ];
 
 var short_data_after_check_prerequisites_2 = [
-	{ text: 'A', value: 'A', id: 1, checked: false, open: false},
-	{ text: 'B', value: 'B', id: 2, open: false, children: [
-		{ text: 'C', value: 'C', id: 3, checked: true, open: false}
+	{ text: 'A', id: 1, checked: false, open: false},
+	{ text: 'B', id: 2, open: false, children: [
+		{ text: 'C', id: 3, checked: true, open: false}
 	]},
-	{ text: 'D', value: 'D', id: 4, open: false, children: [
-		{ text: 'E', value: 'E', id: 5, checked: false, open: false},
-		{ text: 'F', value: 'F', id: 6, checked: true, open: false}
+	{ text: 'D', id: 4, open: false, children: [
+		{ text: 'E', id: 5, checked: false, open: false},
+		{ text: 'F', id: 6, checked: true, open: false}
 	]}
 ];
 
@@ -72,13 +71,13 @@ var short_data_3 = [
 ];
 
 var short_data_after_check_prerequisites_3 = [
-	{ text: 'A', value: 'A', id: 1, checked: false, open: false},
-	{ text: 'B', value: 'B', id: 2, open: false, children: [
-		{ text: 'C', value: 'C', id: 3, checked: true, open: false}
+	{ text: 'A', id: 1, checked: false, open: false},
+	{ text: 'B', id: 2, open: false, children: [
+		{ text: 'C', id: 3, checked: true, open: false}
 	]},
-	{ text: 'D', value: 'D', id: 4, open: false, children: [
-		{ text: 'E', value: 'E', id: 5, checked: false, open: false},
-		{ text: 'F', value: 'F', id: 6, checked: true, open: false}
+	{ text: 'D', id: 4, open: false, children: [
+		{ text: 'E', id: 5, checked: false, open: false},
+		{ text: 'F', id: 6, checked: true, open: false}
 	]}
 ];
 
@@ -100,13 +99,13 @@ var short_data_4 = [
 ];
 
 var short_data_after_check_prerequisites_4 = [
-	{ text: 'A', value: 'A', id: 'foo', checked: false, open: false},
-	{ text: 'B', value: 'B', id: 1, open: false, children: [
-		{ text: 'C', value: 'C', id: 'bar', checked: true, open: false}
+	{ text: 'A', id: 'foo', checked: false, open: false},
+	{ text: 'B', id: 1, open: false, children: [
+		{ text: 'C', id: 'bar', checked: true, open: false}
 	]},
-	{ text: 'D', value: 'D', id: 2, open: false, children: [
-		{ text: 'E', value: 'E', id: 3, checked: false, open: false},
-		{ text: 'F', value: 'F', id: 4, checked: true, open: false}
+	{ text: 'D', id: 2, open: false, children: [
+		{ text: 'E', id: 3, checked: false, open: false},
+		{ text: 'F', id: 4, checked: true, open: false}
 	]}
 ];
 
@@ -128,12 +127,68 @@ var short_data_5 = [
 ];
 
 var short_data_after_check_prerequisites_5 = [
-	{ text: 'A', value: 'A', id: 'foo', checked: false, open: false},
-	{ text: 'B', value: 'B', id: 1, open: true, children: [
-		{ text: 'C', value: 'C', id: 'bar', checked: true, open: false}
+	{ text: 'A', id: 'foo', checked: false, open: false},
+	{ text: 'B', id: 1, open: true, children: [
+		{ text: 'C', id: 'bar', checked: true, open: false}
 	]},
-	{ text: 'D', value: 'D', id: 2, open: false, children: [
-		{ text: 'E', value: 'E', id: 3, checked: false, open: false},
-		{ text: 'F', value: 'F', id: 4, checked: true, open: false}
+	{ text: 'D', id: 2, open: false, children: [
+		{ text: 'E', id: 3, checked: false, open: false},
+		{ text: 'F', id: 4, checked: true, open: false}
+	]}
+];
+
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+ * Test if check_prerequisites can deal with all different names for keys.
+ */
+
+var short_data_6 = [
+	{ text: 'A', num: 'foo', abierto: 1},
+	{ text: 'B', abierto: true, hijos: [
+		{ text: 'C', num: 'bar', seleccionado: true}
+	]},
+	{ text: 'D', abierto: false, hijos: [
+		{ text: 'E', abierto: 'foo'},
+		{ text: 'F', seleccionado: true}
+	]}
+];
+
+var short_data_after_check_prerequisites_6 = [
+	{ text: 'A', num: 'foo', seleccionado: false, abierto: false},
+	{ text: 'B', num: 1, abierto: true, hijos: [
+		{ text: 'C', num: 'bar', seleccionado: true, abierto: false}
+	]},
+	{ text: 'D', num: 2, abierto: false, hijos: [
+		{ text: 'E', num: 3, seleccionado: false, abierto: false},
+		{ text: 'F', num: 4, seleccionado: true, abierto: false}
+	]}
+];
+
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+ * Test if check_prerequisites can deal with some different names for keys.
+ */
+
+var short_data_7 = [
+	{ text: 'A', num: 'foo', open: 1},
+	{ text: 'B', open: true, hijos: [
+		{ text: 'C', num: 'bar', seleccionado: true}
+	]},
+	{ text: 'D', open: false, hijos: [
+		{ text: 'E', open: 'foo'},
+		{ text: 'F', seleccionado: true}
+	]}
+];
+
+var short_data_after_check_prerequisites_7 = [
+	{ text: 'A', num: 'foo', seleccionado: false, open: false},
+	{ text: 'B', num: 1, open: true, hijos: [
+		{ text: 'C', num: 'bar', seleccionado: true, open: false}
+	]},
+	{ text: 'D', num: 2, open: false, hijos: [
+		{ text: 'E', num: 3, seleccionado: false, open: false},
+		{ text: 'F', num: 4, seleccionado: true, open: false}
 	]}
 ];
