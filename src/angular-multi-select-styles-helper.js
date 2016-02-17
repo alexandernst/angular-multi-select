@@ -1,6 +1,6 @@
-var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', []);
+var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', ['angular-multi-select-constants']);
 
-angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', function () {
+angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', function (angularMultiSelectConstants) {
 	return {
 		get_open_class: function (item) {
 			return item.open === true ? 'open' : 'closed';
