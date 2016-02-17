@@ -12,11 +12,13 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	/*
 	 * Possible values of the input data
 	 */
-	INPUT_DATA_CHECKED                 : true,
-	INPUT_DATA_UNCHECKED               : false,
 	INPUT_DATA_OPEN                    : true,
 	INPUT_DATA_CLOSED                  : false,
+	INTERNAL_DATA_OPEN                 : true,
+	INTERNAL_DATA_CLOSED               : false,
 
+	INPUT_DATA_CHECKED                 : true,
+	INPUT_DATA_UNCHECKED               : false,
 	INTERNAL_DATA_LEAF_CHECKED         : true,
 	INTERNAL_DATA_LEAF_UNCHECKED       : false,
 	INTERNAL_DATA_NODE_CHECKED         : 1,
