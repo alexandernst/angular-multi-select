@@ -7,17 +7,23 @@ angular_multi_select.factory('angularMultiSelect', [
 		var AngularMultiSelect = function (ops) {
 			ops = ops || {};
 			this.DEBUG             = ops.DEBUG             || false;
-			this.ID_PROPERTY       = ops.ID_PROPERTY       || 'id';
-			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || 'open';
-			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || 'checked';
-			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || 'children';
+			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
+			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
+			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
+			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
 
 			/*
 			 * Initiate the database and setup index fields.
 			 */
 			this.db = new loki();
 			this.collection = this.db.addCollection('angular-multi-select', {
-				indices: ['id', 'parents_id', 'checked', 'level']
+				indices: [
+					this.ID_PROPERTY,
+					this.CHECKED_PROPERTY,
+					'level',
+					'parents_id',
+					'tree_visibility'
+				]
 			});
 
 			this.on_data_change_fn = null;
@@ -148,7 +154,7 @@ angular_multi_select.factory('angularMultiSelect', [
 			 */
 			if (item.children_leafs === 0) return;
 
-			if (item.open === true) {
+			if (item[this.OPEN_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_OPEN) {
 				this.close_node(item);
 			} else {
 				this.open_node(item);
@@ -182,10 +188,10 @@ angular_multi_select.factory('angularMultiSelect', [
 			this.collection
 				.chain()
 				.find({
-					'id': item.id
+					[this.ID_PROPERTY]: item[this.ID_PROPERTY]
 				})
-				.update(function (obj) {
-					obj.open = angularMultiSelectConstants.INTERNAL_DATA_OPEN;
+				.update((obj) => {
+					obj[this.OPEN_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_OPEN;
 				});
 
 			this.collection
@@ -194,7 +200,7 @@ angular_multi_select.factory('angularMultiSelect', [
 					'$and': [
 						{
 							'parents_id': {
-								'$contains': item.id
+								'$contains': item[this.ID_PROPERTY]
 							}
 						},
 						{
@@ -205,13 +211,16 @@ angular_multi_select.factory('angularMultiSelect', [
 					]
 				})
 				.limit(item.children_leafs + item.children_nodes)
-				.update(function (obj) {
+				.update((obj) => {
 					if (skip > 0) {
 						skip--;
 						return;
 					}
 
-					if (obj.children_leafs > 0 && obj.open === angularMultiSelectConstants.INTERNAL_DATA_CLOSED) {
+					if (
+						obj.children_leafs > 0 &&
+						obj[this.OPEN_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_CLOSED
+					) {
 						skip = obj.children_leafs + obj.children_nodes;
 					}
 
@@ -239,10 +248,10 @@ angular_multi_select.factory('angularMultiSelect', [
 			this.collection
 				.chain()
 				.find({
-					'id': item.id
+					[this.ID_PROPERTY]: item[this.ID_PROPERTY]
 				})
-				.update(function (obj) {
-					obj.open = angularMultiSelectConstants.INTERNAL_DATA_CLOSED;
+				.update((obj) => {
+					obj[this.OPEN_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_CLOSED;
 				});
 
 			this.collection
@@ -251,7 +260,7 @@ angular_multi_select.factory('angularMultiSelect', [
 					'$and': [
 						{
 							'parents_id': {
-								'$contains': item.id
+								'$contains': item[this.ID_PROPERTY]
 							}
 						},
 						{
@@ -262,7 +271,7 @@ angular_multi_select.factory('angularMultiSelect', [
 					]
 				})
 				.limit(item.children_leafs + item.children_nodes)
-				.update(function (obj) {
+				.update((obj) => {
 					obj.tree_visibility = angularMultiSelectConstants.INTERNAL_DATA_INVISIBLE;
 				});
 
@@ -289,7 +298,7 @@ angular_multi_select.factory('angularMultiSelect', [
 			 *
 			 * If the node/item is (fully) checked, uncheck, else check.
 			 */
-			switch (item.checked) {
+			switch (item[this.CHECKED_PROPERTY]) {
 				case 1:
 				case true:
 					this.uncheck_node(item);
@@ -332,20 +341,19 @@ angular_multi_select.factory('angularMultiSelect', [
 			 */
 			if (this.DEBUG === true) console.time("check_node");
 
-			var ctx = this;
 			var diff_checked_children = 0;
 			var currently_checked_children = item.checked_children;
 
 			this.collection
 				.chain()
 				.find({
-					'id': item.id
+					[this.ID_PROPERTY]: item[this.ID_PROPERTY]
 				})
-				.update(function (obj) {
+				.update((obj) => {
 					if (item.children_leafs === 0) {
-						obj.checked = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 					} else {
-						obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						obj.checked_children = obj.children_leafs;
 						diff_checked_children = obj.checked_children - currently_checked_children;
 					}
@@ -355,17 +363,17 @@ angular_multi_select.factory('angularMultiSelect', [
 				this.collection
 					.chain()
 					.find({
-						'id': {
+						[this.ID_PROPERTY]: {
 							'$in': item.parents_id
 						}
 					})
 					.simplesort("order", true)
-					.update(function (obj) {
+					.update((obj) => {
 						obj.checked_children++; // We can't overflow this as we're checking an unchecked item
 						if (obj.checked_children === obj.children_leafs) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						} //Note that we have can reach a -1 state here as we just checked a child leaf
 					});
 			} else {
@@ -375,7 +383,7 @@ angular_multi_select.factory('angularMultiSelect', [
 						'$and': [
 							{
 								'parents_id': {
-									'$contains': item.id
+									'$contains': item[this.ID_PROPERTY]
 								}
 							},
 							{
@@ -384,7 +392,7 @@ angular_multi_select.factory('angularMultiSelect', [
 								}
 							},
 							{
-								'checked': {
+								[this.CHECKED_PROPERTY]: {
 									'$in': [
 										angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED,
 										angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED,
@@ -395,11 +403,11 @@ angular_multi_select.factory('angularMultiSelect', [
 						]
 					})
 					.simplesort("order", false)
-					.update(function (obj) {
+					.update((obj) => {
 						if (obj.children_leafs === 0) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 							obj.checked_children = obj.children_leafs;
 						}
 					});
@@ -407,17 +415,17 @@ angular_multi_select.factory('angularMultiSelect', [
 				this.collection
 					.chain()
 					.find({
-						'id': {
+						[this.ID_PROPERTY]: {
 							'$in': item.parents_id
 						}
 					})
 					.simplesort("order", true)
-					.update(function (obj) {
+					.update((obj) => {
 						obj.checked_children += diff_checked_children;
 						if (obj.checked_children === obj.children_leafs) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						} //Note that we have can reach a -1 state here as we just checked a child leaf
 					});
 			}
@@ -452,20 +460,19 @@ angular_multi_select.factory('angularMultiSelect', [
 			 */
 			if (this.DEBUG === true) console.time("uncheck_node");
 
-			var ctx = this;
 			var diff_checked_children = 0;
 			var currently_checked_children = item.checked_children;
 
 			this.collection
 				.chain()
 				.find({
-					'id': item.id
+					[this.ID_PROPERTY]: item[this.ID_PROPERTY]
 				})
-				.update(function (obj) {
+				.update((obj) => {
 					if (item.children_leafs === 0) {
-						obj.checked = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 					} else {
-						obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						obj.checked_children = 0;
 						diff_checked_children = currently_checked_children - obj.checked_children;
 					}
@@ -475,17 +482,17 @@ angular_multi_select.factory('angularMultiSelect', [
 				this.collection
 					.chain()
 					.find({
-						'id': {
+						[this.ID_PROPERTY]: {
 							'$in': item.parents_id
 						}
 					})
 					.simplesort("order", true)
-					.update(function (obj) {
+					.update((obj) => {
 						obj.checked_children--; // We can't underflow this as we're unchecking a checked item
 						if (obj.checked_children === 0) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						} //Note that we have can reach a 1 state here as we just unchecked a child leaf
 					});
 			} else {
@@ -495,7 +502,7 @@ angular_multi_select.factory('angularMultiSelect', [
 						'$and': [
 							{
 								'parents_id': {
-									'$contains': item.id
+									'$contains': item[this.ID_PROPERTY]
 								}
 							},
 							{
@@ -504,7 +511,7 @@ angular_multi_select.factory('angularMultiSelect', [
 								}
 							},
 							{
-								'checked': {
+								[this.CHECKED_PROPERTY]: {
 									'$in': [
 										angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED,
 										angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
@@ -515,28 +522,29 @@ angular_multi_select.factory('angularMultiSelect', [
 						]
 					})
 					.simplesort("order", false)
-					.update(function (obj) {
+					.update((obj) => {
 						if (obj.children_leafs === 0) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+							obj.checked_children = 0;
 						}
 					});
 
 				this.collection
 					.chain()
 					.find({
-						'id': {
+						[this.ID_PROPERTY]: {
 							'$in': item.parents_id
 						}
 					})
 					.simplesort("order", true)
-					.update(function (obj) {
+					.update((obj) => {
 						obj.checked_children -= diff_checked_children;
 						if (obj.checked_children === 0) {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						} else {
-							obj.checked = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
+							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						} //Note that we have can reach a -1 state here as we just checked a child leaf
 					});
 			}

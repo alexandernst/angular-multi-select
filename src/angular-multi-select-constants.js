@@ -28,5 +28,20 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 
 	INTERNAL_DATA_VISIBLE              : true,
 	INTERNAL_DATA_INVISIBLE            : false,
-	INTERNAL_DATA_VISIBILITY_UNDEFINED : null
+	INTERNAL_DATA_VISIBILITY_UNDEFINED : null,
+
+	/*
+	 * CSS classes helpers
+	 */
+	CSS_OPEN                           : 'open',
+	CSS_CLOSED                         : 'closed',
+
+	CSS_LEAF_CHECKED                   : 'checked',
+	CSS_LEAF_UNCHECKED                 : 'unchecked',
+	CSS_NODE_MIXED                     : 'mixed',
+	CSS_NODE_CHECKED                   : 'checked',
+	CSS_NODE_UNCHECKED                 : 'unchecked',
+
+	CSS_LEAF                           : 'leaf',
+	CSS_NODE                           : 'node'
 });
