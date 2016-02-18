@@ -43,5 +43,16 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	CSS_NODE_UNCHECKED                 : 'unchecked',
 
 	CSS_LEAF                           : 'leaf',
-	CSS_NODE                           : 'node'
+	CSS_NODE                           : 'node',
+
+	/*
+	 * Possible values for the output data query
+	 */
+	FIND_MIXED_NODES                   : 'midex_nodes',
+	FIND_CHECKED_NODES                 : 'checked_nodes',
+	FIND_CHECKED_LEAFS                 : 'leafs',
+	FIND_CHECKED_AND_MIXED_NODES       : 'checked_mixed_nodes',
+	FIND_CHECKED_LEAFS_AND_NODES       : 'checked_leafs_nodes',
+	FIND_CHECKED_MIXED_LEAFS_NODES     : 'all',
+
 });
