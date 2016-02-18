@@ -10,6 +10,7 @@
 		<script src="../src/angular-multi-select-constants.js"></script>
 		<script src="../src/angular-multi-select-data-converter.js"></script>
 		<script src="../src/angular-multi-select-styles-helper.js"></script>
+		<script src="../src/angular-multi-select-engine.js"></script>
 		<script src="../src/angular-multi-select.js"></script>
 
 		<!--
@@ -24,33 +25,10 @@
 
 	<body ng-controller="MainCtrl">
 
-		<div class="container">
-
-			<div
-				ng-repeat="item in items"
-				class="item level_{{ item.level }}
-					{{ amssh.get_type_class(item) }}
-					{{ amssh.get_open_class(item) }}"
-			>
-				<!-- Caret -->
-				<div
-					class="caret {{ amssh.get_open_class(item) }}"
-					ng-click="ams.toggle_open_node(item)"
-				></div>
-
-				<!-- Text of the element -->
-				<div>
-					{{ item.text }} ({{ item.value }}) | Marcados {{ item.checked_children }} de {{ item.children_leafs }} leafs (y {{ item.children_nodes }} nodes) | {{ item.tree_visibility }}
-				</div>
-
-				<!-- Check holder -->
-				<div
-					class="check {{ amssh.get_checked_class(item) }}"
-					ng-click="ams.toggle_check_node(item)"
-				>
-				</div>
-			</div>
-
+		<div angular-multi-select
+			input-model="input_data"
+			output-model="output_data"
+		>
 		</div>
 
 	</body>
