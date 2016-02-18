@@ -6,19 +6,26 @@ var app = angular.module('demo', [
 
 app.controller('MainCtrl', [
 	'$scope',
-	'$interval',
 	'angularMultiSelect',
 	'angularMultiSelectDataConverter',
 	'angularMultiSelectStylesHelper',
-	function($scope, $interval, angularMultiSelect, angularMultiSelectDataConverter, angularMultiSelectStylesHelper) {
+	function($scope, angularMultiSelect, angularMultiSelectDataConverter, angularMultiSelectStylesHelper) {
 
-		var ams = new angularMultiSelect();
-		var dc = new angularMultiSelectDataConverter();
+		var keys = {
+			ID_PROPERTY : 'num',
+			OPEN_PROPERTY : 'abierto',
+			CHECKED_PROPERTY : 'seleccionado',
+			CHILDREN_PROPERTY : 'hijos',
+		};
 
-		$scope.angularMultiSelect = ams;
-		$scope.angularMultiSelectStylesHelper = angularMultiSelectStylesHelper;
+		var ams = new angularMultiSelect(keys);
+		var amssh = new angularMultiSelectStylesHelper(keys);
+		var dc = new angularMultiSelectDataConverter(keys);
 
-		var checked_data = dc.check_prerequisites(full_data);
+		$scope.ams = ams;
+		$scope.amssh = amssh;
+
+		var checked_data = dc.check_prerequisites(full_data_2);
 		var internal_data = dc.to_internal(checked_data);
 
 		ams.insert(internal_data);

@@ -6,8 +6,17 @@
 		<title>Angular Multi Select Demo</title>
 		<link rel="stylesheet" href="../src/style.css" />
 		<script src="../node_modules/angular/angular.js"></script>
+
+		<script src="../src/angular-multi-select-constants.js"></script>
 		<script src="../src/angular-multi-select-data-converter.js"></script>
+		<script src="../src/angular-multi-select-styles-helper.js"></script>
 		<script src="../src/angular-multi-select.js"></script>
+
+		<!--
+		<script src="../dist/angular-multi-select.extras.min.js"></script>
+		<script src="../dist/angular-multi-select.min.js"></script>
+		-->
+
 		<script src="../specs/data/full_data.js"></script>
 		<script src="../node_modules/lokijs/src/lokijs.js"></script>
 		<script src="app.js"></script>
@@ -18,15 +27,15 @@
 		<div class="container">
 
 			<div
-				ng-repeat="item in items track by item.id"
+				ng-repeat="item in items"
 				class="item level_{{ item.level }}
-					{{ angularMultiSelectStylesHelper.get_type_class(item) }}
-					{{ angularMultiSelectStylesHelper.get_open_class(item) }}"
+					{{ amssh.get_type_class(item) }}
+					{{ amssh.get_open_class(item) }}"
 			>
 				<!-- Caret -->
 				<div
-					class="caret {{ angularMultiSelectStylesHelper.get_open_class(item) }}"
-					ng-click="angularMultiSelect.toggle_open_node(item)"
+					class="caret {{ amssh.get_open_class(item) }}"
+					ng-click="ams.toggle_open_node(item)"
 				></div>
 
 				<!-- Text of the element -->
@@ -36,12 +45,11 @@
 
 				<!-- Check holder -->
 				<div
-					class="check {{ angularMultiSelectStylesHelper.get_checked_class(item) }}"
-					ng-click="angularMultiSelect.toggle_check_node(item)"
+					class="check {{ amssh.get_checked_class(item) }}"
+					ng-click="ams.toggle_check_node(item)"
 				>
 				</div>
 			</div>
-			<br>
 
 		</div>
 
