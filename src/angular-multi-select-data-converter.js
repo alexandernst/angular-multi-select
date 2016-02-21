@@ -1,4 +1,6 @@
-var angular_multi_select_data_converter = angular.module('angular-multi-select-data-converter', ['angular-multi-select-constants']);
+var angular_multi_select_data_converter = angular.module('angular-multi-select-data-converter', [
+	'angular-multi-select-constants'
+]);
 
 angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 	'angularMultiSelectConstants',
@@ -13,7 +15,37 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
 		};
 
+		/*
+		 ██████ ██   ██ ███████  ██████ ██   ██     ██████  ██████  ███████ ██████  ███████  ██████  ██    ██ ██ ███████ ██ ████████ ███████ ███████
+		██      ██   ██ ██      ██      ██  ██      ██   ██ ██   ██ ██      ██   ██ ██      ██    ██ ██    ██ ██ ██      ██    ██    ██      ██
+		██      ███████ █████   ██      █████       ██████  ██████  █████   ██████  █████   ██    ██ ██    ██ ██ ███████ ██    ██    █████   ███████
+		██      ██   ██ ██      ██      ██  ██      ██      ██   ██ ██      ██   ██ ██      ██ ▄▄ ██ ██    ██ ██      ██ ██    ██    ██           ██
+		 ██████ ██   ██ ███████  ██████ ██   ██     ██      ██   ██ ███████ ██   ██ ███████  ██████   ██████  ██ ███████ ██    ██    ███████ ███████
+		                                                                                        ▀▀
+		*/
 		DataConverter.prototype.check_prerequisites = function (data) {
+			/*
+			 * Takes an array of data and walks through each element object
+			 * and checks if each objects has:
+			 *
+			 * - a valid ID. If it doesn't, it generates one.
+			 * - open property. If it's not 'true' (strictly compared), it
+			 *   creates one and set's it to false.
+			 * - children property. If it's not an array or if it's empty,
+			 *   it deletes the property, else it will delete the checked
+			 *   property. Note that nodes can't have a checked property at
+			 *   this step of the process.
+			 * - checked property. If it's not 'true' (strictly compared),
+			 *   creates one and set's it to false.
+			 *
+			 * Note that you can completely skip this step (thus saving some
+			 * CPU cycles) if you are sure that all objects in your input data:
+			 *
+			 * - have valid and unique ID.
+			 * - have open property, which is boolean and false for leafs
+			 * - children properties are non-empty arrays
+			 * - only leafs have a checked property and it's a boolean
+			 */
 			if (this.DEBUG === true) console.time('check_prerequisites');
 
 			if (!Array.isArray(data)) return false;
@@ -107,8 +139,23 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			return correct ? data : correct;
 		};
 
+		/*
+		████████  ██████      ██ ███    ██ ████████ ███████ ██████  ███    ██  █████  ██
+		   ██    ██    ██     ██ ████   ██    ██    ██      ██   ██ ████   ██ ██   ██ ██
+		   ██    ██    ██     ██ ██ ██  ██    ██    █████   ██████  ██ ██  ██ ███████ ██
+		   ██    ██    ██     ██ ██  ██ ██    ██    ██      ██   ██ ██  ██ ██ ██   ██ ██
+		   ██     ██████      ██ ██   ████    ██    ███████ ██   ██ ██   ████ ██   ██ ███████
+		*/
 		DataConverter.prototype.to_internal = function (data) {
-
+			/*
+			 * Takes an array of (nested) objects and flattens it, while
+			 * also adding some internal properties required for faster
+			 * un/check and state actions.
+			 *
+			 * Note that you can skip this step (thus saving some CPU cycles)
+			 * only if you're completely sure how this method works, what and
+			 * how it does what it does.
+			 */
 			if (this.DEBUG === true) console.time('to_internal');
 
 			var order = 1;
@@ -168,7 +215,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					if (possible_parent.level >= last_level) continue;
 
 					last_level = possible_parent.level;
-					parents.push(possible_parent[ctx.ID_PROPERTY]);
+					parents.push(possible_parent[this.ID_PROPERTY]);
 
 					if (possible_parent.level === 0) break;
 				}
@@ -185,7 +232,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 				// we are guaranteed to have a checked property for leafs
 				// if the current item is a leaf, it won't have children, hence skip
-				if (typeof(item[ctx.CHECKED_PROPERTY]) === 'boolean') continue;
+				if (typeof(item[this.CHECKED_PROPERTY]) === 'boolean') continue;
 
 				var counter_checked = 0;
 				var counter_unchecked = 0;
@@ -196,19 +243,19 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 					// Decide if children should be visible in the tree
 					if (item.level === child.level - 1) {
-						child.tree_visibility = item[ctx.OPEN_PROPERTY];
+						child.tree_visibility = item[this.OPEN_PROPERTY];
 					}
 
 					if (item.level >= child.level) break;
 
 					// Logic that decides the checked state of node items
-					if (child[ctx.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED) {
+					if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED) {
 						counter_checked++;
 						item.children_leafs++;
-					} else if (child[ctx.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED) {
+					} else if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED) {
 						counter_unchecked++;
 						item.children_leafs++;
-					} else if (child[ctx.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECK_UNDEFINED){
+					} else if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECK_UNDEFINED){
 						counter_null++;
 						item.children_nodes++;
 					}
@@ -220,11 +267,11 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				// either 1 or -1 (checked or unchecked). Else, it should be
 				// marked as 0 (mixed state).
 				if (item.children_leafs === counter_checked) {
-					item[ctx.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 				} else if (item.children_leafs === counter_unchecked) {
-					item[ctx.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 				} else {
-					item[ctx.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
+					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 				}
 
 				item.checked_children = counter_checked;
