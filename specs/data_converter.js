@@ -155,4 +155,82 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	describe('Testing to_array method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_array();
+			expect(res).toEqual([]);
+
+			var res = dc.to_array(to_array_data_1);
+			expect(res).toEqual([]);
+
+			res = dc.to_array(to_array_data_2);
+			expect(res).toEqual([]);
+
+			res = dc.to_array(to_array_data_3);
+			expect(res).toEqual([]);
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array(to_array_data_4);
+			expect(res).toEqual(to_array_data_4_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array(to_array_data_5, ['a', 'c']);
+			expect(res).toEqual(to_array_data_5_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array(to_array_data_5, ['a', 'c', 'z']);
+			expect(res).toEqual(to_array_data_5_res);
+		});
+	});
+
+	describe('Testing to_object method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_object();
+			expect(res).toEqual({});
+
+			var res = dc.to_object(to_object_data_1);
+			expect(res).toEqual({});
+
+			res = dc.to_object(to_object_data_2);
+			expect(res).toEqual({});
+
+			res = dc.to_object(to_object_data_3);
+			expect(res).toEqual({});
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_object(to_object_data_4);
+			expect(res).toEqual(to_object_data_4_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_object(to_object_data_5, ['a', 'c']);
+			expect(res).toEqual(to_object_data_5_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_object(to_object_data_5, ['a', 'c', 'z']);
+			expect(res).toEqual(to_object_data_5_res);
+		});
+	});
+
 });
