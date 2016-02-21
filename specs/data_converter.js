@@ -233,4 +233,43 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	describe('Testing to_object method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_value();
+			expect(res).toEqual(undefined);
+
+			var res = dc.to_value(to_value_data_1);
+			expect(res).toEqual(undefined);
+
+			res = dc.to_value(to_value_data_2);
+			expect(res).toEqual(undefined);
+
+			res = dc.to_value(to_value_data_3);
+			expect(res).toEqual(undefined);
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_value(to_value_data_4);
+			expect(res).toEqual('foo1');
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_value(to_value_data_4, 'a');
+			expect(res).toEqual('foo1');
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_value(to_value_data_4, 'z');
+			expect(res).toEqual(undefined);
+		});
+	});
+
 });
