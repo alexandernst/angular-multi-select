@@ -1,10 +1,12 @@
-var angular_multi_select_engine = angular.module('angular-multi-select-engine', ['angular-multi-select-constants']);
+var angular_multi_select_engine = angular.module('angular-multi-select-engine', [
+	'angular-multi-select-constants'
+]);
 
 angular_multi_select_engine.factory('angularMultiSelectEngine', [
 	'angularMultiSelectConstants',
 	function (angularMultiSelectConstants) {
 
-		var AngularMultiSelectEngine = function (ops) {
+		var Engine = function (ops) {
 			ops = ops || {};
 			this.DEBUG             = ops.DEBUG             || false;
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
@@ -23,7 +25,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					'level',
 					'parents_id',
 					'tree_visibility'
-				]
+				],
+				clone: true
 			});
 
 			this.on_data_change_fn = null;
@@ -37,7 +40,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.on_data_change = function (fn) {
+		Engine.prototype.on_data_change = function (fn) {
 			/*
 			 * Will be executed when the data in one or more of the items in the
 			 * tree is changed. Changes such as open/close (visibility related)
@@ -58,7 +61,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.on_visual_change = function (fn) {
+		Engine.prototype.on_visual_change = function (fn) {
 			/*
 			* Will be executed when the tree changed somehow, visually speaking.
 			* This function could be triggered by an open/close action for example.
@@ -78,14 +81,13 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██ ██  ██ ██      ██ ██      ██   ██    ██
 		██ ██   ████ ███████ ███████ ██   ██    ██
 		*/
-		AngularMultiSelectEngine.prototype.insert = function (items) {
+		Engine.prototype.insert = function (items) {
 			/*
 			 * Iterate over an array of items and insert them.
 			 */
 			if (this.DEBUG === true) console.time("insert");
 
-			//TODO here
-			// https://github.com/techfort/LokiJS/issues/343
+			this.db.removeCollection('angular-multi-select');
 
 			if (items === undefined) return;
 
@@ -108,7 +110,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██         ██        ██      ██    ██ ██      ██             ██    ██   ██ ██      ██
 		 ██████  ███████    ██        ██       ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 		*/
-		AngularMultiSelectEngine.prototype.get_full_tree = function () {
+		Engine.prototype.get_full_tree = function () {
 			/*
 			 * Get the entire set of data currently inserted in Loki.
 			 */
@@ -119,6 +121,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.find({})
 				.simplesort("order", false)
 				.data();
+
+			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
+			for (var i = 0; i < tree.length; i++) {
+				delete tree[i].meta;
+				delete tree[i].$loki;
+			}
 
 			if (this.DEBUG === true) console.time("get_full_tree");
 			return tree;
@@ -131,13 +139,13 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██         ██         ██  ██  ██      ██ ██ ██   ██ ██      ██             ██    ██   ██ ██      ██
 		 ██████  ███████    ██          ████   ██ ███████ ██ ██████  ███████ ███████        ██    ██   ██ ███████ ███████
 		*/
-		AngularMultiSelectEngine.prototype.get_visible_tree = function () {
+		Engine.prototype.get_visible_tree = function () {
 			/*
 			 * Get only the visible elements from Loki.
 			 */
 			if (this.DEBUG === true) console.time("get_visible_tree");
 
-			var tree =  this.collection
+			var tree = this.collection
 				.chain()
 				.find({
 					'tree_visibility': angularMultiSelectConstants.INTERNAL_DATA_VISIBLE
@@ -145,54 +153,66 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort("order", false)
 				.data();
 
+			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
+			for (var i = 0; i < tree.length; i++) {
+				delete tree[i].meta;
+				delete tree[i].$loki;
+			}
+
 			if (this.DEBUG === true) console.timeEnd("get_visible_tree");
 			return tree;
 		};
 
-		AngularMultiSelectEngine.prototype.get_checked_tree = function (filter) {
+		/*
+		 ██████  ███████ ████████      ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ████████ ██████  ███████ ███████
+		██       ██         ██        ██      ██   ██ ██      ██      ██  ██  ██      ██   ██        ██    ██   ██ ██      ██
+		██   ███ █████      ██        ██      ███████ █████   ██      █████   █████   ██   ██        ██    ██████  █████   █████
+		██    ██ ██         ██        ██      ██   ██ ██      ██      ██  ██  ██      ██   ██        ██    ██   ██ ██      ██
+		 ██████  ███████    ██         ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████         ██    ██   ██ ███████ ███████
+		*/
+		Engine.prototype.get_checked_tree = function (filter) {
 			/*
 			 * Get only the checked elements from Loki.
 			 */
 
 			if (this.DEBUG === true) console.time("get_checked_tree");
 
-			if (filter === undefined) {
-				var filter = [
-					angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
-					angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
-					angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
-				]
-			} else {
+			filter = [
+				angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
+				angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
+				angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
+			];
+			if (filter !== undefined) {
 				switch (filter) {
 					case angularMultiSelectConstants.FIND_MIXED_NODES:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_NODES:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_LEAFS:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_AND_MIXED_NODES:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_LEAFS_AND_NODES:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_MIXED_LEAFS_NODES:
-						var filter = [
+						filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
@@ -201,15 +221,21 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				}
 			}
 
-			var tree =  this.collection
+			var tree = this.collection
 				.chain()
 				.find({
-					'checked': {
+					[this.CHECKED_PROPERTY]: {
 						'$in': filter
 					}
 				})
 				.simplesort("order", false)
 				.data();
+
+			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
+			for (var i = 0; i < tree.length; i++) {
+				delete tree[i].meta;
+				delete tree[i].$loki;
+			}
 
 			if (this.DEBUG === true) console.timeEnd("get_checked_tree");
 			return tree;
@@ -222,7 +248,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		   ██    ██    ██ ██    ██ ██    ██ ██      ██          ██    ██ ██      ██      ██  ██ ██
 		   ██     ██████   ██████   ██████  ███████ ███████      ██████  ██      ███████ ██   ████
 		*/
-		AngularMultiSelectEngine.prototype.toggle_open_node = function (item) {
+		Engine.prototype.toggle_open_node = function (item) {
 			/*
 			 * Toggle the open/closed state of an element.
 			 * Note that leafs are not supposed to be toggleable.
@@ -245,7 +271,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██      ██      ██  ██ ██     ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████  ██      ███████ ██   ████     ██   ████  ██████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.open_node = function (item) {
+		Engine.prototype.open_node = function (item) {
 			/*
 			 * Open an item.
 			 * First, mark the item itself as open, then find all
@@ -312,7 +338,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██      ██      ██    ██      ██ ██          ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████ ███████  ██████  ███████ ███████     ██   ████  ██████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.close_node = function (item) {
+		Engine.prototype.close_node = function (item) {
 			/*
 			 * Close an item.
 			 * First, mark the item itself as closed, then find all
@@ -360,7 +386,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		   ██    ██    ██ ██    ██ ██    ██ ██      ██          ██      ██   ██ ██      ██      ██  ██
 		   ██     ██████   ██████   ██████  ███████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
 		*/
-		AngularMultiSelectEngine.prototype.toggle_check_node = function (item) {
+		Engine.prototype.toggle_check_node = function (item) {
 			/*
 			 * Toggle the checked state on an item.
 			 * Note that there are, in total, 5 different states:
@@ -395,7 +421,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.check_node = function (item) {
+		Engine.prototype.check_node = function (item) {
 			/*
 			 * Set an item as checked.
 			 * If the passed item is a leaf:
@@ -515,7 +541,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██ ██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
-		AngularMultiSelectEngine.prototype.uncheck_node = function (item) {
+		Engine.prototype.uncheck_node = function (item) {
 			/*
 			 * If the passed item is a leaf:
 			 *     1. Mark it as unchecked.
@@ -627,6 +653,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			if (this.DEBUG === true) console.timeEnd("uncheck_node");
 		};
 
-		return AngularMultiSelectEngine;
+		return Engine;
 	}
 ]);
