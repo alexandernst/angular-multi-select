@@ -18,13 +18,13 @@ var to_array_of_objects_data_3 = [
  */
 
 var to_array_of_objects_data_4 = [
-	{a: 'foo', b: 'bar', c: 42},
-	{a: 'foo', b: 'bar', c: 42},
-	{a: 'foo', b: 'bar', c: 42}
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
 ];
 
 var to_array_of_objects_data_4_res = [
-	{a: 'foo', c: 42},
-	{a: 'foo', c: 42},
-	{a: 'foo', c: 42}
+	{a: 'foo1', c: 42},
+	{a: 'foo2', c: 43},
+	{a: 'foo3', c: 44}
 ];

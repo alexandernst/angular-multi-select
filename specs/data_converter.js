@@ -116,4 +116,43 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	describe('Testing to_array_of_arrays method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_array_of_arrays();
+			expect(res).toEqual([]);
+
+			var res = dc.to_array_of_arrays(to_array_of_arrays_data_1);
+			expect(res).toEqual([]);
+
+			res = dc.to_array_of_arrays(to_array_of_arrays_data_2);
+			expect(res).toEqual([]);
+
+			res = dc.to_array_of_arrays(to_array_of_arrays_data_3);
+			expect(res).toEqual([]);
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_arrays(to_array_of_arrays_data_4);
+			expect(res).toEqual(to_array_of_arrays_data_4_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_arrays(to_array_of_arrays_data_5, ['a', 'c']);
+			expect(res).toEqual(to_array_of_arrays_data_5_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_arrays(to_array_of_arrays_data_5, ['a', 'c', 'z']);
+			expect(res).toEqual(to_array_of_arrays_data_5_res);
+		});
+	});
+
 });
