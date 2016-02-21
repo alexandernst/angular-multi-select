@@ -1,4 +1,6 @@
-var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', ['angular-multi-select-constants']);
+var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', [
+	'angular-multi-select-constants'
+]);
 
 angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 	'angularMultiSelectConstants',
