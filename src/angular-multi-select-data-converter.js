@@ -282,6 +282,259 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			return final_data;
 		};
 
+		/*
+		████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
+		   ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ██    ██ ██████       ██ █████   ██         ██    ███████
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██        ██    ██ ██          ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
+		   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██         ██████  ██           ██████  ██████   █████  ███████  ██████    ██    ███████
+		*/
+		DataConverter.prototype.to_array_of_objects = function (data, keys) {
+			/*
+			 * Takes an array of objects (the result of get_checked_tree usually)
+			 * and returns it as is if the "keys" argument hasn't been passed or
+			 * an array of objects, each object containing only the keys in the
+			 * "key" argument.
+			 */
+			if (!Array.isArray(data) || data.length === 0) {
+				return [];
+			}
+
+			if (keys === undefined) {
+				keys = [];
+			}
+
+			var new_data = [];
+			for (var i = 0; i < data.length; i++) {
+				var new_obj = {};
+				var obj = data[i];
+
+				if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+					continue;
+				}
+
+				if (keys.length === 0) {
+					new_data.push(obj);
+				} else {
+					for (var j = 0; j < keys.length; j++) {
+						if (!obj.hasOwnProperty(keys[j])) {
+							continue;
+						}
+
+						new_obj[keys[j]] = obj[keys[j]];
+					}
+					new_data.push(new_obj);
+				}
+			}
+
+			return new_data;
+		};
+
+		/*
+		████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      █████  ██████  ██████   █████  ██    ██ ███████
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██   ██ ██   ██ ██   ██ ██   ██  ██  ██  ██
+		   ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ███████ ██████  ██████  ███████   ████   ███████
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██        ██    ██ ██          ██   ██ ██   ██ ██   ██ ██   ██    ██         ██
+		   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██         ██████  ██          ██   ██ ██   ██ ██   ██ ██   ██    ██    ███████
+		*/
+		DataConverter.prototype.to_array_of_arrays = function (data, keys) {
+			/*
+			 * Takes an array of objects (the result of get_checked_tree usually)
+			 * and returns an array of arrays. Each array inside the returned
+			 * array contains the values of the keys that result of the
+			 * intersection of the object's keys and the argument "keys". The
+			 * array will contain the values in the order they have in the "key"
+			 * argument.
+			 */
+			if (!Array.isArray(data) || data.length === 0) {
+				return [];
+			}
+
+			if (keys === undefined) {
+				keys = [];
+			}
+
+			function vals (obj) {
+				return Object.keys(obj).map(function (key) {
+					return obj[key];
+				});
+			}
+
+			var new_data = [];
+			for (var i = 0; i < data.length; i++) {
+				var new_arr = [];
+				var obj = data[i];
+
+				if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+					continue;
+				}
+
+				if (keys.length === 0) {
+					new_data.push(vals(obj));
+				} else {
+					for (var j = 0; j < keys.length; j++) {
+						if (!obj.hasOwnProperty(keys[j])) {
+							continue;
+						}
+
+						new_arr.push(obj[keys[j]]);
+					}
+					new_data.push(new_arr);
+				}
+			}
+
+			return new_data;
+		};
+
+		/*
+		████████  ██████       █████  ██████  ██████   █████  ██    ██
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██
+		   ██    ██    ██     ███████ ██████  ██████  ███████   ████
+		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██
+		   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██
+		*/
+		DataConverter.prototype.to_array = function (data, keys) {
+			/*
+			 * Takes an array of objects (the result of get_checked_tree usually)
+			 * and returns a single array filled with the values of all the
+			 * objects's keys that are contained in the "keys" argument.
+			 * This usually doesn't make much sense when more than 1 item in the
+			 * tree is selected, but you're free to use it however you like.
+			 */
+			if (!Array.isArray(data) || data.length === 0) {
+				return [];
+			}
+
+			if (keys === undefined) {
+				keys = [];
+			}
+
+			function vals (obj) {
+				return Object.keys(obj).map(function (key) {
+					return obj[key];
+				});
+			}
+
+			var new_data = [];
+			for (var i = 0; i < data.length; i++) {
+				var obj = data[i];
+
+				if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+					continue;
+				}
+
+				if (keys.length === 0) {
+					var obj_vals = vals(obj);
+					for (j = 0; j < obj_vals.length; j++) {
+						new_data.push(obj_vals[j]);
+					}
+				} else {
+					for (j = 0; j < keys.length; j++) {
+						if (!obj.hasOwnProperty(keys[j])) {
+							continue;
+						}
+
+						new_data.push(obj[keys[j]]);
+					}
+				}
+			}
+
+			return new_data;
+		};
+
+		/*
+		████████  ██████       ██████  ██████       ██ ███████  ██████ ████████
+		   ██    ██    ██     ██    ██ ██   ██      ██ ██      ██         ██
+		   ██    ██    ██     ██    ██ ██████       ██ █████   ██         ██
+		   ██    ██    ██     ██    ██ ██   ██ ██   ██ ██      ██         ██
+		   ██     ██████       ██████  ██████   █████  ███████  ██████    ██
+		*/
+		DataConverter.prototype.to_object = function (data, keys) {
+			/*
+			 * Takes an array of one object (the result of get_checked_tree usually)
+			 * and returns the object itself. If more than one objects are present,
+			 * only the first one will be returned.
+			 * If the "keys" argument is passed, only the keys of the object that
+			 * match the values in the "keys" argument will be returned.
+			 * This usually doesn't make much sense when more than 1 item in the tree
+			 * is selected, but you're free to use it however you like.
+			 */
+
+			if (!Array.isArray(data) || data.length === 0) {
+				return {};
+			}
+
+			if (keys === undefined) {
+				keys = [];
+			}
+
+			var obj = data[0];
+
+			if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+				return {};
+			}
+
+			if (keys.length === 0) {
+				return obj;
+			} else {
+				var new_obj = {};
+				for (var i = 0; i < keys.length; i++) {
+					if (!obj.hasOwnProperty(keys[i])) {
+						continue;
+					}
+
+					new_obj[keys[i]] = obj[keys[i]];
+				}
+				return new_obj;
+			}
+		};
+
+		/*
+		████████  ██████      ██    ██  █████  ██      ██    ██ ███████
+		   ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██
+		   ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████
+		   ██    ██    ██      ██  ██  ██   ██ ██      ██    ██ ██
+		   ██     ██████        ████   ██   ██ ███████  ██████  ███████
+		*/
+		DataConverter.prototype.to_value = function (data, key) {
+			/*
+			 * Takes an array of one object (the result of get_checked_tree usually)
+			 * and returns the value of the key in the object that is passed as the
+			 * "key" argument.
+			 * If "key" hasn't been passed, the first available value in the object
+			 * will be returned.
+			 */
+			 if (!Array.isArray(data) || data.length === 0) {
+				return undefined;
+			}
+
+			var obj = data[0];
+
+			if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+				return undefined;
+			}
+
+			if (key === undefined) {
+				var keys = Object.keys(obj);
+				if (keys.length === 0) {
+					return undefined;
+				} else {
+					key = keys[0];
+					if (!obj.hasOwnProperty(key)) {
+						return undefined;
+					} else {
+						return obj[key];
+					}
+				}
+			} else {
+				if (!obj.hasOwnProperty(key)) {
+					return undefined;
+				} else {
+					return obj[key];
+				}
+			}
+		};
+
 		return DataConverter;
 	}
 ]);
