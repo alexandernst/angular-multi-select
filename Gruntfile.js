@@ -16,34 +16,8 @@ module.exports = function(grunt) {
 			}
 		},
 
-		jasmine: {
-			src: {
-				src: 'src/*.js',
-				options: {
-					styles: 'src/*.css',
-					helpers: 'specs/data/*.js',
-					specs: 'specs/*.js',
-					vendor: [
-						'node_modules/jquery/dist/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js'
-					]
-				}
-			}
-		},
-
-		watch: {
-			files: ['<%= jshint.files %>', 'src/*.css', 'demo/*'],
-			tasks: ['clear'],
-			options: {
-				debounceDelay: 1000,
-				livereload: LIVERELOAD_PORT
-			}
-		},
-
 		jshint: {
-			files: ['Gruntfile.js', 'src/*.js', 'specs/*.js', 'specs/data/*.js'],
+			files: ['Gruntfile.js', 'src/*.js', 'specs/*.js', 'specs/**/*.js'],
 			options: {
 				globals: {
 					jQuery: true,
@@ -61,6 +35,52 @@ module.exports = function(grunt) {
 			}
 		},
 
+		jasmine: {
+			data_converter: {
+				src: 'build/*.js',
+				options: {
+					styles: 'src/*.css',
+					helpers: [
+						'specs/data/*.js',
+						'specs/data_converter/*.js'
+					],
+					specs: 'specs/data_converter.js',
+					vendor: [
+						'node_modules/jquery/dist/jquery.js',
+						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+						'node_modules/angular/angular.js',
+						'node_modules/angular-mocks/angular-mocks.js'
+					]
+				}
+			},
+			engine: {
+				src: 'build/*.js',
+				options: {
+					styles: 'src/*.css',
+					helpers: [
+						'specs/engine/*.js',
+					],
+					specs: 'specs/engine.js',
+					vendor: [
+						'node_modules/lokijs/src/lokijs.js',
+						'node_modules/jquery/dist/jquery.js',
+						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+						'node_modules/angular/angular.js',
+						'node_modules/angular-mocks/angular-mocks.js'
+					]
+				}
+			},
+		},
+
+		watch: {
+			files: ['<%= jshint.files %>', 'src/*.css', 'demo/*'],
+			tasks: ['clear'],
+			options: {
+				debounceDelay: 1000,
+				livereload: LIVERELOAD_PORT
+			}
+		},
+
 		concat: {
 			options: {
 				separator: '\n\n',
@@ -69,6 +89,7 @@ module.exports = function(grunt) {
 				src: [
 					'src/angular-multi-select-constants.js',
 					'src/angular-multi-select-styles-helper.js',
+					'src/angular-multi-select-engine.js',
 					'src/angular-multi-select.js'
 				],
 				dest: 'build/angular-multi-select.js'
@@ -142,8 +163,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
-	grunt.registerTask('tests', ['jshint', 'jasmine']);
+	grunt.registerTask('tests', ['jshint', 'concat', 'babel', 'jasmine:*']);
 	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
-	grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'babel', 'uglify', 'cssmin', 'copy:dist']);
+	grunt.registerTask('default', ['jshint', 'concat', 'babel', 'jasmine', 'uglify', 'cssmin', 'copy:dist']);
 
 };

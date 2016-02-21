@@ -1,0 +1,119 @@
+describe('Testing data converter', function() {
+	beforeEach(function() {
+		module('angular-multi-select-data-converter');
+	});
+
+	var angularMultiSelectDataConverter;
+
+	beforeEach(function () {
+		angular.mock.inject(function ($injector) {
+			angularMultiSelectDataConverter = $injector.get('angularMultiSelectDataConverter');
+		});
+	});
+
+	describe('Testing check_prerequisites method', function () {
+		it('Should fail with wrong input data', function () {
+			var dc = new angularMultiSelectDataConverter();
+			var res = dc.check_prerequisites(check_prerequisites_wrong_data_1);
+			expect(res).toEqual(false);
+		});
+
+		it('Should be able to fill in empty/missing values and remove wrong ones', inject(function () {
+			var dc = new angularMultiSelectDataConverter();
+			var res = dc.check_prerequisites(check_prerequisites_short_data_1);
+			expect(res).toEqual(check_prerequisites_short_data_1_after);
+
+			var res2 = dc.check_prerequisites(check_prerequisites_short_data_2);
+			expect(res2).toEqual(check_prerequisites_short_data_2_after);
+
+			var res3 = dc.check_prerequisites(check_prerequisites_short_data_3);
+			expect(res3).toEqual(check_prerequisites_short_data_3_after);
+
+			var res4 = dc.check_prerequisites(check_prerequisites_short_data_4);
+			expect(res4).toEqual(check_prerequisites_short_data_4_after);
+
+			var res5 = dc.check_prerequisites(check_prerequisites_short_data_5);
+			expect(res5).toEqual(check_prerequisites_short_data_5_after);
+		}));
+
+		it('Should be able to handle different key names in object items', inject(function () {
+			var dc_mod = new angularMultiSelectDataConverter({
+				ID_PROPERTY: 'num',
+				OPEN_PROPERTY: 'abierto',
+				CHECKED_PROPERTY: 'seleccionado',
+				CHILDREN_PROPERTY: 'hijos'
+			});
+			var res6 = dc_mod.check_prerequisites(check_prerequisites_short_data_6);
+			expect(res6).toEqual(check_prerequisites_short_data_6_after);
+
+			var dc_mod_2 = new angularMultiSelectDataConverter({
+				ID_PROPERTY: 'num',
+				CHECKED_PROPERTY: 'seleccionado',
+				CHILDREN_PROPERTY: 'hijos'
+			});
+			var res7 = dc_mod_2.check_prerequisites(check_prerequisites_short_data_7);
+			expect(res7).toEqual(check_prerequisites_short_data_7_after);
+		}));
+	});
+
+	describe('Testing to_internal method', function () {
+		it('Should be able to convert full input data to internal data structure', inject(function () {
+			var dc = new angularMultiSelectDataConverter();
+			var res = dc.check_prerequisites(to_internal_data_1);
+			var internal_data = dc.to_internal(res);
+			expect(internal_data).toEqual(to_internal_data_1_after);
+		}));
+
+		it('Should be able to do the previous check but using different names for the keys of the object items', inject(function () {
+			var dc_mod_3 = new angularMultiSelectDataConverter({
+				ID_PROPERTY: 'num',
+				OPEN_PROPERTY: 'abierto',
+				CHECKED_PROPERTY: 'seleccionado',
+				CHILDREN_PROPERTY: 'hijos'
+			});
+			var res = dc_mod_3.check_prerequisites(to_internal_data_2);
+			var internal_data = dc_mod_3.to_internal(res);
+			expect(internal_data).toEqual(to_internal_data_2_after);
+		}));
+	});
+
+	describe('Testing to_array_of_objects method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_array_of_objects();
+			expect(res).toEqual([]);
+
+			var res = dc.to_array_of_objects(to_array_of_objects_data_1);
+			expect(res).toEqual([]);
+
+			res = dc.to_array_of_objects(to_array_of_objects_data_2);
+			expect(res).toEqual([]);
+
+			res = dc.to_array_of_objects(to_array_of_objects_data_3);
+			expect(res).toEqual([]);
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_objects(to_array_of_objects_data_4);
+			expect(res).toEqual(to_array_of_objects_data_4);
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_objects(to_array_of_objects_data_4, ['a', 'c']);
+			expect(res).toEqual(to_array_of_objects_data_4_res);
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_array_of_objects(to_array_of_objects_data_4, ['a', 'c', 'z']);
+			expect(res).toEqual(to_array_of_objects_data_4_res);
+		});
+	});
+
+});
