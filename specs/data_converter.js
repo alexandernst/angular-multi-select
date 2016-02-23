@@ -11,6 +11,14 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	/*
+	 ██████ ██   ██ ███████  ██████ ██   ██     ██████  ██████  ███████ ██████  ███████  ██████  ██    ██ ██ ███████ ██ ████████ ███████ ███████
+	██      ██   ██ ██      ██      ██  ██      ██   ██ ██   ██ ██      ██   ██ ██      ██    ██ ██    ██ ██ ██      ██    ██    ██      ██
+	██      ███████ █████   ██      █████       ██████  ██████  █████   ██████  █████   ██    ██ ██    ██ ██ ███████ ██    ██    █████   ███████
+	██      ██   ██ ██      ██      ██  ██      ██      ██   ██ ██      ██   ██ ██      ██ ▄▄ ██ ██    ██ ██      ██ ██    ██    ██           ██
+	 ██████ ██   ██ ███████  ██████ ██   ██     ██      ██   ██ ███████ ██   ██ ███████  ██████   ██████  ██ ███████ ██    ██    ███████ ███████
+	                                                                                        ▀▀
+	*/
 	describe('Testing check_prerequisites method', function () {
 		it('Should fail with wrong input data', function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -56,6 +64,13 @@ describe('Testing data converter', function() {
 		}));
 	});
 
+	/*
+	████████  ██████      ██ ███    ██ ████████ ███████ ██████  ███    ██  █████  ██
+	   ██    ██    ██     ██ ████   ██    ██    ██      ██   ██ ████   ██ ██   ██ ██
+	   ██    ██    ██     ██ ██ ██  ██    ██    █████   ██████  ██ ██  ██ ███████ ██
+	   ██    ██    ██     ██ ██  ██ ██    ██    ██      ██   ██ ██  ██ ██ ██   ██ ██
+	   ██     ██████      ██ ██   ████    ██    ███████ ██   ██ ██   ████ ██   ██ ███████
+	*/
 	describe('Testing to_internal method', function () {
 		it('Should be able to convert full input data to internal data structure', inject(function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -77,6 +92,13 @@ describe('Testing data converter', function() {
 		}));
 	});
 
+	/*
+	████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
+	   ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ██    ██ ██████       ██ █████   ██         ██    ███████
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██        ██    ██ ██          ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
+	   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██         ██████  ██           ██████  ██████   █████  ███████  ██████    ██    ███████
+	*/
 	describe('Testing to_array_of_objects method', function () {
 		it('It should return empty array on invalid data', function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -116,6 +138,13 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	/*
+	████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      █████  ██████  ██████   █████  ██    ██ ███████
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██   ██ ██   ██ ██   ██ ██   ██  ██  ██  ██
+	   ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ███████ ██████  ██████  ███████   ████   ███████
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██        ██    ██ ██          ██   ██ ██   ██ ██   ██ ██   ██    ██         ██
+	   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██         ██████  ██          ██   ██ ██   ██ ██   ██ ██   ██    ██    ███████
+	*/
 	describe('Testing to_array_of_arrays method', function () {
 		it('It should return empty array on invalid data', function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -155,6 +184,13 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	/*
+	████████  ██████       █████  ██████  ██████   █████  ██    ██
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██
+	   ██    ██    ██     ███████ ██████  ██████  ███████   ████
+	   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██    ██
+	   ██     ██████      ██   ██ ██   ██ ██   ██ ██   ██    ██
+	*/
 	describe('Testing to_array method', function () {
 		it('It should return empty array on invalid data', function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -194,6 +230,13 @@ describe('Testing data converter', function() {
 		});
 	});
 
+	/*
+	████████  ██████       ██████  ██████       ██ ███████  ██████ ████████
+	   ██    ██    ██     ██    ██ ██   ██      ██ ██      ██         ██
+	   ██    ██    ██     ██    ██ ██████       ██ █████   ██         ██
+	   ██    ██    ██     ██    ██ ██   ██ ██   ██ ██      ██         ██
+	   ██     ██████       ██████  ██████   █████  ███████  ██████    ██
+	*/
 	describe('Testing to_object method', function () {
 		it('It should return empty array on invalid data', function () {
 			var dc = new angularMultiSelectDataConverter();
@@ -233,7 +276,14 @@ describe('Testing data converter', function() {
 		});
 	});
 
-	describe('Testing to_object method', function () {
+	/*
+	████████  ██████      ██    ██  █████  ██      ██    ██ ███████
+	   ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██
+	   ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████
+	   ██    ██    ██      ██  ██  ██   ██ ██      ██    ██ ██
+	   ██     ██████        ████   ██   ██ ███████  ██████  ███████
+	*/
+	describe('Testing to_value method', function () {
 		it('It should return empty array on invalid data', function () {
 			var dc = new angularMultiSelectDataConverter();
 
