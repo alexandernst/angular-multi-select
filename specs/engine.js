@@ -16,15 +16,22 @@ describe('Testing engine', function() {
 			var de = new angularMultiSelectEngine();
 			de.insert(to_internal_data_1_after);
 			var tree = de.get_full_tree();
+
+			//TODO: remove after https://github.com/techfort/LokiJS/issues/346
+			for (var i = 0; i < tree.length; i++) {
+				delete tree[i].meta;
+				delete tree[i].$loki;
+			}
+
 			expect(to_internal_data_1_after).toEqual(tree);
 		}));
 
-		//TODO: Make it pass after https://github.com/techfort/LokiJS/pull/349
 		xit('Should be able to remove old collection before inserting a new one', inject(function () {
 			var de = new angularMultiSelectEngine();
 			de.insert(to_internal_data_1_after);
 			de.insert(to_internal_data_1_after);
 			var tree = de.get_full_tree();
+
 			expect(to_internal_data_1_after).toEqual(tree);
 		}));
 

@@ -122,12 +122,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort("order", false)
 				.data();
 
-			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
-			for (var i = 0; i < tree.length; i++) {
-				delete tree[i].meta;
-				delete tree[i].$loki;
-			}
-
 			if (this.DEBUG === true) console.time("get_full_tree");
 			return tree;
 		};
@@ -152,12 +146,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.simplesort("order", false)
 				.data();
-
-			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
-			for (var i = 0; i < tree.length; i++) {
-				delete tree[i].meta;
-				delete tree[i].$loki;
-			}
 
 			if (this.DEBUG === true) console.timeEnd("get_visible_tree");
 			return tree;
@@ -230,12 +218,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.simplesort("order", false)
 				.data();
-
-			//TODO: Clean up this, https://github.com/techfort/LokiJS/issues/346
-			for (var i = 0; i < tree.length; i++) {
-				delete tree[i].meta;
-				delete tree[i].$loki;
-			}
 
 			if (this.DEBUG === true) console.timeEnd("get_checked_tree");
 			return tree;
