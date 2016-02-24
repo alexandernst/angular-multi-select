@@ -362,6 +362,60 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		};
 
 		/*
+		 ██████ ██   ██ ███████  ██████ ██   ██      █████  ██      ██
+		██      ██   ██ ██      ██      ██  ██      ██   ██ ██      ██
+		██      ███████ █████   ██      █████       ███████ ██      ██
+		██      ██   ██ ██      ██      ██  ██      ██   ██ ██      ██
+		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ██ ███████ ███████
+		*/
+		Engine.prototype.check_all = function () {
+			if (this.DEBUG === true) console.time("check_all");
+
+			this.collection
+				.chain()
+				.find({})
+				.update((obj) => {
+					if (obj.children_leafs === 0) {
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
+					} else {
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
+						obj.checked_children = obj.children_leafs;
+					}
+				});
+
+			if (this.DEBUG === true) console.time("check_all");
+
+			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+		};
+
+		/*
+		██    ██ ███    ██  ██████ ██   ██ ███████  ██████ ██   ██      █████  ██      ██
+		██    ██ ████   ██ ██      ██   ██ ██      ██      ██  ██      ██   ██ ██      ██
+		██    ██ ██ ██  ██ ██      ███████ █████   ██      █████       ███████ ██      ██
+		██    ██ ██  ██ ██ ██      ██   ██ ██      ██      ██  ██      ██   ██ ██      ██
+		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ██ ███████ ███████
+		*/
+		Engine.prototype.uncheck_all = function () {
+			if (this.DEBUG === true) console.time("uncheck_all");
+
+			this.collection
+				.chain()
+				.find({})
+				.update((obj) => {
+					if (obj.children_leafs === 0) {
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
+					} else {
+						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
+						obj.checked_children = 0;
+					}
+				});
+
+			if (this.DEBUG === true) console.time("uncheck_all");
+
+			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+		};
+
+		/*
 		████████  ██████   ██████   ██████  ██      ███████      ██████ ██   ██ ███████  ██████ ██   ██
 		   ██    ██    ██ ██       ██       ██      ██          ██      ██   ██ ██      ██      ██  ██
 		   ██    ██    ██ ██   ███ ██   ███ ██      █████       ██      ███████ █████   ██      █████
