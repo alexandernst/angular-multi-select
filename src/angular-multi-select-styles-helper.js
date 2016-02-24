@@ -3,15 +3,30 @@ var angular_multi_select_styles_helper = angular.module('angular-multi-select-st
 ]);
 
 angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
+	'$sce',
+	'$interpolate',
 	'angularMultiSelectConstants',
-	function (angularMultiSelectConstants) {
+	function ($sce, $interpolate, angularMultiSelectConstants) {
 
-		var StylesHelper = function (ops) {
-			ops = ops || {};
+		var StylesHelper = function (ops, attrs) {
+			ops                    = ops                   || {};
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
 			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
 			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
 			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
+
+			this.START_REPLACE_SYMBOL_REGEX = /<\[/g;
+			this.END_REPLACE_SYMBOL_REGEX   = /]>/g;
+			this.START_INTERPOLATE_SYMBOL   = $interpolate.startSymbol();
+			this.END_INTERPOLATE_SYMBOL     = $interpolate.endSymbol();
+
+			/*
+			 * String representation of nodes/leafs.
+			 */
+			this.node_repr_attr = attrs.nodeLabel || "";
+			this.leaf_repr_attr = attrs.leafLabel || "";
+			this.node_repr      = this.interpolate(this.node_repr_attr);
+			this.leaf_repr      = this.interpolate(this.leaf_repr_attr);
 		};
 
 		StylesHelper.prototype.get_open_class = function (item) {
@@ -38,6 +53,26 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			return item.children_leafs === 0 ?
 				angularMultiSelectConstants.CSS_LEAF :
 				angularMultiSelectConstants.CSS_NODE;
+		};
+
+		StylesHelper.prototype.interpolate = function (str) {
+			return $interpolate(
+				str.replace(this.START_REPLACE_SYMBOL_REGEX, this.START_INTERPOLATE_SYMBOL)
+				.replace(this.END_REPLACE_SYMBOL_REGEX, this.END_INTERPOLATE_SYMBOL)
+			);
+		};
+
+		StylesHelper.prototype.create_label = function (item) {
+			//TODO: Cache + cache invalidation on data change
+
+			var _interpolated;
+			if (item.children_leafs === 0) {
+				_interpolated = this.leaf_repr(item);
+			} else {
+				_interpolated = this.node_repr(item);
+			}
+
+			return $sce.trustAsHtml(_interpolated);
 		};
 
 		return StylesHelper;
