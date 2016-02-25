@@ -85,7 +85,14 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * Will be triggered every time the internal model data is changed.
 					 * That could happen on check/uncheck, for example.
 					 */
-					$scope.items = amse.get_visible_tree();
+
+					/*
+					 * Get the visible tree only once. Consecutive calls on un/check
+					 * will automatically propagate to the rendered tree.
+					 */
+					if ($scope.items === undefined) {
+						$scope.items = amse.get_visible_tree();
+					}
 
 					if ($scope.outputModel !== undefined) {
 						var checked_tree = amse.get_checked_tree();
