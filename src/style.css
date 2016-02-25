@@ -1,12 +1,119 @@
-/* Put your css in here */
-
-.container {
+/*
+ ██████  ██████  ███    ██ ████████  █████  ██ ███    ██ ███████ ██████
+██      ██    ██ ████   ██    ██    ██   ██ ██ ████   ██ ██      ██   ██
+██      ██    ██ ██ ██  ██    ██    ███████ ██ ██ ██  ██ █████   ██████
+██      ██    ██ ██  ██ ██    ██    ██   ██ ██ ██  ██ ██ ██      ██   ██
+ ██████  ██████  ██   ████    ██    ██   ██ ██ ██   ████ ███████ ██   ██
+*/
+.ams-container {
 	border: 1px solid black;
-	background: #BFBFBD;
+	background: white;
 	color: DimGrey;
+	width: 400px;
+	padding: 5px;
 }
 
-.item {
+/*
+██   ██ ███████ ██      ██████  ███████ ██████  ███████
+██   ██ ██      ██      ██   ██ ██      ██   ██ ██
+███████ █████   ██      ██████  █████   ██████  ███████
+██   ██ ██      ██      ██      ██      ██   ██      ██
+██   ██ ███████ ███████ ██      ███████ ██   ██ ███████
+*/
+.ams-helpers {
+	display: inline-block;
+	width: 100%;
+}
+
+.ams-helpers .btn {
+	/*border: 1px solid #ccc;*/
+	font-size: 13px;
+	/*border-radius: 4px;*/
+	color: DimGrey;
+	/*background-color: #f1f1f1;*/
+	line-height: 1.6;
+	padding: 2px 8px;
+}
+
+.ams-helpers .selects .btn:nth-child(2) {
+	margin-left: 5px;
+}
+
+.ams-helpers .selects {
+	display: flex;
+	float: left;
+}
+
+.ams-helpers .selects .all::before {
+	content: "✓  ";
+}
+
+.ams-helpers .selects .all {
+
+}
+
+.ams-helpers .selects .none::before {
+	content: "×  ";
+}
+
+.ams-helpers .none {
+
+}
+
+.ams-helpers .resets {
+	display: flex;
+	float: right;
+}
+
+.ams-helpers .resets .reset::before {
+	content: "↶  ";
+}
+
+.ams-helpers .reset {
+
+}
+
+/*
+███████ ███████  █████  ██████   ██████ ██   ██
+██      ██      ██   ██ ██   ██ ██      ██   ██
+███████ █████   ███████ ██████  ██      ███████
+     ██ ██      ██   ██ ██   ██ ██      ██   ██
+███████ ███████ ██   ██ ██   ██  ██████ ██   ██
+*/
+.ams-search {
+	display: flex;
+	position: relative;
+}
+
+.ams-search .search {
+	border-radius: 2px;
+    border: 1px solid #ccc;
+    height: 26px;
+    font-size: 14px;
+    width: 100%;
+    color: #888;
+	padding-left: 7px;
+}
+
+.ams-search .clear::before {
+	content: "×";
+}
+
+.ams-search .clear {
+	position: absolute;
+	right: 2px;
+	height: 26px;
+	top: 2px;
+}
+
+/*
+██ ████████ ███████ ███    ███
+██    ██    ██      ████  ████
+██    ██    █████   ██ ████ ██
+██    ██    ██      ██  ██  ██
+██    ██    ███████ ██      ██
+*/
+.ams-item {
 	display: flex;
 	padding: 2px;
 }
@@ -18,21 +125,21 @@
 ██    ██ ██      ██      ██  ██ ██ ██      ██   ██          ██    ██    ██   ██    ██    ██
  ██████  ██      ███████ ██   ████ ███████ ██████      ███████    ██    ██   ██    ██    ███████
 */
-.item .caret {
+.ams-item .caret {
 	width: 10px;
 	margin-right: 5px;
 	cursor: pointer;
 }
 
-.item.leaf .caret {
+.ams-item.leaf .caret {
 	cursor: default;
 }
 
-.item:not(.leaf) .caret.open::before {
+.ams-item:not(.leaf) .caret.open::before {
 	content: '▾';
 }
 
-.item:not(.leaf) .caret.closed::before {
+.ams-item:not(.leaf) .caret.closed::before {
 	content: '▸';
 }
 
@@ -43,45 +150,52 @@
 ██      ██   ██ ██      ██      ██  ██  ██      ██   ██          ██    ██    ██   ██    ██    ██
  ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ███████    ██    ██   ██    ██    ███████
 */
-.item .check {
+.ams-item .check {
 	cursor: pointer;
 }
 
-.item .check.checked::before {
+.ams-item .check.checked::before {
 	content: '✓';
 	color: green;
 }
 
-.item .check.unchecked::before {
+.ams-item .check.unchecked::before {
 	content: '✗';
 	color: red;
 }
 
-.item .check.mixed::before {
+.ams-item .check.mixed::before {
 	content: '~';
 	color: yellow;
 }
 
-.level_0 {
+/*
+██ ███    ██ ██████  ███████ ███    ██ ██████   █████  ████████ ██  ██████  ███    ██
+██ ████   ██ ██   ██ ██      ████   ██ ██   ██ ██   ██    ██    ██ ██    ██ ████   ██
+██ ██ ██  ██ ██   ██ █████   ██ ██  ██ ██   ██ ███████    ██    ██ ██    ██ ██ ██  ██
+██ ██  ██ ██ ██   ██ ██      ██  ██ ██ ██   ██ ██   ██    ██    ██ ██    ██ ██  ██ ██
+██ ██   ████ ██████  ███████ ██   ████ ██████  ██   ██    ██    ██  ██████  ██   ████
+*/
+.ams-item-level_0 {
 	padding-left: 20px;
 }
 
-.level_1 {
+.ams-item-level_1 {
 	padding-left: 40px;
 }
 
-.level_2 {
+.ams-item-level_2 {
 	padding-left: 60px;
 }
 
-.level_3 {
+.ams-item-level_3 {
 	padding-left: 80px;
 }
 
-.level_4 {
+.ams-item-level_4 {
 	padding-left: 100px;
 }
 
-.level_5 {
+.ams-item-level_5 {
 	padding-left: 120px;
 }
