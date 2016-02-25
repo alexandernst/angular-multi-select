@@ -3,11 +3,27 @@
 	<div class="caret"></div>
 </div>
 
-<div class="container">
+<div class="ams-container">
+
+	<div class="ams-helpers">
+		<div class="selects">
+			<button class="all btn" type="button" ng-click="check_all()">Check all</button>
+			<button class="none btn" type="button" ng-click="check_none()">Check none</button>
+		</div>
+
+		<div class="resets">
+			<button class="reset btn" type="button" ng-click="reset()">Reset data</button>
+		</div>
+	</div>
+
+	<div class="ams-search">
+		<input class="search" type="text" name="search" value="" ng-model="search">
+		<button class="clear btn" type="button" name="clear" ng-click="search = ''"></button>
+	</div>
 
 	<div
 		ng-repeat="item in items"
-		class="item level_{{ item.level }}
+		class="ams-item ams-item-level_{{ item.level }}
 			{{ amssh.get_type_class(item) }}
 			{{ amssh.get_open_class(item) }}"
 	>
@@ -18,9 +34,7 @@
 		></div>
 
 		<!-- Text of the element -->
-		<div>
-			{{ item.text }} ({{ item.value }}) | Marcados {{ item.checked_children }} de {{ item.children_leafs }} leafs (y {{ item.children_nodes }} nodes) | {{ item.tree_visibility }}
-		</div>
+		<div>{{ amssh.create_label(item) }}</div>
 
 		<!-- Check holder -->
 		<div
