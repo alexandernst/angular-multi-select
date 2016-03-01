@@ -24,7 +24,8 @@
 
 	<div
 		ng-repeat="item in items"
-		class="ams-item ams-item-level_{{ item.level }}
+		class="ams-item
+			{{ amssh.get_level_class(item) }}
 			{{ amssh.get_type_class(item) }}
 			{{ amssh.get_open_class(item) }}"
 	>

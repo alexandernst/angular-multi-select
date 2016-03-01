@@ -29,6 +29,10 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			this.leaf_repr      = this.interpolate(this.leaf_repr_attr);
 		};
 
+		StylesHelper.prototype.get_level_class = function (item) {
+			return "ams-item-level-" + item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
+		};
+
 		StylesHelper.prototype.get_open_class = function (item) {
 			return item[this.OPEN_PROPERTY] === true ?
 				angularMultiSelectConstants.CSS_OPEN :
