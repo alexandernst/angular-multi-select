@@ -63,6 +63,10 @@ pre.ams {
 	user-select: none;           /* non-prefixed version, currently not supported by any browser */
 }
 
+.ams-button:hover {
+	border: 1px solid #999;
+}
+
 /*
  ██████  ██████  ███    ██ ████████  █████  ██ ███    ██ ███████ ██████
 ██      ██    ██ ████   ██    ██    ██   ██ ██ ████   ██ ██      ██   ██
