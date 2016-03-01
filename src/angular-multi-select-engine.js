@@ -152,6 +152,38 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		};
 
 		/*
+		 ██████  ███████ ████████     ███████ ██ ██   ████████ ███████ ██████  ███████ ██████      ████████ ██████  ███████ ███████
+		██       ██         ██        ██      ██ ██      ██    ██      ██   ██ ██      ██   ██        ██    ██   ██ ██      ██
+		██   ███ █████      ██        █████   ██ ██      ██    █████   ██████  █████   ██   ██        ██    ██████  █████   █████
+		██    ██ ██         ██        ██      ██ ██      ██    ██      ██   ██ ██      ██   ██        ██    ██   ██ ██      ██
+		 ██████  ███████    ██        ██      ██ ███████ ██    ███████ ██   ██ ███████ ██████         ██    ██   ██ ███████ ███████
+		*/
+		Engine.prototype.get_filtered_tree = function (query) {
+			if (this.DEBUG === true) console.time("get_filtered_tree");
+
+			var filter = [];
+			for (var i = 0; i < query.length; i++) {
+				var item = query[i];
+				filter.push({
+					[item.field]: {
+						'$contains': item.query
+					}
+				});
+			}
+
+			var tree = this.collection
+				.chain()
+				.find({
+					'$and': filter
+				})
+				.simplesort("order", false)
+				.data();
+
+			if (this.DEBUG === true) console.timeEnd("get_filtered_tree");
+			return tree;
+		};
+
+		/*
 		 ██████  ███████ ████████      ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ████████ ██████  ███████ ███████
 		██       ██         ██        ██      ██   ██ ██      ██      ██  ██  ██      ██   ██        ██    ██   ██ ██      ██
 		██   ███ █████      ██        ██      ███████ █████   ██      █████   █████   ██   ██        ██    ██████  █████   █████
@@ -384,7 +416,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				});
 
 			if (this.DEBUG === true) console.time("check_all");
-
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
@@ -411,7 +442,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				});
 
 			if (this.DEBUG === true) console.time("uncheck_all");
-
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
