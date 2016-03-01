@@ -111,7 +111,7 @@
 }
 
 .ams-helpers .reset {
-
+	margin-left: 5px;
 }
 
 /*
@@ -238,7 +238,8 @@
 
 .ams-item .check.mixed::before {
 	content: '~';
-	color: yellow;
+	color: goldenrod;
+	padding-left: 3px;
 }
 
 /*
@@ -248,26 +249,26 @@
 ██ ██  ██ ██ ██   ██ ██      ██  ██ ██ ██   ██ ██   ██    ██    ██ ██    ██ ██  ██ ██
 ██ ██   ████ ██████  ███████ ██   ████ ██████  ██   ██    ██    ██  ██████  ██   ████
 */
-.ams-item-level_0 {
+.ams-item-level-0 {
 	padding-left: 20px;
 }
 
-.ams-item-level_1 {
+.ams-item-level-1 {
 	padding-left: 40px;
 }
 
-.ams-item-level_2 {
+.ams-item-level-2 {
 	padding-left: 60px;
 }
 
-.ams-item-level_3 {
+.ams-item-level-3 {
 	padding-left: 80px;
 }
 
-.ams-item-level_4 {
+.ams-item-level-4 {
 	padding-left: 100px;
 }
 
-.ams-item-level_5 {
+.ams-item-level-5 {
 	padding-left: 120px;
 }
