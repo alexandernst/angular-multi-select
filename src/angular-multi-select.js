@@ -56,6 +56,14 @@ angular_multi_select.directive('angularMultiSelect', [
 				 * Find out if the output data should be converted in some special way.
 				 */
 				this.output_type = attrs.outputType === undefined ? 'objects' : attrs.outputType;
+				this.output_keys = attrs.outputKeys === undefined ? undefined : attrs.outputKeys;
+				if (this.output_keys !== undefined) {
+					this.output_keys = this.output_keys
+						.split(",")
+						.map(function (s) {
+							return s.replace(/^\s+|\s+$/g, '');
+						});
+				}
 
 				/*
 				 * Find out which field to use for the 'search' functionality.
@@ -211,19 +219,19 @@ angular_multi_select.directive('angularMultiSelect', [
 						var res = checked_tree;
 						switch (this.output_type) {
 							case 'objects':
-								res = amsdc.to_array_of_objects(checked_tree);
+								res = amsdc.to_array_of_objects(checked_tree, this.output_keys);
 								break;
 							case 'arrays':
-								res = amsdc.to_array_of_arrays(checked_tree);
+								res = amsdc.to_array_of_arrays(checked_tree, this.output_keys);
 								break;
 							case 'object':
-								res = amsdc.to_object(checked_tree);
+								res = amsdc.to_object(checked_tree, this.output_keys);
 								break;
 							case 'array':
-								res = amsdc.to_array(checked_tree);
+								res = amsdc.to_array(checked_tree, this.output_keys);
 								break;
 							case 'value':
-								res = amsdc.to_array(checked_tree);
+								res = amsdc.to_array(checked_tree, this.output_keys);
 								break;
 						}
 
