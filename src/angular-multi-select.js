@@ -181,7 +181,7 @@ angular_multi_select.directive('angularMultiSelect', [
 
 						$scope.items = amse.get_filtered_tree(filter);
 						$scope.search_spinner_visible = false;
-					}, 2300, true, _new);
+					}, 1500, true, _new);
 				});
 
 				/*
