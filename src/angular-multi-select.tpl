@@ -1,9 +1,9 @@
-<div class="ams-button">
+<div class="ams-button" ng-click="open = !open">
 	<div class="">This is AMS</div>
 	<div class="caret"></div>
 </div>
 
-<div class="ams-container">
+<div class="ams-container" ng-show="open">
 
 	<div class="ams-helpers">
 		<div class="selects">
@@ -17,7 +17,8 @@
 	</div>
 
 	<div class="ams-search">
-		<input class="search" type="text" name="search" value="" ng-model="search">
+		<input class="search" type="text" name="search" value="" ng-model="search" autofocus>
+		<div class="ams-spinner" ng-show="search != ''"></div>
 		<button class="clear btn" type="button" name="clear" ng-click="search = ''"></button>
 	</div>
 
