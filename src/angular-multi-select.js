@@ -187,7 +187,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 				 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 				*/
-				amse.on_data_change(function () {
+				amse.on_data_change(() => {
 					/*
 					 * Will be triggered every time the internal model data is changed.
 					 * That could happen on check/uncheck, for example.
