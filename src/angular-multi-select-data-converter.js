@@ -283,6 +283,46 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		};
 
 		/*
+		████████  ██████      ███████ ██   ██ ████████ ███████ ██████  ███    ██  █████  ██
+		   ██    ██    ██     ██       ██ ██     ██    ██      ██   ██ ████   ██ ██   ██ ██
+		   ██    ██    ██     █████     ███      ██    █████   ██████  ██ ██  ██ ███████ ██
+		   ██    ██    ██     ██       ██ ██     ██    ██      ██   ██ ██  ██ ██ ██   ██ ██
+		   ██     ██████      ███████ ██   ██    ██    ███████ ██   ██ ██   ████ ██   ██ ███████
+		*/
+		DataConverter.prototype.to_external = function (data) {
+			/*
+			 * This is the opposite of what 'to_internal' is supposed to do.
+			 * This will take an array of objects, usually the output of
+			 * get_*_tree and delete all the metadata of the engine, leaving
+			 * only the data that the user cares about.
+			 */
+			if (!Array.isArray(data) || data.length === 0) {
+				return [];
+			}
+
+			if (this.DEBUG === true) console.time('to_external');
+
+			for (var i = 0; i < data.length; i++) {
+				//AMS engine metadata
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_ORDER];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_NODES];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY];
+
+				//Loki metadata
+				delete data[i]['meta'];
+				delete data[i]['$loki'];
+			}
+
+			if (this.DEBUG === true) console.timeEnd('to_external');
+
+			return data;
+		};
+
+		/*
 		████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
 		   ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
 		   ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ██    ██ ██████       ██ █████   ██         ██    ███████
