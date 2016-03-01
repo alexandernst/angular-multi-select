@@ -54,7 +54,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 		};
 
 		StylesHelper.prototype.get_type_class = function (item) {
-			return item.children_leafs === 0 ?
+			return item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0 ?
 				angularMultiSelectConstants.CSS_LEAF :
 				angularMultiSelectConstants.CSS_NODE;
 		};
@@ -70,7 +70,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			//TODO: Cache + cache invalidation on data change
 
 			var _interpolated;
-			if (item.children_leafs === 0) {
+			if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
 				_interpolated = this.leaf_repr(item);
 			} else {
 				_interpolated = this.node_repr(item);
