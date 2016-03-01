@@ -181,15 +181,15 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					}
 
 					//Assigned in order
-					final_item.level = level;
-					final_item.order = order++;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] = level;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_ORDER] = order++;
 
 					//Required to be present for further calculation
-					final_item.parents_id = [];
-					final_item.children_leafs = 0;
-					final_item.children_nodes = 0;
-					final_item.checked_children = 0;
-					final_item.tree_visibility = angularMultiSelectConstants.INTERNAL_DATA_VISIBILITY_UNDEFINED;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = [];
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] = 0;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_NODES] = 0;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBILITY_UNDEFINED;
 
 					final_data.push(final_item);
 
@@ -205,22 +205,22 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			for (i = 0; i < final_data.length; i++) {
 				item = final_data[i];
 
-				if (item.level === 0) continue;
+				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) continue;
 
 				var parents = [];
-				var last_level = item.level;
+				var last_level = item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
 				for (j = i; j > 0; j--) {
 					var possible_parent = final_data[j];
 
-					if (possible_parent.level >= last_level) continue;
+					if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] >= last_level) continue;
 
-					last_level = possible_parent.level;
+					last_level = possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
 					parents.push(possible_parent[this.ID_PROPERTY]);
 
-					if (possible_parent.level === 0) break;
+					if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) break;
 				}
 
-				item.parents_id = parents.reverse();
+				item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = parents.reverse();
 			}
 
 			// calculate visibility, children and checked properties
@@ -228,7 +228,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				item = final_data[i];
 
 				// If this is a root element, it should be visible
-				if (item.level === 0) item.tree_visibility = angularMultiSelectConstants.INTERNAL_DATA_VISIBLE;
+				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) item[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBLE;
 
 				// we are guaranteed to have a checked property for leafs
 				// if the current item is a leaf, it won't have children, hence skip
@@ -242,22 +242,22 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					var child = final_data[j];
 
 					// Decide if children should be visible in the tree
-					if (item.level === child.level - 1) {
-						child.tree_visibility = item[this.OPEN_PROPERTY];
+					if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === child[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] - 1) {
+						child[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = item[this.OPEN_PROPERTY];
 					}
 
-					if (item.level >= child.level) break;
+					if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] >= child[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]) break;
 
 					// Logic that decides the checked state of node items
 					if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED) {
 						counter_checked++;
-						item.children_leafs++;
+						item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]++;
 					} else if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED) {
 						counter_unchecked++;
-						item.children_leafs++;
+						item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]++;
 					} else if (child[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECK_UNDEFINED){
 						counter_null++;
-						item.children_nodes++;
+						item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_NODES]++;
 					}
 
 				}
@@ -266,15 +266,15 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				// the number of children, then the current item should be
 				// either 1 or -1 (checked or unchecked). Else, it should be
 				// marked as 0 (mixed state).
-				if (item.children_leafs === counter_checked) {
+				if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === counter_checked) {
 					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
-				} else if (item.children_leafs === counter_unchecked) {
+				} else if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === counter_unchecked) {
 					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 				} else {
 					item[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 				}
 
-				item.checked_children = counter_checked;
+				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = counter_checked;
 			}
 
 			if (this.DEBUG === true) console.timeEnd('to_internal');
