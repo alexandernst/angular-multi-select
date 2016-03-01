@@ -24,9 +24,7 @@ var to_array_data_4 = [
 ];
 
 var to_array_data_4_res = [
-	'foo1', 'bar1', 42,
-	'foo2', 'bar2', 43,
-	'foo3', 'bar3', 44
+	'foo1', 'bar1', 42
 ];
 
 var to_array_data_5 = [
@@ -36,7 +34,5 @@ var to_array_data_5 = [
 ];
 
 var to_array_data_5_res = [
-	'foo1', 42,
-	'foo2', 43,
-	'foo3', 44
+	'foo1', 42
 ];

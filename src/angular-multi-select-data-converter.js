@@ -300,6 +300,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
+			if (this.DEBUG === true) console.time('to_array_of_objects');
+
 			if (keys === undefined) {
 				keys = [];
 			}
@@ -327,6 +329,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
+			if (this.DEBUG === true) console.timeEnd('to_array_of_objects');
+
 			return new_data;
 		};
 
@@ -349,6 +353,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			if (!Array.isArray(data) || data.length === 0) {
 				return [];
 			}
+
+			if (this.DEBUG === true) console.time('to_array_of_arrays');
 
 			if (keys === undefined) {
 				keys = [];
@@ -383,6 +389,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
+			if (this.DEBUG === true) console.timeEnd('to_array_of_arrays');
+
 			return new_data;
 		};
 
@@ -405,6 +413,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
+			if (this.DEBUG === true) console.time('to_array');
+
 			if (keys === undefined) {
 				keys = [];
 			}
@@ -415,18 +425,16 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				});
 			}
 
-			var new_data = [];
-			for (var i = 0; i < data.length; i++) {
-				var obj = data[i];
+			var obj = data[0];
+			var ret = [];
 
-				if (typeof(obj) !== 'object' || Array.isArray(obj)) {
-					continue;
-				}
-
+			if (typeof(obj) !== 'object' || Array.isArray(obj)) {
+				//do nothing
+			} else {
 				if (keys.length === 0) {
 					var obj_vals = vals(obj);
 					for (j = 0; j < obj_vals.length; j++) {
-						new_data.push(obj_vals[j]);
+						ret.push(obj_vals[j]);
 					}
 				} else {
 					for (j = 0; j < keys.length; j++) {
@@ -434,12 +442,14 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 							continue;
 						}
 
-						new_data.push(obj[keys[j]]);
+						ret.push(obj[keys[j]]);
 					}
 				}
 			}
 
-			return new_data;
+			if (this.DEBUG === true) console.timeEnd('to_array');
+
+			return ret;
 		};
 
 		/*
@@ -451,9 +461,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		*/
 		DataConverter.prototype.to_object = function (data, keys) {
 			/*
-			 * Takes an array of one object (the result of get_checked_tree usually)
-			 * and returns the object itself. If more than one objects are present,
-			 * only the first one will be returned.
+			 * Takes an array of objects (the result of get_checked_tree usually)
+			 * and returns the first object.
 			 * If the "keys" argument is passed, only the keys of the object that
 			 * match the values in the "keys" argument will be returned.
 			 * This usually doesn't make much sense when more than 1 item in the tree
@@ -464,29 +473,36 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return {};
 			}
 
+			if (this.DEBUG === true) console.time('to_object');
+
 			if (keys === undefined) {
 				keys = [];
 			}
 
+			var ret;
 			var obj = data[0];
 
 			if (typeof(obj) !== 'object' || Array.isArray(obj)) {
-				return {};
-			}
-
-			if (keys.length === 0) {
-				return obj;
+				ret = {};
 			} else {
-				var new_obj = {};
-				for (var i = 0; i < keys.length; i++) {
-					if (!obj.hasOwnProperty(keys[i])) {
-						continue;
-					}
+				if (keys.length === 0) {
+					ret = obj;
+				} else {
+					var new_obj = {};
+					for (var i = 0; i < keys.length; i++) {
+						if (!obj.hasOwnProperty(keys[i])) {
+							continue;
+						}
 
-					new_obj[keys[i]] = obj[keys[i]];
+						new_obj[keys[i]] = obj[keys[i]];
+					}
+					ret = new_obj;
 				}
-				return new_obj;
 			}
+
+			if (this.DEBUG === true) console.timeEnd('to_object');
+
+			return ret;
 		};
 
 		/*
@@ -508,31 +524,30 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return undefined;
 			}
 
+			if (this.DEBUG === true) console.time('to_value');
+
+			var ret;
 			var obj = data[0];
 
 			if (typeof(obj) !== 'object' || Array.isArray(obj)) {
-				return undefined;
+				ret = undefined;
+			} else {
+				if (key === undefined) {
+					var keys = Object.keys(obj);
+					if (keys.length === 0) {
+						ret = undefined;
+					} else {
+						key = keys[0];
+						ret = obj.hasOwnProperty(key) ? obj[key] : undefined;
+					}
+				} else {
+					ret = obj.hasOwnProperty(key) ? obj[key] : undefined;
+				}
 			}
 
-			if (key === undefined) {
-				var keys = Object.keys(obj);
-				if (keys.length === 0) {
-					return undefined;
-				} else {
-					key = keys[0];
-					if (!obj.hasOwnProperty(key)) {
-						return undefined;
-					} else {
-						return obj[key];
-					}
-				}
-			} else {
-				if (!obj.hasOwnProperty(key)) {
-					return undefined;
-				} else {
-					return obj[key];
-				}
-			}
+			if (this.DEBUG === true) console.timeEnd('to_value');
+
+			return ret;
 		};
 
 		return DataConverter;
