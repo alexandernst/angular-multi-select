@@ -76,7 +76,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					// Check for id field.
 					// If not present, assign one
 					if (
-						!item.hasOwnProperty(ctx.ID_PROPERTY) ||
+						!(ctx.ID_PROPERTY in item) ||
 						ids.indexOf(item[ctx.ID_PROPERTY]) !== -1
 					) {
 						item[ctx.ID_PROPERTY] = gen_id();
@@ -86,7 +86,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					// Check for open field.
 					// If open field doesn't exist or is not "true", set to false
 					if (
-						!item.hasOwnProperty(ctx.OPEN_PROPERTY) ||
+						!(ctx.OPEN_PROPERTY in item) ||
 						item[ctx.OPEN_PROPERTY] !== angularMultiSelectConstants.INPUT_DATA_OPEN
 					) {
 						item[ctx.OPEN_PROPERTY] = angularMultiSelectConstants.INPUT_DATA_CLOSED;
@@ -95,7 +95,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					// Check for children field.
 					// If not an array or empty array, remove it.
 					if (
-						item.hasOwnProperty(ctx.CHILDREN_PROPERTY) &&
+						ctx.CHILDREN_PROPERTY in item &&
 						(
 							!Array.isArray(item[ctx.CHILDREN_PROPERTY]) ||
 							item[ctx.CHILDREN_PROPERTY].length === 0
@@ -107,25 +107,25 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					// If children field is present, remove "checked" field.
 					// If checked field is present, but value is not boolean or 1,
 					// set to false.
-					if (item.hasOwnProperty(ctx.CHILDREN_PROPERTY)) {
+					if (ctx.CHILDREN_PROPERTY in item) {
 						delete item[ctx.CHECKED_PROPERTY];
 					}
 
 					if (
-						item.hasOwnProperty(ctx.CHECKED_PROPERTY) &&
+						ctx.CHECKED_PROPERTY in item &&
 						item[ctx.CHECKED_PROPERTY] !== angularMultiSelectConstants.INPUT_DATA_CHECKED
 					) {
 						item[ctx.CHECKED_PROPERTY] = angularMultiSelectConstants.INPUT_DATA_UNCHECKED;
 					}
 
 					if (
-						!item.hasOwnProperty(ctx.CHILDREN_PROPERTY) &&
-						!item.hasOwnProperty(ctx.CHECKED_PROPERTY)
+						!(ctx.CHILDREN_PROPERTY in item) &&
+						!(ctx.CHECKED_PROPERTY in item)
 					) {
 						item[ctx.CHECKED_PROPERTY] = angularMultiSelectConstants.INPUT_DATA_UNCHECKED;
 					}
 
-					if (item.hasOwnProperty(ctx.CHILDREN_PROPERTY)) {
+					if (ctx.CHILDREN_PROPERTY in item) {
 						process_items(item[ctx.CHILDREN_PROPERTY]);
 					}
 				}
@@ -172,7 +172,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					delete final_item[ctx.CHILDREN_PROPERTY];
 
 					if (
-						item.hasOwnProperty(ctx.CHECKED_PROPERTY) &&
+						ctx.CHECKED_PROPERTY in item &&
 						typeof(item[ctx.CHECKED_PROPERTY]) === 'boolean'
 					) {
 						final_item[ctx.CHECKED_PROPERTY] = item[ctx.CHECKED_PROPERTY];
@@ -193,7 +193,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 					final_data.push(final_item);
 
-					if (item.hasOwnProperty(ctx.CHILDREN_PROPERTY)) {
+					if (ctx.CHILDREN_PROPERTY in item) {
 						process_items(item[ctx.CHILDREN_PROPERTY], level + 1);
 					}
 				}
@@ -319,7 +319,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					new_data.push(obj);
 				} else {
 					for (var j = 0; j < keys.length; j++) {
-						if (!obj.hasOwnProperty(keys[j])) {
+						if (!(keys[j] in obj)) {
 							continue;
 						}
 
@@ -379,7 +379,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					new_data.push(vals(obj));
 				} else {
 					for (var j = 0; j < keys.length; j++) {
-						if (!obj.hasOwnProperty(keys[j])) {
+						if (!(keys[j] in obj)) {
 							continue;
 						}
 
@@ -438,7 +438,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					}
 				} else {
 					for (j = 0; j < keys.length; j++) {
-						if (!obj.hasOwnProperty(keys[j])) {
+						if (!(keys[j] in obj)) {
 							continue;
 						}
 
@@ -490,7 +490,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				} else {
 					var new_obj = {};
 					for (var i = 0; i < keys.length; i++) {
-						if (!obj.hasOwnProperty(keys[i])) {
+						if (!(keys[i] in obj)) {
 							continue;
 						}
 
@@ -538,10 +538,11 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 						ret = undefined;
 					} else {
 						key = keys[0];
-						ret = obj.hasOwnProperty(key) ? obj[key] : undefined;
+						ret = key in obj ? obj[key] : undefined;
 					}
 				} else {
-					ret = obj.hasOwnProperty(key) ? obj[key] : undefined;
+					key = Array.isArray(key) ? key[0] : key;
+					ret = key in obj ? obj[key] : undefined;
 				}
 			}
 
