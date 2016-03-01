@@ -139,6 +139,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				*/
 				$scope.search = "";
 				$scope.search_promise = null;
+				$scope.search_spinner_visible = false;
 				$scope.$watch('search', function (_new, _old) {
 					if (_new === _old && _new === "") {
 						return;
@@ -157,6 +158,7 @@ angular_multi_select.directive('angularMultiSelect', [
 							$timeout.cancel($scope.search_promise);
 						}
 						$scope.items = amse.get_visible_tree();
+						$scope.search_spinner_visible = false;
 						return;
 					}
 
@@ -168,6 +170,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						$timeout.cancel($scope.search_promise);
 					}
 
+					$scope.search_spinner_visible = true;
 					$scope.search_promise = $timeout(function (query) {
 						//TODO: this needs a lot of improving
 						var filter = [];
@@ -177,6 +180,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						});
 
 						$scope.items = amse.get_filtered_tree(filter);
+						$scope.search_spinner_visible = false;
 					}, 2300, true, _new);
 				});
 

@@ -18,7 +18,7 @@
 
 	<div class="ams-search">
 		<input class="search" type="text" name="search" value="" ng-model="search" autofocus>
-		<div class="ams-spinner" ng-show="search != ''"></div>
+		<div class="ams-spinner" ng-show="search_spinner_visible"></div>
 		<button class="clear btn" type="button" name="clear" ng-click="search = ''"></button>
 	</div>
 
