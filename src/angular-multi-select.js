@@ -6,11 +6,13 @@ var angular_multi_select = angular.module('angular-multi-select', [
 ]);
 
 angular_multi_select.directive('angularMultiSelect', [
+	'$window',
+	'$timeout',
 	'angularMultiSelectEngine',
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function (angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($window, $timeout, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 		return {
 			restrict: 'AE',
 
@@ -26,9 +28,16 @@ angular_multi_select.directive('angularMultiSelect', [
 				var el_attrs_vals = Object.keys(el_attrs).map((key) => el_attrs[key]);
 
 				/*
-				 * Find out what are the properties names of the important bits
-				 * of the input data.
-				 */
+				 █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████
+				██   ██    ██       ██    ██   ██ ██ ██   ██ ██    ██    ██    ██      ██
+				███████    ██       ██    ██████  ██ ██████  ██    ██    ██    █████   ███████
+				██   ██    ██       ██    ██   ██ ██ ██   ██ ██    ██    ██    ██           ██
+				██   ██    ██       ██    ██   ██ ██ ██████   ██████     ██    ███████ ███████
+				*/
+				/*
+				* Find out what are the properties names of the important bits
+				* of the input data.
+				*/
 				var ops = {
 					DEBUG             : attrs.debug            === "true" ? true : false,
 					ID_PROPERTY       : attrs.idProperty       || angularMultiSelectConstants.ID_PROPERTY,
@@ -36,10 +45,6 @@ angular_multi_select.directive('angularMultiSelect', [
 					CHECKED_PROPERTY  : attrs.checkedProperty  || angularMultiSelectConstants.CHECKED_PROPERTY,
 					CHILDREN_PROPERTY : attrs.childrenProperty || angularMultiSelectConstants.CHILDREN_PROPERTY,
 				};
-
-				var amse = new angularMultiSelectEngine(ops);
-				var amssh = new angularMultiSelectStylesHelper(ops, attrs);
-				var amsdc = new angularMultiSelectDataConverter(ops);
 
 				/*
 				 * Find out if the input data should be threated in some special way.
@@ -53,25 +58,127 @@ angular_multi_select.directive('angularMultiSelect', [
 				this.output_type = attrs.outputType === undefined ? 'objects' : attrs.outputType;
 
 				/*
-				 * Input/output models.
+				 * Find out which field to use for the 'search' functionality.
 				 */
+				this.search_field = attrs.searchField === undefined ? null : attrs.searchField;
 
 				/*
-				 * Helpers
+				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
+				██   ██ ████  ████ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
+				███████ ██ ████ ██ ███████     ██    ██ ██████       ██ █████   ██         ██    ███████
+				██   ██ ██  ██  ██      ██     ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
+				██   ██ ██      ██ ███████      ██████  ██████   █████  ███████  ██████    ██    ███████
+				*/
+				var amse = new angularMultiSelectEngine(ops);
+				var amssh = new angularMultiSelectStylesHelper(ops, attrs);
+				var amsdc = new angularMultiSelectDataConverter(ops);
+				$scope.amse = amse;
+				$scope.amssh = amssh;
+
+				/*
+				██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
+				██    ██ ██ ██      ██ ██   ██ ██ ██      ██    ██     ██  ██
+				██    ██ ██ ███████ ██ ██████  ██ ██      ██    ██      ████
+				 ██  ██  ██      ██ ██ ██   ██ ██ ██      ██    ██       ██
+				  ████   ██ ███████ ██ ██████  ██ ███████ ██    ██       ██
+				*/
+				$scope.open = false;
+				$window.onclick = function (event) {
+					if (!event.target) {
+						return;
+					}
+
+					var p = angular.element(event.target).parent();
+					while (p.length > 0) {
+						if (
+							p[0].className !== undefined &&
+							(
+								p.hasClass("ams-container") ||
+								p.hasClass("ams-button") ||
+								p.hasClass("ams")
+							)
+						) {
+							return;
+						}
+						p = p.parent();
+					}
+
+					$scope.open = false;
+					$scope.$apply();
+				};
+				//$scope.$watch('open', function () {
+
+				//});
+
+				/*
+				██   ██ ███████ ██      ██████  ███████ ██████  ███████
+				██   ██ ██      ██      ██   ██ ██      ██   ██ ██
+				███████ █████   ██      ██████  █████   ██████  ███████
+				██   ██ ██      ██      ██      ██      ██   ██      ██
+				██   ██ ███████ ███████ ██      ███████ ██   ██ ███████
+				*/
+				/*
+				 * The 'reset_model' will be filled in with the first available
+				 * data from the input model and will be used when the 'reset'
+				 * function is triggered.
 				 */
 				$scope.reset_model = null;
 				$scope.check_all   = function () { amse.check_all(); };
 				$scope.check_none  = function () { amse.uncheck_all(); };
-				$scope.reset       = function () { amse.insert($scope.reset_model); };
+				$scope.reset       = function () {
+					amse.insert($scope.reset_model);
+					$scope.items = amse.get_visible_tree();
+				};
 
 				/*
-				 * Search
-				 */
+				███████ ███████  █████  ██████   ██████ ██   ██
+				██      ██      ██   ██ ██   ██ ██      ██   ██
+				███████ █████   ███████ ██████  ██      ███████
+				     ██ ██      ██   ██ ██   ██ ██      ██   ██
+				███████ ███████ ██   ██ ██   ██  ██████ ██   ██
+				*/
 				$scope.search = "";
+				$scope.search_promise = null;
+				$scope.$watch('search', function (_new, _old) {
+					if (_new === _old && _new === "") {
+						return;
+					}
 
-				$scope.amse = amse;
-				$scope.amssh = amssh;
+					if($scope.searchField === null) {
+						return;
+					}
 
+					/*
+					 * This means that there was a search, but it was deleted
+					 * and now the normal tree should be repainted.
+					 */
+					if (_new === "") {
+						if ($scope.search_promise !== null) {
+							$timeout.cancel($scope.search_promise);
+						}
+						$scope.items = amse.get_visible_tree();
+						return;
+					}
+
+					/*
+					 * If the code execution gets here, it means that there is
+					 * a search that should be performed
+					 */
+					if ($scope.search_promise !== null) {
+						$timeout.cancel($scope.search_promise);
+					}
+
+					$scope.search_promise = $timeout(function (query) {
+						//TODO: this needs a lot of improving
+						var filter = [];
+						filter.push({
+							field: this.search_field,
+							query: query
+						});
+
+						$scope.items = amse.get_filtered_tree(filter);
+					}, 2300, true, _new);
+				});
 
 				/*
 				 ██████  ███    ██     ██████   █████  ████████  █████       ██████ ██   ██  █████  ███    ██  ██████  ███████
@@ -136,10 +243,17 @@ angular_multi_select.directive('angularMultiSelect', [
 				});
 
 				/*
-				 * The entry point of the directive. This monitors the input data and
-				 * decides when to populate the internal data model and how to do it.
-				 */
+				███    ███  █████  ██ ███    ██
+				████  ████ ██   ██ ██ ████   ██
+				██ ████ ██ ███████ ██ ██ ██  ██
+				██  ██  ██ ██   ██ ██ ██  ██ ██
+				██      ██ ██   ██ ██ ██   ████
+				*/
 				$scope.$watch('inputModel', function (_new, _old) {
+					/*
+					* The entry point of the directive. This monitors the input data and
+					* decides when to populate the internal data model and how to do it.
+					*/
 					var checked_data  = this.do_not_check_data   ? _new         : amsdc.check_prerequisites(_new);
 					var internal_data = this.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
 
