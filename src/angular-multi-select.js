@@ -115,9 +115,6 @@ angular_multi_select.directive('angularMultiSelect', [
 					$scope.open = false;
 					$scope.$apply();
 				};
-				//$scope.$watch('open', function () {
-
-				//});
 
 				/*
 				██   ██ ███████ ██      ██████  ███████ ██████  ███████
