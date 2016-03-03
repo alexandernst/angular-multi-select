@@ -38,7 +38,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				* Find out what are the properties names of the important bits
 				* of the input data.
 				*/
-				var ops = {
+				$scope.ops = {
 					DEBUG             : attrs.debug            === "true" ? true : false,
 					ID_PROPERTY       : attrs.idProperty       || angularMultiSelectConstants.ID_PROPERTY,
 					OPEN_PROPERTY     : attrs.openProperty     || angularMultiSelectConstants.OPEN_PROPERTY,
@@ -77,9 +77,9 @@ angular_multi_select.directive('angularMultiSelect', [
 				██   ██ ██  ██  ██      ██     ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
 				██   ██ ██      ██ ███████      ██████  ██████   █████  ███████  ██████    ██    ███████
 				*/
-				var amse = new angularMultiSelectEngine(ops);
-				var amssh = new angularMultiSelectStylesHelper(ops, attrs);
-				var amsdc = new angularMultiSelectDataConverter(ops);
+				var amse = new angularMultiSelectEngine($scope.ops);
+				var amssh = new angularMultiSelectStylesHelper($scope.ops, attrs);
+				var amsdc = new angularMultiSelectDataConverter($scope.ops);
 				$scope.amse = amse;
 				$scope.amssh = amssh;
 
