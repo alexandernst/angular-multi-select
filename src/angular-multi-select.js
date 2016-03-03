@@ -101,6 +101,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						if (
 							p[0].className !== undefined &&
 							(
+								p.hasClass("ams-item") ||
 								p.hasClass("ams-container") ||
 								p.hasClass("ams-button") ||
 								p.hasClass("ams")
