@@ -207,29 +207,30 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * Get the visible tree only once. Consecutive calls on un/check
 					 * will automatically propagate to the rendered tree.
 					 */
-					if ($scope.items === undefined) {
-						$scope.items = amse.get_visible_tree();
-					}
+					$scope.items = amse.get_visible_tree();
 
 					if ($scope.outputModel !== undefined) {
 						var checked_tree = amse.get_checked_tree();
 
-						var res = checked_tree;
+						/*
+						 * Remove internal, undeeded, data.
+						 */
+						var res = amsdc.to_external(checked_tree);
 						switch (this.output_type) {
 							case 'objects':
-								res = amsdc.to_array_of_objects(checked_tree, this.output_keys);
+								res = amsdc.to_array_of_objects(res, this.output_keys);
 								break;
 							case 'arrays':
-								res = amsdc.to_array_of_arrays(checked_tree, this.output_keys);
+								res = amsdc.to_array_of_arrays(res, this.output_keys);
 								break;
 							case 'object':
-								res = amsdc.to_object(checked_tree, this.output_keys);
+								res = amsdc.to_object(res, this.output_keys);
 								break;
 							case 'array':
-								res = amsdc.to_array(checked_tree, this.output_keys);
+								res = amsdc.to_array(res, this.output_keys);
 								break;
 							case 'value':
-								res = amsdc.to_array(checked_tree, this.output_keys);
+								res = amsdc.to_array(res, this.output_keys);
 								break;
 						}
 
