@@ -9,6 +9,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		var Engine = function (ops) {
 			ops = ops || {};
 			this.DEBUG             = ops.DEBUG             || false;
+			this.NAME              = ops.NAME              || 'angular-multi-select-' + (Date.now() / 1000 | 0);
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
 			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
 			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
@@ -18,7 +19,26 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * Initiate the database and setup index fields.
 			 */
 			this.db = new loki();
-			this.collection = this.db.addCollection('angular-multi-select', {
+			this.create_collection(this.NAME);
+
+			this.on_data_change_fn = null;
+			this.on_visual_change_fn = null;
+		};
+
+		/*
+		 ██████ ██████  ███████  █████  ████████ ███████      ██████  ██████  ██      ██      ███████  ██████ ████████ ██  ██████  ███    ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ████   ██
+		██      ██████  █████   ███████    ██    █████       ██      ██    ██ ██      ██      █████   ██         ██    ██ ██    ██ ██ ██  ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ██  ██ ██
+		 ██████ ██   ██ ███████ ██   ██    ██    ███████      ██████  ██████  ███████ ███████ ███████  ██████    ██    ██  ██████  ██   ████
+		*/
+		Engine.prototype.create_collection = function (name) {
+			/*
+			 * Create a collection in the database and create indices.
+			 */
+			if (this.DEBUG === true) console.time("create_collection");
+
+			this.collection = this.db.addCollection(name, {
 				indices: [
 					this.ID_PROPERTY,
 					this.CHECKED_PROPERTY,
@@ -29,9 +49,26 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				clone: true
 			});
 
-			this.on_data_change_fn = null;
-			this.on_visual_change_fn = null;
+			if (this.DEBUG === true) console.timeEnd("create_collection");
 		};
+
+		/*
+		██████  ███████ ███    ███  ██████  ██    ██ ███████      ██████  ██████  ██      ██      ███████  ██████ ████████ ██  ██████  ███    ██
+		██   ██ ██      ████  ████ ██    ██ ██    ██ ██          ██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ████   ██
+		██████  █████   ██ ████ ██ ██    ██ ██    ██ █████       ██      ██    ██ ██      ██      █████   ██         ██    ██ ██    ██ ██ ██  ██
+		██   ██ ██      ██  ██  ██ ██    ██  ██  ██  ██          ██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ██  ██ ██
+		██   ██ ███████ ██      ██  ██████    ████   ███████      ██████  ██████  ███████ ███████ ███████  ██████    ██    ██  ██████  ██   ████
+		*/
+		Engine.prototype.remove_collection = function (name) {
+			/*
+			 * Remove a collection from the database.
+			 */
+			if (this.DEBUG === true) console.time("remove_collection");
+
+			this.db.removeCollection(name);
+
+			if (this.DEBUG === true) console.timeEnd("remove_collection");
+		}
 
 		/*
 		 ██████  ███    ██     ██████   █████  ████████  █████       ██████ ██   ██  █████  ███    ██  ██████  ███████
@@ -87,7 +124,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			if (this.DEBUG === true) console.time("insert");
 
-			this.db.removeCollection('angular-multi-select');
+			this.remove_collection(this.NAME);
+			this.create_collection(this.NAME);
 
 			if (items === undefined) return;
 
@@ -197,7 +235,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.time("get_checked_tree");
 
-			filter = [
+			var query_filter = [
 				angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
 				angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 				angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
@@ -205,34 +243,34 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			if (filter !== undefined) {
 				switch (filter) {
 					case angularMultiSelectConstants.FIND_MIXED_NODES:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_NODES:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_LEAFS:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_AND_MIXED_NODES:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_LEAFS_AND_NODES:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 						];
 						break;
 					case angularMultiSelectConstants.FIND_CHECKED_MIXED_LEAFS_NODES:
-						filter = [
+						query_filter = [
 							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
 							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
@@ -245,7 +283,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.chain()
 				.find({
 					[this.CHECKED_PROPERTY]: {
-						'$in': filter
+						'$in': query_filter
 					}
 				})
 				.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
