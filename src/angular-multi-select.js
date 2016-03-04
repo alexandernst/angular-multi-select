@@ -213,9 +213,18 @@ angular_multi_select.directive('angularMultiSelect', [
 						var checked_tree = amse.get_checked_tree();
 
 						/*
-						 * Remove internal, undeeded, data.
+						 * Remove internal (undeeded) data.
+						 * TODO: Remove after https://github.com/techfort/LokiJS/issues/346
 						 */
-						var res = amsdc.to_external(checked_tree);
+						if ($scope.ops.DEBUG === true) {
+							var res = checked_tree;
+						} else {
+							var res = amsdc.to_external(checked_tree);
+						}
+
+						/*
+						 * Convert the data to the desired output.
+						 */
 						switch (this.output_type) {
 							case 'objects':
 								res = amsdc.to_array_of_objects(res, this.output_keys);
