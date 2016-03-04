@@ -514,8 +514,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					this.check_node(item);
 					break;
 			}
-
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
 		/*
@@ -636,6 +634,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			}
 
 			if (this.DEBUG === true) console.timeEnd("check_node");
+
+			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
 		/*
@@ -755,7 +755,78 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			}
 
 			if (this.DEBUG === true) console.timeEnd("uncheck_node");
+
+			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
+
+		/*
+		██    ██ ███    ██  ██████ ██   ██ ███████  ██████ ██   ██     ███████ ██ ██████  ███████ ████████
+		██    ██ ████   ██ ██      ██   ██ ██      ██      ██  ██      ██      ██ ██   ██ ██         ██
+		██    ██ ██ ██  ██ ██      ███████ █████   ██      █████       █████   ██ ██████  ███████    ██
+		██    ██ ██  ██ ██ ██      ██   ██ ██      ██      ██  ██      ██      ██ ██   ██      ██    ██
+		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██      ██ ██   ██ ███████    ██
+		*/
+		Engine.prototype.uncheck_first = function (n) {
+			/*
+			 * Find the oldest n leaf that have been marked as checked and uncheck them.
+			 * This function is used to control the maximum amount of checked leafs.
+			 */
+			if (this.DEBUG === true) console.time("uncheck_first");
+
+			n = n || 1;
+
+			var leaf = this.collection
+				.chain()
+				.find({
+					'$and': [
+						{
+							[this.CHECKED_PROPERTY]: angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
+						},
+						{
+							[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]: 0
+						}
+					]
+
+				})
+				/*
+				 * Logic behind this sorting:
+				 * First, get all the documents that are checked. Then sort them
+				 * with the following rules:
+				 *
+				 * 1. First, all documents with 'meta.updated' key, keeping in mind:
+				 *     1.1. The documents with a major 'updated' value (newest) go last.
+				 *
+				 * 2. Then, all other documents, but...
+				 *     2.1. First the documents that have an older 'created' value.
+				 *     2.2. If two documents have the same 'created' value, then the one
+				 *          with the lowest order is sorted before.
+				 */
+				.sort(function (a, b) {
+					if (!("updated" in a["meta"]) && !("updated" in b["meta"])) {
+						var diff = a["meta"]["created"] - b["meta"]["created"];
+						if (diff === 0) {
+							return a[angularMultiSelectConstants.INTERNAL_KEY_ORDER] - b[angularMultiSelectConstants.INTERNAL_KEY_ORDER];
+						} else {
+							return diff;
+						}
+					}
+					if (!("updated" in b["meta"])) {
+						return -1;
+					}
+					if (!("updated" in a["meta"])) {
+						return 1;
+					}
+					return a["meta"]["updated"] - b["meta"]["updated"];
+				})
+				.limit(n)
+				.data();
+
+			for (var i = 0; i < n; i++) {
+				this.uncheck_node(leaf[i]);
+			}
+
+			if (this.DEBUG === true) console.timeEnd("uncheck_first");
+		}
 
 		return Engine;
 	}
