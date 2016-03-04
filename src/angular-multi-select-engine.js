@@ -26,6 +26,46 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		};
 
 		/*
+		 ██████  ███    ██     ██████   █████  ████████  █████       ██████ ██   ██  █████  ███    ██  ██████  ███████
+		██    ██ ████   ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ████   ██ ██       ██
+		██    ██ ██ ██  ██     ██   ██ ███████    ██    ███████     ██      ███████ ███████ ██ ██  ██ ██   ███ █████
+		██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
+		 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
+		*/
+		Engine.prototype.on_data_change = function (fn) {
+			/*
+			 * Will be executed when the data in one or more of the items in the
+			 * tree is changed. Changes such as open/close (visibility related)
+			 * won't trigger this function.
+			 *
+			 * Note that this method will be ran only once after applying
+			 * multiple data updates if there are more than one, like for example
+			 * when checking a node that has multiple children.
+			 */
+			this.on_data_change_fn = fn;
+		};
+
+		/*
+		 ██████  ███    ██     ██    ██ ██ ███████ ██    ██  █████  ██           ██████ ██   ██  █████  ███    ██  ██████  ███████
+		██    ██ ████   ██     ██    ██ ██ ██      ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ████   ██ ██       ██
+		██    ██ ██ ██  ██     ██    ██ ██ ███████ ██    ██ ███████ ██          ██      ███████ ███████ ██ ██  ██ ██   ███ █████
+		██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
+		 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
+		*/
+		Engine.prototype.on_visual_change = function (fn) {
+			/*
+			* Will be executed when the tree changed somehow, visually speaking.
+			* This function could be triggered by an open/close action for example.
+			* Changes such as un/checking an item won't trigger this function.
+			*
+			* Note that this method will be ran only once, after applying all the
+			* visual changes required by the action, like for example when closing
+			* a node that has multiple children.
+			*/
+			this.on_visual_change_fn = fn;
+		};
+
+		/*
 		 ██████ ██████  ███████  █████  ████████ ███████      ██████  ██████  ██      ██      ███████  ██████ ████████ ██  ██████  ███    ██
 		██      ██   ██ ██      ██   ██    ██    ██          ██      ██    ██ ██      ██      ██      ██         ██    ██ ██    ██ ████   ██
 		██      ██████  █████   ███████    ██    █████       ██      ██    ██ ██      ██      █████   ██         ██    ██ ██    ██ ██ ██  ██
@@ -69,47 +109,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd("remove_collection");
 		}
-
-		/*
-		 ██████  ███    ██     ██████   █████  ████████  █████       ██████ ██   ██  █████  ███    ██  ██████  ███████
-		██    ██ ████   ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ████   ██ ██       ██
-		██    ██ ██ ██  ██     ██   ██ ███████    ██    ███████     ██      ███████ ███████ ██ ██  ██ ██   ███ █████
-		██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
-		 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
-		*/
-		Engine.prototype.on_data_change = function (fn) {
-			/*
-			 * Will be executed when the data in one or more of the items in the
-			 * tree is changed. Changes such as open/close (visibility related)
-			 * won't trigger this function.
-			 *
-			 * Note that this method will be ran only once after applying
-			 * multiple data updates if there are more than one, like for example
-			 * when checking a node that has multiple children.
-			 */
-			this.on_data_change_fn = fn;
-		};
-
-
-		/*
-		 ██████  ███    ██     ██    ██ ██ ███████ ██    ██  █████  ██           ██████ ██   ██  █████  ███    ██  ██████  ███████
-		██    ██ ████   ██     ██    ██ ██ ██      ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ████   ██ ██       ██
-		██    ██ ██ ██  ██     ██    ██ ██ ███████ ██    ██ ███████ ██          ██      ███████ ███████ ██ ██  ██ ██   ███ █████
-		██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
-		 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
-		*/
-		Engine.prototype.on_visual_change = function (fn) {
-			/*
-			* Will be executed when the tree changed somehow, visually speaking.
-			* This function could be triggered by an open/close action for example.
-			* Changes such as un/checking an item won't trigger this function.
-			*
-			* Note that this method will be ran only once, after applying all the
-			* visual changes required by the action, like for example when closing
-			* a node that has multiple children.
-			*/
-			this.on_visual_change_fn = fn;
-		};
 
 		/*
 		██ ███    ██ ███████ ███████ ██████  ████████
