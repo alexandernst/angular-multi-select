@@ -215,7 +215,6 @@ angular_multi_select.directive('angularMultiSelect', [
 
 						/*
 						 * Remove internal (undeeded) data.
-						 * TODO: Remove after https://github.com/techfort/LokiJS/issues/346
 						 */
 						if ($scope.ops.DEBUG === true) {
 							var res = checked_tree;
