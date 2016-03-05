@@ -40,10 +40,13 @@ angular_multi_select.directive('angularMultiSelect', [
 				*/
 				$scope.ops = {
 					DEBUG             : attrs.debug            === "true" ? true : false,
+					NAME              : attrs.name             || undefined,
+					MAX_CHECKED_LEAFS : parseInt(attrs.maxCheckedLeafs) || -1,
+
 					ID_PROPERTY       : attrs.idProperty       || angularMultiSelectConstants.ID_PROPERTY,
 					OPEN_PROPERTY     : attrs.openProperty     || angularMultiSelectConstants.OPEN_PROPERTY,
 					CHECKED_PROPERTY  : attrs.checkedProperty  || angularMultiSelectConstants.CHECKED_PROPERTY,
-					CHILDREN_PROPERTY : attrs.childrenProperty || angularMultiSelectConstants.CHILDREN_PROPERTY,
+					CHILDREN_PROPERTY : attrs.childrenProperty || angularMultiSelectConstants.CHILDREN_PROPERTY
 				};
 
 				/*

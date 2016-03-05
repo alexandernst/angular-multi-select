@@ -7,8 +7,11 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 	function (angularMultiSelectConstants) {
 		var Engine = function (ops) {
 			ops = ops || {};
+
 			this.DEBUG             = ops.DEBUG             || false;
 			this.NAME              = ops.NAME              || 'angular-multi-select-' + (Date.now() / 1000 | 0);
+			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
+
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
 			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
 			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
@@ -40,7 +43,22 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * multiple data updates if there are more than one, like for example
 			 * when checking a node that has multiple children.
 			 */
-			this.on_data_change_fn = fn;
+			this.on_data_change_fn = function () {
+				/*
+				 * Reserved for internal purposes.
+				 */
+
+				/*
+				 * Handle situation where a maximum amount of checked leafs has been specified.
+				 */
+				if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
+					this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
+				}
+
+				if (typeof(fn) === 'function') {
+					fn();
+				}
+			};;
 		};
 
 		/*
@@ -60,7 +78,15 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			* visual changes required by the action, like for example when closing
 			* a node that has multiple children.
 			*/
-			this.on_visual_change_fn = fn;
+			this.on_visual_change_fn = function () {
+				/*
+				 * Reserved for internal purposes.
+				 */
+
+				if (typeof(fn) === 'function') {
+					fn();
+				}
+			};
 		};
 
 		/*
@@ -597,9 +623,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
-		Engine.prototype.check_node = function (item) {
+		Engine.prototype.check_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("check_node");
 
+			/*
+			 * Used for internal calculations.
+			 */
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
@@ -738,7 +767,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd("check_node");
 
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
 		};
 
 		/*
@@ -748,7 +777,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██ ██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██
 		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
-		Engine.prototype.uncheck_node = function (item) {
+		Engine.prototype.uncheck_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("uncheck_node");
 
 			var diff_checked_children = 0;
@@ -886,7 +915,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd("uncheck_node");
 
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
 		};
 
 		/*
@@ -952,7 +981,9 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			for (var i = 0; i < n; i++) {
-				this.uncheck_node(leaf[i]);
+				this.uncheck_node(leaf[i], {
+					call_on_data_change_fn: false
+				});
 			}
 
 			if (this.DEBUG === true) console.timeEnd("uncheck_first");
