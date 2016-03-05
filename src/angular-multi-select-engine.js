@@ -626,6 +626,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.check_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("check_node");
 
+			ops = ops || {};
+
 			/*
 			 * Used for internal calculations.
 			 */
@@ -780,6 +782,11 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.uncheck_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("uncheck_node");
 
+			ops = ops || {};
+
+			/*
+			 * Used for internal calculations.
+			 */
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
