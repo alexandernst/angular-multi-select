@@ -5,7 +5,6 @@ var angular_multi_select_engine = angular.module('angular-multi-select-engine', 
 angular_multi_select_engine.factory('angularMultiSelectEngine', [
 	'angularMultiSelectConstants',
 	function (angularMultiSelectConstants) {
-
 		var Engine = function (ops) {
 			ops = ops || {};
 			this.DEBUG             = ops.DEBUG             || false;
@@ -19,7 +18,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * Initiate the database and setup index fields.
 			 */
 			this.db = new loki();
-			this.create_collection(this.NAME);
 
 			this.on_data_change_fn = null;
 			this.on_visual_change_fn = null;
@@ -126,19 +124,83 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			this.remove_collection(this.NAME);
 			this.create_collection(this.NAME);
 
-			if (items === undefined) return;
+			this.reset_stats();
+
+			items = items || [];
 
 			if (Array.isArray(items)) {
 				for (var i = 0; i < items.length; i++) {
 					this.collection.insert(items[i]);
+					this.update_stats(items[i]);
 				}
 			} else {
 				this.collection.insert(items);
+				this.update_stats(items);
 			}
 
 			if (this.DEBUG === true) console.timeEnd("insert");
+
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
+
+		/*
+		 ██████  ███████ ████████     ███████ ████████  █████  ████████ ███████
+		██       ██         ██        ██         ██    ██   ██    ██    ██
+		██   ███ █████      ██        ███████    ██    ███████    ██    ███████
+		██    ██ ██         ██             ██    ██    ██   ██    ██         ██
+		 ██████  ███████    ██        ███████    ██    ██   ██    ██    ███████
+		*/
+		Engine.prototype.get_stats = function () {
+			return this.stats;
+		};
+
+		/*
+		██    ██ ██████  ██████   █████  ████████ ███████     ███████ ████████  █████  ████████ ███████
+		██    ██ ██   ██ ██   ██ ██   ██    ██    ██          ██         ██    ██   ██    ██    ██
+		██    ██ ██████  ██   ██ ███████    ██    █████       ███████    ██    ███████    ██    ███████
+		██    ██ ██      ██   ██ ██   ██    ██    ██               ██    ██    ██   ██    ██         ██
+		 ██████  ██      ██████  ██   ██    ██    ███████     ███████    ██    ██   ██    ██    ███████
+		*/
+		Engine.prototype.update_stats = function (item) {
+			switch (item[this.CHECKED_PROPERTY]) {
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED:
+					this.stats.checked_nodes++;
+					this.stats.total_nodes++;
+					break;
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED:
+					this.stats.unchecked_nodes++;
+					this.stats.total_nodes++;
+					break;
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED:
+					this.stats.total_nodes++;
+					break;
+
+				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED:
+					this.stats.checked_leafs++;
+					this.stats.total_leafs++;
+					break;
+				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED:
+					this.stats.total_leafs++;
+					break;
+			}
+		};
+
+		/*
+		██████  ███████ ███████ ███████ ████████     ███████ ████████  █████  ████████ ███████
+		██   ██ ██      ██      ██         ██        ██         ██    ██   ██    ██    ██
+		██████  █████   ███████ █████      ██        ███████    ██    ███████    ██    ███████
+		██   ██ ██           ██ ██         ██             ██    ██    ██   ██    ██         ██
+		██   ██ ███████ ███████ ███████    ██        ███████    ██    ██   ██    ██    ███████
+		*/
+		Engine.prototype.reset_stats = function () {
+			this.stats = {
+				checked_leafs: 0,
+				checked_nodes: 0,
+				unchecked_nodes: 0,
+				total_leafs: 0,
+				total_nodes: 0
+			};
+		}
 
 		/*
 		 ██████  ███████ ████████     ███████ ██    ██ ██      ██          ████████ ██████  ███████ ███████
@@ -160,6 +222,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			if (this.DEBUG === true) console.time("get_full_tree");
+
 			return tree;
 		};
 
@@ -185,6 +248,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			if (this.DEBUG === true) console.timeEnd("get_visible_tree");
+
 			return tree;
 		};
 
@@ -217,6 +281,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			if (this.DEBUG === true) console.timeEnd("get_filtered_tree");
+
 			return tree;
 		};
 
@@ -231,7 +296,6 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Get only the checked elements from Loki.
 			 */
-
 			if (this.DEBUG === true) console.time("get_checked_tree");
 
 			var query_filter = [
@@ -289,6 +353,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			if (this.DEBUG === true) console.timeEnd("get_checked_tree");
+
 			return tree;
 		};
 
@@ -452,7 +517,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					}
 				});
 
+			this.stats.unchecked_nodes = 0;
+			this.stats.checked_leafs = this.stats.total_leafs;
+			this.stats.checked_nodes = this.stats.total_nodes;
+
 			if (this.DEBUG === true) console.time("check_all");
+
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
@@ -478,7 +548,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					}
 				});
 
+			this.stats.checked_leafs = 0;
+			this.stats.checked_nodes = 0;
+			this.stats.unchecked_nodes = this.stats.total_nodes;
+
 			if (this.DEBUG === true) console.time("uncheck_all");
+
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
 
@@ -503,13 +578,13 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * If the node/item is (fully) checked, uncheck, else check.
 			 */
 			switch (item[this.CHECKED_PROPERTY]) {
-				case 1:
-				case true:
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED:
+				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED:
 					this.uncheck_node(item);
 					break;
-				case 0:
-				case -1:
-				case false:
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED:
+				case angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED:
+				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED:
 					this.check_node(item);
 					break;
 			}
@@ -523,29 +598,15 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
 		Engine.prototype.check_node = function (item) {
-			/*
-			 * Set an item as checked.
-			 * If the passed item is a leaf:
-			 *     1. Mark it as checked.
-			 *     2. Search all parent nodes,
-			 *        add 1 to their checked_children counter and
-			 *        set their checked state based on the checked_children counter.
-			 *
-			 * If it's a node:
-			 *     1. Mark it as 1 (checked node).
-			 *     2. Set the counter of checked leafs to the number of leafs it contains.
-			 *     3. Search all children leafs and nodes and mark them as checked.
-			 *     4. Search all parent nodes,
-			 *        add N to their checked_children counter and
-			 *        set their checked state based on the checked_children counter.
-			 *        N is the difference between the checked leafs of the nodes we're checking
-			 *        before and after the operation.
-			 */
 			if (this.DEBUG === true) console.time("check_node");
 
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
+			/*
+			 * If the item is a leaf, mark it as checked.
+			 * If the item is a note, set it's counter of checked leafs to the number of leafs it contains.
+			 */
 			this.collection
 				.chain()
 				.find({
@@ -553,14 +614,27 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.update((obj) => {
 					if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
+						this.stats.checked_leafs++;
+
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 					} else {
+						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
+							this.stats.unchecked_nodes--;
+						}
+						this.stats.checked_nodes++;
+
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
 						diff_checked_children = obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - currently_checked_children;
 					}
 				});
 
+			/*
+			 * If the passed item is a leaf, search all parent nodes,
+			 * add 1 to their checked_children counter and set their
+			 * checked state based on the checked_children counter.
+			 *
+			 */
 			if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
 				this.collection
 					.chain()
@@ -571,13 +645,29 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					})
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
+						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
+							this.stats.unchecked_nodes--;
+						}
+						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] + 1 === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
+							this.stats.checked_nodes++;
+						}
+
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN]++; // We can't overflow this as we're checking an unchecked item
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
-						} //Note that we have can reach a -1 state here as we just checked a child leaf
+						}
 					});
+			/*
+			 * If it's a node:
+			 *     1. Search all children leafs and nodes and mark them as checked.
+			 *     2. Search all parent nodes,
+			 *        add N to their checked_children counter and
+			 *        set their checked state based on the checked_children counter.
+			 *        N is the difference between the checked leafs of the nodes we're checking
+			 *        before and after the operation.
+			 */
 			} else {
 				this.collection
 					.chain()
@@ -607,8 +697,15 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 					.update((obj) => {
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
+							this.stats.checked_leafs++;
+
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 						} else {
+							this.stats.checked_nodes++;
+							if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
+								this.stats.unchecked_nodes--;
+							}
+
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 							obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
 						}
@@ -623,12 +720,19 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					})
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
+						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
+							this.stats.unchecked_nodes--;
+						}
+						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] + diff_checked_children === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
+							this.stats.checked_nodes++;
+						}
+
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] += diff_checked_children;
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
-						} //Note that we have can reach a -1 state here as we just checked a child leaf
+						}
 					});
 			}
 
@@ -645,28 +749,15 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
 		Engine.prototype.uncheck_node = function (item) {
-			/*
-			 * If the passed item is a leaf:
-			 *     1. Mark it as unchecked.
-			 *     2. Search all parent nodes,
-			 *        rest 1 from their checked_children counter and
-			 *        set their checked state based on the checked_children counter.
-			 *
-			 * If it's a node:
-			 *     1. Mark it as 1 (checked node).
-			 *     2. Set the counter of checked leafs to the number of leafs it contains.
-			 *     3. Search all children leafs and nodes and mark them as checked.
-			 *     4. Search all parent nodes,
-			 *        add N to their checked_children counter and
-			 *        set their checked state based on the checked_children counter.
-			 *        N is the difference between the checked leafs of the nodes we're checking
-			 *        before and after the operation.
-			 */
 			if (this.DEBUG === true) console.time("uncheck_node");
 
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
+			/*
+			 * If the item is a leaf, mark it as unchecked.
+			 * If the item is a note, set it's counter of checked leafs to the number of leafs it contains.
+			 */
 			this.collection
 				.chain()
 				.find({
@@ -674,14 +765,24 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.update((obj) => {
 					if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
+						this.stats.checked_leafs--;
+
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 					} else {
+						this.stats.checked_nodes--;
+						this.stats.unchecked_nodes++;
+
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
 						diff_checked_children = currently_checked_children - obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 					}
 				});
 
+			/*
+			 * If the passed item is a leaf, search all parent nodes,
+			 * substract 1 from their checked_children counter and set their
+			 * checked state based on the checked_children counter.
+			 */
 			if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
 				this.collection
 					.chain()
@@ -692,13 +793,29 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					})
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
+						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
+							this.stats.checked_nodes--;
+						}
+						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - 1 === 0) {
+							this.stats.unchecked_nodes++;
+						}
+
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN]--; // We can't underflow this as we're unchecking a checked item
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] === 0) {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
-						} //Note that we have can reach a 1 state here as we just unchecked a child leaf
+						}
 					});
+			/*
+			 * If it's a node:
+			 *     1. Search all children leafs and nodes and mark them as unchecked.
+			 *     2. Search all parent nodes,
+			 *        substract N from their checked_children counter and
+			 *        set their checked state based on the checked_children counter.
+			 *        N is the difference between the checked leafs of the nodes we're checking
+			 *        before and after the operation.
+			 */
 			} else {
 				this.collection
 					.chain()
@@ -728,8 +845,15 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 					.update((obj) => {
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
+							this.stats.checked_leafs--;
+
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 						} else {
+							this.stats.unchecked_nodes++;
+							if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
+								this.stats.checked_nodes--;
+							}
+
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 							obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
 						}
@@ -744,12 +868,19 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					})
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
+						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
+							this.stats.checked_nodes--;
+						}
+						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - diff_checked_children === 0) {
+							this.stats.unchecked_nodes++;
+						}
+
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] -= diff_checked_children;
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] === 0) {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
-						} //Note that we have can reach a -1 state here as we just checked a child leaf
+						}
 					});
 			}
 

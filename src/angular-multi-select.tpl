@@ -1,5 +1,5 @@
 <div class="ams-button" ng-click="open = !open">
-	<div class="">This is AMS</div>
+	<div class="">{{ stats.checked_leafs }} selected items</div>
 	<div class="caret"></div>
 </div>
 

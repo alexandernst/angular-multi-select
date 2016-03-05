@@ -203,6 +203,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * That could happen on check/uncheck, for example.
 					 */
 
+					$scope.stats = amse.get_stats();
 					/*
 					 * Get the visible tree only once. Consecutive calls on un/check
 					 * will automatically propagate to the rendered tree.
