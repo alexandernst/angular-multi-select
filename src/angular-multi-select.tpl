@@ -23,7 +23,7 @@
 	</div>
 
 	<div
-		ng-repeat="item in items track by item[ops['ID_PROPERTY']]"
+		ng-repeat="item in items track by item[ops.ID_PROPERTY]"
 		class="ams-item
 			{{ amssh.get_level_class(item) }}
 			{{ amssh.get_type_class(item) }}
