@@ -1,5 +1,5 @@
 <div class="ams-button" ng-click="open = !open">
-	<div class="">{{ stats.checked_leafs }} selected items</div>
+	<div class="">{{ amssh.create_dropdown_label(stats) }}</div>
 	<div class="caret"></div>
 </div>
 

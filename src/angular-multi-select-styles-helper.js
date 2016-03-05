@@ -23,9 +23,13 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			/*
 			 * String representation of nodes/leafs.
 			 */
+			this.dropdown_repr_attr = attrs.dropdownLabel || "";
+			this.dropdown_repr      = this.interpolate(this.dropdown_repr_attr);
+
 			this.node_repr_attr = attrs.nodeLabel || "";
-			this.leaf_repr_attr = attrs.leafLabel || "";
 			this.node_repr      = this.interpolate(this.node_repr_attr);
+
+			this.leaf_repr_attr = attrs.leafLabel || "";
 			this.leaf_repr      = this.interpolate(this.leaf_repr_attr);
 		};
 
@@ -64,6 +68,14 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 				str.replace(this.START_REPLACE_SYMBOL_REGEX, this.START_INTERPOLATE_SYMBOL)
 				.replace(this.END_REPLACE_SYMBOL_REGEX, this.END_INTERPOLATE_SYMBOL)
 			);
+		};
+
+		StylesHelper.prototype.create_dropdown_label = function (stats) {
+			//TODO: Cache + cache invalidation on data change
+
+			var _interpolated = this.dropdown_repr(stats);
+
+			return $sce.trustAsHtml(_interpolated);
 		};
 
 		StylesHelper.prototype.create_label = function (item) {
