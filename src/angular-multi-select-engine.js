@@ -626,7 +626,16 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.check_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("check_node");
 
+			var default_ops = {
+				call_on_data_change_fn: true
+			}
+
 			ops = ops || {};
+			for (var k in default_ops) {
+				if (!ops.hasOwnProperty(k)) {
+					ops[k] = default_ops[k];
+				}
+			}
 
 			/*
 			 * Used for internal calculations.
@@ -782,7 +791,16 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.uncheck_node = function (item, ops) {
 			if (this.DEBUG === true) console.time("uncheck_node");
 
+			var default_ops = {
+				call_on_data_change_fn: true
+			}
+
 			ops = ops || {};
+			for (var k in default_ops) {
+				if (!ops.hasOwnProperty(k)) {
+					ops[k] = default_ops[k];
+				}
+			}
 
 			/*
 			 * Used for internal calculations.
