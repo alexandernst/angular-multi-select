@@ -324,48 +324,60 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			if (this.DEBUG === true) console.time("get_checked_tree");
 
-			var query_filter = [
-				angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
-				angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
-				angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
-			];
-			if (filter !== undefined) {
-				switch (filter) {
-					case angularMultiSelectConstants.FIND_MIXED_NODES:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
-						];
-						break;
-					case angularMultiSelectConstants.FIND_CHECKED_NODES:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED
-						];
-						break;
-					case angularMultiSelectConstants.FIND_CHECKED_LEAFS:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
-						];
-						break;
-					case angularMultiSelectConstants.FIND_CHECKED_AND_MIXED_NODES:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
-						];
-						break;
-					case angularMultiSelectConstants.FIND_CHECKED_LEAFS_AND_NODES:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
-						];
-						break;
-					case angularMultiSelectConstants.FIND_CHECKED_MIXED_LEAFS_NODES:
-						query_filter = [
-							angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
-							angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
-						];
-						break;
-				}
+			var query_filter;
+			switch (filter) {
+				case angularMultiSelectConstants.FIND_LEAFS:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_LEAFS_MIXED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED,
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_LEAFS_CHECKED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_LEAFS_MIXED_CHECKED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED,
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_MIXED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_CHECKED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED
+					];
+					break;
+
+				case angularMultiSelectConstants.FIND_MIXED_CHECKED_NODES:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
+						angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED
+					];
+					break;
+
+				default:
+					query_filter = [
+						angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
+					];
+					break;
 			}
 
 			var tree = this.collection

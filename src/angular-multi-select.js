@@ -67,6 +67,7 @@ angular_multi_select.directive('angularMultiSelect', [
 							return s.replace(/^\s+|\s+$/g, '');
 						});
 				}
+				this.output_filter = attrs.outputFilter === undefined ? angularMultiSelectConstants.FIND_LEAFS : attrs.outputFilter;
 
 				/*
 				 * Find out which field to use for the 'search' functionality.
@@ -214,7 +215,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					$scope.items = amse.get_visible_tree();
 
 					if ($scope.outputModel !== undefined) {
-						var checked_tree = amse.get_checked_tree();
+						var checked_tree = amse.get_checked_tree(this.output_filter);
 
 						/*
 						 * Remove internal (undeeded) data.
