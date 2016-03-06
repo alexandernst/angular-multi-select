@@ -5,6 +5,12 @@ var angular_multi_select = angular.module('angular-multi-select', [
 	'angular-multi-select-data-converter'
 ]);
 
+angular_multi_select.factory('$exceptionHandler', function () {
+	return function (exception, cause) {
+		console.log(exception, cause);
+	};
+});
+
 angular_multi_select.directive('angularMultiSelect', [
 	'$window',
 	'$timeout',
