@@ -12,13 +12,15 @@ angular_multi_select.factory('$exceptionHandler', function () {
 });
 
 angular_multi_select.directive('angularMultiSelect', [
+	'$http',
 	'$window',
 	'$timeout',
 	'angularMultiSelectEngine',
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function ($window, $timeout, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($http, $window, $timeout, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+		'use strict';
 		return {
 			restrict: 'AE',
 
@@ -276,19 +278,41 @@ angular_multi_select.directive('angularMultiSelect', [
 				██  ██  ██ ██   ██ ██ ██  ██ ██
 				██      ██ ██   ██ ██ ██   ████
 				*/
+				self.init = function (data) {
+					if (!Array.isArray(data)) {
+						return;
+					}
+
+					var checked_data  = self.do_not_check_data   ? data         : amsdc.check_prerequisites(data);
+					var internal_data = self.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
+
+					if ($scope.reset_model === null) {
+						$scope.reset_model = angular.copy(internal_data);
+					}
+
+					amse.insert(internal_data);
+				};
+
 				$scope.$watch('inputModel', function (_new, _old) {
 					/*
 					* The entry point of the directive. This monitors the input data and
 					* decides when to populate the internal data model and how to do it.
 					*/
-					var checked_data  = this.do_not_check_data   ? _new         : amsdc.check_prerequisites(_new);
-					var internal_data = this.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
-
-					if (_new !== undefined && $scope.reset_model === null) {
-						$scope.reset_model = angular.copy(internal_data);
+					if (typeof(_new) === "string") {
+						try {
+							self.init(JSON.parse(_new));
+						} catch (e) {
+							$http.get(_new).then(function (response) {
+								self.init(response.data);
+							});
+						}
+					} else {
+						self.init(_new);
 					}
+				});
 
-					amse.insert(internal_data);
+				$scope.$on('$destroy', function () {
+					//TODO: clean
 				});
 			}
 		};
