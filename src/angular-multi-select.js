@@ -220,11 +220,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						/*
 						 * Remove internal (undeeded) data.
 						 */
-						if ($scope.ops.DEBUG === true) {
-							var res = checked_tree;
-						} else {
-							var res = amsdc.to_external(checked_tree);
-						}
+						var res = $scope.ops.DEBUG ? checked_tree : amsdc.to_external(checked_tree);
 
 						/*
 						 * Convert the data to the desired output.
