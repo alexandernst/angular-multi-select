@@ -59,12 +59,12 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	/*
 	 * Possible values for the output data query
 	 */
-	FIND_LEAFS                     : 'leafs',
-	FIND_LEAFS_MIXED_NODES         : 'leafs_mixed_nodes',
-	FIND_LEAFS_CHECKED_NODES       : 'leafs_checked_nodes',
-	FIND_LEAFS_MIXED_CHECKED_NODES : 'leafs_mixed_checked_nodes',
-	FIND_MIXED_NODES               : 'midex_nodes',
-	FIND_CHECKED_NODES             : 'checked_nodes',
-	FIND_MIXED_CHECKED_NODES       : 'mixed_checked_nodes',
+	FIND_LEAFS                         : 'leafs',
+	FIND_LEAFS_MIXED_NODES             : 'leafs_mixed_nodes',
+	FIND_LEAFS_CHECKED_NODES           : 'leafs_checked_nodes',
+	FIND_LEAFS_MIXED_CHECKED_NODES     : 'leafs_mixed_checked_nodes',
+	FIND_MIXED_NODES                   : 'midex_nodes',
+	FIND_CHECKED_NODES                 : 'checked_nodes',
+	FIND_MIXED_CHECKED_NODES           : 'mixed_checked_nodes',
 
 });
