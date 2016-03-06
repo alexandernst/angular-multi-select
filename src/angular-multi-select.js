@@ -24,6 +24,7 @@ angular_multi_select.directive('angularMultiSelect', [
 			templateUrl: '../src/angular-multi-select.tpl',
 
 			link: function ($scope, element, attrs) {
+				var self = {};
 				var el_attrs = element[0].attributes;
 				var el_attrs_vals = Object.keys(el_attrs).map((key) => el_attrs[key]);
 
@@ -52,27 +53,27 @@ angular_multi_select.directive('angularMultiSelect', [
 				/*
 				 * Find out if the input data should be threated in some special way.
 				 */
-				this.do_not_check_data   = attrs.doNotCheckData   === "true" ? true : false;
-				this.do_not_convert_data = attrs.doNotConvertData === "true" ? true : false;
+				self.do_not_check_data   = attrs.doNotCheckData   === "true" ? true : false;
+				self.do_not_convert_data = attrs.doNotConvertData === "true" ? true : false;
 
 				/*
 				 * Find out if the output data should be converted in some special way.
 				 */
-				this.output_type = attrs.outputType === undefined ? 'objects' : attrs.outputType;
-				this.output_keys = attrs.outputKeys === undefined ? undefined : attrs.outputKeys;
-				if (this.output_keys !== undefined) {
-					this.output_keys = this.output_keys
+				self.output_type = attrs.outputType === undefined ? 'objects' : attrs.outputType;
+				self.output_keys = attrs.outputKeys === undefined ? undefined : attrs.outputKeys;
+				if (self.output_keys !== undefined) {
+					self.output_keys = self.output_keys
 						.split(",")
 						.map(function (s) {
 							return s.replace(/^\s+|\s+$/g, '');
 						});
 				}
-				this.output_filter = attrs.outputFilter === undefined ? angularMultiSelectConstants.FIND_LEAFS : attrs.outputFilter;
+				self.output_filter = attrs.outputFilter === undefined ? angularMultiSelectConstants.FIND_LEAFS : attrs.outputFilter;
 
 				/*
 				 * Find out which field to use for the 'search' functionality.
 				 */
-				this.search_field = attrs.searchField === undefined ? null : attrs.searchField;
+				self.search_field = attrs.searchField === undefined ? null : attrs.searchField;
 
 				/*
 				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
@@ -185,7 +186,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						//TODO: this needs a lot of improving
 						var filter = [];
 						filter.push({
-							field: this.search_field,
+							field: self.search_field,
 							query: query
 						});
 
@@ -215,7 +216,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					$scope.items = amse.get_visible_tree();
 
 					if ($scope.outputModel !== undefined) {
-						var checked_tree = amse.get_checked_tree(this.output_filter);
+						var checked_tree = amse.get_checked_tree(self.output_filter);
 
 						/*
 						 * Remove internal (undeeded) data.
@@ -225,21 +226,21 @@ angular_multi_select.directive('angularMultiSelect', [
 						/*
 						 * Convert the data to the desired output.
 						 */
-						switch (this.output_type) {
+						switch (self.output_type) {
 							case 'objects':
-								res = amsdc.to_array_of_objects(res, this.output_keys);
+								res = amsdc.to_array_of_objects(res, self.output_keys);
 								break;
 							case 'arrays':
-								res = amsdc.to_array_of_arrays(res, this.output_keys);
+								res = amsdc.to_array_of_arrays(res, self.output_keys);
 								break;
 							case 'object':
-								res = amsdc.to_object(res, this.output_keys);
+								res = amsdc.to_object(res, self.output_keys);
 								break;
 							case 'array':
-								res = amsdc.to_array(res, this.output_keys);
+								res = amsdc.to_array(res, self.output_keys);
 								break;
 							case 'value':
-								res = amsdc.to_array(res, this.output_keys);
+								res = amsdc.to_array(res, self.output_keys);
 								break;
 						}
 
