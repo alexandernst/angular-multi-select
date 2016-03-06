@@ -6,10 +6,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 	'angularMultiSelectConstants',
 	function (angularMultiSelectConstants) {
 		var Engine = function (ops) {
-			ops = ops || {};
+			ops                    = ops                   || {};
 
 			this.DEBUG             = ops.DEBUG             || false;
-			this.NAME              = ops.NAME              || 'angular-multi-select-' + (Date.now() / 1000 | 0);
+			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000);
 			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
 
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
@@ -58,7 +58,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				if (typeof(fn) === 'function') {
 					fn();
 				}
-			};;
+			};
 		};
 
 		/*
