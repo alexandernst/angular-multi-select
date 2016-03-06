@@ -100,7 +100,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Create a collection in the database and create indices.
 			 */
-			if (this.DEBUG === true) console.time("create_collection");
+			if (this.DEBUG === true) console.time(this.NAME, "-> create_collection");
 
 			this.collection = this.db.addCollection(name, {
 				indices: [
@@ -113,7 +113,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				clone: true
 			});
 
-			if (this.DEBUG === true) console.timeEnd("create_collection");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> create_collection");
 		};
 
 		/*
@@ -127,12 +127,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Remove a collection from the database.
 			 */
-			if (this.DEBUG === true) console.time("remove_collection");
+			if (this.DEBUG === true) console.time(this.NAME, "-> remove_collection");
 
 			this.db.removeCollection(name);
 
-			if (this.DEBUG === true) console.timeEnd("remove_collection");
-		}
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> remove_collection");
+		};
 
 		/*
 		██ ███    ██ ███████ ███████ ██████  ████████
@@ -145,7 +145,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Iterate over an array of items and insert them.
 			 */
-			if (this.DEBUG === true) console.time("insert");
+			if (this.DEBUG === true) console.time(this.NAME, "-> insert");
 
 			this.remove_collection(this.NAME);
 			this.create_collection(this.NAME);
@@ -164,7 +164,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				this.update_stats(items);
 			}
 
-			if (this.DEBUG === true) console.timeEnd("insert");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> insert");
 
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
@@ -226,7 +226,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				total_leafs: 0,
 				total_nodes: 0
 			};
-		}
+		};
 
 		/*
 		 ██████  ███████ ████████     ███████ ██    ██ ██      ██          ████████ ██████  ███████ ███████
@@ -239,7 +239,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Get the entire set of data currently inserted in Loki.
 			 */
-			if (this.DEBUG === true) console.time("get_full_tree");
+			if (this.DEBUG === true) console.time(this.NAME, "-> get_full_tree");
 
 			var tree = this.collection
 				.chain()
@@ -247,7 +247,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 				.data();
 
-			if (this.DEBUG === true) console.time("get_full_tree");
+			if (this.DEBUG === true) console.time(this.NAME, "-> get_full_tree");
 
 			return tree;
 		};
@@ -263,7 +263,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Get only the visible elements from Loki.
 			 */
-			if (this.DEBUG === true) console.time("get_visible_tree");
+			if (this.DEBUG === true) console.time(this.NAME, "-> get_visible_tree");
 
 			var tree = this.collection
 				.chain()
@@ -273,7 +273,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 				.data();
 
-			if (this.DEBUG === true) console.timeEnd("get_visible_tree");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> get_visible_tree");
 
 			return tree;
 		};
@@ -286,7 +286,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████  ███████    ██        ██      ██ ███████ ██    ███████ ██   ██ ███████ ██████         ██    ██   ██ ███████ ███████
 		*/
 		Engine.prototype.get_filtered_tree = function (query) {
-			if (this.DEBUG === true) console.time("get_filtered_tree");
+			if (this.DEBUG === true) console.time(this.NAME, "-> get_filtered_tree");
 
 			var filter = [];
 			for (var i = 0; i < query.length; i++) {
@@ -306,7 +306,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 				.data();
 
-			if (this.DEBUG === true) console.timeEnd("get_filtered_tree");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> get_filtered_tree");
 
 			return tree;
 		};
@@ -322,7 +322,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Get only the checked elements from Loki.
 			 */
-			if (this.DEBUG === true) console.time("get_checked_tree");
+			if (this.DEBUG === true) console.time(this.NAME, "-> get_checked_tree");
 
 			var query_filter;
 			switch (filter) {
@@ -390,7 +390,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 				.data();
 
-			if (this.DEBUG === true) console.timeEnd("get_checked_tree");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> get_checked_tree");
 
 			return tree;
 		};
@@ -436,7 +436,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * a rule such that it will skip the next N items on the
 			 * result. Else mark the item as visible.
 			 */
-			if (this.DEBUG === true) console.time("open_node");
+			if (this.DEBUG === true) console.time(this.NAME, "-> open_node");
 
 			var skip = 0;
 
@@ -482,7 +482,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					obj[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBLE;
 				});
 
-			if (this.DEBUG === true) console.timeEnd("open_node");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> open_node");
 		};
 
 		/*
@@ -498,7 +498,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * First, mark the item itself as closed, then find all
 			 * children and mark then as invisible.
 			 */
-			if (this.DEBUG === true) console.time("close_node");
+			if (this.DEBUG === true) console.time(this.NAME, "-> close_node");
 
 			this.collection
 				.chain()
@@ -530,7 +530,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					obj[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_INVISIBLE;
 				});
 
-			if (this.DEBUG === true) console.timeEnd("close_node");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> close_node");
 		};
 
 		/*
@@ -541,7 +541,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ██ ███████ ███████
 		*/
 		Engine.prototype.check_all = function () {
-			if (this.DEBUG === true) console.time("check_all");
+			if (this.DEBUG === true) console.time(this.NAME, "-> check_all");
 
 			this.collection
 				.chain()
@@ -559,7 +559,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			this.stats.checked_leafs = this.stats.total_leafs;
 			this.stats.checked_nodes = this.stats.total_nodes;
 
-			if (this.DEBUG === true) console.time("check_all");
+			if (this.DEBUG === true) console.time(this.NAME, "-> check_all");
 
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
@@ -572,7 +572,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ██ ███████ ███████
 		*/
 		Engine.prototype.uncheck_all = function () {
-			if (this.DEBUG === true) console.time("uncheck_all");
+			if (this.DEBUG === true) console.time(this.NAME, "-> uncheck_all");
 
 			this.collection
 				.chain()
@@ -590,7 +590,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			this.stats.checked_nodes = 0;
 			this.stats.unchecked_nodes = this.stats.total_nodes;
 
-			if (this.DEBUG === true) console.time("uncheck_all");
+			if (this.DEBUG === true) console.time(this.NAME, "-> uncheck_all");
 
 			if (this.on_data_change_fn !== null) this.on_data_change_fn();
 		};
@@ -636,11 +636,11 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
 		Engine.prototype.check_node = function (item, ops) {
-			if (this.DEBUG === true) console.time("check_node");
+			if (this.DEBUG === true) console.time(this.NAME, "-> check_node");
 
 			var default_ops = {
 				call_on_data_change_fn: true
-			}
+			};
 
 			ops = ops || {};
 			for (var k in default_ops) {
@@ -788,7 +788,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					});
 			}
 
-			if (this.DEBUG === true) console.timeEnd("check_node");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> check_node");
 
 			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
 		};
@@ -801,11 +801,11 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		 ██████  ██   ████  ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████
 		*/
 		Engine.prototype.uncheck_node = function (item, ops) {
-			if (this.DEBUG === true) console.time("uncheck_node");
+			if (this.DEBUG === true) console.time(this.NAME, "-> uncheck_node");
 
 			var default_ops = {
 				call_on_data_change_fn: true
-			}
+			};
 
 			ops = ops || {};
 			for (var k in default_ops) {
@@ -950,7 +950,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					});
 			}
 
-			if (this.DEBUG === true) console.timeEnd("uncheck_node");
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> uncheck_node");
 
 			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
 		};
@@ -967,7 +967,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * Find the oldest n leaf that have been marked as checked and uncheck them.
 			 * This function is used to control the maximum amount of checked leafs.
 			 */
-			if (this.DEBUG === true) console.time("uncheck_first");
+			if (this.DEBUG === true) console.time(this.NAME, "-> uncheck_first");
 
 			n = n || 1;
 
@@ -998,21 +998,21 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				 *          with the lowest order is sorted before.
 				 */
 				.sort(function (a, b) {
-					if (!("updated" in a["meta"]) && !("updated" in b["meta"])) {
-						var diff = a["meta"]["created"] - b["meta"]["created"];
+					if (!("updated" in a.meta) && !("updated" in b.meta)) {
+						var diff = a.meta.created - b.meta.created;
 						if (diff === 0) {
 							return a[angularMultiSelectConstants.INTERNAL_KEY_ORDER] - b[angularMultiSelectConstants.INTERNAL_KEY_ORDER];
 						} else {
 							return diff;
 						}
 					}
-					if (!("updated" in b["meta"])) {
+					if (!("updated" in b.meta)) {
 						return -1;
 					}
-					if (!("updated" in a["meta"])) {
+					if (!("updated" in a.meta)) {
 						return 1;
 					}
-					return a["meta"]["updated"] - b["meta"]["updated"];
+					return a.meta.updated - b.meta.updated;
 				})
 				.limit(n)
 				.data();
@@ -1023,8 +1023,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				});
 			}
 
-			if (this.DEBUG === true) console.timeEnd("uncheck_first");
-		}
+			if (this.DEBUG === true) console.timeEnd(this.NAME, "-> uncheck_first");
+		};
 
 		return Engine;
 	}

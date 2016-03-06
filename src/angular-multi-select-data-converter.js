@@ -50,7 +50,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			 * - children properties are non-empty arrays
 			 * - only leafs have a checked property and it's a boolean
 			 */
-			if (this.DEBUG === true) console.time('check_prerequisites');
+			if (this.DEBUG === true) console.time(this.NAME, '-> check_prerequisites');
 
 			if (!Array.isArray(data)) return false;
 
@@ -137,7 +137,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 			process_items(data);
 
-			if (this.DEBUG === true) console.timeEnd('check_prerequisites');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> check_prerequisites');
 
 			// Return data array or false if something is wrong.
 			return correct ? data : correct;
@@ -160,7 +160,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			 * only if you're completely sure how this method works, what and
 			 * how it does what it does.
 			 */
-			if (this.DEBUG === true) console.time('to_internal');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_internal');
 
 			var order = 1;
 			var ctx = this;
@@ -281,7 +281,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = counter_checked;
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_internal');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_internal');
 
 			return final_data;
 		};
@@ -304,7 +304,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
-			if (this.DEBUG === true) console.time('to_external');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_external');
 
 			for (var i = 0; i < data.length; i++) {
 				//AMS engine metadata
@@ -318,11 +318,11 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 				//Loki metadata
 				//TODO: Remove after https://github.com/techfort/LokiJS/issues/346
-				delete data[i]['meta'];
-				delete data[i]['$loki'];
+				delete data[i].meta;
+				delete data[i].$loki;
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_external');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_external');
 
 			return data;
 		};
@@ -345,7 +345,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
-			if (this.DEBUG === true) console.time('to_array_of_objects');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_array_of_objects');
 
 			if (keys === undefined) {
 				keys = [];
@@ -374,7 +374,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_array_of_objects');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_array_of_objects');
 
 			return new_data;
 		};
@@ -399,7 +399,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
-			if (this.DEBUG === true) console.time('to_array_of_arrays');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_array_of_arrays');
 
 			if (keys === undefined) {
 				keys = [];
@@ -434,7 +434,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_array_of_arrays');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_array_of_arrays');
 
 			return new_data;
 		};
@@ -458,7 +458,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return [];
 			}
 
-			if (this.DEBUG === true) console.time('to_array');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_array');
 
 			if (keys === undefined) {
 				keys = [];
@@ -492,7 +492,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_array');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_array');
 
 			return ret;
 		};
@@ -518,7 +518,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return {};
 			}
 
-			if (this.DEBUG === true) console.time('to_object');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_object');
 
 			if (keys === undefined) {
 				keys = [];
@@ -545,7 +545,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_object');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_object');
 
 			return ret;
 		};
@@ -569,7 +569,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				return undefined;
 			}
 
-			if (this.DEBUG === true) console.time('to_value');
+			if (this.DEBUG === true) console.time(this.NAME, '-> to_value');
 
 			var ret;
 			var obj = data[0];
@@ -591,7 +591,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				}
 			}
 
-			if (this.DEBUG === true) console.timeEnd('to_value');
+			if (this.DEBUG === true) console.timeEnd(this.NAME, '-> to_value');
 
 			return ret;
 		};
