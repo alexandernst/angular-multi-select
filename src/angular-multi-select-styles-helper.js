@@ -115,7 +115,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE)
 				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE);
 			return $interpolate(str);
-		}
+		};
 
 		/*
 		██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████     ██████  ███████ ██████  ███████ ████████ ██ ████████ ██ ██    ██ ███████
@@ -137,7 +137,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE)
 				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE);
 			return $interpolate(str);
-		}
+		};
 
 		StylesHelper.prototype.create_dropdown_label = function (stats) {
 			//TODO: Cache + cache invalidation on data change
