@@ -88,17 +88,13 @@ module.exports = function(grunt) {
 			basic: {
 				src: [
 					'src/angular-multi-select-constants.js',
-					'src/angular-multi-select-styles-helper.js',
+					'src/angular-multi-select-data-converter.js',
 					'src/angular-multi-select-engine.js',
-					'src/angular-multi-select.js'
+					'src/angular-multi-select-styles-helper.js',
+					'src/angular-multi-select.js',
+					'src/angular-multi-select.tpl.js'
 				],
 				dest: 'build/angular-multi-select.js'
-			},
-			extras: {
-				src: [
-					'src/angular-multi-select-data-converter.js'
-				],
-				dest: 'build/angular-multi-select-extras.js'
 			}
 		},
 
@@ -120,8 +116,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js'],
-					'dist/<%= pkg.name %>.extras.min.js': ['build/<%= pkg.name %>-extras.js']
+					'dist/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
 				}
 			}
 		},
