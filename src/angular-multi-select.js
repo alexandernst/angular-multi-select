@@ -8,12 +8,14 @@ var angular_multi_select = angular.module('angular-multi-select', [
 angular_multi_select.directive('angularMultiSelect', [
 	'$http',
 	'$window',
+	'$compile',
 	'$timeout',
+	'$templateCache',
 	'angularMultiSelectEngine',
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function ($http, $window, $timeout, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($http, $window, $compile, $timeout, $templateCache, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 		'use strict';
 		return {
 			restrict: 'AE',
@@ -23,9 +25,11 @@ angular_multi_select.directive('angularMultiSelect', [
 				outputModel: '='
 			},
 
-			templateUrl: '../src/angular-multi-select.tpl',
-
 			link: function ($scope, element, attrs) {
+				var template = $templateCache.get('angular-multi-select.tpl');
+				var content = $compile(template)($scope);
+				element.append(content);
+
 				var self = {};
 				var el_attrs = element[0].attributes;
 				var el_attrs_vals = Object.keys(el_attrs).map((key) => el_attrs[key]);
