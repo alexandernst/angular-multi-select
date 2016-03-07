@@ -20,22 +20,34 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
 			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
 
-			this.START_REPLACE_SYMBOL_REGEX = /<\[/g;
-			this.END_REPLACE_SYMBOL_REGEX   = /]>/g;
-			this.START_INTERPOLATE_SYMBOL   = $interpolate.startSymbol();
-			this.END_INTERPOLATE_SYMBOL     = $interpolate.endSymbol();
+			this.START_REPLACE_SYMBOL_REGEX        = /<\[/g;
+			this.END_REPLACE_SYMBOL_REGEX          = /]>/g;
+			this.START_INTERPOLATE_SYMBOL          = $interpolate.startSymbol();
+			this.END_INTERPOLATE_SYMBOL            = $interpolate.endSymbol();
+
+			this.START_REPLACE_SYMBOL_ALTERNATIVE_REGEX = /<#/g;
+			this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX   = /#>/g;
+			this.START_INTERPOLATE_SYMBOL_ALTERNATIVE   = $interpolate.startSymbol();
+			this.END_INTERPOLATE_SYMBOL_ALTERNATIVE     = $interpolate.endSymbol();
+
+			this.START_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX = /<#/g;
+			this.END_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX   = /#>/g;
+			this.START_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE   = '<[' + $interpolate.startSymbol();
+			this.END_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE     = $interpolate.endSymbol() + ']>';
 
 			/*
-			 * String representation of nodes/leafs.
+			 * String representation of nodes/leafs and dropdown label.
 			 */
 			this.dropdown_repr_attr = attrs.dropdownLabel || "";
-			this.dropdown_repr      = this.interpolate(this.dropdown_repr_attr);
+			this.dropdown_repr      = this.interpolate_alternative(this.dropdown_repr_attr);
 
 			this.node_repr_attr = attrs.nodeLabel || "";
-			this.node_repr      = this.interpolate(this.node_repr_attr);
+			this.node_repr      = this.interpolate_alternative_repetitive(this.node_repr_attr)({angularMultiSelectConstants: angularMultiSelectConstants});
+			this.node_repr      = this.interpolate(this.node_repr);
 
 			this.leaf_repr_attr = attrs.leafLabel || "";
-			this.leaf_repr      = this.interpolate(this.leaf_repr_attr);
+			this.leaf_repr      = this.interpolate_alternative_repetitive(this.leaf_repr_attr)({angularMultiSelectConstants: angularMultiSelectConstants});
+			this.leaf_repr      = this.interpolate(this.leaf_repr);
 		};
 
 		StylesHelper.prototype.get_level_class = function (item) {
@@ -68,12 +80,64 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 				angularMultiSelectConstants.CSS_NODE;
 		};
 
+		/*
+		██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████
+		██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██
+		██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████
+		██ ██  ██ ██    ██    ██      ██   ██ ██      ██    ██ ██      ██   ██    ██    ██
+		██ ██   ████    ██    ███████ ██   ██ ██       ██████  ███████ ██   ██    ██    ███████
+		*/
 		StylesHelper.prototype.interpolate = function (str) {
-			return $interpolate(
-				str.replace(this.START_REPLACE_SYMBOL_REGEX, this.START_INTERPOLATE_SYMBOL)
-				.replace(this.END_REPLACE_SYMBOL_REGEX, this.END_INTERPOLATE_SYMBOL)
-			);
+			/*
+			 * Interpolation method used to interpolate <[ ]>.
+			 * This is normaly used to interpolate the data of nodes/leafs.
+			 */
+			str = str
+				.replace(this.START_REPLACE_SYMBOL_REGEX, this.START_INTERPOLATE_SYMBOL)
+				.replace(this.END_REPLACE_SYMBOL_REGEX, this.END_INTERPOLATE_SYMBOL);
+			return $interpolate(str);
 		};
+
+		/*
+		██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████
+		██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ████   ██ ██   ██    ██    ██ ██    ██ ██
+		██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████       ███████ ██      ██    █████   ██████  ██ ██  ██ ███████    ██    ██ ██    ██ █████
+		██ ██  ██ ██    ██    ██      ██   ██ ██      ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ██  ██ ██ ██   ██    ██    ██  ██  ██  ██
+		██ ██   ████    ██    ███████ ██   ██ ██       ██████  ███████ ██   ██    ██    ███████     ██   ██ ███████ ██    ███████ ██   ██ ██   ████ ██   ██    ██    ██   ████   ███████
+		*/
+		StylesHelper.prototype.interpolate_alternative = function (str) {
+			/*
+			 * Interpolation method used to interpolate <# #>.
+			 * This is normaly used to interpolate the data of the dropdown label, but
+			 * can also be used to interpolate internal data.
+			 */
+			str = str
+				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE)
+				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE);
+			return $interpolate(str);
+		}
+
+		/*
+		██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████     ██████  ███████ ██████  ███████ ████████ ██ ████████ ██ ██    ██ ███████
+		██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ████   ██ ██   ██    ██    ██ ██    ██ ██          ██   ██ ██      ██   ██ ██         ██    ██    ██    ██ ██    ██ ██
+		██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████       ███████ ██      ██    █████   ██████  ██ ██  ██ ███████    ██    ██ ██    ██ █████       ██████  █████   ██████  █████      ██    ██    ██    ██ ██    ██ █████
+		██ ██  ██ ██    ██    ██      ██   ██ ██      ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ██  ██ ██ ██   ██    ██    ██  ██  ██  ██          ██   ██ ██      ██      ██         ██    ██    ██    ██  ██  ██  ██
+		██ ██   ████    ██    ███████ ██   ██ ██       ██████  ███████ ██   ██    ██    ███████     ██   ██ ███████ ██    ███████ ██   ██ ██   ████ ██   ██    ██    ██   ████   ███████     ██   ██ ███████ ██      ███████    ██    ██    ██    ██   ████   ███████
+		*/
+		StylesHelper.prototype.interpolate_alternative_repetitive = function (str) {
+			/*
+			 * Interpolation method used to interpolate <# #>.
+			 * This is normaly used to interpolate the data of the nodes/leafs, but
+			 * there is one difference between this method and 'interpolate'. This method
+			 * is suitable to be called and then chain a call to 'interpolate'. This is
+			 * useful when the user wants to interpolate some constant values from
+			 * angularMultiSelectConstants and then interpolate those values with a node/leaf.
+			 */
+			str = str
+				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE)
+				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE_REPETITIVE);
+			return $interpolate(str);
+		}
 
 		StylesHelper.prototype.create_dropdown_label = function (stats) {
 			//TODO: Cache + cache invalidation on data change
