@@ -470,6 +470,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				});
 			}
 
+			var j;
 			var obj = data[0];
 			var ret = [];
 
