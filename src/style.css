@@ -96,7 +96,8 @@
 }
 
 .ams-helpers .selects .all::before {
-	content: "✓  ";
+	content: "✓";
+	margin-right: 3px
 }
 
 .ams-helpers .selects .all {
@@ -104,7 +105,8 @@
 }
 
 .ams-helpers .selects .none::before {
-	content: "×  ";
+	content: "×";
+	margin-right: 3px
 }
 
 .ams-helpers .none {
@@ -117,7 +119,8 @@
 }
 
 .ams-helpers .resets .reset::before {
-	content: "↶  ";
+	content: "↶";
+	margin-right: 3px
 }
 
 .ams-helpers .reset {
