@@ -287,7 +287,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					var internal_data = self.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
 
 					if ($scope.reset_model === null) {
-						$scope.reset_model = angular.copy(internal_data);
+						$scope.reset_model = internal_data;
 					}
 
 					amse.insert(internal_data);
