@@ -45,8 +45,9 @@
 */
 .ams-container {
 	display: none; /*closed by default*/
+	display: flex;
+	flex-direction: column;
 	position: absolute;
-	display: inline-block;
 	border: 1px solid rgba(0, 0, 0, 0.15);;
 	background: white;
 	color: DimGrey;
@@ -62,12 +63,15 @@
 ██   ██ ███████ ███████ ██      ███████ ██   ██ ███████
 */
 .ams-helpers {
-	display: inline-block;
+	display: flex;
 	width: 100%;
+	margin-bottom: 5px;
 }
 
 .ams-helpers .btn,
 .ams-search .btn {
+	display: flex;
+	white-space: nowrap;
 	border: 1px solid #ccc;
 	font-size: 13px;
 	border-radius: 4px;
@@ -130,6 +134,7 @@
 .ams-search {
 	display: flex;
 	position: relative;
+	margin-bottom: 5px;
 }
 
 .ams-search .search {
@@ -182,6 +187,19 @@
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+/*
+██ ████████ ███████ ███    ███ ███████
+██    ██    ██      ████  ████ ██
+██    ██    █████   ██ ████ ██ ███████
+██    ██    ██      ██  ██  ██      ██
+██    ██    ███████ ██      ██ ███████
+*/
+.ams-items {
+	max-height: 50vh;
+	overflow: auto;
+	border: 1px solid #ddd;
 }
 
 /*

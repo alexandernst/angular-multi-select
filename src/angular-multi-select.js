@@ -5,12 +5,6 @@ var angular_multi_select = angular.module('angular-multi-select', [
 	'angular-multi-select-data-converter'
 ]);
 
-angular_multi_select.factory('$exceptionHandler', function () {
-	return function (exception, cause) {
-		console.log(exception, cause);
-	};
-});
-
 angular_multi_select.directive('angularMultiSelect', [
 	'$http',
 	'$window',
@@ -130,6 +124,51 @@ angular_multi_select.directive('angularMultiSelect', [
 				};
 
 				/*
+				 * Show the directive to the left/right and at the top/bottom
+				 * of the button itself, depending on the available space.
+				 */
+				$scope.$watch('open', function (_new, _old) {
+					var btn = element[0];
+					var container = btn.getElementsByClassName('ams-container')[0];
+
+					if (_new !== true) {
+						container.style.transform = "";
+						return;
+					}
+
+					$timeout(function () {
+						var translateX = 0, translateY = 0;
+
+						/*
+						 * If the available width to the right is not enough and there is
+						 * enough available width to the left, flip the X position.
+						 */
+						if (
+							document.documentElement.clientWidth - (btn.offsetLeft + btn.offsetWidth) < container.offsetWidth &&
+							btn.offsetLeft + btn.offsetWidth >= container.offsetWidth
+						) {
+							translateX -= (container.offsetWidth - btn.offsetWidth);
+						}
+
+						/*
+						 * If the available height to the bottom is not enough and there is
+						 * enough available height to the top, flip the Y position.
+						 */
+						if (
+							document.documentElement.clientHeight - (btn.offsetTop + btn.offsetHeight) < container.offsetHeight &&
+							btn.offsetTop >= container.offsetHeight
+						) {
+							translateY -= (container.offsetHeight + btn.offsetHeight);
+						}
+
+						if (translateX < 0 || translateY < 0) {
+							container.style.transform = "translate(" + translateX + "px, " + translateY + "px)";
+						}
+					});
+
+				});
+
+				/*
 				██   ██ ███████ ██      ██████  ███████ ██████  ███████
 				██   ██ ██      ██      ██   ██ ██      ██   ██ ██
 				███████ █████   ██      ██████  █████   ██████  ███████
@@ -142,8 +181,6 @@ angular_multi_select.directive('angularMultiSelect', [
 				 * function is triggered.
 				 */
 				$scope.reset_model = null;
-				$scope.check_all   = function () { amse.check_all(); };
-				$scope.check_none  = function () { amse.uncheck_all(); };
 				$scope.reset       = function () {
 					amse.insert($scope.reset_model);
 					$scope.items = amse.get_visible_tree();
@@ -191,7 +228,7 @@ angular_multi_select.directive('angularMultiSelect', [
 
 					$scope.search_spinner_visible = true;
 					$scope.search_promise = $timeout(function (query) {
-						//TODO: this needs a lot of improving
+						//TODO: this needs a lot of improving. Maybe use lunar.js?
 						var filter = [];
 						filter.push({
 							field: self.search_field,
