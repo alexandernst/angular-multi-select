@@ -55,6 +55,10 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 		};
 
 		StylesHelper.prototype.get_open_class = function (item) {
+			if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
+				return '';
+			}
+
 			return item[this.OPEN_PROPERTY] === true ?
 				angularMultiSelectConstants.CSS_OPEN :
 				angularMultiSelectConstants.CSS_CLOSED;
