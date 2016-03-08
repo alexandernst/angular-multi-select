@@ -7,7 +7,6 @@ var angular_multi_select = angular.module('angular-multi-select', [
 
 angular_multi_select.directive('angularMultiSelect', [
 	'$http',
-	'$window',
 	'$compile',
 	'$timeout',
 	'$templateCache',
@@ -15,7 +14,7 @@ angular_multi_select.directive('angularMultiSelect', [
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function ($http, $window, $compile, $timeout, $templateCache, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($http, $compile, $timeout, $templateCache, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 		'use strict';
 		return {
 			restrict: 'AE',
@@ -102,7 +101,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				  ████   ██ ███████ ██ ██████  ██ ███████ ██    ██       ██
 				*/
 				$scope.open = false;
-				$window.onclick = function (event) {
+				$scope.onclick_listener = function (event) {
 					if (!event.target) {
 						return;
 					}
@@ -126,6 +125,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					$scope.open = false;
 					$scope.$apply();
 				};
+				angular.element(window).on('click', $scope.onclick_listener);
 
 				/*
 				 * Show the directive to the left/right and at the top/bottom
@@ -355,7 +355,8 @@ angular_multi_select.directive('angularMultiSelect', [
 				});
 
 				$scope.$on('$destroy', function () {
-					//TODO: clean
+					amse.remove_collection($scope.ops.NAME);
+					angular.element(window).on('click', $scope.onclick_listener);
 				});
 			}
 		};
