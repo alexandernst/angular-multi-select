@@ -140,14 +140,15 @@
 	margin-bottom: 5px;
 }
 
-.ams-search .search {
+.ams-search .ams-search-field {
 	border-radius: 2px;
-    border: 1px solid #ccc;
-    height: 26px;
-    font-size: 14px;
-    width: 100%;
-    color: #888;
+	border: 1px solid #ccc;
+	height: 26px;
+	font-size: 14px;
+	width: 100%;
+	color: #888;
 	padding-left: 7px;
+	outline: none;
 }
 
 .ams-search .clear::before {
