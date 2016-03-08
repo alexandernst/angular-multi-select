@@ -1,7 +1,5 @@
 module.exports = function(grunt) {
 
-	var LIVERELOAD_PORT = 35729;
-
 	// Load grunt tasks automatically
 	require('load-grunt-tasks')(grunt);
 
@@ -11,7 +9,7 @@ module.exports = function(grunt) {
 		connect: {
 			server: {
 				options: {
-					livereload: LIVERELOAD_PORT
+					livereload: 8080
 				}
 			}
 		},
@@ -41,7 +39,6 @@ module.exports = function(grunt) {
 				options: {
 					styles: 'src/*.css',
 					helpers: [
-						'specs/data/*.js',
 						'specs/data_converter/*.js'
 					],
 					specs: 'specs/data_converter.js',
@@ -70,6 +67,32 @@ module.exports = function(grunt) {
 					]
 				}
 			},
+			ams: {
+				src: 'build/*.js',
+				options: {
+					styles: 'src/*.css',
+					helpers: [
+						'specs/ams/*.js',
+					],
+					specs: 'specs/ams.js',
+					vendor: [
+						'node_modules/lokijs/src/lokijs.js',
+						'node_modules/jquery/dist/jquery.js',
+						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+						'node_modules/angular/angular.js',
+						'node_modules/angular-mocks/angular-mocks.js',
+						'build/angular-multi-select.js'
+					],
+
+					//Special hacks
+					page: {
+						viewportSize: {
+							width: 1920,
+							height: 515
+						}
+					}
+				}
+			}
 		},
 
 		watch: {
@@ -77,7 +100,7 @@ module.exports = function(grunt) {
 			tasks: ['clear'],
 			options: {
 				debounceDelay: 1000,
-				livereload: LIVERELOAD_PORT
+				livereload: 8080
 			}
 		},
 
