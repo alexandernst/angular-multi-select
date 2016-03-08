@@ -4,7 +4,7 @@ angular_multi_select.run(function($templateCache) {
 	$templateCache.put('angular-multi-select.tpl', `
 
 		<div class="ams-button" ng-click="open = !open">
-			<div class="">{{ amssh.create_dropdown_label(stats) }}</div>
+			<div class="ams-button-text">{{ amssh.create_dropdown_label(stats) }}</div>
 			<div class="caret"></div>
 		</div>
 
@@ -39,7 +39,7 @@ angular_multi_select.run(function($templateCache) {
 					></div>
 
 					<!-- Text of the element -->
-					<div>{{ amssh.create_label(item) }}</div>
+					<div class="ams-item-text">{{ amssh.create_label(item) }}</div>
 
 					<!-- Check holder -->
 					<div
