@@ -79,7 +79,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				/*
 				 * Find out which field to use for the 'search' functionality.
 				 */
-				self.search_field = attrs.searchField === undefined ? null : attrs.searchField;
+				$scope.search_field = attrs.searchField === undefined ? null : attrs.searchField;
 
 				/*
 				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
@@ -205,7 +205,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						return;
 					}
 
-					if($scope.searchField === null) {
+					if($scope.search_field === null) {
 						return;
 					}
 
@@ -235,7 +235,7 @@ angular_multi_select.directive('angularMultiSelect', [
 						//TODO: this needs a lot of improving. Maybe use lunar.js?
 						var filter = [];
 						filter.push({
-							field: self.search_field,
+							field: $scope.search_field,
 							query: query
 						});
 
