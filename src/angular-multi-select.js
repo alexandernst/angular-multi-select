@@ -142,16 +142,18 @@ angular_multi_select.directive('angularMultiSelect', [
 
 					$timeout(function () {
 						var translateX = 0, translateY = 0;
+						var btn_rect = btn.getBoundingClientRect();
+						var container_rect = container.getBoundingClientRect();
 
 						/*
 						 * If the available width to the right is not enough and there is
 						 * enough available width to the left, flip the X position.
 						 */
 						if (
-							document.documentElement.clientWidth - (btn.offsetLeft + btn.offsetWidth) < container.offsetWidth &&
-							btn.offsetLeft + btn.offsetWidth >= container.offsetWidth
+							document.documentElement.clientWidth - (btn_rect.left + btn_rect.width) < container_rect.width &&
+							btn_rect.left + btn_rect.width >= container_rect.width
 						) {
-							translateX -= (container.offsetWidth - btn.offsetWidth);
+							translateX -= (container_rect.width - btn_rect.width);
 						}
 
 						/*
@@ -159,10 +161,10 @@ angular_multi_select.directive('angularMultiSelect', [
 						 * enough available height to the top, flip the Y position.
 						 */
 						if (
-							document.documentElement.clientHeight - (btn.offsetTop + btn.offsetHeight) < container.offsetHeight &&
-							btn.offsetTop >= container.offsetHeight
+							document.documentElement.clientHeight - (btn_rect.top + btn_rect.height) < container_rect.height &&
+							btn_rect.top >= container_rect.height
 						) {
-							translateY -= (container.offsetHeight + btn.offsetHeight);
+							translateY -= (container_rect.height + btn_rect.height);
 						}
 
 						if (translateX < 0 || translateY < 0) {
