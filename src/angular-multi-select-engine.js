@@ -129,6 +129,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			if (this.DEBUG === true) console.time(this.NAME + " -> remove_collection");
 
+			name = name || this.NAME;
 			this.db.removeCollection(name);
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> remove_collection");
