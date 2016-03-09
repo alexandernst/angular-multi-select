@@ -232,6 +232,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			if (this.DEBUG === true) console.time(this.NAME + " -> get_full_tree");
 
+			//TODO: Strip LokiJS metadata. https://github.com/techfort/LokiJS/issues/346
 			var tree = this.collection
 				.chain()
 				.find({})
@@ -256,6 +257,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			if (this.DEBUG === true) console.time(this.NAME + " -> get_visible_tree");
 
+			//TODO: Strip LokiJS metadata. https://github.com/techfort/LokiJS/issues/346
 			var tree = this.collection
 				.chain()
 				.find({
@@ -289,6 +291,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				});
 			}
 
+			//TODO: Strip LokiJS metadata. https://github.com/techfort/LokiJS/issues/346
 			var tree = this.collection
 				.chain()
 				.find({
@@ -371,6 +374,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					break;
 			}
 
+			//TODO: Strip LokiJS metadata. https://github.com/techfort/LokiJS/issues/346
 			var tree = this.collection
 				.chain()
 				.find({
@@ -645,6 +649,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 */
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
+
+			//TODO: Optimize when MAX_CHECKED_LEAFS is set?
 
 			/*
 			 * If the item is a leaf, mark it as checked.
