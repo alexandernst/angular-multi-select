@@ -316,7 +316,6 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY];
 
-				//Loki metadata
 				//TODO: Remove after https://github.com/techfort/LokiJS/issues/346
 				delete data[i].meta;
 				delete data[i].$loki;
