@@ -33,7 +33,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		Engine.prototype.on_data_change = function () {
+		Engine.prototype.on_data_change = function (ops) {
 			/*
 			 * Will be executed when the data in one or more of the items in the
 			 * tree is changed. Changes such as open/close (visibility related)
@@ -44,11 +44,24 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * when checking a node that has multiple children.
 			 */
 
-			/*
-			 * Handle situation where a maximum amount of checked leafs has been specified.
-			 */
-			if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
-				this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
+			var default_ops = {
+				skip_internal: false
+			};
+
+			ops = ops || {};
+			for (var k in default_ops) {
+				if (!ops.hasOwnProperty(k)) {
+					ops[k] = default_ops[k];
+				}
+			}
+
+			if (ops.skip_internal === false) {
+				/*
+				 * Handle situation where a maximum amount of checked leafs has been specified.
+				 */
+				if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
+					this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
+				}
 			}
 
 			if (typeof(this.on_data_change_fn) === 'function') {
@@ -63,7 +76,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		Engine.prototype.on_visual_change = function () {
+		Engine.prototype.on_visual_change = function (ops) {
 			/*
 			* Will be executed when the tree changed somehow, visually speaking.
 			* This function could be triggered by an open/close action for example.
@@ -73,6 +86,21 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			* visual changes required by the action, like for example when closing
 			* a node that has multiple children.
 			*/
+
+			var default_ops = {
+				skip_internal: false
+			};
+
+			ops = ops || {};
+			for (var k in default_ops) {
+				if (!ops.hasOwnProperty(k)) {
+					ops[k] = default_ops[k];
+				}
+			}
+
+			if (ops.skip_internal === false) {
+				//Do something here?
+			}
 
 			if (typeof(this.on_visual_change_fn) === 'function') {
 				this.on_visual_change_fn();
@@ -597,7 +625,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		   ██    ██    ██ ██    ██ ██    ██ ██      ██          ██      ██   ██ ██      ██      ██  ██
 		   ██     ██████   ██████   ██████  ███████ ███████      ██████ ██   ██ ███████  ██████ ██   ██
 		*/
-		Engine.prototype.toggle_check_node = function (item) {
+		Engine.prototype.toggle_check_node = function (item, ops) {
 			/*
 			 * Toggle the checked state on an item.
 			 * Note that there are, in total, 5 different states:
@@ -613,12 +641,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			switch (item[this.CHECKED_PROPERTY]) {
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED:
 				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED:
-					this.uncheck_node(item);
+					this.uncheck_node(item, ops);
 					break;
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED:
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED:
 				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED:
-					this.check_node(item);
+					this.check_node(item, ops);
 					break;
 			}
 		};
@@ -1014,7 +1042,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.data();
 
 			for (var i = 0; i < n; i++) {
-				this.uncheck_node(leaf[i], {
+				this.toggle_check_node(leaf[i], {
 					call_on_data_change: false
 				});
 			}
