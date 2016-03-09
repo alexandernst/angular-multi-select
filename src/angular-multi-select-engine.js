@@ -990,7 +990,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				 * First, get all the documents that are checked. Then sort them
 				 * with the following rules:
 				 *
-				 * 1. First, all documents with 'meta.updated' key, keeping in mind:
+				 * 1. First, all documents without 'meta.updated' key, keeping in mind:
 				 *     1.1. The documents with a major 'updated' value (newest) go last.
 				 *
 				 * 2. Then, all other documents, but...
@@ -1000,17 +1000,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				 */
 				.sort(function (a, b) {
 					if (!("updated" in a.meta) && !("updated" in b.meta)) {
-						var diff = a.meta.created - b.meta.created;
-						if (diff === 0) {
-							return a[angularMultiSelectConstants.INTERNAL_KEY_ORDER] - b[angularMultiSelectConstants.INTERNAL_KEY_ORDER];
-						} else {
-							return diff;
-						}
-					}
-					if (!("updated" in b.meta)) {
-						return -1;
+						return a[angularMultiSelectConstants.INTERNAL_KEY_ORDER] - b[angularMultiSelectConstants.INTERNAL_KEY_ORDER];
 					}
 					if (!("updated" in a.meta)) {
+						return -1;
+					}
+					if (!("updated" in b.meta)) {
 						return 1;
 					}
 					return a.meta.updated - b.meta.updated;
