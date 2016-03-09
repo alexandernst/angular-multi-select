@@ -33,7 +33,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		Engine.prototype.on_data_change = function (fn) {
+		Engine.prototype.on_data_change = function () {
 			/*
 			 * Will be executed when the data in one or more of the items in the
 			 * tree is changed. Changes such as open/close (visibility related)
@@ -43,22 +43,17 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * multiple data updates if there are more than one, like for example
 			 * when checking a node that has multiple children.
 			 */
-			this.on_data_change_fn = function () {
-				/*
-				 * Reserved for internal purposes.
-				 */
 
-				/*
-				 * Handle situation where a maximum amount of checked leafs has been specified.
-				 */
-				if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
-					this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
-				}
+			/*
+			 * Handle situation where a maximum amount of checked leafs has been specified.
+			 */
+			if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
+				this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
+			}
 
-				if (typeof(fn) === 'function') {
-					fn();
-				}
-			};
+			if (typeof(this.on_data_change_fn) === 'function') {
+				this.on_data_change_fn();
+			}
 		};
 
 		/*
@@ -68,7 +63,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 		 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 		*/
-		Engine.prototype.on_visual_change = function (fn) {
+		Engine.prototype.on_visual_change = function () {
 			/*
 			* Will be executed when the tree changed somehow, visually speaking.
 			* This function could be triggered by an open/close action for example.
@@ -78,15 +73,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			* visual changes required by the action, like for example when closing
 			* a node that has multiple children.
 			*/
-			this.on_visual_change_fn = function () {
-				/*
-				 * Reserved for internal purposes.
-				 */
 
-				if (typeof(fn) === 'function') {
-					fn();
-				}
-			};
+			if (typeof(this.on_visual_change_fn) === 'function') {
+				this.on_visual_change_fn();
+			}
 		};
 
 		/*
@@ -167,7 +157,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> insert");
 
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+			this.on_data_change();
 		};
 
 		/*
@@ -416,7 +406,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				this.open_node(item);
 			}
 
-			if (this.on_visual_change_fn !== null) this.on_visual_change_fn();
+			this.on_visual_change();
 		};
 
 		/*
@@ -562,7 +552,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.time(this.NAME + " -> check_all");
 
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+			this.on_data_change();
 		};
 
 		/*
@@ -593,7 +583,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.time(this.NAME + " -> uncheck_all");
 
-			if (this.on_data_change_fn !== null) this.on_data_change_fn();
+			this.on_data_change();
 		};
 
 		/*
@@ -640,7 +630,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			if (this.DEBUG === true) console.time(this.NAME + " -> check_node");
 
 			var default_ops = {
-				call_on_data_change_fn: true
+				call_on_data_change: true
 			};
 
 			ops = ops || {};
@@ -791,7 +781,9 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> check_node");
 
-			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
+			if (ops.call_on_data_change) {
+				this.on_data_change();
+			}
 		};
 
 		/*
@@ -805,7 +797,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			if (this.DEBUG === true) console.time(this.NAME + " -> uncheck_node");
 
 			var default_ops = {
-				call_on_data_change_fn: true
+				call_on_data_change: true
 			};
 
 			ops = ops || {};
@@ -953,7 +945,9 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> uncheck_node");
 
-			if (this.on_data_change_fn !== null && ops.call_on_data_change_fn) this.on_data_change_fn();
+			if (ops.call_on_data_change) {
+				this.on_data_change();
+			}
 		};
 
 		/*
@@ -1020,7 +1014,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 			for (var i = 0; i < n; i++) {
 				this.uncheck_node(leaf[i], {
-					call_on_data_change_fn: false
+					call_on_data_change: false
 				});
 			}
 

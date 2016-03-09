@@ -253,7 +253,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				██    ██ ██  ██ ██     ██   ██ ██   ██    ██    ██   ██     ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 				 ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 				*/
-				amse.on_data_change(function () {
+				amse.on_data_change_fn = function () {
 					/*
 					 * Will be triggered every time the internal model data is changed.
 					 * That could happen on check/uncheck, for example.
@@ -297,7 +297,7 @@ angular_multi_select.directive('angularMultiSelect', [
 
 						$scope.outputModel = res;
 					}
-				});
+				};
 
 				/*
 				 ██████  ███    ██     ██    ██ ██ ███████ ██    ██  █████  ██           ██████ ██   ██  █████  ███    ██  ██████  ███████
@@ -306,13 +306,13 @@ angular_multi_select.directive('angularMultiSelect', [
 				██    ██ ██  ██ ██      ██  ██  ██      ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██  ██ ██ ██    ██ ██
 				 ██████  ██   ████       ████   ██ ███████  ██████  ██   ██ ███████      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
 				*/
-				amse.on_visual_change(function () {
+				amse.on_visual_change_fn = function () {
 					/*
 					 * Will be triggered when a change that requires a visual change happende.
 					 * This is normaly on open/close actions.
 					 */
 					$scope.items = amse.get_visible_tree();
-				});
+				};
 
 				/*
 				███    ███  █████  ██ ███    ██
