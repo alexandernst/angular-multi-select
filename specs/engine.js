@@ -251,14 +251,17 @@ describe('Testing engine', function() {
 			// A
 			var tree = e.get_full_tree();
 			expect(tree[0].open).toEqual(false);
+			expect(tree[0][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]).toEqual(true);
 
 			e.toggle_open_node(tree[0]);
 			tree = e.get_full_tree();
 			expect(tree[0].open).toEqual(false);
+			expect(tree[0][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]).toEqual(true);
 
 			e.toggle_open_node(tree[0]);
 			tree = e.get_full_tree();
 			expect(tree[0].open).toEqual(false);
+			expect(tree[0][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]).toEqual(true);
 
 			// B
 			tree = e.get_full_tree();
@@ -267,10 +270,12 @@ describe('Testing engine', function() {
 			e.toggle_open_node(tree[1]);
 			tree = e.get_full_tree();
 			expect(tree[1].open).toEqual(false);
+			expect(tree[2][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]).toEqual(false);
 
 			e.toggle_open_node(tree[1]);
 			tree = e.get_full_tree();
 			expect(tree[1].open).toEqual(true);
+			expect(tree[2][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]).toEqual(true);
 		});
 	});
 
