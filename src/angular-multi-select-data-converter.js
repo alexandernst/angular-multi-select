@@ -194,6 +194,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_NODES] = 0;
 					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
 					final_item[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBILITY_UNDEFINED;
+					final_item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = 0;
 
 					final_data.push(final_item);
 
@@ -206,9 +207,11 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			process_items(data, 0);
 
 			// Create parents_id values
+			var time = new Date();
 			for (i = 0; i < final_data.length; i++) {
 				item = final_data[i];
 
+				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) continue;
 
 				var parents = [];
@@ -315,6 +318,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_NODES];
 				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY];
+				delete data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION];
 
 				//TODO: Remove after https://github.com/techfort/LokiJS/issues/346
 				delete data[i].meta;

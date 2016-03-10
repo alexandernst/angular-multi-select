@@ -675,6 +675,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Used for internal calculations.
 			 */
+			var time = new Date();
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
@@ -704,6 +705,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
 						diff_checked_children = obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - currently_checked_children;
 					}
+
+					obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 				});
 
 			/*
@@ -735,6 +738,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 			/*
 			 * If it's a node:
@@ -786,6 +791,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 							obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 
 				this.collection
@@ -810,6 +817,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 			}
 
@@ -844,6 +853,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			/*
 			 * Used for internal calculations.
 			 */
+			var time = new Date();
 			var diff_checked_children = 0;
 			var currently_checked_children = item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 
@@ -869,6 +879,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
 						diff_checked_children = currently_checked_children - obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN];
 					}
+
+					obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 				});
 
 			/*
@@ -899,6 +911,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 			/*
 			 * If it's a node:
@@ -950,6 +964,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 							obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 
 				this.collection
@@ -974,6 +990,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 						} else {
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED;
 						}
+
+						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
 					});
 			}
 
@@ -1014,29 +1032,21 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 
 				})
 				/*
-				 * Logic behind this sorting:
-				 * First, get all the documents that are checked. Then sort them
-				 * with the following rules:
-				 *
-				 * 1. First, all documents without 'meta.updated' key, keeping in mind:
-				 *     1.1. The documents with a major 'updated' value (newest) go last.
-				 *
-				 * 2. Then, all other documents, but...
-				 *     2.1. First the documents that have an older 'created' value.
-				 *     2.2. If two documents have the same 'created' value, then the one
-				 *          with the lowest order is sorted before.
+				 * Each element is guaranteed to have an INTERNAL_KEY_CHECKED_MODIFICATION
+				 * field that contains a unixtime date of the last time the item has
+				 * changed it's checked state.
+				 * If the fields of two elements match, then sort by the order field.
+				 * This exception should happen only when this method is called on a verbatim
+				 * tree that hasn't been modified in any way, meaning, right after a
+				 * call to this.insert().
 				 */
 				.sort(function (a, b) {
-					if (!("updated" in a.meta) && !("updated" in b.meta)) {
+					var diff = a[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] - b[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION];
+					if (diff === 0) {
 						return a[angularMultiSelectConstants.INTERNAL_KEY_ORDER] - b[angularMultiSelectConstants.INTERNAL_KEY_ORDER];
+					} else {
+						return diff;
 					}
-					if (!("updated" in a.meta)) {
-						return -1;
-					}
-					if (!("updated" in b.meta)) {
-						return 1;
-					}
-					return a.meta.updated - b.meta.updated;
 				})
 				.limit(n)
 				.data();

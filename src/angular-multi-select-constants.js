@@ -19,6 +19,7 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	INTERNAL_KEY_CHILDREN_NODES        : '$ams_children_nodes',
 	INTERNAL_KEY_CHECKED_CHILDREN      : '$ams_checked_children',
 	INTERNAL_KEY_TREE_VISIBILITY       : '$ams_tree_visibility',
+	INTERNAL_KEY_CHECKED_MODIFICATION  : '$ams_checked_modification',
 
 	/*
 	 * Possible values of the input data
