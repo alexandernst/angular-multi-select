@@ -4,10 +4,12 @@ describe('Testing data converter', function() {
 	});
 
 	var angularMultiSelectDataConverter;
+	var angularMultiSelectConstants;
 
 	beforeEach(function () {
 		angular.mock.inject(function ($injector) {
 			angularMultiSelectDataConverter = $injector.get('angularMultiSelectDataConverter');
+			angularMultiSelectConstants = $injector.get('angularMultiSelectConstants');
 		});
 	});
 
@@ -76,18 +78,28 @@ describe('Testing data converter', function() {
 			var dc = new angularMultiSelectDataConverter();
 			var res = dc.check_prerequisites(to_internal_data_1);
 			var internal_data = dc.to_internal(res);
+
+			for (var i = 0; i < internal_data.length; i++) {
+				delete internal_data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION];
+			}
+
 			expect(internal_data).toEqual(to_internal_data_1_after);
 		}));
 
 		it('It should be able to do the previous check but using different names for the keys of the object items', inject(function () {
-			var dc_mod_3 = new angularMultiSelectDataConverter({
+			var dc = new angularMultiSelectDataConverter({
 				ID_PROPERTY: 'num',
 				OPEN_PROPERTY: 'abierto',
 				CHECKED_PROPERTY: 'seleccionado',
 				CHILDREN_PROPERTY: 'hijos'
 			});
-			var res = dc_mod_3.check_prerequisites(to_internal_data_2);
-			var internal_data = dc_mod_3.to_internal(res);
+			var res = dc.check_prerequisites(to_internal_data_2);
+			var internal_data = dc.to_internal(res);
+
+			for (var i = 0; i < internal_data.length; i++) {
+				delete internal_data[i][angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION];
+			}
+
 			expect(internal_data).toEqual(to_internal_data_2_after);
 		}));
 	});
