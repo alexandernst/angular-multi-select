@@ -20,13 +20,13 @@ describe('Testing data converter', function() {
 	                                                                                        ▀▀
 	*/
 	describe('Testing check_prerequisites method', function () {
-		it('Should fail with wrong input data', function () {
+		it('It should fail with wrong input data', function () {
 			var dc = new angularMultiSelectDataConverter();
 			var res = dc.check_prerequisites(check_prerequisites_wrong_data_1);
 			expect(res).toEqual(false);
 		});
 
-		it('Should be able to fill in empty/missing values and remove wrong ones', inject(function () {
+		it('It should be able to fill in empty/missing values and remove wrong ones', inject(function () {
 			var dc = new angularMultiSelectDataConverter();
 			var res = dc.check_prerequisites(check_prerequisites_short_data_1);
 			expect(res).toEqual(check_prerequisites_short_data_1_after);
@@ -44,7 +44,7 @@ describe('Testing data converter', function() {
 			expect(res5).toEqual(check_prerequisites_short_data_5_after);
 		}));
 
-		it('Should be able to handle different key names in object items', inject(function () {
+		it('It should be able to handle different key names in object items', inject(function () {
 			var dc_mod = new angularMultiSelectDataConverter({
 				ID_PROPERTY: 'num',
 				OPEN_PROPERTY: 'abierto',
@@ -72,14 +72,14 @@ describe('Testing data converter', function() {
 	   ██     ██████      ██ ██   ████    ██    ███████ ██   ██ ██   ████ ██   ██ ███████
 	*/
 	describe('Testing to_internal method', function () {
-		it('Should be able to convert full input data to internal data structure', inject(function () {
+		it('It should be able to convert full input data to internal data structure', inject(function () {
 			var dc = new angularMultiSelectDataConverter();
 			var res = dc.check_prerequisites(to_internal_data_1);
 			var internal_data = dc.to_internal(res);
 			expect(internal_data).toEqual(to_internal_data_1_after);
 		}));
 
-		it('Should be able to do the previous check but using different names for the keys of the object items', inject(function () {
+		it('It should be able to do the previous check but using different names for the keys of the object items', inject(function () {
 			var dc_mod_3 = new angularMultiSelectDataConverter({
 				ID_PROPERTY: 'num',
 				OPEN_PROPERTY: 'abierto',
