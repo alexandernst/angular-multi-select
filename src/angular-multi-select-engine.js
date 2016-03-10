@@ -9,7 +9,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			ops                    = ops                   || {};
 
 			this.DEBUG             = ops.DEBUG             || false;
-			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000);
+			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000) + '' + Math.random();
 			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
 
 			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
@@ -36,7 +36,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.on_data_change = function (ops) {
 			/*
 			 * Will be executed when the data in one or more of the items in the
-			 * tree is changed. Changes such as open/close (visibility related)
+			 * tree are changed. Changes such as open/close (visibility related)
 			 * won't trigger this function.
 			 *
 			 * Note that this method will be ran only once after applying
@@ -1051,7 +1051,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				.limit(n)
 				.data();
 
-			for (var i = 0; i < n; i++) {
+			for (var i = 0; i < leaf.length; i++) {
 				this.toggle_check_node(leaf[i], {
 					call_on_data_change: false
 				});

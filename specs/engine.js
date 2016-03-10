@@ -16,6 +16,13 @@ describe('Testing engine', function() {
 		});
 	});
 
+	/*
+	██ ███    ██ ███████ ███████ ██████  ████████
+	██ ████   ██ ██      ██      ██   ██    ██
+	██ ██ ██  ██ ███████ █████   ██████     ██
+	██ ██  ██ ██      ██ ██      ██   ██    ██
+	██ ██   ████ ███████ ███████ ██   ██    ██
+	*/
 	describe('Testing insert method', function () {
 		it('It should be able to insert data and return it back as-is', function () {
 			var e = new angularMultiSelectEngine();
@@ -47,6 +54,13 @@ describe('Testing engine', function() {
 		});
 	});
 
+	/*
+	████████ ██████  ███████ ███████     ███████ ███████ ██      ███████  ██████ ████████
+	   ██    ██   ██ ██      ██          ██      ██      ██      ██      ██         ██
+	   ██    ██████  █████   █████       ███████ █████   ██      █████   ██         ██
+	   ██    ██   ██ ██      ██               ██ ██      ██      ██      ██         ██
+	   ██    ██   ██ ███████ ███████     ███████ ███████ ███████ ███████  ██████    ██
+	*/
 	describe('Testing tree select operations', function () {
 		it('It should be able to do a get_full_tree()', function () {
 			var e = new angularMultiSelectEngine();
@@ -167,6 +181,13 @@ describe('Testing engine', function() {
 		});
 	});
 
+	/*
+	████████ ██████  ███████ ███████     ██    ██ ███    ██     ██  ██████ ██   ██ ███████  ██████ ██   ██
+	   ██    ██   ██ ██      ██          ██    ██ ████   ██    ██  ██      ██   ██ ██      ██      ██  ██
+	   ██    ██████  █████   █████       ██    ██ ██ ██  ██   ██   ██      ███████ █████   ██      █████
+	   ██    ██   ██ ██      ██          ██    ██ ██  ██ ██  ██    ██      ██   ██ ██      ██      ██  ██
+	   ██    ██   ██ ███████ ███████      ██████  ██   ████ ██      ██████ ██   ██ ███████  ██████ ██   ██
+	*/
 	describe('Testing tree (un)check operations', function () {
 		it('It should honor MAX_CHECKED_LEAFS', function () {
 			var e = new angularMultiSelectEngine({
@@ -174,14 +195,12 @@ describe('Testing engine', function() {
 			});
 			e.insert(to_internal_data_1_after);
 			var tree = e.get_checked_tree();
-
 			expect(tree[0].value).toEqual("z");
 
 			tree = e.get_full_tree();
 			e.check_node(tree[2]);
 
 			tree = e.get_checked_tree();
-
 			expect(tree[0].value).toEqual("c");
 
 			var e2 = new angularMultiSelectEngine({
@@ -189,16 +208,15 @@ describe('Testing engine', function() {
 			});
 			e2.insert(to_internal_data_1_after);
 			tree = e2.get_checked_tree();
-
 			expect(tree[0].value).toEqual("y");
 			expect(tree[1].value).toEqual("z");
 
-			tree = e.get_full_tree();
-			e.check_node(tree[2]);
+			tree = e2.get_full_tree();
+			e2.check_node(tree[2]);
 
-			tree = e.get_checked_tree();
-
+			tree = e2.get_checked_tree();
 			expect(tree[0].value).toEqual("c");
+			expect(tree[1].value).toEqual("z");
 		});
 
 		it('It should correctly toggle the checked state of an item', function () {
@@ -218,6 +236,13 @@ describe('Testing engine', function() {
 		});
 	});
 
+	/*
+	████████ ██████  ███████ ███████      ██████  ██████  ███████ ███    ██     ██  ██████ ██       ██████  ███████ ███████
+	   ██    ██   ██ ██      ██          ██    ██ ██   ██ ██      ████   ██    ██  ██      ██      ██    ██ ██      ██
+	   ██    ██████  █████   █████       ██    ██ ██████  █████   ██ ██  ██   ██   ██      ██      ██    ██ ███████ █████
+	   ██    ██   ██ ██      ██          ██    ██ ██      ██      ██  ██ ██  ██    ██      ██      ██    ██      ██ ██
+	   ██    ██   ██ ███████ ███████      ██████  ██      ███████ ██   ████ ██      ██████ ███████  ██████  ███████ ███████
+	*/
 	describe('Testing tree open/close operations', function () {
 		it('It should correctly toggle the open state of an item', function () {
 			var e = new angularMultiSelectEngine();
@@ -249,6 +274,13 @@ describe('Testing engine', function() {
 		});
 	});
 
+	/*
+	████████ ██████  ███████ ███████     ███████ ████████  █████  ████████ ███████
+	   ██    ██   ██ ██      ██          ██         ██    ██   ██    ██    ██
+	   ██    ██████  █████   █████       ███████    ██    ███████    ██    ███████
+	   ██    ██   ██ ██      ██               ██    ██    ██   ██    ██         ██
+	   ██    ██   ██ ███████ ███████     ███████    ██    ██   ██    ██    ███████
+	*/
 	describe('Testing tree stats', function () {
 		it('It should be able to return correct stats', function () {
 			var e = new angularMultiSelectEngine();
