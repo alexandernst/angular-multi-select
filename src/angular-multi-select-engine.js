@@ -455,7 +455,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 			 * the children items of that item and iterate over the
 			 * results. For each item:
 			 *
-			 * Ff the item is a node and it's closed, we'll create
+			 * If the item is a node and it's closed, we'll create
 			 * a rule such that it will skip the next N items on the
 			 * result. Else mark the item as visible.
 			 */
