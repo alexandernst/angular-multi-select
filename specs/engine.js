@@ -183,6 +183,22 @@ describe('Testing engine', function() {
 			tree = e.get_checked_tree();
 
 			expect(tree[0].value).toEqual("c");
+
+			var e2 = new angularMultiSelectEngine({
+				MAX_CHECKED_LEAFS: 2
+			});
+			e2.insert(to_internal_data_1_after);
+			tree = e2.get_checked_tree();
+
+			expect(tree[0].value).toEqual("y");
+			expect(tree[1].value).toEqual("z");
+
+			tree = e.get_full_tree();
+			e.check_node(tree[2]);
+
+			tree = e.get_checked_tree();
+
+			expect(tree[0].value).toEqual("c");
 		});
 
 		it('It should correctly toggle the checked state of an item', function () {
