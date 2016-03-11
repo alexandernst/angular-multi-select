@@ -278,20 +278,20 @@ angular_multi_select.directive('angularMultiSelect', [
 						 * Convert the data to the desired output.
 						 */
 						switch (self.output_type) {
-							case 'objects':
+							case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECTS:
 								res = amsdc.to_array_of_objects(res, self.output_keys);
 								break;
-							case 'arrays':
+							case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAYS:
 								res = amsdc.to_array_of_arrays(res, self.output_keys);
 								break;
-							case 'object':
+							case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECT:
 								res = amsdc.to_object(res, self.output_keys);
 								break;
-							case 'array':
+							case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
 								res = amsdc.to_array(res, self.output_keys);
 								break;
-							case 'value':
-								res = amsdc.to_array(res, self.output_keys);
+							case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
+								res = amsdc.to_value(res, self.output_keys);
 								break;
 						}
 

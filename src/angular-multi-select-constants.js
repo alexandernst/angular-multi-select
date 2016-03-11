@@ -22,7 +22,7 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	INTERNAL_KEY_CHECKED_MODIFICATION  : '$ams_checked_modification',
 
 	/*
-	 * Possible values of the input data
+	 * Possible values of the input/internal data
 	 */
 	INPUT_DATA_OPEN                    : true,
 	INPUT_DATA_CLOSED                  : false,
@@ -41,6 +41,15 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	INTERNAL_DATA_VISIBLE              : true,
 	INTERNAL_DATA_INVISIBLE            : false,
 	INTERNAL_DATA_VISIBILITY_UNDEFINED : null,
+
+	/*
+	 * Possible values of the output type of data
+	 */
+	OUTPUT_DATA_TYPE_OBJECTS           : 'objects',
+	OUTPUT_DATA_TYPE_ARRAYS            : 'arrays',
+	OUTPUT_DATA_TYPE_OBJECT            : 'object',
+	OUTPUT_DATA_TYPE_ARRAY             : 'array',
+	OUTPUT_DATA_TYPE_VALUE             : 'value',
 
 	/*
 	 * CSS classes helpers
@@ -66,6 +75,5 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	FIND_LEAFS_MIXED_CHECKED_NODES     : 'leafs_mixed_checked_nodes',
 	FIND_MIXED_NODES                   : 'midex_nodes',
 	FIND_CHECKED_NODES                 : 'checked_nodes',
-	FIND_MIXED_CHECKED_NODES           : 'mixed_checked_nodes',
-
+	FIND_MIXED_CHECKED_NODES           : 'mixed_checked_nodes'
 });
