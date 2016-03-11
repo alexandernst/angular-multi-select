@@ -1,0 +1,22 @@
+<div id="demo_container" style="right: 200px; bottom: 10px; position: absolute;">
+
+	<div angular-multi-select
+		input-model="input_data"
+		output-model="output_data"
+
+		dropdown-label="
+			<# total_leafs === undefined ? 'No available items' :
+				checked_leafs === 0 ? 'No checked items' :
+					checked_leafs + ' checked ' + (checked_leafs === 1 ? 'item': 'items')
+			#>
+		"
+		node-label="<[ text ]> (checked
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+		leaf-label="<[ text ]> (<[ value ]>)"
+
+		search-field="text"
+	>
+	</div>
+
+</div>
