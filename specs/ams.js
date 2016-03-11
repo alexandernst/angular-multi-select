@@ -1,4 +1,4 @@
-describe('Testing basic functionality of AMS', function() {
+describe('Testing basic functionality of AMS', function () {
 	var $scope, element;
 
 	beforeEach(function (){
@@ -58,11 +58,9 @@ describe('Testing basic functionality of AMS', function() {
 	it('It should render text of button correctly', function () {
 		expect($('.ams-button-text')).toContainText('5 checked items');
 	});
-
 });
 
-
-describe('Testing AMS with different name properties', function() {
+describe('Testing AMS with different name properties', function () {
 	var $scope, element;
 
 	beforeEach(function (){
@@ -115,7 +113,7 @@ describe('Testing AMS with different name properties', function() {
 	});
 });
 
-describe('Testing AMS with URL string as input data', function() {
+describe('Testing AMS with URL string as input data', function () {
 	var $scope, element, httpBackend;
 
 	beforeEach(function (){
@@ -148,7 +146,40 @@ describe('Testing AMS with URL string as input data', function() {
 	});
 });
 
-describe('Testing AMS output-related fields', function() {
+describe('Testing AMS search capabilities', function () {
+	var $scope, timeout, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_search.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile, $timeout) {
+			$scope = $rootScope.$new();
+			timeout = $timeout;
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should perform a search correctly', function () {
+		angular.element('.ams-search-field').val('A').trigger('input');
+
+		timeout.flush();
+
+		expect($('.ams-item')).toHaveLength(1);
+		expect($('.ams-item-text').text()).toEqual("A (a)");
+	});
+});
+
+describe('Testing AMS output-related fields', function () {
 	var $scope, compile, element;
 
 	beforeEach(function (){
