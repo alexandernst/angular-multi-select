@@ -1,0 +1,46 @@
+<div id="demo_container">
+
+	<div angular-multi-select
+		input-model="input_data_1"
+		output-model="output_data_1"
+
+		max-checked-leafs="2"
+
+		dropdown-label="
+			<# total_leafs === undefined ? 'No available items' :
+				checked_leafs === 0 ? 'No checked items' :
+					checked_leafs + ' checked ' + (checked_leafs === 1 ? 'item': 'items')
+			#>
+		"
+		node-label="<[ text ]> (checked
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+		leaf-label="<[ text ]> (<[ value ]>)"
+	>
+	</div>
+
+	<div angular-multi-select
+		input-model="input_data_2"
+		output-model="output_data_2"
+
+		max-checked-leafs="3"
+
+		dropdown-label="
+			<# total_leafs === undefined ? 'No available items' :
+				checked_leafs === 0 ? 'No checked items' :
+					checked_leafs + ' checked ' + (checked_leafs === 1 ? 'item': 'items')
+			#>
+		"
+		node-label="<[ text ]> (checked
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+			<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+		leaf-label="<[ text ]> (<[ value ]>)"
+
+		id-property="num"
+		children-property="hijos"
+		checked-property="seleccionado"
+		open-property="abierto"
+	>
+	</div>
+
+</div>
