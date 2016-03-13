@@ -84,10 +84,10 @@ module.exports = function(grunt) {
 						'build/angular-multi-select.js'
 					],
 
-					//Special hacks
+					//Special viewport size for positioning testing
 					page: {
 						viewportSize: {
-							width: 1920,
+							width: 515,
 							height: 515
 						}
 					}
