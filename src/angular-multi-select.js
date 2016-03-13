@@ -197,7 +197,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				███████ ███████ ██   ██ ██   ██  ██████ ██   ██
 				*/
 				$scope.search = "";
-				$scope.search_promise = null;
+				self.search_promise = null;
 				$scope.search_spinner_visible = false;
 				$scope.$watch('search', function (_new, _old) {
 					if (_new === _old && _new === "") {
@@ -213,8 +213,8 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * and now the normal tree should be repainted.
 					 */
 					if (_new === "") {
-						if ($scope.search_promise !== null) {
-							$timeout.cancel($scope.search_promise);
+						if (self.search_promise !== null) {
+							$timeout.cancel(self.search_promise);
 						}
 						$scope.items = amse.get_visible_tree();
 						$scope.search_spinner_visible = false;
@@ -225,12 +225,12 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * If the code execution gets here, it means that there is
 					 * a search that should be performed
 					 */
-					if ($scope.search_promise !== null) {
-						$timeout.cancel($scope.search_promise);
+					if (self.search_promise !== null) {
+						$timeout.cancel(self.search_promise);
 					}
 
 					$scope.search_spinner_visible = true;
-					$scope.search_promise = $timeout(function (query) {
+					self.search_promise = $timeout(function (query) {
 						//TODO: this needs a lot of improving. Maybe use lunar.js?
 						var filter = [];
 						filter.push({
