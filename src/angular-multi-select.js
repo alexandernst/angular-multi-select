@@ -30,8 +30,6 @@ angular_multi_select.directive('angularMultiSelect', [
 				element.append(content);
 
 				var self = {};
-				var el_attrs = element[0].attributes;
-				var el_attrs_vals = Object.keys(el_attrs).map((key) => el_attrs[key]);
 
 				/*
 				 █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████
