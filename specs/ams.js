@@ -61,7 +61,7 @@ describe('Testing basic functionality of AMS', function () {
 });
 
 describe('Testing AMS with different name properties', function () {
-	var $scope, element;
+	var $scope, element, timeout;
 
 	beforeEach(function (){
 		module('angular-multi-select');
@@ -70,8 +70,9 @@ describe('Testing AMS with different name properties', function () {
 		jasmine.getFixtures().load('demo_simple_2.html');
 		element = document.getElementById('demo_container');
 
-		inject(function($rootScope, $compile) {
+		inject(function($rootScope, $compile, $timeout) {
 			$scope = $rootScope.$new();
+			timeout = $timeout;
 
 			$compile(element)($scope);
 
@@ -110,6 +111,138 @@ describe('Testing AMS with different name properties', function () {
 
 	it('It should render text of button correctly', function () {
 		expect($('.ams-button-text')).toContainText('5 checked items');
+	});
+});
+
+describe('Testing AMS positioning capabilities', function () {
+	var $scope, element, timeout;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_positioning.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile, $timeout) {
+			$scope = $rootScope.$new();
+			timeout = $timeout;
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should place the container on top of the button if there is not enough space below', function () {
+		var el = $('#demo_container');
+		el.css("bottom", "10px");
+
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		var container = $('.ams-container');
+		var btn_rect = el[0].getBoundingClientRect();
+		var container_rect = container[0].getBoundingClientRect();
+
+		var translate = container[0].style.transform.split(/[()]/)[1].split(",").map(function (n) {
+			return parseFloat(n);
+		});
+
+		expect(container_rect.top + translate[1]).toEqual(btn_rect.top - container_rect.height);
+	});
+
+	it('It should place the container below the button if there is not enough space below and above the button', function () {
+		var el = $('#demo_container');
+		el.css("bottom", "280px");
+
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		var container = $('.ams-container');
+		var btn_rect = el[0].getBoundingClientRect();
+		var container_rect = container[0].getBoundingClientRect();
+
+		expect(container_rect.top).toEqual(btn_rect.top + btn_rect.height);
+	});
+
+	it('It should place the container on the left of the button if there is no enough space on the right', function () {
+		var el = $('#demo_container');
+		el.css("right", "80px");
+
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		var container = $('.ams-container');
+		var btn_rect = el[0].getBoundingClientRect();
+		var container_rect = container[0].getBoundingClientRect();
+
+		var translate = container[0].style.transform.split(/[()]/)[1].split(",").map(function (n) {
+			return parseFloat(n);
+		});
+
+		expect(container_rect.right + translate[0]).toEqual(btn_rect.right);
+	});
+
+	it('It should place the container on the right of the button if there is no enough space on the left and on the right', function () {
+		var el = $('#demo_container');
+		el.css("right", "200px");
+
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		var container = $('.ams-container');
+		var btn_rect = el[0].getBoundingClientRect();
+		var container_rect = container[0].getBoundingClientRect();
+
+		expect(container_rect.left).toEqual(btn_rect.left);
+		expect(container[0].style.transform).toEqual("");
+	});
+});
+
+describe('Testing multiple AMS instances', function () {
+	var $scope, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_multiple.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile) {
+			$scope = $rootScope.$new();
+
+			$compile(element)($scope);
+
+			$scope.input_data_1 = to_internal_data_1;
+			$scope.output_data_1 = [];
+
+			$scope.input_data_2 = to_internal_data_2;
+			$scope.output_data_2 = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should be able to isolate each instance from the rest', function () {
+		expect($scope.output_data_1.length).toEqual(2);
+		expect($scope.output_data_2.length).toEqual(3);
 	});
 });
 
