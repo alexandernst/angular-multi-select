@@ -44,7 +44,6 @@
  ██████  ██████  ██   ████    ██    ██   ██ ██ ██   ████ ███████ ██   ██
 */
 .ams-container {
-	display: none; /*closed by default*/
 	display: flex;
 	flex-direction: column;
 	position: absolute;

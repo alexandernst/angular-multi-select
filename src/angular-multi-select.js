@@ -171,7 +171,6 @@ angular_multi_select.directive('angularMultiSelect', [
 							container.style.transform = "translate(" + translateX + "px, " + translateY + "px)";
 						}
 					});
-
 				});
 
 				/*

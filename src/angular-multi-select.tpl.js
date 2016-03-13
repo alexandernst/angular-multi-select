@@ -8,7 +8,7 @@ angular_multi_select.run(function($templateCache) {
 			<div class="caret"></div>
 		</div>
 
-		<div class="ams-container" ng-show="open">
+		<div class="ams-container ng-cloak" ng-show="open">
 
 			<div class="ams-helpers">
 				<div class="selects">
