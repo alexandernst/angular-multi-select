@@ -214,7 +214,13 @@
 */
 .ams-item {
 	display: flex;
+	align-items: center;
 	padding: 2px;
+}
+
+.ams-item-text {
+	display: flex;
+	align-items: center;
 }
 
 /*
