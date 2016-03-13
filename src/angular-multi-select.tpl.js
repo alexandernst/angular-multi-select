@@ -1,6 +1,6 @@
 var angular_multi_select = angular.module('angular-multi-select');
 
-angular_multi_select.run(function($templateCache) {
+angular_multi_select.run(['$templateCache', function($templateCache) {
 	$templateCache.put('angular-multi-select.tpl', `
 
 		<div class="ams-button" ng-click="open = !open">
@@ -53,5 +53,4 @@ angular_multi_select.run(function($templateCache) {
 		</div>
 
 	`);
-
-});
+}]);
