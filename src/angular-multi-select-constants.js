@@ -42,6 +42,12 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	INTERNAL_DATA_INVISIBLE            : false,
 	INTERNAL_DATA_VISIBILITY_UNDEFINED : null,
 
+	INTERNAL_STATS_CHECKED_LEAFS       : 'checked_leafs',
+	INTERNAL_STATS_CHECKED_NODES       : 'checked_nodes',
+	INTERNAL_STATS_UNCHECKED_NODES     : 'unchecked_nodes',
+	INTERNAL_STATS_TOTAL_LEAFS         : 'total_leafs',
+	INTERNAL_STATS_TOTAL_NODES         : 'total_nodes',
+
 	/*
 	 * Possible values of the output type of data
 	 */

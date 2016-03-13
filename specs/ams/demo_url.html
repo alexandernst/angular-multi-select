@@ -1,19 +1,8 @@
-<div id="demo_container" style="right: 200px; bottom: 10px; position: absolute;">
+<div id="demo_container">
 
 	<div angular-multi-select
 		input-model="'http://localhost:8080/foo/bar.json'"
 		output-model="output_data"
-
-		dropdown-label="
-			<# total_leafs === undefined ? 'No available items' :
-				checked_leafs === 0 ? 'No checked items' :
-					checked_leafs + ' checked ' + (checked_leafs === 1 ? 'item': 'items')
-			#>
-		"
-		node-label="<[ text ]> (checked
-			<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
-			<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
-		leaf-label="<[ text ]> (<[ value ]>)"
 	>
 	</div>
 

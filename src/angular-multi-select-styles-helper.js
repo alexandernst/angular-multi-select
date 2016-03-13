@@ -39,7 +39,8 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			 * String representation of nodes/leafs and dropdown label.
 			 */
 			this.dropdown_repr_attr = attrs.dropdownLabel || "";
-			this.dropdown_repr      = this.interpolate_alternative(this.dropdown_repr_attr);
+			this.dropdown_repr      = this.interpolate_alternative(this.dropdown_repr_attr)({angularMultiSelectConstants: angularMultiSelectConstants});
+			this.dropdown_repr      = this.interpolate(this.dropdown_repr);
 
 			this.node_repr_attr = attrs.nodeLabel || "";
 			this.node_repr      = this.interpolate_alternative_repetitive(this.node_repr_attr)({angularMultiSelectConstants: angularMultiSelectConstants});

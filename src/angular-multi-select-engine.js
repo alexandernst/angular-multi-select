@@ -59,8 +59,8 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				/*
 				 * Handle situation where a maximum amount of checked leafs has been specified.
 				 */
-				if (this.MAX_CHECKED_LEAFS > -1 && this.stats.checked_leafs > this.MAX_CHECKED_LEAFS) {
-					this.uncheck_first(this.stats.checked_leafs - this.MAX_CHECKED_LEAFS);
+				if (this.MAX_CHECKED_LEAFS > -1 && this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS] > this.MAX_CHECKED_LEAFS) {
+					this.uncheck_first(this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS] - this.MAX_CHECKED_LEAFS);
 				}
 			}
 
@@ -209,23 +209,23 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		Engine.prototype.update_stats = function (item) {
 			switch (item[this.CHECKED_PROPERTY]) {
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED:
-					this.stats.checked_nodes++;
-					this.stats.total_nodes++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES]++;
 					break;
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED:
-					this.stats.unchecked_nodes++;
-					this.stats.total_nodes++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES]++;
 					break;
 				case angularMultiSelectConstants.INTERNAL_DATA_NODE_MIXED:
-					this.stats.total_nodes++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES]++;
 					break;
 
 				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED:
-					this.stats.checked_leafs++;
-					this.stats.total_leafs++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS]++;
 					break;
 				case angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED:
-					this.stats.total_leafs++;
+					this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS]++;
 					break;
 			}
 		};
@@ -239,11 +239,11 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		*/
 		Engine.prototype.reset_stats = function () {
 			this.stats = {
-				checked_leafs: 0,
-				checked_nodes: 0,
-				unchecked_nodes: 0,
-				total_leafs: 0,
-				total_nodes: 0
+				[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]: 0,
+				[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]: 0,
+				[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]: 0,
+				[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS]: 0,
+				[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES]: 0
 			};
 		};
 
@@ -578,9 +578,9 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					}
 				});
 
-			this.stats.unchecked_nodes = 0;
-			this.stats.checked_leafs = this.stats.total_leafs;
-			this.stats.checked_nodes = this.stats.total_nodes;
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES] = 0;
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS] = this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS];
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES] = this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES];
 
 			if (this.DEBUG === true) console.time(this.NAME + " -> check_all");
 
@@ -609,9 +609,9 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					}
 				});
 
-			this.stats.checked_leafs = 0;
-			this.stats.checked_nodes = 0;
-			this.stats.unchecked_nodes = this.stats.total_nodes;
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS] = 0;
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES] = 0;
+			this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES] = this.stats[angularMultiSelectConstants.INTERNAL_STATS_TOTAL_NODES];
 
 			if (this.DEBUG === true) console.time(this.NAME + " -> uncheck_all");
 
@@ -692,14 +692,14 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.update((obj) => {
 					if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
-						this.stats.checked_leafs++;
+						this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]++;
 
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 					} else {
 						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
-							this.stats.unchecked_nodes--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]--;
 						}
-						this.stats.checked_nodes++;
+						this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]++;
 
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS];
@@ -726,10 +726,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
 						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
-							this.stats.unchecked_nodes--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]--;
 						}
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] + 1 === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
-							this.stats.checked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]++;
 						}
 
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN]++; // We can't overflow this as we're checking an unchecked item
@@ -779,13 +779,13 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 					.update((obj) => {
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
-							this.stats.checked_leafs++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]++;
 
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED;
 						} else {
-							this.stats.checked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]++;
 							if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
-								this.stats.unchecked_nodes--;
+								this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]--;
 							}
 
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED;
@@ -805,10 +805,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
 						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED) {
-							this.stats.unchecked_nodes--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]--;
 						}
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] + diff_checked_children === obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS]) {
-							this.stats.checked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]++;
 						}
 
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] += diff_checked_children;
@@ -868,12 +868,12 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 				})
 				.update((obj) => {
 					if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
-						this.stats.checked_leafs--;
+						this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]--;
 
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 					} else {
-						this.stats.checked_nodes--;
-						this.stats.unchecked_nodes++;
+						this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]--;
+						this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]++;
 
 						obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] = 0;
@@ -899,10 +899,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
 						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
-							this.stats.checked_nodes--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]--;
 						}
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - 1 === 0) {
-							this.stats.unchecked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]++;
 						}
 
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN]--; // We can't underflow this as we're unchecking a checked item
@@ -952,13 +952,13 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, false)
 					.update((obj) => {
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
-							this.stats.checked_leafs--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS]--;
 
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_LEAF_UNCHECKED;
 						} else {
-							this.stats.unchecked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]++;
 							if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
-								this.stats.checked_nodes--;
+								this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]--;
 							}
 
 							obj[this.CHECKED_PROPERTY] = angularMultiSelectConstants.INTERNAL_DATA_NODE_UNCHECKED;
@@ -978,10 +978,10 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					.simplesort(angularMultiSelectConstants.INTERNAL_KEY_ORDER, true)
 					.update((obj) => {
 						if (obj[this.CHECKED_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED) {
-							this.stats.checked_nodes--;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_CHECKED_NODES]--;
 						}
 						if (obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] - diff_checked_children === 0) {
-							this.stats.unchecked_nodes++;
+							this.stats[angularMultiSelectConstants.INTERNAL_STATS_UNCHECKED_NODES]++;
 						}
 
 						obj[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN] -= diff_checked_children;
