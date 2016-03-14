@@ -35,13 +35,14 @@ module.exports = function(grunt) {
 
 		jasmine: {
 			data_converter: {
-				src: 'build/*.js',
+				src: 'dist/prod/*.js',
 				options: {
-					styles: 'src/*.css',
+					display: 'short',
+					styles: 'dist/prod/*.css',
 					helpers: [
-						'specs/data_converter/*.js'
+						'dist/prod/specs/data_converter/*.js'
 					],
-					specs: 'specs/data_converter.js',
+					specs: 'dist/prod/specs/data_converter.js',
 					vendor: [
 						'node_modules/jquery/dist/jquery.js',
 						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
@@ -51,13 +52,14 @@ module.exports = function(grunt) {
 				}
 			},
 			engine: {
-				src: 'build/*.js',
+				src: 'dist/prod/*.js',
 				options: {
-					styles: 'src/*.css',
+					display: 'short',
+					styles: 'dist/prod/*.css',
 					helpers: [
-						'specs/engine/*.js',
+						'dist/prod/specs/engine/*.js',
 					],
-					specs: 'specs/engine.js',
+					specs: 'dist/prod/specs/engine.js',
 					vendor: [
 						'node_modules/lokijs/src/lokijs.js',
 						'node_modules/jquery/dist/jquery.js',
@@ -68,20 +70,20 @@ module.exports = function(grunt) {
 				}
 			},
 			ams: {
-				src: 'build/*.js',
+				src: 'dist/prod/*.js',
 				options: {
-					styles: 'src/*.css',
+					display: 'short',
+					styles: 'dist/prod/*.css',
 					helpers: [
-						'specs/ams/*.js',
+						'dist/prod/specs/ams/*.js',
 					],
-					specs: 'specs/ams.js',
+					specs: 'dist/prod/specs/ams.js',
 					vendor: [
 						'node_modules/lokijs/src/lokijs.js',
 						'node_modules/jquery/dist/jquery.js',
 						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js',
-						'build/angular-multi-select.js'
+						'node_modules/angular-mocks/angular-mocks.js'
 					],
 
 					//Special viewport size for positioning testing
@@ -102,6 +104,11 @@ module.exports = function(grunt) {
 				debounceDelay: 1000,
 				livereload: 8080
 			}
+		},
+
+		clean: {
+			pre: ["build/*", "dist/*"],
+			post: ["dist/prod/specs"]
 		},
 
 		concat: {
@@ -135,22 +142,26 @@ module.exports = function(grunt) {
 
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n'
+				banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n',
+				compress: true
 			},
 			dist: {
 				files: {
-					'dist/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
+					'dist/prod/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
 				}
 			}
 		},
 
 		cssmin: {
+			options: {
+				//
+			},
 			compress: {
 				files: [{
 					expand: true,
 					cwd: 'src/',
 					src: ['*.css', '!*.min.css'],
-					dest: "dist/",
+					dest: "dist/prod/",
 					ext: ".min.css",
 					extDot: 'last'
 				}]
@@ -158,18 +169,28 @@ module.exports = function(grunt) {
 		},
 
 		copy: {
-			dist: {
+			ams: {
 				files: [{
 					expand: true,
 					dot: true,
 					cwd: 'src/',
-					dest: 'dist/',
+					dest: 'dist/dev/',
 					src: [
 						'**/*.{css,js}'
 					]
 				}]
+			},
+			specs: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: 'specs',
+					dest: 'dist/prod/specs',
+					src: '**/*'
+				}]
 			}
 		}
+
 	});
 
 	grunt.loadNpmTasks('grunt-clear');
@@ -181,8 +202,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
-	grunt.registerTask('tests', ['jshint', 'concat', 'babel', 'jasmine:*']);
 	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
-	grunt.registerTask('default', ['jshint', 'concat', 'babel', 'jasmine', 'uglify', 'cssmin', 'copy:dist']);
+	grunt.registerTask('default', ['jshint', 'clean:pre', 'concat', 'babel', 'uglify', 'cssmin', 'copy', 'jasmine', 'clean:post']);
 
 };
