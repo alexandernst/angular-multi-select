@@ -652,6 +652,41 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		};
 
 		/*
+		 ██████ ██   ██ ███████  ██████ ██   ██     ███    ██  ██████  ██████  ███████     ██████  ██    ██
+		██      ██   ██ ██      ██      ██  ██      ████   ██ ██    ██ ██   ██ ██          ██   ██  ██  ██
+		██      ███████ █████   ██      █████       ██ ██  ██ ██    ██ ██   ██ █████       ██████    ████
+		██      ██   ██ ██      ██      ██  ██      ██  ██ ██ ██    ██ ██   ██ ██          ██   ██    ██
+		 ██████ ██   ██ ███████  ██████ ██   ██     ██   ████  ██████  ██████  ███████     ██████     ██
+		*/
+		Engine.prototype.check_node_by = function (where) {
+			if (this.DEBUG === true) console.time(this.NAME + " -> check_node_by");
+
+			var [key, value] = where;
+			var item = this.collection
+				.findOne({
+					"$and": [
+						{
+							[key]: value
+						},
+						{
+							[this.CHECKED_PROPERTY]: {
+								'$nin': [
+									angularMultiSelectConstants.INTERNAL_DATA_NODE_CHECKED,
+									angularMultiSelectConstants.INTERNAL_DATA_LEAF_CHECKED
+								]
+							}
+						}
+					]
+				});
+
+			if (item !== null) {
+				this.check_node(item);
+			}
+
+			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> check_node_by");
+		};
+
+		/*
 		 ██████ ██   ██ ███████  ██████ ██   ██     ███    ██  ██████  ██████  ███████
 		██      ██   ██ ██      ██      ██  ██      ████   ██ ██    ██ ██   ██ ██
 		██      ███████ █████   ██      █████       ██ ██  ██ ██    ██ ██   ██ █████

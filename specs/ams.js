@@ -246,6 +246,33 @@ describe('Testing multiple AMS instances', function () {
 	});
 });
 
+describe('Testing AMS preselect functionality', function () {
+	var $scope, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_preselect.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile) {
+			$scope = $rootScope.$new();
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should be able to preselect', function () {
+		expect($scope.output_data[3].value).toEqual('w');
+	});
+});
+
 describe('Testing AMS with URL string as input data', function () {
 	var $scope, element, httpBackend;
 

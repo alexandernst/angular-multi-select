@@ -67,9 +67,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				if (self.output_keys !== undefined) {
 					self.output_keys = self.output_keys
 						.split(",")
-						.map(function (s) {
-							return s.replace(/^\s+|\s+$/g, '');
-						});
+						.map(s => s.replace(/^\s+|\s+$/g, ''));
 				}
 				self.output_filter = attrs.outputFilter === undefined ? angularMultiSelectConstants.FIND_LEAFS : attrs.outputFilter;
 
@@ -77,6 +75,19 @@ angular_multi_select.directive('angularMultiSelect', [
 				 * Find out which field to use for the 'search' functionality.
 				 */
 				$scope.search_field = attrs.searchField === undefined ? null : attrs.searchField;
+
+				/*
+				 * Find out if something should be preselected.
+				 */
+				self.preselect = attrs.preselect === undefined ? undefined : attrs.preselect;
+				if (self.preselect !== undefined) {
+					self.preselect = self.preselect
+						.split(",")
+						.map(s => s.replace(/^\s+|\s+$/g, ''));
+				}
+				if (!Array.isArray(self.preselect) || self.preselect.length !== 2) {
+					self.preselect = undefined;
+				}
 
 				/*
 				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
@@ -331,6 +342,10 @@ angular_multi_select.directive('angularMultiSelect', [
 					}
 
 					amse.insert(internal_data);
+
+					if (self.preselect !== undefined) {
+						amse.check_node_by(self.preselect);
+					}
 				};
 
 				$scope.$watch('inputModel', function (_new, _old) {
