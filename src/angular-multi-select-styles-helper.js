@@ -2,12 +2,51 @@ var angular_multi_select_styles_helper = angular.module('angular-multi-select-st
 	'angular-multi-select-constants'
 ]);
 
+angular_multi_select_styles_helper.run([function () {
+	'use strict';
+	var inject = angular.element("<style>");
+
+	//Default values, just in case...
+	var check_width = 10;
+	var level_width = 20;
+
+	var styles = document.styleSheets;
+	for (var i = 0; i < styles.length; i++) {
+		var style = styles[i];
+
+		if (!style.href || style.href.indexOf("angular-multi-select") === -1) {
+			continue;
+		}
+
+		var rules = style.cssRules;
+		for (i = 0; i < rules.length; i++) {
+			var rule = rules[i];
+
+			switch (rule.selectorText) {
+				case ".ams-item .check":
+					check_width = parseInt(rule.style.width);
+					break;
+				case ".ams-item-level-0":
+					level_width = parseInt(rule.style.paddingLeft);
+					break;
+			}
+		}
+	}
+
+	var indent = "";
+	for (i = 1; i < 20; i++) {
+		indent += `.ams-item-level-${i} { padding-left: ${(i + 1) * level_width}px; }`;
+	}
+	inject.text(`.ams-item { padding-right: ${check_width + 10}px; } ${indent}`);
+	angular.element(document.getElementsByTagName('head')).append(inject);
+}]);
+
 angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 	'$sce',
 	'$interpolate',
 	'angularMultiSelectConstants',
 	function ($sce, $interpolate, angularMultiSelectConstants) {
-
+		'use strict';
 		var StylesHelper = function (ops, attrs) {
 			ops                    = ops                   || {};
 
