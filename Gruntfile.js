@@ -107,8 +107,8 @@ module.exports = function(grunt) {
 		},
 
 		clean: {
-			pre: ["build/*", "dist/*"],
-			post: ["dist/prod/specs"]
+			pre: ["build/", "dist/*"],
+			post: ["build/", "dist/prod/specs"]
 		},
 
 		concat: {
@@ -133,10 +133,19 @@ module.exports = function(grunt) {
 				sourceMap: true,
 				presets: ['babel-preset-es2015']
 			},
-			dist: {
+			singlees5: {
 				files: {
 					'build/angular-multi-select.js': 'build/angular-multi-select.js'
 				}
+			},
+			multies5: {
+				files: [{
+					expand: true,
+					cwd: 'src/',
+					src: ['*.js'],
+					dest: 'dist/dev/',
+					ext: '.js'
+				}]
 			}
 		},
 
@@ -175,9 +184,7 @@ module.exports = function(grunt) {
 					dot: true,
 					cwd: 'src/',
 					dest: 'dist/dev/',
-					src: [
-						'**/*.{css,js}'
-					]
+					src: '*.css'
 				}]
 			},
 			specs: {
