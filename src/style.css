@@ -64,7 +64,6 @@
 .ams-helpers {
 	display: flex;
 	width: 100%;
-	margin-bottom: 5px;
 }
 
 .ams-helpers .btn,
@@ -100,7 +99,7 @@
 }
 
 .ams-helpers .selects .all {
-
+	margin-bottom: 5px;
 }
 
 .ams-helpers .selects .none::before {
@@ -109,7 +108,7 @@
 }
 
 .ams-helpers .none {
-
+	margin-bottom: 5px;
 }
 
 .ams-helpers .resets {
@@ -124,6 +123,7 @@
 
 .ams-helpers .reset {
 	margin-left: 5px;
+	margin-bottom: 5px;
 }
 
 /*
@@ -215,12 +215,15 @@
 .ams-item {
 	display: flex;
 	align-items: center;
-	padding: 2px;
+	/*The right padding will be set to as many pixel as the width of the .check element*/
+	padding: 2px 0px 2px 0px;
+
 }
 
 .ams-item-text {
 	display: flex;
 	align-items: center;
+	white-space: nowrap;
 }
 
 /*
@@ -257,6 +260,8 @@
 */
 .ams-item .check {
 	cursor: pointer;
+	width: 15px;
+	text-align: center;
 }
 
 .ams-item .check.checked::before {
