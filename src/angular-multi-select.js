@@ -137,6 +137,28 @@ angular_multi_select.directive('angularMultiSelect', [
 				angular.element(window).on('click', $scope.onclick_listener);
 
 				/*
+				████████ ██     ██ ███████  █████  ██   ██ ███████
+				   ██    ██     ██ ██      ██   ██ ██  ██  ██
+				   ██    ██  █  ██ █████   ███████ █████   ███████
+				   ██    ██ ███ ██ ██      ██   ██ ██  ██       ██
+				   ██     ███ ███  ███████ ██   ██ ██   ██ ███████
+				*/
+
+				/*
+				 * Prevent the scroll event bubbling to the parents on the DOM.
+				 */
+				var div = element[0].getElementsByClassName('ams-items')[0];
+				div.addEventListener('mousewheel', function(e) {
+					if (div.clientHeight + div.scrollTop + e.deltaY >= div.scrollHeight) {
+						e.preventDefault();
+						div.scrollTop = div.scrollHeight;
+					} else if (div.scrollTop + e.deltaY <= 0) {
+						e.preventDefault();
+						div.scrollTop = 0;
+					}
+				}, false);
+
+				/*
 				 * Show the directive to the left/right and at the top/bottom
 				 * of the button itself, depending on the available space.
 				 */
