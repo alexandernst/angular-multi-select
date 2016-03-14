@@ -72,7 +72,7 @@ module.exports = function(grunt) {
 			ams: {
 				src: 'dist/prod/*.js',
 				options: {
-					display: 'short',
+					display: 'short', //full
 					styles: 'dist/prod/*.css',
 					helpers: [
 						'dist/prod/specs/ams/*.js',
