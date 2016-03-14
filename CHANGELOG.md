@@ -9,6 +9,7 @@
 - Reworked CSS. Upgraded to CSS3 with heavy dependency on Flex.
 - Improved minification process.
 - Massive speed improvements (tests are done with up to 50k elements).
+- Bower support has been removed.
 
 ### v5.5.8
 ##### Added / Updated
