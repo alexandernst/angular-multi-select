@@ -161,6 +161,26 @@ module.exports = function(grunt) {
 			}
 		},
 
+		packit: {
+			options: {
+				attribution: false,
+				base62: true,
+				shrink: false
+			},
+
+			target: {
+				options: {
+					pack: true,
+					banners: false,
+					action: 'write',
+					dest: 'dist/prod/<%= pkg.name %>.min.js'
+				},
+				files: {
+					'dist/prod/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
+				}
+			}
+		},
+
 		cssmin: {
 			options: {
 				//
@@ -210,6 +230,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
-	grunt.registerTask('default', ['jshint', 'clean:pre', 'concat', 'babel', 'uglify', 'cssmin', 'copy', 'jasmine', 'clean:post']);
+	grunt.registerTask('default', ['jshint', 'clean:pre', 'concat', 'babel', 'uglify', 'packit', 'cssmin', 'copy', 'jasmine', 'clean:post']);
 
 };
