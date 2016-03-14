@@ -339,6 +339,59 @@ describe('Testing AMS search capabilities', function () {
 	});
 });
 
+describe('Testing AMS hide_helper attribute', function () {
+	var $scope, compile;
+
+	beforeEach(function () {
+		module('angular-multi-select');
+
+		inject(function ($rootScope, $compile) {
+			$scope = $rootScope.$new();
+			compile = $compile;
+		});
+	});
+
+	it('It should be able to hide the "Check all" button', function () {
+		var element = angular.element('<div angular-multi-select hide-helpers="check_all"></div>');
+		compile(element)($scope);
+		$scope.$digest();
+
+		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(false);
+	});
+
+	it('It should be able to hide the "Check none" button', function () {
+		element = angular.element('<div angular-multi-select hide-helpers="check_none"></div>');
+		compile(element)($scope);
+		$scope.$digest();
+
+		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(false);
+	});
+
+	it('It should be able to hide the "Reset" button', function () {
+		element = angular.element('<div angular-multi-select hide-helpers="reset"></div>');
+		compile(element)($scope);
+		$scope.$digest();
+
+		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(true);
+	});
+
+	it('It should be able to hide multiple helper buttons', function () {
+		element = angular.element('<div angular-multi-select hide-helpers="check_all, reset"></div>');
+		compile(element)($scope);
+		$scope.$digest();
+
+		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(true);
+	});
+});
+
 describe('Testing AMS output-related fields', function () {
 	var $scope, compile, element;
 

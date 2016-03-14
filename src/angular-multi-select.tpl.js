@@ -12,12 +12,12 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 
 			<div class="ams-helpers">
 				<div class="selects">
-					<button class="all btn" type="button" ng-click="amse.check_all()">Check all</button>
-					<button class="none btn" type="button" ng-click="amse.uncheck_all()">Check none</button>
+					<button class="all btn" type="button" ng-click="amse.check_all()" ng-hide="hide_helpers.indexOf('check_all') > -1">Check all</button>
+					<button class="none btn" type="button" ng-click="amse.uncheck_all()" ng-hide="hide_helpers.indexOf('check_none') > -1">Check none</button>
 				</div>
 
 				<div class="resets">
-					<button class="reset btn" type="button" ng-click="reset()">Reset data</button>
+					<button class="reset btn" type="button" ng-click="reset()" ng-hide="hide_helpers.indexOf('reset') > -1">Reset data</button>
 				</div>
 			</div>
 

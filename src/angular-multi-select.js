@@ -90,6 +90,16 @@ angular_multi_select.directive('angularMultiSelect', [
 				}
 
 				/*
+				 * Find out if some of the helpers should be hidden.
+				 */
+				$scope.hide_helpers = attrs.hideHelpers === undefined ? [] : attrs.hideHelpers;
+				if (typeof($scope.hide_helpers) === 'string') {
+					$scope.hide_helpers = $scope.hide_helpers
+						.split(",")
+						.map(s => s.replace(/^\s+|\s+$/g, ''));
+				}
+
+				/*
 				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
 				██   ██ ████  ████ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
 				███████ ██ ████ ██ ███████     ██    ██ ██████       ██ █████   ██         ██    ███████
