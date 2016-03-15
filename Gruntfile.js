@@ -116,14 +116,7 @@ module.exports = function(grunt) {
 				separator: '\n\n',
 			},
 			basic: {
-				src: [
-					'src/angular-multi-select-constants.js',
-					'src/angular-multi-select-data-converter.js',
-					'src/angular-multi-select-engine.js',
-					'src/angular-multi-select-styles-helper.js',
-					'src/angular-multi-select.js',
-					'src/angular-multi-select.tpl.js'
-				],
+				src: 'src/*.js',
 				dest: 'build/angular-multi-select.js'
 			}
 		},
