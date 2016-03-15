@@ -132,6 +132,20 @@ angular_multi_select.directive('angularMultiSelect', [
 				angular.element(window).on('click', $scope.onclick_listener);
 
 				/*
+				 * Show the directive to the left/right and at the top/bottom
+				 * of the button itself, depending on the available space.
+				 */
+				$scope.$watch('open', function (_new, _old) {
+					if (_new !== true) {
+						return;
+					}
+
+					$timeout(function () {
+						amssh.transform_position(element);
+					});
+				});
+
+				/*
 				████████ ██     ██ ███████  █████  ██   ██ ███████
 				   ██    ██     ██ ██      ██   ██ ██  ██  ██
 				   ██    ██  █  ██ █████   ███████ █████   ███████
@@ -152,20 +166,6 @@ angular_multi_select.directive('angularMultiSelect', [
 						div.scrollTop = 0;
 					}
 				}, false);
-
-				/*
-				 * Show the directive to the left/right and at the top/bottom
-				 * of the button itself, depending on the available space.
-				 */
-				$scope.$watch('open', function (_new, _old) {
-					if (_new !== true) {
-						return;
-					}
-
-					$timeout(function () {
-						amssh.transform_position(element);
-					});
-				});
 
 				/*
 				██   ██ ███████ ██      ██████  ███████ ██████  ███████
