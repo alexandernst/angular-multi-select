@@ -32,8 +32,8 @@ describe('Testing basic functionality of AMS', function () {
 	});
 
 	it('It should correctly render open/close carets', function () {
-		expect($('.caret.open')).toHaveLength(4);
-		expect($('.caret.closed')).toHaveLength(4);
+		expect($('.ams-caret.open')).toHaveLength(4);
+		expect($('.ams-caret.closed')).toHaveLength(4);
 	});
 
 	it('It should correctly render checked/unchecked/mixed carets', function () {
@@ -90,8 +90,8 @@ describe('Testing AMS with different name properties', function () {
 	});
 
 	it('It should correctly render open/close carets', function () {
-		expect($('.caret.open')).toHaveLength(4);
-		expect($('.caret.closed')).toHaveLength(4);
+		expect($('.ams-caret.open')).toHaveLength(4);
+		expect($('.ams-caret.closed')).toHaveLength(4);
 	});
 
 	it('It should correctly render checked/unchecked/mixed carets', function () {
@@ -356,9 +356,9 @@ describe('Testing AMS hide_helper attribute', function () {
 		compile(element)($scope);
 		$scope.$digest();
 
-		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(true);
-		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
-		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.all', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.ams-btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.reset', element).hasClass('ng-hide')).toEqual(false);
 	});
 
 	it('It should be able to hide the "Check none" button', function () {
@@ -366,9 +366,9 @@ describe('Testing AMS hide_helper attribute', function () {
 		compile(element)($scope);
 		$scope.$digest();
 
-		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(false);
-		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(true);
-		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.all', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.none', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.ams-btn.reset', element).hasClass('ng-hide')).toEqual(false);
 	});
 
 	it('It should be able to hide the "Reset" button', function () {
@@ -376,9 +376,9 @@ describe('Testing AMS hide_helper attribute', function () {
 		compile(element)($scope);
 		$scope.$digest();
 
-		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(false);
-		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
-		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.ams-btn.all', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.reset', element).hasClass('ng-hide')).toEqual(true);
 	});
 
 	it('It should be able to hide multiple helper buttons', function () {
@@ -386,9 +386,9 @@ describe('Testing AMS hide_helper attribute', function () {
 		compile(element)($scope);
 		$scope.$digest();
 
-		expect($('.btn.all', element).hasClass('ng-hide')).toEqual(true);
-		expect($('.btn.none', element).hasClass('ng-hide')).toEqual(false);
-		expect($('.btn.reset', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.ams-btn.all', element).hasClass('ng-hide')).toEqual(true);
+		expect($('.ams-btn.none', element).hasClass('ng-hide')).toEqual(false);
+		expect($('.ams-btn.reset', element).hasClass('ng-hide')).toEqual(true);
 	});
 });
 
