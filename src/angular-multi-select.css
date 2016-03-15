@@ -66,8 +66,8 @@
 	width: 100%;
 }
 
-.ams-helpers .btn,
-.ams-search .btn {
+.ams-helpers .ams-btn,
+.ams-search .ams-btn {
 	display: flex;
 	white-space: nowrap;
 	border: 1px solid #ccc;
@@ -79,12 +79,12 @@
 	padding: 2px 8px;
 }
 
-.ams-helpers .btn:hover,
-.ams-search .btn:hover {
+.ams-helpers .ams-btn:hover,
+.ams-search .ams-btn:hover {
 	border: 1px solid #999;
 }
 
-.ams-helpers .selects .btn:nth-child(2) {
+.ams-helpers .selects .ams-btn:nth-child(2) {
 	margin-left: 5px;
 }
 
@@ -233,21 +233,21 @@
 ██    ██ ██      ██      ██  ██ ██ ██      ██   ██          ██    ██    ██   ██    ██    ██
  ██████  ██      ███████ ██   ████ ███████ ██████      ███████    ██    ██   ██    ██    ███████
 */
-.ams-item .caret {
+.ams-item .ams-caret {
 	width: 10px;
 	margin-right: 5px;
 	cursor: pointer;
 }
 
-.ams-item.leaf .caret {
+.ams-item.leaf .ams-caret {
 	cursor: default;
 }
 
-.ams-item:not(.leaf) .caret.open::before {
+.ams-item:not(.leaf) .ams-caret.open::before {
 	content: '▾';
 }
 
-.ams-item:not(.leaf) .caret.closed::before {
+.ams-item:not(.leaf) .ams-caret.closed::before {
 	content: '▸';
 }
 
