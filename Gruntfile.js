@@ -125,7 +125,8 @@ module.exports = function(grunt) {
 			options: {
 				sourceMap: true,
 				presets: ['babel-preset-es2015'],
-				plugins: ['transform-object-assign']
+				plugins: ['transform-object-assign'],
+				compact: false
 			},
 			singlees5: {
 				files: {
