@@ -132,8 +132,9 @@ angular_multi_select.directive('angularMultiSelect', [
 							(
 								p.hasClass("ams-item") ||
 								p.hasClass("ams-container") ||
+								p.hasClass("ams-caret") ||
 								p.hasClass("ams-button") ||
-								p.hasClass("ams")
+								p.attr("angular-multi-select") === ""
 							)
 						) {
 							return;
