@@ -213,7 +213,10 @@
 	align-items: center;
 	/*The right padding will be set to as many pixel as the width of the .check element*/
 	padding: 2px 0px 2px 0px;
+}
 
+.ams-item:hover {
+	background-color: #efefef;
 }
 
 .ams-item-text {
