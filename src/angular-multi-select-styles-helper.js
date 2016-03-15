@@ -258,6 +258,48 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			return $sce.trustAsHtml(_interpolated);
 		};
 
+		/*
+		████████ ██████   █████  ███    ██ ███████ ███████  ██████  ██████  ███    ███     ██████   ██████  ███████ ██ ████████ ██  ██████  ███    ██
+		   ██    ██   ██ ██   ██ ████   ██ ██      ██      ██    ██ ██   ██ ████  ████     ██   ██ ██    ██ ██      ██    ██    ██ ██    ██ ████   ██
+		   ██    ██████  ███████ ██ ██  ██ ███████ █████   ██    ██ ██████  ██ ████ ██     ██████  ██    ██ ███████ ██    ██    ██ ██    ██ ██ ██  ██
+		   ██    ██   ██ ██   ██ ██  ██ ██      ██ ██      ██    ██ ██   ██ ██  ██  ██     ██      ██    ██      ██ ██    ██    ██ ██    ██ ██  ██ ██
+		   ██    ██   ██ ██   ██ ██   ████ ███████ ██       ██████  ██   ██ ██      ██     ██       ██████  ███████ ██    ██    ██  ██████  ██   ████
+		*/
+		StylesHelper.prototype.transform_position = function (element) {
+			var btn = element[0];
+			var container = btn.getElementsByClassName('ams-container')[0];
+
+			var translateX = 0, translateY = 0;
+			var btn_rect = btn.getBoundingClientRect();
+			var container_rect = container.getBoundingClientRect();
+
+			/*
+			 * If the available width to the right is not enough and there is
+			 * enough available width to the left, flip the X position.
+			 */
+			if (
+				document.documentElement.clientWidth - (btn_rect.left + btn_rect.width) < container_rect.width &&
+				btn_rect.left + btn_rect.width >= container_rect.width
+			) {
+				translateX -= (container_rect.width - btn_rect.width);
+			}
+
+			/*
+			 * If the available height to the bottom is not enough and there is
+			 * enough available height to the top, flip the Y position.
+			 */
+			if (
+				document.documentElement.clientHeight - (btn_rect.top + btn_rect.height) < container_rect.height &&
+				btn_rect.top >= container_rect.height
+			) {
+				translateY -= (container_rect.height + btn_rect.height);
+			}
+
+			if (translateX < 0 || translateY < 0) {
+				container.style.transform = "translate(" + translateX + "px, " + translateY + "px)";
+			}
+		};
+
 		return StylesHelper;
 	}
 ]);
