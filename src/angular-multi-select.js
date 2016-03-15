@@ -120,11 +120,7 @@ angular_multi_select.directive('angularMultiSelect', [
 
 					var p = angular.element(event.target).parent();
 					while (p.length > 0) {
-						if (
-							p[0].className !== undefined &&
-							p.attr("angular-multi-select") === "" &&
-							p.attr("name") === $scope.ops.NAME
-						) {
+						if (p.attr("name") === $scope.ops.NAME) {
 							return;
 						}
 						p = p.parent();
