@@ -9,7 +9,18 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 
 		};
 
+		/*
+		███████  █████  ███    ██ ██ ████████ ██ ███████ ███████      ██████  ██████  ███████
+		██      ██   ██ ████   ██ ██    ██    ██    ███  ██          ██    ██ ██   ██ ██
+		███████ ███████ ██ ██  ██ ██    ██    ██   ███   █████       ██    ██ ██████  ███████
+		     ██ ██   ██ ██  ██ ██ ██    ██    ██  ███    ██          ██    ██ ██           ██
+		███████ ██   ██ ██   ████ ██    ██    ██ ███████ ███████      ██████  ██      ███████
+		*/
 		Utils.prototype.sanitize_ops = function (ops) {
+			/*
+			 * This will set all basic and required values to
+			 * "sane" defaults if none are provided.
+			 */
 			ops = ops || {};
 
 			return {
@@ -22,6 +33,27 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 				CHECKED_PROPERTY  : ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY,
 				CHILDREN_PROPERTY : ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY
 			};
+		};
+
+		/*
+		 █████  ██████  ██████   █████  ██    ██     ███████ ██████   ██████  ███    ███      █████  ████████ ████████ ██████
+		██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██      ██   ██ ██    ██ ████  ████     ██   ██    ██       ██    ██   ██
+		███████ ██████  ██████  ███████   ████       █████   ██████  ██    ██ ██ ████ ██     ███████    ██       ██    ██████
+		██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██   ██ ██    ██ ██  ██  ██     ██   ██    ██       ██    ██   ██
+		██   ██ ██   ██ ██   ██ ██   ██    ██        ██      ██   ██  ██████  ██      ██     ██   ██    ██       ██    ██   ██
+		*/
+		Utils.prototype.array_from_attr = function (str) {
+			/*
+			 * This will take a string and try to split it
+			 * using ',' as separator and return the resulting
+			 * array or undefined.
+			 */
+			if (typeof(str) === 'string') {
+				return str.split(",")
+				.map(s => s.replace(/^\s+|\s+$/g, ''));
+			} else {
+				return str;
+			}
 		};
 
 		return Utils;

@@ -1,4 +1,5 @@
 var angular_multi_select = angular.module('angular-multi-select', [
+	'angular-multi-select-utils',
 	'angular-multi-select-engine',
 	'angular-multi-select-constants',
 	'angular-multi-select-styles-helper',
@@ -10,11 +11,12 @@ angular_multi_select.directive('angularMultiSelect', [
 	'$compile',
 	'$timeout',
 	'$templateCache',
+	'angularMultiSelectUtils',
 	'angularMultiSelectEngine',
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function ($http, $compile, $timeout, $templateCache, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($http, $compile, $timeout, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 		'use strict';
 		return {
 			restrict: 'AE',
@@ -30,6 +32,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				element.append(content);
 
 				var self = {};
+				var amsu = new angularMultiSelectUtils();
 
 				/*
 				 █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████
@@ -43,15 +46,16 @@ angular_multi_select.directive('angularMultiSelect', [
 				* of the input data.
 				*/
 				$scope.ops = {
-					DEBUG             : attrs.debug            === "true" ? true : false,
-					NAME              : attrs.name             || 'angular-multi-select-' + Math.round(Date.now() / 1000) + '' + Math.random(),
-					MAX_CHECKED_LEAFS : parseInt(attrs.maxCheckedLeafs) || -1,
+					DEBUG             : attrs.debug === "true" ? true : false,
+					NAME              : attrs.name,
+					MAX_CHECKED_LEAFS : parseInt(attrs.maxCheckedLeafs),
 
-					ID_PROPERTY       : attrs.idProperty       || angularMultiSelectConstants.ID_PROPERTY,
-					OPEN_PROPERTY     : attrs.openProperty     || angularMultiSelectConstants.OPEN_PROPERTY,
-					CHECKED_PROPERTY  : attrs.checkedProperty  || angularMultiSelectConstants.CHECKED_PROPERTY,
-					CHILDREN_PROPERTY : attrs.childrenProperty || angularMultiSelectConstants.CHILDREN_PROPERTY
+					ID_PROPERTY       : attrs.idProperty,
+					OPEN_PROPERTY     : attrs.openProperty,
+					CHECKED_PROPERTY  : attrs.checkedProperty,
+					CHILDREN_PROPERTY : attrs.childrenProperty
 				};
+				$scope.ops = amsu.sanitize_ops($scope.ops);
 
 				/*
 				 * Set the directive's name as attribute. If it exists, it will be overriten with
@@ -69,13 +73,8 @@ angular_multi_select.directive('angularMultiSelect', [
 				/*
 				 * Find out if the output data should be converted in some special way.
 				 */
-				self.output_type = attrs.outputType === undefined ? 'objects' : attrs.outputType;
-				self.output_keys = attrs.outputKeys === undefined ? undefined : attrs.outputKeys;
-				if (self.output_keys !== undefined) {
-					self.output_keys = self.output_keys
-						.split(",")
-						.map(s => s.replace(/^\s+|\s+$/g, ''));
-				}
+				self.output_keys   = amsu.array_from_attr(attrs.outputKeys);
+				self.output_type   = attrs.outputType   === undefined ? 'objects' : attrs.outputType;
 				self.output_filter = attrs.outputFilter === undefined ? angularMultiSelectConstants.FIND_LEAFS : attrs.outputFilter;
 
 				/*
@@ -86,25 +85,12 @@ angular_multi_select.directive('angularMultiSelect', [
 				/*
 				 * Find out if something should be preselected.
 				 */
-				self.preselect = attrs.preselect === undefined ? undefined : attrs.preselect;
-				if (self.preselect !== undefined) {
-					self.preselect = self.preselect
-						.split(",")
-						.map(s => s.replace(/^\s+|\s+$/g, ''));
-				}
-				if (!Array.isArray(self.preselect) || self.preselect.length !== 2) {
-					self.preselect = undefined;
-				}
+				self.preselect = amsu.array_from_attr(attrs.preselect);
 
 				/*
 				 * Find out if some of the helpers should be hidden.
 				 */
-				$scope.hide_helpers = attrs.hideHelpers === undefined ? [] : attrs.hideHelpers;
-				if (typeof($scope.hide_helpers) === 'string') {
-					$scope.hide_helpers = $scope.hide_helpers
-						.split(",")
-						.map(s => s.replace(/^\s+|\s+$/g, ''));
-				}
+				$scope.hide_helpers = amsu.array_from_attr(attrs.hideHelpers) || [];
 
 				/*
 				 █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
