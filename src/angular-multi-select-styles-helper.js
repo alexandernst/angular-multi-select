@@ -102,10 +102,24 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			this.leaf_repr      = this.interpolate(this.leaf_repr);
 		};
 
+		/*
+		 ██████  ███████ ████████     ██      ███████ ██    ██ ███████ ██           ██████ ██       █████  ███████ ███████
+		██       ██         ██        ██      ██      ██    ██ ██      ██          ██      ██      ██   ██ ██      ██
+		██   ███ █████      ██        ██      █████   ██    ██ █████   ██          ██      ██      ███████ ███████ ███████
+		██    ██ ██         ██        ██      ██       ██  ██  ██      ██          ██      ██      ██   ██      ██      ██
+		 ██████  ███████    ██        ███████ ███████   ████   ███████ ███████      ██████ ███████ ██   ██ ███████ ███████
+		*/
 		StylesHelper.prototype.get_level_class = function (item) {
 			return "ams-item-level-" + item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
 		};
 
+		/*
+		 ██████  ███████ ████████      ██████  ██████  ███████ ███    ██      ██████ ██       █████  ███████ ███████
+		██       ██         ██        ██    ██ ██   ██ ██      ████   ██     ██      ██      ██   ██ ██      ██
+		██   ███ █████      ██        ██    ██ ██████  █████   ██ ██  ██     ██      ██      ███████ ███████ ███████
+		██    ██ ██         ██        ██    ██ ██      ██      ██  ██ ██     ██      ██      ██   ██      ██      ██
+		 ██████  ███████    ██         ██████  ██      ███████ ██   ████      ██████ ███████ ██   ██ ███████ ███████
+		*/
 		StylesHelper.prototype.get_open_class = function (item) {
 			if (item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0) {
 				return '';
@@ -116,6 +130,13 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 				angularMultiSelectConstants.CSS_CLOSED;
 		};
 
+		/*
+		 ██████  ███████ ████████      ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████       ██████ ██       █████  ███████ ███████
+		██       ██         ██        ██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██      ██      ██   ██ ██      ██
+		██   ███ █████      ██        ██      ███████ █████   ██      █████   █████   ██   ██     ██      ██      ███████ ███████ ███████
+		██    ██ ██         ██        ██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██      ██      ██   ██      ██      ██
+		 ██████  ███████    ██         ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████       ██████ ███████ ██   ██ ███████ ███████
+		*/
 		StylesHelper.prototype.get_checked_class = function (item) {
 			if (typeof(item[this.CHECKED_PROPERTY]) === 'boolean' ) {
 				return item[this.CHECKED_PROPERTY] ?
@@ -130,6 +151,13 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			}
 		};
 
+		/*
+		 ██████  ███████ ████████     ████████ ██    ██ ██████  ███████      ██████ ██       █████  ███████ ███████
+		██       ██         ██           ██     ██  ██  ██   ██ ██          ██      ██      ██   ██ ██      ██
+		██   ███ █████      ██           ██      ████   ██████  █████       ██      ██      ███████ ███████ ███████
+		██    ██ ██         ██           ██       ██    ██      ██          ██      ██      ██   ██      ██      ██
+		 ██████  ███████    ██           ██       ██    ██      ███████      ██████ ███████ ██   ██ ███████ ███████
+		*/
 		StylesHelper.prototype.get_type_class = function (item) {
 			return item[angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS] === 0 ?
 				angularMultiSelectConstants.CSS_LEAF :
@@ -195,6 +223,13 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			return $interpolate(str);
 		};
 
+		/*
+		 ██████ ██████  ███████  █████  ████████ ███████     ██████  ██████   ██████  ██████  ██████   ██████  ██     ██ ███    ██     ██       █████  ██████  ███████ ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██    ██ ██     ██ ████   ██     ██      ██   ██ ██   ██ ██      ██
+		██      ██████  █████   ███████    ██    █████       ██   ██ ██████  ██    ██ ██████  ██   ██ ██    ██ ██  █  ██ ██ ██  ██     ██      ███████ ██████  █████   ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██   ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██ ███ ██ ██  ██ ██     ██      ██   ██ ██   ██ ██      ██
+		 ██████ ██   ██ ███████ ██   ██    ██    ███████     ██████  ██   ██  ██████  ██      ██████   ██████   ███ ███  ██   ████     ███████ ██   ██ ██████  ███████ ███████
+		*/
 		StylesHelper.prototype.create_dropdown_label = function (stats) {
 			//TODO: Cache + cache invalidation on data change
 
@@ -203,6 +238,13 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			return $sce.trustAsHtml(_interpolated);
 		};
 
+		/*
+		 ██████ ██████  ███████  █████  ████████ ███████     ██       █████  ██████  ███████ ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██      ██   ██ ██   ██ ██      ██
+		██      ██████  █████   ███████    ██    █████       ██      ███████ ██████  █████   ██
+		██      ██   ██ ██      ██   ██    ██    ██          ██      ██   ██ ██   ██ ██      ██
+		 ██████ ██   ██ ███████ ██   ██    ██    ███████     ███████ ██   ██ ██████  ███████ ███████
+		*/
 		StylesHelper.prototype.create_label = function (item) {
 			//TODO: Cache + cache invalidation on data change
 
