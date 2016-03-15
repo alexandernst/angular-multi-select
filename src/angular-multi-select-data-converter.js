@@ -1,22 +1,23 @@
 var angular_multi_select_data_converter = angular.module('angular-multi-select-data-converter', [
+	'angular-multi-select-utils',
 	'angular-multi-select-constants'
 ]);
 
 angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
+	'angularMultiSelectUtils',
 	'angularMultiSelectConstants',
-	function (angularMultiSelectConstants) {
-
+	function (angularMultiSelectUtils, angularMultiSelectConstants) {
+		'use strict';
+		/*
+		 ██████  ██████  ███    ██ ███████ ████████ ██████  ██    ██  ██████ ████████  ██████  ██████
+		██      ██    ██ ████   ██ ██         ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		██      ██    ██ ██ ██  ██ ███████    ██    ██████  ██    ██ ██         ██    ██    ██ ██████
+		██      ██    ██ ██  ██ ██      ██    ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		 ██████  ██████  ██   ████ ███████    ██    ██   ██  ██████   ██████    ██     ██████  ██   ██
+		*/
 		var DataConverter = function (ops) {
-			ops                    = ops                   || {};
-
-			this.DEBUG             = ops.DEBUG             || false;
-			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000);
-			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
-
-			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
-			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
-			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
-			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
+			this.amsu = new angularMultiSelectUtils();
+			Object.assign(this, this.amsu.sanitize_ops(ops));
 		};
 
 		/*

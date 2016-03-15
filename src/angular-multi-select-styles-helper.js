@@ -1,9 +1,21 @@
 var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', [
+	'angular-multi-select-utils',
 	'angular-multi-select-constants'
 ]);
 
 angular_multi_select_styles_helper.run([function () {
 	'use strict';
+	/*
+	 * This is used to generate some CSS styling at runtime.
+	 * This code as ran after everything else is loaded and
+	 * uses "document.styleSheets" to read the loaded CSS styling.
+	 *
+	 * * The right padding of each element is extended with as many
+	 * pixels as the width of the check marker.
+	 *
+	 * * 20 levels of indent classes are generated based on the
+	 * width of the first level.
+	 */
 	var inject = angular.element("<style>");
 
 	//Default values, just in case...
@@ -44,20 +56,20 @@ angular_multi_select_styles_helper.run([function () {
 angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 	'$sce',
 	'$interpolate',
+	'angularMultiSelectUtils',
 	'angularMultiSelectConstants',
-	function ($sce, $interpolate, angularMultiSelectConstants) {
+	function ($sce, $interpolate, angularMultiSelectUtils, angularMultiSelectConstants) {
 		'use strict';
+		/*
+		 ██████  ██████  ███    ██ ███████ ████████ ██████  ██    ██  ██████ ████████  ██████  ██████
+		██      ██    ██ ████   ██ ██         ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		██      ██    ██ ██ ██  ██ ███████    ██    ██████  ██    ██ ██         ██    ██    ██ ██████
+		██      ██    ██ ██  ██ ██      ██    ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		 ██████  ██████  ██   ████ ███████    ██    ██   ██  ██████   ██████    ██     ██████  ██   ██
+		*/
 		var StylesHelper = function (ops, attrs) {
-			ops                    = ops                   || {};
-
-			this.DEBUG             = ops.DEBUG             || false;
-			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000);
-			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
-
-			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
-			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
-			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
-			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
+			this.amsu = new angularMultiSelectUtils();
+			Object.assign(this, this.amsu.sanitize_ops(ops));
 
 			this.START_REPLACE_SYMBOL_REGEX        = /<\[/g;
 			this.END_REPLACE_SYMBOL_REGEX          = /]>/g;

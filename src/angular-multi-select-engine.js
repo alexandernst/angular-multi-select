@@ -1,21 +1,23 @@
 var angular_multi_select_engine = angular.module('angular-multi-select-engine', [
+	'angular-multi-select-utils',
 	'angular-multi-select-constants'
 ]);
 
 angular_multi_select_engine.factory('angularMultiSelectEngine', [
+	'angularMultiSelectUtils',
 	'angularMultiSelectConstants',
-	function (angularMultiSelectConstants) {
+	function (angularMultiSelectUtils, angularMultiSelectConstants) {
+		'use strict';
+		/*
+		 ██████  ██████  ███    ██ ███████ ████████ ██████  ██    ██  ██████ ████████  ██████  ██████
+		██      ██    ██ ████   ██ ██         ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		██      ██    ██ ██ ██  ██ ███████    ██    ██████  ██    ██ ██         ██    ██    ██ ██████
+		██      ██    ██ ██  ██ ██      ██    ██    ██   ██ ██    ██ ██         ██    ██    ██ ██   ██
+		 ██████  ██████  ██   ████ ███████    ██    ██   ██  ██████   ██████    ██     ██████  ██   ██
+		*/
 		var Engine = function (ops) {
-			ops                    = ops                   || {};
-
-			this.DEBUG             = ops.DEBUG             || false;
-			this.NAME              = ops.NAME              || 'angular-multi-select-' + Math.round(Date.now() / 1000) + '' + Math.random();
-			this.MAX_CHECKED_LEAFS = ops.MAX_CHECKED_LEAFS || -1;
-
-			this.ID_PROPERTY       = ops.ID_PROPERTY       || angularMultiSelectConstants.ID_PROPERTY;
-			this.OPEN_PROPERTY     = ops.OPEN_PROPERTY     || angularMultiSelectConstants.OPEN_PROPERTY;
-			this.CHECKED_PROPERTY  = ops.CHECKED_PROPERTY  || angularMultiSelectConstants.CHECKED_PROPERTY;
-			this.CHILDREN_PROPERTY = ops.CHILDREN_PROPERTY || angularMultiSelectConstants.CHILDREN_PROPERTY;
+			this.amsu = new angularMultiSelectUtils();
+			Object.assign(this, this.amsu.sanitize_ops(ops));
 
 			/*
 			 * Initiate the database and setup index fields.
