@@ -61,7 +61,7 @@ describe('Testing basic functionality of AMS', function () {
 });
 
 describe('Testing AMS with different name properties', function () {
-	var $scope, element, timeout;
+	var $scope, element;
 
 	beforeEach(function (){
 		module('angular-multi-select');
@@ -70,9 +70,8 @@ describe('Testing AMS with different name properties', function () {
 		jasmine.getFixtures().load('demo_simple_2.html');
 		element = document.getElementById('demo_container');
 
-		inject(function($rootScope, $compile, $timeout) {
+		inject(function($rootScope, $compile) {
 			$scope = $rootScope.$new();
-			timeout = $timeout;
 
 			$compile(element)($scope);
 
@@ -111,6 +110,89 @@ describe('Testing AMS with different name properties', function () {
 
 	it('It should render text of button correctly', function () {
 		expect($('.ams-button-text')).toContainText('5 checked items');
+	});
+});
+
+describe('Testking AMS keyboard handler', function () {
+	var $scope, element, timeout;
+
+	var keyPress = function (key) {
+		var event = document.createEvent('Event');
+		event.keyCode = key;
+		event.initEvent('keydown');
+		document.dispatchEvent(event);
+	};
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_simple.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile, $timeout) {
+			$scope = $rootScope.$new();
+			timeout = $timeout;
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should handle up/down keys propery', function () {
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		keyPress(40);
+		$scope.$digest();
+
+		var item_text = $('.ams-item-focused .ams-item-text').text();
+		expect(item_text).toContain('A');
+
+		keyPress(38);
+		keyPress(38);
+		$scope.$digest();
+
+		item_text = $('.ams-item-focused .ams-item-text').text();
+		expect(item_text).toContain('X');
+	});
+
+	it('It should handle spacebar key properly', function () {
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		keyPress(40);
+		keyPress(40);
+		keyPress(32);
+		keyPress(40);
+		$scope.$digest();
+
+		var item_text = $('.ams-item-focused .ams-item-text').text();
+		expect(item_text).toContain('D');
+	});
+
+	it('It should handle escape key properly', function () {
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		keyPress(27);
+		$scope.$digest();
+
+		var cls = $('.ams-container').hasClass('ng-hide');
+		expect(cls).toEqual(true);
 	});
 });
 

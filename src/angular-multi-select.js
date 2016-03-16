@@ -118,18 +118,12 @@ angular_multi_select.directive('angularMultiSelect', [
 						return;
 					}
 
-					var p = angular.element(event.target).parent();
-					while (p.length > 0) {
-						if (p.attr("name") === $scope.ops.NAME) {
-							return;
-						}
-						p = p.parent();
+					if (!amsu.element_belongs_to_directive(event.target, $scope.ops.NAME)) {
+						$scope.open = false;
+						$scope.$apply();
 					}
-
-					$scope.open = false;
-					$scope.$apply();
 				};
-				angular.element(window).on('click', $scope.onclick_listener);
+				document.addEventListener('click', $scope.onclick_listener);
 
 				/*
 				 * Show the directive to the left/right and at the top/bottom
@@ -156,16 +150,29 @@ angular_multi_select.directive('angularMultiSelect', [
 				/*
 				 * Prevent the scroll event bubbling to the parents on the DOM.
 				 */
-				var div = element[0].getElementsByClassName('ams-items')[0];
-				div.addEventListener('mousewheel', function(e) {
-					if (div.clientHeight + div.scrollTop + e.deltaY >= div.scrollHeight) {
-						e.preventDefault();
-						div.scrollTop = div.scrollHeight;
-					} else if (div.scrollTop + e.deltaY <= 0) {
-						e.preventDefault();
-						div.scrollTop = 0;
+				amsu.prevent_scroll_bubbling(element[0].getElementsByClassName('ams-items')[0]);
+
+				/*
+				 * Make keyboard navigation possible.
+				 */
+				$scope.focused_index = -1;
+				$scope.onkeypress_listener = function (event) {
+					if ($scope.open === false) {
+						return;
 					}
-				}, false);
+
+					var quit = amsu.process_kb_input(event, $scope);
+
+					/*
+					 * If quit is false, recalculate the
+					 * scroll position of the items container.
+					 */
+					if (!quit) {
+						amsu.scroll_to_item(element);
+					}
+
+				};
+				document.addEventListener('keydown', $scope.onkeypress_listener);
 
 				/*
 				██   ██ ███████ ██      ██████  ███████ ██████  ███████
@@ -353,7 +360,8 @@ angular_multi_select.directive('angularMultiSelect', [
 
 				$scope.$on('$destroy', function () {
 					amse.remove_collection($scope.ops.NAME);
-					angular.element(window).on('click', $scope.onclick_listener);
+					document.removeEventListener('click', $scope.onclick_listener);
+					document.removeEventListener('keydown', $scope.onkeypress_listener);
 				});
 			}
 		};

@@ -30,7 +30,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 			<div class="ams-items">
 				<div
 					ng-repeat="item in items track by item[ops.ID_PROPERTY]"
-					class="ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }}"
+					class="ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}"
 				>
 					<!-- Caret -->
 					<div

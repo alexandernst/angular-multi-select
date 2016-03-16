@@ -226,6 +226,10 @@
 	cursor: default;
 }
 
+.ams-item-focused {
+	background-color: #ddd;
+}
+
 /*
  ██████  ██████  ███████ ███    ██ ███████ ██████      ███████ ████████  █████  ████████ ███████
 ██    ██ ██   ██ ██      ████   ██ ██      ██   ██     ██         ██    ██   ██    ██    ██
@@ -247,6 +251,7 @@
 
 .ams-item.leaf .ams-caret {
 	cursor: default;
+	color: transparent; /* Hack to conserve the width of the element without making it visible */
 }
 
 .ams-caret::before,
