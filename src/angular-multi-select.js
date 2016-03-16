@@ -189,6 +189,11 @@ angular_multi_select.directive('angularMultiSelect', [
 				$scope.reset_model = null;
 				$scope.reset       = function () {
 					amse.insert($scope.reset_model);
+
+					if (self.preselect !== undefined) {
+						amse.check_node_by(self.preselect);
+					}
+
 					$scope.items = amse.get_visible_tree();
 				};
 
