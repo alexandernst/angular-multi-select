@@ -1,14 +1,9 @@
-.git
-/build
-/demo
-/node_modules
 /specs
 /src
 /utils
 .gitignore
 .npmignore
 .travis.yml
-bower.json
 CHANGELOG.md
 Gruntfile.js
 LICENSE.txt
