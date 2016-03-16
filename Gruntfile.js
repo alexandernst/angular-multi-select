@@ -3,6 +3,15 @@ module.exports = function(grunt) {
 	// Load grunt tasks automatically
 	require('load-grunt-tasks')(grunt);
 
+	var vendor_libs = [
+		'node_modules/lokijs/src/lokijs.js',
+		'node_modules/jquery/dist/jquery.js',
+		'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+		'node_modules/angular/angular.js',
+		'node_modules/angular-mocks/angular-mocks.js'
+	];
+	var jasmine_logging = "short"; //full
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
@@ -14,8 +23,17 @@ module.exports = function(grunt) {
 			}
 		},
 
+		watch: {
+			files: ['<%= jshint.files %>', 'src/*.css', 'demo/*'],
+			tasks: ['clear'],
+			options: {
+				debounceDelay: 1000,
+				livereload: 8080
+			}
+		},
+
 		jshint: {
-			files: ['Gruntfile.js', 'src/*.js', 'specs/*.js', 'specs/**/*.js'],
+			files: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js'],
 			options: {
 				globals: {
 					jQuery: true,
@@ -33,82 +51,12 @@ module.exports = function(grunt) {
 			}
 		},
 
-		jasmine: {
-			data_converter: {
-				src: 'dist/prod/*.js',
-				options: {
-					display: 'short',
-					styles: 'dist/prod/*.css',
-					helpers: [
-						'dist/prod/specs/data_converter/*.js'
-					],
-					specs: 'dist/prod/specs/data_converter.js',
-					vendor: [
-						'node_modules/jquery/dist/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js'
-					]
-				}
-			},
-			engine: {
-				src: 'dist/prod/*.js',
-				options: {
-					display: 'short',
-					styles: 'dist/prod/*.css',
-					helpers: [
-						'dist/prod/specs/engine/*.js',
-					],
-					specs: 'dist/prod/specs/engine.js',
-					vendor: [
-						'node_modules/lokijs/src/lokijs.js',
-						'node_modules/jquery/dist/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js'
-					]
-				}
-			},
-			ams: {
-				src: 'dist/prod/*.js',
-				options: {
-					display: 'short', //full
-					styles: 'dist/prod/*.css',
-					helpers: [
-						'dist/prod/specs/ams/*.js',
-					],
-					specs: 'dist/prod/specs/ams.js',
-					vendor: [
-						'node_modules/lokijs/src/lokijs.js',
-						'node_modules/jquery/dist/jquery.js',
-						'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-						'node_modules/angular/angular.js',
-						'node_modules/angular-mocks/angular-mocks.js'
-					],
-
-					//Special viewport size for positioning testing
-					page: {
-						viewportSize: {
-							width: 515,
-							height: 515
-						}
-					}
-				}
-			}
-		},
-
-		watch: {
-			files: ['<%= jshint.files %>', 'src/*.css', 'demo/*'],
-			tasks: ['clear'],
-			options: {
-				debounceDelay: 1000,
-				livereload: 8080
-			}
-		},
-
 		clean: {
 			pre: ["build/", "dist/*"],
-			post: ["build/", "dist/prod/specs"]
+			/*
+			 * Specs are ran from the "dist/prod/specs" folder.
+			 */
+			post: [/*"build/",*/ "dist/prod/specs"]
 		},
 
 		concat: {
@@ -124,7 +72,7 @@ module.exports = function(grunt) {
 					'!src/angular-multi-select-filters.js', 'src/angular-multi-select-filters.js',
 					'!src/angular-multi-select-i18n.js', 'src/angular-multi-select-i18n.js'
 				],
-				dest: 'build/angular-multi-select.js'
+				dest: 'build/<%= pkg.name %>.js'
 			}
 		},
 
@@ -137,7 +85,7 @@ module.exports = function(grunt) {
 			},
 			singlees5: {
 				files: {
-					'build/angular-multi-select.js': 'build/angular-multi-select.js'
+					'build/<%= pkg.name %>.js': 'build/<%= pkg.name %>.js'
 				}
 			},
 			multies5: {
@@ -155,32 +103,23 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n',
-				compress: true
+				compress: true,
+				sourceMap: true
 			},
-			dist: {
+			ams: {
 				files: {
 					'dist/prod/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
 				}
-			}
-		},
-
-		packit: {
-			options: {
-				attribution: false,
-				base62: true,
-				shrink: false
 			},
-
-			target: {
-				options: {
-					pack: true,
-					banners: false,
-					action: 'write',
-					dest: 'dist/prod/<%= pkg.name %>.min.js'
-				},
-				files: {
-					'dist/prod/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
-				}
+			langs: {
+				files: [{
+					expand: true,
+					cwd: 'src/i18n',
+					src: '*.js',
+					dest: 'dist/prod/i18n/',
+					ext: '.min.js',
+					extDot: 'last'
+				}]
 			}
 		},
 
@@ -210,6 +149,15 @@ module.exports = function(grunt) {
 					src: '*.css'
 				}]
 			},
+			i18n: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: 'src/i18n/',
+					dest: 'dist/dev/i18n/',
+					src: '*.js'
+				}]
+			},
 			specs: {
 				files: [{
 					expand: true,
@@ -218,6 +166,51 @@ module.exports = function(grunt) {
 					dest: 'dist/prod/specs',
 					src: '**/*'
 				}]
+			}
+		},
+
+		jasmine: {
+			data_converter: {
+				src: 'dist/prod/*.js',
+				options: {
+					display: jasmine_logging,
+					helpers: [
+						'dist/prod/specs/data_converter/*.js'
+					],
+					specs: 'dist/prod/specs/data_converter.js',
+					vendor: vendor_libs
+				}
+			},
+			engine: {
+				src: 'dist/prod/*.js',
+				options: {
+					display: jasmine_logging,
+					helpers: [
+						'dist/prod/specs/engine/*.js',
+					],
+					specs: 'dist/prod/specs/engine.js',
+					vendor: vendor_libs
+				}
+			},
+			ams: {
+				src: 'dist/prod/*.js',
+				options: {
+					display: jasmine_logging,
+					styles: 'dist/prod/*.css',
+					helpers: [
+						'dist/prod/specs/ams/*.js',
+					],
+					specs: 'dist/prod/specs/ams.js',
+					vendor: vendor_libs,
+
+					//Special viewport size for positioning testing
+					page: {
+						viewportSize: {
+							width: 515,
+							height: 515
+						}
+					}
+				}
 			}
 		}
 
@@ -233,6 +226,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
 	grunt.registerTask('server', ['jshint', 'connect', 'watch']);
-	grunt.registerTask('default', ['jshint', 'clean:pre', 'concat', 'babel', 'uglify', 'packit', 'cssmin', 'copy', 'jasmine', 'clean:post']);
+	grunt.registerTask('default', ['jshint', 'clean:pre', 'concat', 'babel', 'uglify', 'cssmin', 'copy', 'jasmine', 'clean:post']);
 
 };
