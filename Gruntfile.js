@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 			/*
 			 * Specs are ran from the "dist/prod/specs" folder.
 			 */
-			post: [/*"build/",*/ "dist/prod/specs"]
+			post: ["build/", "dist/prod/specs"]
 		},
 
 		concat: {
