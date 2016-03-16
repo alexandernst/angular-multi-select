@@ -113,6 +113,48 @@ describe('Testing AMS with different name properties', function () {
 	});
 });
 
+describe('Testing AMS i18n support', function () {
+	var $scope, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		var angular_multi_select = angular.module('angular-multi-select');
+		angular_multi_select.config(function (angularMultiSelectI18nProvider) {
+			angularMultiSelectI18nProvider.createTranslation('es', {
+				CHECK_ALL: 'Marcar todo'
+			});
+
+			angularMultiSelectI18nProvider.setLang('es');
+		});
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_simple.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile) {
+			$scope = $rootScope.$new();
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should be able to honor i18n config', function () {
+		var text = $('.all.ams-btn').text();
+		expect(text).toEqual("Marcar todo");
+	});
+
+	it('It should be able to handle missing translations', function () {
+		var text = $('.none.ams-btn').text();
+		expect(text).toEqual("Uncheck all");
+	});
+});
+
 describe('Testking AMS keyboard handler', function () {
 	var $scope, element, timeout;
 

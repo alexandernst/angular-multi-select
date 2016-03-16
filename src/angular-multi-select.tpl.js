@@ -12,19 +12,19 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 
 			<div class="ams-helpers">
 				<div class="selects">
-					<button class="all ams-btn" type="button" accesskey="a" ng-click="amse.check_all()" ng-hide="hide_helpers.indexOf('check_all') > -1">Check all</button>
-					<button class="none ams-btn" type="button" accesskey="n" ng-click="amse.uncheck_all()" ng-hide="hide_helpers.indexOf('check_none') > -1">Check none</button>
+					<button class="all ams-btn" type="button" accesskey="a" ng-click="amse.check_all()" ng-hide="hide_helpers.indexOf('check_all') > -1">{{ 'CHECK_ALL' | translate }}</button>
+					<button class="none ams-btn" type="button" accesskey="n" ng-click="amse.uncheck_all()" ng-hide="hide_helpers.indexOf('check_none') > -1">{{ 'CHECK_NONE' | translate }}</button>
 				</div>
 
 				<div class="resets">
-					<button class="reset ams-btn" type="button" accesskey="r" ng-click="reset()" ng-hide="hide_helpers.indexOf('reset') > -1">Reset data</button>
+					<button class="reset ams-btn" type="button" accesskey="r" ng-click="reset()" ng-hide="hide_helpers.indexOf('reset') > -1">{{ 'RESET' | translate }}</button>
 				</div>
 			</div>
 
 			<div class="ams-search" ng-show="search_field !== null">
-				<input class="ams-search-field" type="text" name="ams-search-field" value="" ng-model="search" autofocus>
+				<input class="ams-search-field" type="text" name="ams-search-field" value="" placeholder="{{ 'SEARCH' | translate }}" ng-model="search" autofocus>
 				<div class="ams-spinner" ng-show="search_spinner_visible"></div>
-				<button class="clear ams-btn" type="button" accesskey="c" name="clear" ng-click="search = ''"></button>
+				<button class="clear ams-btn" type="button" accesskey="c" name="clear" title="{{ 'CLEAR' | translate }}" ng-click="search = ''"></button>
 			</div>
 
 			<div class="ams-items">

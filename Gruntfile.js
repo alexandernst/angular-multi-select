@@ -116,7 +116,14 @@ module.exports = function(grunt) {
 				separator: '\n\n',
 			},
 			basic: {
-				src: 'src/*.js',
+				src: [
+					'src/*.js',
+
+					//Stupid concat is stupid...
+					//We must preserve certain file order when concatenating
+					'!src/angular-multi-select-filters.js', 'src/angular-multi-select-filters.js',
+					'!src/angular-multi-select-i18n.js', 'src/angular-multi-select-i18n.js'
+				],
 				dest: 'build/angular-multi-select.js'
 			}
 		},
