@@ -7,4 +7,3 @@ angular_multi_select.filter('translate', ['angularMultiSelectI18n', function (an
 		return angularMultiSelectI18n.translate(text);
 	};
 }]);
-//# sourceMappingURL=angular-multi-select-filters.js.map

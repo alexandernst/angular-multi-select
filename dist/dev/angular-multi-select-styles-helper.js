@@ -279,4 +279,3 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
 
 	return StylesHelper;
 }]);
-//# sourceMappingURL=angular-multi-select-styles-helper.js.map

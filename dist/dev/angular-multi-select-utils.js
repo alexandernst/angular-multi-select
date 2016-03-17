@@ -169,4 +169,3 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 
 	return Utils;
 }]);
-//# sourceMappingURL=angular-multi-select-utils.js.map

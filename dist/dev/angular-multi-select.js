@@ -357,4 +357,3 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 		}
 	};
 }]);
-//# sourceMappingURL=angular-multi-select.js.map

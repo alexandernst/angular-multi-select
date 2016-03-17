@@ -44,4 +44,3 @@ angular_multi_select.provider('angularMultiSelectI18n', function () {
 		$get: instantiate$18n
 	};
 });
-//# sourceMappingURL=angular-multi-select-i18n.js.map

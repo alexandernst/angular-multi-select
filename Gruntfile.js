@@ -78,14 +78,13 @@ module.exports = function(grunt) {
 
 		babel: {
 			options: {
-				sourceMap: true,
 				presets: ['babel-preset-es2015'],
 				plugins: ['transform-object-assign'],
 				compact: false
 			},
 			singlees5: {
 				files: {
-					'build/<%= pkg.name %>.js': 'build/<%= pkg.name %>.js'
+					'dist/prod/<%= pkg.name %>.js': 'build/<%= pkg.name %>.js'
 				}
 			},
 			multies5: {
@@ -108,10 +107,13 @@ module.exports = function(grunt) {
 			},
 			ams: {
 				files: {
-					'dist/prod/<%= pkg.name %>.min.js': ['build/<%= pkg.name %>.js']
+					'dist/prod/<%= pkg.name %>.min.js': ['dist/prod/<%= pkg.name %>.js']
 				}
 			},
 			langs: {
+				options: {
+					sourceMap: false
+				},
 				files: [{
 					expand: true,
 					cwd: 'src/i18n',

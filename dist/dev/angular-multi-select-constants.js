@@ -85,4 +85,3 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	FIND_CHECKED_NODES: 'checked_nodes',
 	FIND_MIXED_CHECKED_NODES: 'mixed_checked_nodes'
 });
-//# sourceMappingURL=angular-multi-select-constants.js.map

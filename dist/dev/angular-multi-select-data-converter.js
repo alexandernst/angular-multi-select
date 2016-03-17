@@ -582,4 +582,3 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 	return DataConverter;
 }]);
-//# sourceMappingURL=angular-multi-select-data-converter.js.map

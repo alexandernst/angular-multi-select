@@ -932,4 +932,3 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', ['angularMultiSe
 
 	return Engine;
 }]);
-//# sourceMappingURL=angular-multi-select-engine.js.map
