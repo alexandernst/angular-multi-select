@@ -1622,7 +1622,7 @@ angular_multi_select_styles_helper.run([function () {
 	var check_width = 10;
 	var level_width = 20;
 
-	var styles = document.styleSheets;
+	var styles = document.styleSheets || [];
 	for (var i = 0; i < styles.length; i++) {
 		var style = styles[i];
 
@@ -1630,9 +1630,9 @@ angular_multi_select_styles_helper.run([function () {
 			continue;
 		}
 
-		var rules = style.cssRules;
-		for (i = 0; i < rules.length; i++) {
-			var rule = rules[i];
+		var rules = style.cssRules || [];
+		for (var j = 0; j < rules.length; j++) {
+			var rule = rules[j];
 
 			switch (rule.selectorText) {
 				case ".ams-item .check":

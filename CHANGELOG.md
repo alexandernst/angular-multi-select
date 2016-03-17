@@ -1,4 +1,9 @@
-### v6.0.0
+### v6.0.2
+##### Added / Updated
+- Fixed a bug causing AMS to crash in some cases.
+- Make sure to run specs with min files.
+
+### v6.0.1
 ##### Added / Updated
 - Reworked how .map files are generated.
 
