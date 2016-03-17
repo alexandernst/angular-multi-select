@@ -1,5 +1,9 @@
 ### v6.0.0
 ##### Added / Updated
+- Reworked how .map files are generated.
+
+### v6.0.0
+##### Added / Updated
 - Major rewrite. Directive attributes have been changed. Please read docs.
 - Angular Multi Select has been split into several parts.
 - LokiJS is used to manage the data.
