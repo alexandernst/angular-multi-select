@@ -173,7 +173,7 @@ module.exports = function(grunt) {
 
 		jasmine: {
 			data_converter: {
-				src: 'dist/prod/*.js',
+				src: 'dist/prod/<%= pkg.name %>.min.js',
 				options: {
 					display: jasmine_logging,
 					helpers: [
@@ -184,7 +184,7 @@ module.exports = function(grunt) {
 				}
 			},
 			engine: {
-				src: 'dist/prod/*.js',
+				src: 'dist/prod/<%= pkg.name %>.min.js',
 				options: {
 					display: jasmine_logging,
 					helpers: [
@@ -195,7 +195,7 @@ module.exports = function(grunt) {
 				}
 			},
 			ams: {
-				src: 'dist/prod/*.js',
+				src: 'dist/prod/<%= pkg.name %>.min.js',
 				options: {
 					display: jasmine_logging,
 					styles: 'dist/prod/*.css',
