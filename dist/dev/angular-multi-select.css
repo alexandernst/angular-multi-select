@@ -148,13 +148,14 @@
 
 .ams-search .clear::before {
 	content: "×";
+	line-height: normal;
 }
 
 .ams-search .clear {
 	position: absolute;
 	right: 2px;
-	height: 26px;
 	top: 2px;
+	height: calc(100% - 4px);
 }
 
 /*

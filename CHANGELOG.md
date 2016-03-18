@@ -1,3 +1,7 @@
+### v6.0.3
+##### Added / Updated
+- CSS fixes and improvements.
+
 ### v6.0.2
 ##### Added / Updated
 - Fixed a bug causing AMS to crash in some cases.
