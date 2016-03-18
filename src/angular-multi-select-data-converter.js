@@ -31,7 +31,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		DataConverter.prototype.check_prerequisites = function (data) {
 			/*
 			 * Takes an array of data and walks through each element object
-			 * and checks if each objects has:
+			 * and checks if each object has:
 			 *
 			 * - a valid ID. If it doesn't, it generates one.
 			 * - open property. If it's not 'true' (strictly compared), it
