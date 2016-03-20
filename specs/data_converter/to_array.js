@@ -36,3 +36,7 @@ var to_array_data_5 = [
 var to_array_data_5_res = [
 	'foo1', 42
 ];
+
+var to_array_data_6_res = [
+	42, 'foo1'
+];

@@ -186,6 +186,9 @@ describe('Testing data converter', function() {
 
 			var res = dc.to_array_of_arrays(to_array_of_arrays_data_5, ['a', 'c']);
 			expect(res).toEqual(to_array_of_arrays_data_5_res);
+
+			res = dc.to_array_of_arrays(to_array_of_arrays_data_5, ['c', 'a']);
+			expect(res).toEqual(to_array_of_arrays_data_6_res);
 		});
 
 		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
@@ -232,6 +235,9 @@ describe('Testing data converter', function() {
 
 			var res = dc.to_array(to_array_data_5, ['a', 'c']);
 			expect(res).toEqual(to_array_data_5_res);
+
+			res = dc.to_array(to_array_data_5, ['c', 'a']);
+			expect(res).toEqual(to_array_data_6_res);
 		});
 
 		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {

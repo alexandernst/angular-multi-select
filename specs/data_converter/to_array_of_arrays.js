@@ -40,3 +40,9 @@ var to_array_of_arrays_data_5_res = [
 	['foo2', 43],
 	['foo3', 44]
 ];
+
+var to_array_of_arrays_data_6_res = [
+	[42, 'foo1'],
+	[43, 'foo2'],
+	[44, 'foo3']
+];
