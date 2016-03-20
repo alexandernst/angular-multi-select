@@ -2,6 +2,11 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _templateObject = _taggedTemplateLiteral(['.ams-item-level-', ' { padding-left: ', 'px; }'], ['.ams-item-level-', ' { padding-left: ', 'px; }']),
+    _templateObject2 = _taggedTemplateLiteral(['.ams-item { padding-right: ', 'px; } ', ''], ['.ams-item { padding-right: ', 'px; } ', '']);
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 var angular_multi_select_styles_helper = angular.module('angular-multi-select-styles-helper', ['angular-multi-select-utils', 'angular-multi-select-constants']);
 
 angular_multi_select_styles_helper.run([function () {
@@ -47,11 +52,14 @@ angular_multi_select_styles_helper.run([function () {
 		}
 	}
 
+	var css = function css(s) {
+		return s + "";
+	};
 	var indent = "";
 	for (i = 1; i < 20; i++) {
-		indent += '.ams-item-level-' + i + ' { padding-left: ' + (i + 1) * level_width + 'px; }';
+		indent += css(_templateObject, i, (i + 1) * level_width);
 	}
-	inject.text('.ams-item { padding-right: ' + (check_width + 10) + 'px; } ' + indent);
+	inject.text(css(_templateObject2, check_width + 10, indent));
 	angular.element(document.getElementsByTagName('head')).append(inject);
 }]);
 

@@ -1,3 +1,8 @@
+### v6.0.4
+##### Added / Updated
+- CSS fixes.
+- Code cleanup.
+
 ### v6.0.3
 ##### Added / Updated
 - CSS fixes and improvements.
