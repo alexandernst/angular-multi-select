@@ -33,7 +33,6 @@ angular_multi_select.directive('angularMultiSelect', [
 
 				var self = {};
 				var amsu = new angularMultiSelectUtils();
-				$scope.amsu = amsu;
 
 				/*
 				 █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████
