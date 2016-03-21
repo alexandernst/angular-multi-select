@@ -1,3 +1,7 @@
+### v6.0.6
+##### Added / Updated
+- Improvements in the keyboard handler.
+
 ### v6.0.5
 ##### Added / Updated
 - Fix buggy global CSS styles generation.
