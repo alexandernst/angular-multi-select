@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Internationalization</h3>
+
+		<h5>i18n made easy</h5>
+
+		<p>
+			Translating the directive's helper buttons is as easy as including one of the available <code>i18n</code>
+			files from the <code>i18n</code> folder or create a custom texts at runtime:
+		</p>
+
+		<pre>
+			<code class="javascript">
+var angular_multi_select = angular.module('angular-multi-select');
+angular_multi_select.config(function (angularMultiSelectI18nProvider) {
+	angularMultiSelectI18nProvider.createTranslation('es', {
+		CHECK_ALL: "Check'em all!",
+		CHECK_NONE: 'Uncheck all that stuff!',
+		RESET: 'Nah... undo!',
+		SEARCH: 'Type here something...',
+		CLEAR: ''
+	});
+
+	angularMultiSelectI18nProvider.setLang('es');
+});
+			</code>
+		</pre>
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
