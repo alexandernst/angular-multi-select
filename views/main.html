@@ -1,0 +1,121 @@
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="pageHeading">Angular Multi Select</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<p>
+			Angular directive which creates a dropdown widget with multiple or single selection mode.
+		</p>
+		<br />
+		<div style="float: right; margin-right: 30%;"
+			angular-multi-select
+			input-model="input_data"
+			output-model="output_data"
+
+			dropdown-label="<[
+				<# angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS #> === undefined ? 'No available items' :
+					<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'No checked items' :
+						<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> + ' checked ' + (<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 1 ? 'item': 'items')
+			]>"
+			node-label="<[ text ]> (checked
+				<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+				<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+			leaf-label="<[ text ]> (<[ value ]>)"
+
+			search-field="text"
+		>
+		</div>
+		<h5>Current version</h5>
+		<p id="latest_version"></p>
+		<h5>Features</h5>
+		<ul>
+			<li>Multiple or single selection mode</li>
+			<li>Pre-selection based on key/value attribute</li>
+			<li>HTML &amp; CSS in the button itself, leafs and nodes labels</li>
+			<li>Unlimited nested grouping</li>
+			<li>Keyboard navigation support</li>
+			<li>i18n. Easily translated to different languages.</li>
+			<li>Developed with performance in mind</li>
+		</ul>
+
+		<h5>Changelog</h5>
+		<p>
+			See <a href="https://github.com/alexandernst/angular-multi-select/blob/master/CHANGELOG.md" target="_blank">CHANGELOG.md</a>.
+			For those who are upgrading from a previous major release, note that this version is not backward-compatible. Please read this manual
+			thoroughly and update your code accordingly. Read the <a href="#/breaking-changes">breaking changes</a> to know more.
+		</p>
+
+		<h5>If you like this directive, consider donating</h5>
+		<div style="display: inline-block;float: left; width: 140px;">
+			<strong style="float: left; padding-top:5px;">5€&nbsp;</strong>
+			<script async="async" src="//cdnjs.cloudflare.com/ajax/libs/paypaljsbuttons/1.0.2/paypal-button-minicart.min.js?merchant=BYSSKRBRQYLEJ"
+				data-button="donate" data-name="Alexandernst's 'Angular Multi Select'" data-quantity="1" data-amount="5" data-currency="EUR" data-shipping="0" data-tax="0"
+			></script>
+		</div>
+		<div style="display: inline-block;">
+			<strong style="float: left; padding-top:5px;">10€&nbsp;</strong>
+			<script async="async" src="//cdnjs.cloudflare.com/ajax/libs/paypaljsbuttons/1.0.2/paypal-button-minicart.min.js?merchant=BYSSKRBRQYLEJ"
+				data-button="donate" data-name="Alexandernst's 'Angular Multi Select'" data-quantity="1" data-amount="10" data-currency="EUR" data-shipping="0" data-tax="0"
+			></script>
+		</div>
+	</div>
+
+	<div class="col-sm-6">
+		<div class="row">
+			<div class="col-sm-12">
+				<span>HTML code used for this demo</span>
+				<pre>
+					<code class="html" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data"
+
+	dropdown-label="<[
+		<# angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS #> === undefined ? 'No available items' :
+			<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'No checked items' :
+				<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> + ' checked ' + (<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 1 ? 'item': 'items')
+	]>"
+	node-label="<[ text ]> (checked
+		<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+		<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+	leaf-label="<[ text ]> (<[ value ]>)"
+
+	search-field="text"
+&gt;
+					</code>
+				</pre>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<span>Input data</span>
+				<pre ng-bind-html="input_data | json : 4 | prettify"></pre>
+			</div>
+			<div class="col-sm-6">
+				<span>Output data</span>
+				<pre ng-bind-html="output_data | json : 4 | prettify"></pre>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script src="https://cdn.rawgit.com/hippich/bower-semver/master/semver.min.js"></script>
+<script>
+	$(document).ready(function() {
+		hljs.initHighlighting();
+
+		var gitHubPath = 'alexandernst/angular-multi-select';
+		var url = 'https://api.github.com/repos/' + gitHubPath + '/tags';
+
+		$.get(url).done(function (data) {
+			var versions = data.sort(function (v1, v2) {
+				return semver.compare(v2.name, v1.name)
+			});
+			$('#latest_version').html(versions[0].name);
+		});
+	});
+</script>

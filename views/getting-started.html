@@ -1,0 +1,156 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Getting Started</h3>
+
+		<h5>Include the required files</h5>
+
+		<p>First things first:</p>
+
+		<pre>
+			<code class="html">
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app="myApp" id="myApp"&gt;
+	&lt;head&gt;
+		...
+		&lt;link rel="stylesheet" crossorigin="anonymous" href="angular-multi-select.css"&gt;
+		...
+		&lt;script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"&gt;&lt;/script&gt;
+		&lt;script src="angular-multi-select.js"&gt;&lt;/script&gt;
+		...
+	&lt;head&gt;
+			</code>
+		</pre>
+	</div>
+</div>
+
+It is very important to place <code><b>crossorigin="anonymous"</b></code> attribute in the <code>&lt;link&gt;</code>
+element, because that allows the directive to access it's own styles via <code>documents.styleSheets</code>.
+
+<div class="row">
+	<div class="col-sm-12">
+
+		<h5>Initiate your Angular app & load the module</h5>
+		<p>
+			In your main file
+		</p>
+		<pre>
+			<code>
+var myApp = angular.module( "myApp", [ "angular-multi-select" ]);
+			</code>
+		</pre>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<h5>In your view</h5>
+
+				<p>
+					<span class="label label-primary">Note</span> Check <a href="#/config-options">Configuration & Options</a> for
+					a complete list of available options/attributes that can be used with the directive.
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<p>As an attribute.</p>
+
+				<pre>
+					<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+
+	input-model="input_data"
+	output-model="output_data"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+
+	search-field="text"
+&lt;/div&gt;
+					</code>
+				</pre>
+			</div>
+
+			<div class="col-sm-6">
+				<p>... or as an element, but be careful with browser compatibility.</p>
+
+				<pre>
+					<code class="javascript" ng-non-bindable>
+&lt;angular-multi-select
+	input-model="input_data"
+	output-model="output_data"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+
+	search-field="text"
+&gt;
+&lt;/angular-multi-select&gt;
+					</code>
+				</pre>
+			</div>
+		</div>
+
+		<h5>In your controller</h5>
+		<p>
+			In your controller, define the input and output variables. This is the "ng-model"
+			equivalent of this directive, so to speak.
+		</p>
+		<p>
+			<span class="label label-primary">Note</span> The input model can be either an array of nested objects
+			or a specially crafted array of objects (check <a href="#/config-options">Configuration & Options</a> for a detailed explanation).
+		</p>
+
+		<pre>
+			<code class="javascript">
+$scope.input_data = [
+	{
+		text: 'A'
+	},
+	{
+		text: 'B'
+	},
+	{
+		text: 'C'
+	},
+	{
+		text: 'D'
+	}
+];
+
+$scope.output_data = [];
+			</code>
+		</pre>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<p>By now you should have a dropdown widget like the one you saw earlier on the front page.</p>
+
+		<h5>Getting the selected items</h5>
+
+		<p>
+			Just iterate over the <code>$scope.output_data</code> in your controller.
+
+			<pre>
+				<code class="javascript">
+angular.forEach( $scope.output_data, function( value, key ) {
+	/* do your stuff here */
+});
+				</code>
+			</pre>
+		</p>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>

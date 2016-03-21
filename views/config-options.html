@@ -1,0 +1,689 @@
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="pageHeading">Configuration & Options</h3>
+
+		<p>Below are the available attributes to configure the directive.</p>
+		<span class="configData">
+
+			<!--
+			██ ███    ██ ██████  ██    ██ ████████     ███    ███  ██████  ██████  ███████ ██
+			██ ████   ██ ██   ██ ██    ██    ██        ████  ████ ██    ██ ██   ██ ██      ██
+			██ ██ ██  ██ ██████  ██    ██    ██        ██ ████ ██ ██    ██ ██   ██ █████   ██
+			██ ██  ██ ██ ██      ██    ██    ██        ██  ██  ██ ██    ██ ██   ██ ██      ██
+			██ ██   ████ ██       ██████     ██        ██      ██  ██████  ██████  ███████ ███████
+			-->
+			<h5 id="input-model">input-model</h5> <span class="label label-primary">required</span>
+			<p>
+				This is the data you pass to the directive. You're allowed to pass 4 different types of data. An array
+				of nested objects, a specially crafted array of objects, suitable to be used by the directive's engine,
+				bypassing the <code>check-prerequisites</code> and the <code>to-internal</code> calls from the data
+				converter module, thus allowing you to squeeze some extra performance, a literal JSON string or a URL.
+			</p>
+			<ul>
+				<li>
+					<p>Array of nested objects</p>
+					<pre>
+						<code>
+input-model="input_data"
+						</code>
+					</pre>
+					<pre>
+						<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1, children: 'foo'},
+	{ text: 'B', value: 'b', id: 2, children: [
+		{ text: 'C', value: 'c', id: 3, checked: true}
+	]},
+	{ text: 'D', value: 'd', id: 4, children: [
+		{ text: 'E', value: 'e', id: 5, children: []},
+		{ text: 'F', value: 'f', id: 6, checked: true}
+	]}
+]
+						</code>
+					</pre>
+				</li>
+				<li>
+					<p>Specially crafted array of objects</p>
+					<pre>
+						<code>
+input-model="input_data"
+						</code>
+					</pre>
+					<pre>
+						<code class="javascript">
+$scope.input_data = [
+	{
+		text: 'A', value: 'a', id: 1, checked: false, open: false,
+		$ams_order: 1, $ams_parents_id: [], $ams_children_nodes: 0,
+		$ams_children_leafs: 0,$ams_level: 0, $ams_tree_visibility: true,  $ams_checked_children: 0
+	},
+	{
+		text: 'B', value: 'b', id: 2, checked: 1, open: true,
+		$ams_order: 2, $ams_parents_id: [], $ams_children_nodes: 0,
+		$ams_children_leafs: 1,$ams_level: 0, $ams_tree_visibility: true,  $ams_checked_children: 1
+	},
+	{
+		text: 'C', value: 'c', id: 3, checked: true, open: false,
+		$ams_order: 3, $ams_parents_id: [2], $ams_children_nodes: 0,
+		$ams_children_leafs: 0,$ams_level: 1, $ams_tree_visibility: true,  $ams_checked_children: 0
+	},
+	{
+		text: 'D', value: 'd', id: 4, checked: 0, open: false,
+		$ams_order: 4, $ams_parents_id: [], $ams_children_nodes: 0,
+		$ams_children_leafs: 2,$ams_level: 0, $ams_tree_visibility: true,  $ams_checked_children: 1
+	},
+	{
+		text: 'E', value: 'e', id: 5, checked: false, open: false,
+		$ams_order: 5, $ams_parents_id: [4], $ams_children_nodes: 0,
+		$ams_children_leafs: 0,$ams_level: 1, $ams_tree_visibility: false, $ams_checked_children: 0
+	},
+	{
+		text: 'F', value: 'f', id: 6, checked: true, open: false,
+		$ams_order: 6, $ams_parents_id: [4], $ams_children_nodes: 0,
+		$ams_children_leafs: 0,$ams_level: 1, $ams_tree_visibility: false, $ams_checked_children: 0
+	 }
+]
+						</code>
+					</pre>
+				</li>
+				<li>
+					<p>Literal JSON string. Note that the JSON literal is <b>delimited by single quotes</b></p>
+					<pre>
+						<code>
+input-model='[{"text":"A","value":"a","id":1},
+{"text":"B","value":"b","id":2,"open":true,"children":[{"text":"C","value":"c","id":3,"checked":true}]},
+{"text":"D","value":"d","id":4,"children":[{"text":"E","value":"e","id":5},{"text":"F","value":"f","id":6,"checked":true}]}]'
+						</code>
+					</pre>
+				</li>
+				<li>
+					<p>Literal URL that will be fetched with a <code>GET</code> request. Note that the URL is <b>delimited by single quotes inside double quotes</b></p>
+					<pre>
+						<code>
+input-model="'http://foo.com/bar.json'"
+						</code>
+					</pre>
+				</li>
+			</ul>
+
+			<!--
+			 ██████  ██    ██ ████████ ██████  ██    ██ ████████     ███    ███  ██████  ██████  ███████ ██
+			██    ██ ██    ██    ██    ██   ██ ██    ██    ██        ████  ████ ██    ██ ██   ██ ██      ██
+			██    ██ ██    ██    ██    ██████  ██    ██    ██        ██ ████ ██ ██    ██ ██   ██ █████   ██
+			██    ██ ██    ██    ██    ██      ██    ██    ██        ██  ██  ██ ██    ██ ██   ██ ██      ██
+			 ██████   ██████     ██    ██       ██████     ██        ██      ██  ██████  ██████  ███████ ███████
+			-->
+			<h5 id="output-model">output-model</h5> <span class="label label-primary">required</span>
+			<p>
+				The model where the output of AMS will be stored. This can't be anything else but a variable.
+			</p>
+			<pre>
+				<code>
+output-model="output_data"
+				</code>
+			</pre>
+			<pre>
+				<code>
+$scope.output_data = []
+				</code>
+			</pre>
+
+			<!--
+			 ██████  ██    ██ ████████ ██████  ██    ██ ████████     ████████ ██    ██ ██████  ███████
+			██    ██ ██    ██    ██    ██   ██ ██    ██    ██           ██     ██  ██  ██   ██ ██
+			██    ██ ██    ██    ██    ██████  ██    ██    ██           ██      ████   ██████  █████
+			██    ██ ██    ██    ██    ██      ██    ██    ██           ██       ██    ██      ██
+			 ██████   ██████     ██    ██       ██████     ██           ██       ██    ██      ███████
+			-->
+			<h5 id="output-type">output-type</h5>
+			<p>
+				This alows you to choose the desired output format to be used. The possible values are:
+				<ul>
+					<li><b>objects</b> <span class="label label-primary">default</span> - The output will be an array of objects
+						<pre>
+							<code>
+output-type="objects"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+							</code>
+						</pre>
+					</li>
+					<li><b>arrays</b> - The output will be an array of arrays. Note that an object doesn't have an "order", so
+						values could be returned in the order you're not expecting. Check <a href="#/config-options#output-keys"><code>output-keys</code></a>
+						for a solution.
+						<pre>
+							<code>
+output-type="arrays"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = [
+	['foo1', 'bar1', 42],
+	['foo2', 'bar2', 43],
+	['foo3', 'bar3', 44]
+];
+							</code>
+						</pre>
+					</li>
+					<li><b>object</b> - The output will be a single object. This makes sense if you're limiting the maximum
+						selected items to 1. If more than 1 item is selected, the object will contain they keys/values of the
+						first selected item.
+						<pre>
+							<code>
+output-type="object"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = {a: 'foo1', b: 'bar1', c: 42};
+							</code>
+						</pre>
+					</li>
+					<li><b>array</b> - The output will be a single array. This makes sense if you're limiting the maximum
+						selected items to 1. If more than 1 item is selected, the array will contain the values of the first
+						selected item.
+						<pre>
+							<code>
+output-type="array"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = ['foo1', 'bar1', 42];
+							</code>
+						</pre>
+					</li>
+					<li><b>value</b> - The output will be a single value, the value of the key that is passed
+						(check <a href="#/config-options#output-keys"><code>output-keys</code></a>), in the
+						first selected item. If no key is passed, the first available value in the first selected
+						item will be returned.
+						<pre>
+							<code>
+output-type="value"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = 'foo1';
+							</code>
+						</pre>
+					</li>
+				</ul>
+			</p>
+
+			<!--
+			 ██████  ██    ██ ████████ ██████  ██    ██ ████████     ██   ██ ███████ ██    ██ ███████
+			██    ██ ██    ██    ██    ██   ██ ██    ██    ██        ██  ██  ██       ██  ██  ██
+			██    ██ ██    ██    ██    ██████  ██    ██    ██        █████   █████     ████   ███████
+			██    ██ ██    ██    ██    ██      ██    ██    ██        ██  ██  ██         ██         ██
+			 ██████   ██████     ██    ██       ██████     ██        ██   ██ ███████    ██    ███████
+			-->
+			<h5 id="output-keys">output-keys</h5>
+			<p>
+				This is used to specify the desired keys/values that should be available in the output model.
+				If no keys are specified, everything will be returned.
+				Note that the order in which the keys are passed is used/conserved when creating the output data,
+				which is very useful when <code>output-type</code> is <code>array/arrays</code>.
+			</p>
+			<pre>
+				<code>
+output-keys="c, a"
+output-type="array"
+				</code>
+			</pre>
+			<pre>
+				<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42},
+	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = [42, 'foo1'];
+				</code>
+			</pre>
+
+			<!--
+			 ██████  ██    ██ ████████ ██████  ██    ██ ████████     ███████ ██ ██   ████████ ███████ ██████
+			██    ██ ██    ██    ██    ██   ██ ██    ██    ██        ██      ██ ██      ██    ██      ██   ██
+			██    ██ ██    ██    ██    ██████  ██    ██    ██        █████   ██ ██      ██    █████   ██████
+			██    ██ ██    ██    ██    ██      ██    ██    ██        ██      ██ ██      ██    ██      ██   ██
+			 ██████   ██████     ██    ██       ██████     ██        ██      ██ ███████ ██    ███████ ██   ██
+			-->
+			<h5 id="output-filter">output-filter</h5>
+			<p>
+				You might want the output model to contain only certain items, for example, only the checked leafs or
+				only the checked nodes. You must know that a:
+				<ul>
+					<li><b>leaf</b> - is an item without children</li>
+					<li><b>node</b> - is an item with children</li>
+				</ul>
+			</p>
+			<p>
+				and that:
+				<ul>
+					<li><b>leafs</b> - can be checked or unchecked</li>
+					<li><b>nodes</b> - can be checked, unchecked or mixed, that last one meaning that the node has 1 or more
+					checked children, but not all of them are checked.</li>
+				</ul>
+			</p>
+			<p>
+				Here is a complete list of the output filters you can apply:
+				<ul>
+					<li><b>leafs</b> <span class="label label-primary">default</span> - Return only the checked leafs
+						<pre>
+							<code>
+output-filter="leafs"
+							</code>
+						</pre>
+					</li>
+					<li><b>leafs_mixed_nodes</b> - Return only the checked leafs and mixed nodes
+						<pre>
+							<code>
+output-filter="leafs_mixed_nodes"
+							</code>
+						</pre>
+					</li>
+					<li><b>leafs_checked_nodes</b> - Return only the checked nodes
+						<pre>
+							<code>
+output-filter="leafs_checked_nodes"
+							</code>
+						</pre>
+					</li>
+					<li><b>leafs_mixed_checked_nodes</b> - Return the checked leafs and the mixed and checked nodes
+						<pre>
+							<code>
+output-filter="leafs_mixed_checked_nodes"
+							</code>
+						</pre>
+					</li>
+					<li><b>midex_nodes</b> - Return only the mixed nodes
+						<pre>
+							<code>
+output-filter="midex_nodes"
+							</code>
+						</pre>
+					</li>
+					<li><b>checked_nodes</b> - Return only the checked nodes
+						<pre>
+							<code>
+output-filter="checked_nodes"
+							</code>
+						</pre>
+					</li>
+					<li><b>mixed_checked_nodes</b> - Return only the mixed and checked nodes
+						<pre>
+							<code>
+output-filter="mixed_checked_nodes"
+							</code>
+						</pre>
+					</li>
+				</ul>
+			</p>
+
+			<!--
+			██ ██████      ██████  ██████   ██████  ██████  ███████ ██████  ████████ ██    ██
+			██ ██   ██     ██   ██ ██   ██ ██    ██ ██   ██ ██      ██   ██    ██     ██  ██
+			██ ██   ██     ██████  ██████  ██    ██ ██████  █████   ██████     ██      ████
+			██ ██   ██     ██      ██   ██ ██    ██ ██      ██      ██   ██    ██       ██
+			██ ██████      ██      ██   ██  ██████  ██      ███████ ██   ██    ██       ██
+			-->
+			<h5 id="id-property">id-property <span class="label label-primary">default is 'id'</span></h5>
+			<p>
+				The property that will be used to acces the object's ID.
+			</p>
+			<pre>
+				<code>
+id-property="my-custom-id-property"
+				</code>
+			</pre>
+
+			<!--
+			 ██████  ██████  ███████ ███    ██     ██████  ██████   ██████  ██████  ███████ ██████  ████████ ██    ██
+			██    ██ ██   ██ ██      ████   ██     ██   ██ ██   ██ ██    ██ ██   ██ ██      ██   ██    ██     ██  ██
+			██    ██ ██████  █████   ██ ██  ██     ██████  ██████  ██    ██ ██████  █████   ██████     ██      ████
+			██    ██ ██      ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██      ██   ██    ██       ██
+			 ██████  ██      ███████ ██   ████     ██      ██   ██  ██████  ██      ███████ ██   ██    ██       ██
+			-->
+			<h5 id="open-property">open-property <span class="label label-primary">default is 'open'</span></h5>
+			<p>
+				The property that will be used to check the if the object is open or closed.
+			</p>
+			<pre>
+				<code>
+open-property="my-custom-open-property"
+				</code>
+			</pre>
+
+			<!--
+			 ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ██████  ██████   ██████  ██████  ███████ ██████  ████████ ██    ██
+			██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██   ██ ██   ██ ██    ██ ██   ██ ██      ██   ██    ██     ██  ██
+			██      ███████ █████   ██      █████   █████   ██   ██     ██████  ██████  ██    ██ ██████  █████   ██████     ██      ████
+			██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██      ██   ██ ██    ██ ██      ██      ██   ██    ██       ██
+			 ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ██      ██   ██  ██████  ██      ███████ ██   ██    ██       ██
+			-->
+			<h5 id="checked-property">checked-property <span class="label label-primary">default is 'checked'</span></h5>
+			<p>
+				The property that will be used to check the if the object is checked or unchecked.
+			</p>
+			<pre>
+				<code>
+checked-property="my-custom-checked-property"
+				</code>
+			</pre>
+
+			<!--
+			 ██████ ██   ██ ██ ██      ██████  ██████  ███████ ███    ██     ██████  ██████   ██████  ██████  ███████ ██████  ████████ ██    ██
+			██      ██   ██ ██ ██      ██   ██ ██   ██ ██      ████   ██     ██   ██ ██   ██ ██    ██ ██   ██ ██      ██   ██    ██     ██  ██
+			██      ███████ ██ ██      ██   ██ ██████  █████   ██ ██  ██     ██████  ██████  ██    ██ ██████  █████   ██████     ██      ████
+			██      ██   ██ ██ ██      ██   ██ ██   ██ ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██      ██   ██    ██       ██
+			 ██████ ██   ██ ██ ███████ ██████  ██   ██ ███████ ██   ████     ██      ██   ██  ██████  ██      ███████ ██   ██    ██       ██
+			-->
+			<h5 id="children-property">children-property <span class="label label-primary">default is 'children'</span></h5>
+			<p>
+				The property that will be used to access the object's children.
+			</p>
+			<pre>
+				<code>
+children-property="my-custom-children-property"
+				</code>
+			</pre>
+
+			<!--
+			██████   ██████      ███    ██  ██████  ████████      ██████ ██   ██ ███████  ██████ ██   ██     ██████   █████  ████████  █████
+			██   ██ ██    ██     ████   ██ ██    ██    ██        ██      ██   ██ ██      ██      ██  ██      ██   ██ ██   ██    ██    ██   ██
+			██   ██ ██    ██     ██ ██  ██ ██    ██    ██        ██      ███████ █████   ██      █████       ██   ██ ███████    ██    ███████
+			██   ██ ██    ██     ██  ██ ██ ██    ██    ██        ██      ██   ██ ██      ██      ██  ██      ██   ██ ██   ██    ██    ██   ██
+			██████   ██████      ██   ████  ██████     ██         ██████ ██   ██ ███████  ██████ ██   ██     ██████  ██   ██    ██    ██   ██
+			-->
+			<h5 id="do-not-check-data">do-not-check-data <span class="label label-primary">default is 'false'</span></h5>
+			<p>
+				If <code>true</code>, will skip the <code>check_prerequisites</code> step. Make sure you understand what
+				this means, read carefully <a href="#/under-the-hood">Under the hood</a>.
+			</p>
+			<pre>
+				<code>
+do-not-check-data="true"
+				</code>
+			</pre>
+
+			<!--
+			██████   ██████      ███    ██  ██████  ████████      ██████  ██████  ███    ██ ██    ██ ███████ ██████  ████████     ██████   █████  ████████  █████
+			██   ██ ██    ██     ████   ██ ██    ██    ██        ██      ██    ██ ████   ██ ██    ██ ██      ██   ██    ██        ██   ██ ██   ██    ██    ██   ██
+			██   ██ ██    ██     ██ ██  ██ ██    ██    ██        ██      ██    ██ ██ ██  ██ ██    ██ █████   ██████     ██        ██   ██ ███████    ██    ███████
+			██   ██ ██    ██     ██  ██ ██ ██    ██    ██        ██      ██    ██ ██  ██ ██  ██  ██  ██      ██   ██    ██        ██   ██ ██   ██    ██    ██   ██
+			██████   ██████      ██   ████  ██████     ██         ██████  ██████  ██   ████   ████   ███████ ██   ██    ██        ██████  ██   ██    ██    ██   ██
+			-->
+			<h5 id="do-not-convert-data">do-not-convert-data <span class="label label-primary">default is 'false'</span></h5>
+			<p>
+				If <code>true</code>, will skip the <code>to_internal</code> step. Make sure you understand what
+				this means, read carefully <a href="#/under-the-hood">Under the hood</a>.
+			</p>
+			<pre>
+				<code>
+do-not-convert-data="true"
+				</code>
+			</pre>
+
+			<!--
+			███    ███  █████  ██   ██      ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ██      ███████  █████  ███████ ███████
+			████  ████ ██   ██  ██ ██      ██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██      ██      ██   ██ ██      ██
+			██ ████ ██ ███████   ███       ██      ███████ █████   ██      █████   █████   ██   ██     ██      █████   ███████ █████   ███████
+			██  ██  ██ ██   ██  ██ ██      ██      ██   ██ ██      ██      ██  ██  ██      ██   ██     ██      ██      ██   ██ ██           ██
+			██      ██ ██   ██ ██   ██      ██████ ██   ██ ███████  ██████ ██   ██ ███████ ██████      ███████ ███████ ██   ██ ██      ███████
+			-->
+			<h5 id="max-checked-leafs">max-checked-leafs <span class="label label-primary">default is -1 (unlimited)</span></h5>
+			<p>
+				This will allow you to limit the number of checked leafs.
+			</p>
+			<pre>
+				<code>
+max-checked-leafs="5"
+				</code>
+			</pre>
+
+			<!--
+			██████  ██████   ██████  ██████  ██████   ██████  ██     ██ ███    ██     ██       █████  ██████  ███████ ██
+			██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██    ██ ██     ██ ████   ██     ██      ██   ██ ██   ██ ██      ██
+			██   ██ ██████  ██    ██ ██████  ██   ██ ██    ██ ██  █  ██ ██ ██  ██     ██      ███████ ██████  █████   ██
+			██   ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██ ███ ██ ██  ██ ██     ██      ██   ██ ██   ██ ██      ██
+			██████  ██   ██  ██████  ██      ██████   ██████   ███ ███  ██   ████     ███████ ██   ██ ██████  ███████ ███████
+			-->
+			<h5 id="dropdown-label">dropdown-label</h5>
+			<p>
+				You can set the text that appears in the dropdown button itself. You're allowed to use HTML and CSS.
+				You can use AMS's constant values that will be interpolated with the <code><#</code> and <code>#></code> symbols.
+				You can also use Angular's inline expressions with the <code><[</code> and <code>]></code> interpolate symbols.
+			</p>
+			<pre>
+				<code>
+dropdown-label="<[
+	<# angularMultiSelectConstants.INTERNAL_STATS_TOTAL_LEAFS #> === undefined ? 'No available items' :
+		<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'No checked items' :
+			<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> + ' checked ' + (<# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 1 ? 'item': 'items')
+]>"
+				</code>
+			</pre>
+			<p>
+				Outputs:
+				<ul>
+					<li>Empty output model - 'No available items'</li>
+					<li>No checked items - 'No checked items'</li>
+					<li>1 checked item - '1 checked item'</li>
+					<li>Multiple checked items - 'N checked item'</li>
+				</ul>
+			</p>
+
+			<!--
+			███    ██  ██████  ██████  ███████     ██       █████  ██████  ███████ ██
+			████   ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██      ██
+			██ ██  ██ ██    ██ ██   ██ █████       ██      ███████ ██████  █████   ██
+			██  ██ ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██      ██
+			██   ████  ██████  ██████  ███████     ███████ ██   ██ ██████  ███████ ███████
+			-->
+			<h5 id="node-label">node-label</h5>
+			<p>
+				You can set the text that appears in each node. You're allowed to use HTML and CSS.
+				You can use AMS's constant values that will be interpolated with the <code><#</code> and <code>#></code> symbols.
+				You can also use Angular's inline expressions with the <code><[</code> and <code>]></code> interpolate symbols.
+				Those symbols are also used to access each item's properties.
+			</p>
+			<pre>
+				<code>
+node-label="<[ text ]> (checked
+	<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+	<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)"
+				</code>
+			</pre>
+			<p>
+				Outputs:
+				<ul>
+					<li>Foo bar (checked 0 / 2)</li>
+					<li>Bar (checked 3 / 7)</li>
+					<li>Foo bar (checked 8 / 8)</li>
+				</ul>
+			</p>
+
+			<!--
+			██      ███████  █████  ███████     ██       █████  ██████  ███████ ██
+			██      ██      ██   ██ ██          ██      ██   ██ ██   ██ ██      ██
+			██      █████   ███████ █████       ██      ███████ ██████  █████   ██
+			██      ██      ██   ██ ██          ██      ██   ██ ██   ██ ██      ██
+			███████ ███████ ██   ██ ██          ███████ ██   ██ ██████  ███████ ███████
+			-->
+			<h5 id="leaf-label">leaf-label</h5>
+			<p>
+				You can set the text that appears in each leaf. You're allowed to use HTML and CSS.
+				You can use AMS's constant values that will be interpolated with the <code><#</code> and <code>#></code> symbols.
+				You can also use Angular's inline expressions with the <code><[</code> and <code>]></code> interpolate symbols.
+				Those symbols are also used to access each item's properties.
+			</p>
+			<pre>
+				<code>
+leaf-label="<[ text ]> (<[ value ]>)"
+				</code>
+			</pre>
+			<p>
+				Outputs:
+				<ul>
+					<li>Foo (1)</li>
+					<li>Bar (2)</li>
+					<li>Foo bar (3)</li>
+				</ul>
+			</p>
+
+			<!--
+			██████  ██████  ███████ ███████ ███████ ██      ███████  ██████ ████████
+			██   ██ ██   ██ ██      ██      ██      ██      ██      ██         ██
+			██████  ██████  █████   ███████ █████   ██      █████   ██         ██
+			██      ██   ██ ██           ██ ██      ██      ██      ██         ██
+			██      ██   ██ ███████ ███████ ███████ ███████ ███████  ██████    ██
+			-->
+			<h5 id="preselect">preselect</h5>
+			<p>
+				If you can't mark an item in the input model as checked, you can use this to check it. This attribute
+				accepts a pair of string separeted by a comma. The first one is the key, while the second one is the value.
+				The first element that matches the passed pair of values will be marked as checked.
+			</p>
+			<pre>
+				<code>
+preselect="foo, 42"
+				</code>
+			</pre>
+
+			<!--
+			██   ██ ██ ██████  ███████     ██   ██ ███████ ██      ██████  ███████ ██████  ███████
+			██   ██ ██ ██   ██ ██          ██   ██ ██      ██      ██   ██ ██      ██   ██ ██
+			███████ ██ ██   ██ █████       ███████ █████   ██      ██████  █████   ██████  ███████
+			██   ██ ██ ██   ██ ██          ██   ██ ██      ██      ██      ██      ██   ██      ██
+			██   ██ ██ ██████  ███████     ██   ██ ███████ ███████ ██      ███████ ██   ██ ███████
+			-->
+			<h5 id="hide-helpers">hide-helpers</h5>
+			<p>
+				The search input is automatically hidden if the <code>search-field</code> attribute is empty, but the
+				rest of the helpers (<code>Check all (check_all)</code>, <code>Uncheck all (check_none)</code>, <code>Reset (reset)</code>) are always visible.
+				You can hide those with this attribute, by passing the names of the helpers you want to hide.
+			</p>
+			<pre>
+				<code>
+hide-helpers="check_all, reset"
+				</code>
+			</pre>
+
+			<!--
+			███████ ███████  █████  ██████   ██████ ██   ██     ███████ ██ ███████ ██      ██████
+			██      ██      ██   ██ ██   ██ ██      ██   ██     ██      ██ ██      ██      ██   ██
+			███████ █████   ███████ ██████  ██      ███████     █████   ██ █████   ██      ██   ██
+			     ██ ██      ██   ██ ██   ██ ██      ██   ██     ██      ██ ██      ██      ██   ██
+			███████ ███████ ██   ██ ██   ██  ██████ ██   ██     ██      ██ ███████ ███████ ██████
+			-->
+			<h5 id="search-field">search-field</h5>
+			<p>
+				Allows to specify the name of the property that should be used to perform the search operations.
+			</p>
+			<pre>
+				<code>
+search-field="foo"
+				</code>
+			</pre>
+
+			<!--
+			 ██████ ██       █████  ███████ ███████
+			██      ██      ██   ██ ██      ██
+			██      ██      ███████ ███████ ███████
+			██      ██      ██   ██      ██      ██
+			 ██████ ███████ ██   ██ ███████ ███████
+			-->
+			<h5 id="class">class</h5>
+			<p>
+				Allows to set a custom class to the directive itself
+			</p>
+			<pre>
+				<code>
+class="my-class"
+				</code>
+			</pre>
+
+			<!--
+			███    ██  █████  ███    ███ ███████
+			████   ██ ██   ██ ████  ████ ██
+			██ ██  ██ ███████ ██ ████ ██ █████
+			██  ██ ██ ██   ██ ██  ██  ██ ██
+			██   ████ ██   ██ ██      ██ ███████
+			-->
+			<h5 id="name">name</h5>
+			<p>
+				This will force a specific internal name used for LokiJS and for the debug messages.
+				Normally you won't need to use this.
+			</p>
+			<pre>
+				<code>
+name="my-name"
+				</code>
+			</pre>
+
+			<!--
+			██████  ███████ ██████  ██    ██  ██████
+			██   ██ ██      ██   ██ ██    ██ ██
+			██   ██ █████   ██████  ██    ██ ██   ███
+			██   ██ ██      ██   ██ ██    ██ ██    ██
+			██████  ███████ ██████   ██████   ██████
+			-->
+			<h5 id="debug">debug</h5>
+			<p>
+				Enables debugging mode
+			</p>
+			<pre>
+				<code>
+debug="true"
+				</code>
+			</pre>
+		</span>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>

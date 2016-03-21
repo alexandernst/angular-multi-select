@@ -1,0 +1,125 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Under the hood</h3>
+
+		<h5>How exactly does Angular Multi Select work?</h5>
+
+		<p>
+			To answer this question, first you must know the different pieces that, when combined together,
+			form this directive:
+
+			<ul>
+				<li><b>Data converter</b> - This is used to check and convert your input and output data to/from the desired format</li>
+				<li><b>Engine</b> - This is used to allow AMS to talk with LokiJS and acts like a glue layer. This
+				particular design allows AMS to be engine-agnostic, meaning if something better/faster than LokiJS is created,
+				a switch without breaking anything at all could be made, in an easy way.</li>
+				<li><b>LokiJS</b> - This is the lowest piece in the dependencies tree of AMS. It's used to store and retrieve all the information</li>
+				<li><b>Styles helper</b> - Helpers related to the styling/positioning of the directive</li>
+				<li><b>Utils</b> - Helpers related to the attributes parsing, keyboard handling, etc...</li>
+				<li><b>Constants, filters, i18n</b></li>
+			</ul>
+		</p>
+
+		<h5>Now that you know the different components of AMS, let's see how they fit together.</h5>
+
+		<br><br>
+		<p style="text-align: center;">
+			<img src="assets/flow.png" alt="" />
+		</p>
+		<br><br>
+
+		<h5>First run</h5>
+		<p>
+			As you see, the first run could be rather expensive. The input data must be checked, converted to the internal
+			data format and then inserted into LokiJS itself. Of course, the directive is developed with performance in mind,
+			so you can skip the first two steps. Check <a href="#/config-options#do-not-check-data"><code>do-not-check-data</code></a>
+			and <a href="#/config-options#do-not-convert-data"><code>do-not-convert-data</code></a> options for more information.
+		</p>
+
+		<h5>Runtime operations</h5>
+		<p>
+			Runtime operations (check/uncheck (all/none) items, open/close, etc...) are very unexpensive operations,
+			thanks to the internal data structure.
+		</p>
+		<p>
+			Other runtime operations like keyboard navigation and showing/hiding the directive itself don't require any
+			operations inside the data converter, engine or LokiJS. They run entirely from the styles helper and the utils
+			module.
+		</p>
+
+		<h5>Data check (check prerequisites)</h5>
+		<p>
+			This is the first step in the diagram above of the process of importing the data. The <code>check_prerequisites</code>
+			function takes an array of data and walks through each element object
+			and checks if each object has:
+
+			<ul>
+				<li>a valid ID. If it doesn't, it generates one.</li>
+				<li>open property. If it's not 'true' (strictly compared), it
+				creates one and set's it to false.</li>
+				<li>children property. If it's not an array or if it's empty,
+				it deletes the property, else it will delete the checked
+				property. Note that nodes can't have a checked property at
+				this step of the process.</li>
+				<li>checked property. If it's not 'true' (strictly compared),
+				creates one and set's it to false.</li>
+			</ul>
+
+			Note that you can completely skip this step (thus saving some
+			CPU cycles) if you are sure that all objects in your input data:
+
+			<ul>
+				<li>have valid and unique ID</li>
+				<li>have open property, which is boolean and false for leafs</li>
+				<li>children properties are non-empty arrays</li>
+				<li>only leafs have a checked property and it's a boolean</li>
+			</ul>
+
+			If you want to skip this step please be completely sure you understand what this
+			function does and what is the expected output data. Have a look at the
+			<a href="https://github.com/alexandernst/angular-multi-select/blob/6.0.3/src/angular-multi-select-data-converter.js#L31">function's code</a>
+			and <a href="https://github.com/alexandernst/angular-multi-select/blob/6.0.3/specs/data_converter/check_prerequisites.js">it's specs</a>.
+		</p>
+
+		<h5>Data conversion (to internal)</h5>
+		<p>
+			This is the second step in the diagram above of the process of importing the data. The <code>to_internal</code>
+			function takes an array of (nested) objects and flattens it, while also adding some internal properties
+			required for faster un/check and state actions.
+
+			Note that you can skip this step (thus saving some CPU cycles) only if you're completely sure how this method
+			works, what and how it does what it does. Have a look at the
+			<a href="https://github.com/alexandernst/angular-multi-select/blob/6.0.3/src/angular-multi-select-data-converter.js#L154">function's code</a>
+			and <a href="https://github.com/alexandernst/angular-multi-select/blob/6.0.3/specs/data_converter/to_internal.js">it's specs</a>.
+			You'll find the <a href="https://github.com/alexandernst/angular-multi-select/blob/6.0.3/src/angular-multi-select-constants.js"><code>constants</code></a> module very useful.
+		</p>
+
+		<h5>Required fields</h5>
+		<p>
+			There are 4 keys that each object in the input array of objects should have. The <code>check_prerequisites</code>
+			function makes sure this is the case. If any of the objects is missing any of those keys, the key is auto-generated.
+		</p>
+		<ul>
+			<li><b>ID property</b> <span class="label label-primary">default is 'id'</span> - Unique/mandatory ID, autogenerated if the item doesn't have one</li>
+			<li><b>Open property</b> <span class="label label-primary">default is 'open'</span> - Boolean value representing if the item is open or closed. Leafs are always closed, thus <code>false</code>. <code>false</code> if the item doesn't have one</li>
+			<li><b>Checked property</b> <span class="label label-primary">default is 'checked'</span> - Boolean value for leafs, numerical value for nodes (check <code>Constants</code> module for values) representing if the item is checked or unchecked. <code>false/0</code> if the item doesn't have one</li>
+			<li><b>Children property</b> <span class="label label-primary">default is 'children'</span> - The key that should be used to access the children items of an object. If the item doesn't have such property or the <code>children-property</code> wasn't passed, it will be considered a leaf</li>
+		</ul>
+
+		<h5>Internal keys</h5>
+		<p>
+			AMS creates some internal keys that are used to process required operations faster.
+		</p>
+		<ul>
+			<li><b>$ams_level</b> - The nested level of the item, starting from 0</li>
+			<li><b>$ams_order</b> - The absolute position of the item in the data set</li>
+			<li><b>$ams_parents_id</b> - The IDs of all the parents of the item, ordered by proximity</li>
+			<li><b>$ams_children_leafs</b> - The number of children leafs the item has</li>
+			<li><b>$ams_children_nodes</b> - The number of children nodes the item has</li>
+			<li><b>$ams_checked_children</b> - The number of checked children (leafs) the item has</li>
+			<li><b>$ams_tree_visibility</b> - If the item is currently visible in the UI tree</li>
+			<li><b>$ams_checked_modification</b> - The last time this item was modified</li>
+		</ul>
+	</div>
+</div>
