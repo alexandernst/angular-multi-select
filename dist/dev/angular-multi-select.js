@@ -20,7 +20,6 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 
 			var self = {};
 			var amsu = new angularMultiSelectUtils();
-			$scope.amsu = amsu;
 
 			/*
     █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████

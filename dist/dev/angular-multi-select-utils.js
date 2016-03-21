@@ -138,7 +138,6 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 			case 38:
 				//keyup
 				$scope.focused_index = $scope.focused_index === -1 ? $scope.items.length - 1 : $scope.focused_index - 1;
-				$scope.amsu.scroll_to_item(element);
 				break;
 			case 39:
 				//keyright
@@ -150,7 +149,6 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 			case 40:
 				//keydown
 				$scope.focused_index = $scope.focused_index + 1 > $scope.items.length ? 0 : $scope.focused_index + 1;
-				$scope.amsu.scroll_to_item(element);
 				break;
 			default:
 				prevent = false;
@@ -162,6 +160,15 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 		}
 
 		$scope.$apply();
+
+		/*
+   * This must be done after the $apply() call
+   */
+		if (code === 38 || code === 40) {
+			if ($scope.focused_index !== -1) {
+				this.scroll_to_item(element);
+			}
+		}
 	};
 
 	/*

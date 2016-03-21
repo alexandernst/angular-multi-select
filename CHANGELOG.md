@@ -1,3 +1,7 @@
+### v6.0.7
+##### Added / Updated
+- Fix a bug related to keyboard handling.
+
 ### v6.0.6
 ##### Added / Updated
 - Improvements in the keyboard handler.
