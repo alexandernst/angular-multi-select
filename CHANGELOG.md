@@ -1,3 +1,7 @@
+### v6.0.5
+##### Added / Updated
+- Fix buggy global CSS styles generation.
+
 ### v6.0.4
 ##### Added / Updated
 - CSS fixes.

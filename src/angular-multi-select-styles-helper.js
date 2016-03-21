@@ -45,12 +45,11 @@ angular_multi_select_styles_helper.run([function () {
 		}
 	}
 
-	var css = s => s + "";
 	var indent = "";
 	for (i = 1; i < 20; i++) {
-		indent += css`.ams-item-level-${i} { padding-left: ${(i + 1) * level_width}px; }`;
+		indent += `.ams-item-level-${i} { padding-left: ${(i + 1) * level_width}px; }`;
 	}
-	inject.text(css`.ams-item { padding-right: ${check_width + 10}px; } ${indent}`);
+	inject.text(`.ams-item { padding-right: ${check_width + 10}px; } ${indent}`);
 	angular.element(document.getElementsByTagName('head')).append(inject);
 }]);
 
