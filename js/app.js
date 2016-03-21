@@ -54,6 +54,14 @@ var demo = angular.module('demo', [
 		templateUrl: 'views/under-the-hood.html'
 	});
 
+	$routeProvider.when('/keyboard', {
+		templateUrl: 'views/keyboard.html',
+	});
+
+	$routeProvider.when('/i18n', {
+		templateUrl: 'views/i18n.html',
+	});
+
 	$routeProvider.when('/config-options', {
 		templateUrl: 'views/config-options.html',
 	});

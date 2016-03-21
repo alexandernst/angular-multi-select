@@ -1,0 +1,89 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Keyboard navigation</h3>
+
+		<h5>Shortcuts</h5>
+
+		<p>
+			You can easily control AMS with the built-in shortcuts. Note that different
+			browsers trigger shortcuts in a different ways. Here is a short list of the
+			most common browsers/OSes.
+		</p>
+		<style media="screen">
+			tr, td {
+				border: 1px solid #ccc;
+			}
+
+			td {
+				padding: 5px 15px 5px 15px;
+			}
+		</style>
+		<table>
+			<tr>
+				<td>Browser</td>
+				<td>Windows</td>
+				<td>Linux</td>
+				<td>Mac</td>
+			</tr>
+			<tr>
+				<td>IE</td>
+				<td><code>Alt</code> + accesskey</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Chrome</td>
+				<td><code>Alt</code> + accesskey</td>
+				<td><code>Alt</code> + accesskey</td>
+				<td><code>Control + Alt</code> + accesskey</td>
+			</tr>
+			<tr>
+				<td>Firefox</td>
+				<td><code>Alt + Shift</code> + accesskey</td>
+				<td><code>Alt + Shift</code> + accesskey</td>
+				<td><code>Control + Alt</code> + accesskey</td>
+			</tr>
+			<tr>
+				<td>Safari</td>
+				<td></td>
+				<td></td>
+				<td><code>Control + Alt</code> + accesskey</td>
+			</tr>
+		</table>
+
+		<br>
+
+		<p>
+			Available access keys:
+		</p>
+		<ul>
+			<li><code>a</code> - Check all</li>
+			<li><code>n</code> - Check none</li>
+			<li><code>r</code> - Reset</li>
+		</ul>
+
+		<h5>Keyboard navigation</h5>
+
+		<p>
+			In addition to the shortcuts, you can also use some keys to control AMS:
+		</p>
+		<ul>
+			<li><code>ESC</code> - close an open AMS</li>
+			<li><code>key up</code> - move up the selection in the tree of items</li>
+			<li><code>key down</code> - move down the selection in the tree of items</li>
+			<li><code>key right</code> - open the currently selected item in the tree of items</li>
+			<li><code>key left</code> - close the currently selected item in the tree of items</li>
+			<li><code>Space</code> - check/uncheck the currently selected item in tree of items</li>
+		</ul>
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
