@@ -219,8 +219,33 @@ describe('Testking AMS keyboard handler', function () {
 		keyPress(40);
 		$scope.$digest();
 
+		var item_state = $('.ams-item-focused .unchecked').length;
+		expect(item_state).toEqual(1);
+	});
+
+	it('It should handle left/right keys properly', function () {
+		var btn = $('.ams-button');
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+		timeout.flush();
+
+		keyPress(40);
+		keyPress(40);
+		keyPress(37);
+		keyPress(40);
+		$scope.$digest();
+
 		var item_text = $('.ams-item-focused .ams-item-text').text();
-		expect(item_text).toContain('D');
+		expect(item_text).toContain("D");
+
+		keyPress(38);
+		keyPress(39);
+		keyPress(40);
+		$scope.$digest();
+
+		item_text = $('.ams-item-focused .ams-item-text').text();
+		expect(item_text).toContain("C");
 	});
 
 	it('It should handle escape key properly', function () {

@@ -101,52 +101,64 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 		██      ██   ██ ██    ██ ██      ██           ██      ██     ██  ██  ██   ██     ██ ██  ██ ██ ██      ██    ██    ██
 		██      ██   ██  ██████   ██████ ███████ ███████ ███████     ██   ██ ██████      ██ ██   ████ ██       ██████     ██
 		*/
-		Utils.prototype.process_kb_input = function (event, $scope) {
+		Utils.prototype.process_kb_input = function (event, $scope, element) {
 			/*
 			 * Kb events handler. React as follows based on key code:
 			 *
 			 * * escape - close the opened AMS instance.
-			 * * spacebar - toggle the open state of the focused item.
+			 * * spacebar - toggle the checked state of the focused item.
 			 * * keyup - focus the previos item, or if at the top, the last one.
 			 * * keydown - focus the next item, or if at the bottom, the first one.
+			 * * keyleft - close the current item.
+			 * * keyright - open the current item.
 			 *
-			 * The is an exception in keyup/keydown handlers. Both should "skip"
+			 * There is an exception in keyup/keydown handlers. Both should "skip"
 			 * one key hit in order to allow an "empty" focus.
 			 */
-			var quit = true;
 
+			var item;
+			var prevent = true;
 			var code = event.keyCode ? event.keyCode : event.which;
 			switch (code) {
 				case 27: //escape
 					$scope.open = false;
-					event.preventDefault();
 					break;
 				case 32: //spacebar
-					var item = $scope.items[$scope.focused_index];
+					item = $scope.items[$scope.focused_index];
 					if (item !== undefined) {
-						$scope.amse.toggle_open_node(item);
-						event.preventDefault();
+						$scope.amse.toggle_check_node(item);
 					}
-					event.preventDefault();
+					break;
+				case 37: //keyleft
+					item = $scope.items[$scope.focused_index];
+					if (item !== undefined && item[angularMultiSelectConstants.OPEN_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_OPEN) {
+						$scope.amse.toggle_open_node(item);
+					}
 					break;
 				case 38: //keyup
 					$scope.focused_index = $scope.focused_index === -1 ? $scope.items.length - 1 : $scope.focused_index - 1;
-					quit = false;
-					event.preventDefault();
+					$scope.amsu.scroll_to_item(element);
+					break;
+				case 39: //keyright
+					item = $scope.items[$scope.focused_index];
+					if (item !== undefined && item[angularMultiSelectConstants.OPEN_PROPERTY] === angularMultiSelectConstants.INTERNAL_DATA_CLOSED) {
+						$scope.amse.toggle_open_node(item);
+					}
 					break;
 				case 40: //keydown
 					$scope.focused_index = $scope.focused_index + 1 > $scope.items.length ? 0 : $scope.focused_index + 1;
-					quit = false;
-					event.preventDefault();
+					$scope.amsu.scroll_to_item(element);
 					break;
 				default:
-					//Nothing to do here...
-					return;
+					prevent = false;
+					break;
+			}
+
+			if (prevent === true) {
+				event.preventDefault();
 			}
 
 			$scope.$apply();
-
-			return quit;
 		};
 
 		/*

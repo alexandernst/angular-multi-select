@@ -33,6 +33,7 @@ angular_multi_select.directive('angularMultiSelect', [
 
 				var self = {};
 				var amsu = new angularMultiSelectUtils();
+				$scope.amsu = amsu;
 
 				/*
 				 █████  ████████ ████████ ██████  ██ ██████  ██    ██ ████████ ███████ ███████
@@ -161,16 +162,16 @@ angular_multi_select.directive('angularMultiSelect', [
 						return;
 					}
 
-					var quit = amsu.process_kb_input(event, $scope);
+					amsu.process_kb_input(event, $scope, element);
 
 					/*
-					 * If quit is false, recalculate the
-					 * scroll position of the items container.
+					 * This is required to avoid weird gaps appearing between the items
+					 * container and the button if the container is positione on top of
+					 * the button and a node is closed.
 					 */
-					if (!quit) {
-						amsu.scroll_to_item(element);
-					}
-
+					$timeout(function () {
+						amssh.transform_position(element);
+					});
 				};
 				document.addEventListener('keydown', $scope.onkeypress_listener);
 
