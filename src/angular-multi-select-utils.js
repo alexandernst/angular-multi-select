@@ -119,6 +119,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 			switch (code) {
 				case 27: //escape
 					$scope.open = false;
+					event.preventDefault();
 					break;
 				case 32: //spacebar
 					var item = $scope.items[$scope.focused_index];
@@ -126,14 +127,17 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 						$scope.amse.toggle_open_node(item);
 						event.preventDefault();
 					}
+					event.preventDefault();
 					break;
 				case 38: //keyup
 					$scope.focused_index = $scope.focused_index === -1 ? $scope.items.length - 1 : $scope.focused_index - 1;
 					quit = false;
+					event.preventDefault();
 					break;
 				case 40: //keydown
 					$scope.focused_index = $scope.focused_index + 1 > $scope.items.length ? 0 : $scope.focused_index + 1;
 					quit = false;
+					event.preventDefault();
 					break;
 				default:
 					//Nothing to do here...
