@@ -2,7 +2,7 @@ var angular_multi_select = angular.module('angular-multi-select');
 
 angular_multi_select.run(['$templateCache', function($templateCache) {
 
-	var html = s => s + ""; //For some reason 's' is passed as object instead of a string.
+	var html = s => s.toString();
 	$templateCache.put('angular-multi-select.tpl', html`
 
 		<div class="ams-button" ng-click="open = !open">

@@ -30,7 +30,7 @@ angular_multi_select.filter('outputModelIterator', [
 				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECT:
 				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
 					exp = amssh.interpolate_alternative2(text);
-					output.push(exp(v));
+					output.push(exp(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]));
 					break;
 				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
 					output.push(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]);
