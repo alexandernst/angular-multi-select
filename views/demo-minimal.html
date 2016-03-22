@@ -10,35 +10,35 @@
 
 		<div role="tabpanel">
 
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active">
-				<a data-target="#result" role="tab" data-toggle="tab">Result</a>
-			</li>
-			<li role="presentation">
-				<a data-target="#view" role="tab" data-toggle="tab">View</a>
-			</li>
-			<li role="presentation">
-				<a data-target="#controller" role="tab" data-toggle="tab">Controller</a>
-			</li>
-		</ul>
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a data-target="#result" role="tab" data-toggle="tab">Result</a>
+				</li>
+				<li role="presentation">
+					<a data-target="#view" role="tab" data-toggle="tab">View</a>
+				</li>
+				<li role="presentation">
+					<a data-target="#controller" role="tab" data-toggle="tab">Controller</a>
+				</li>
+			</ul>
 
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="result">
-				<div
-					angular-multi-select
-					input-model="input_data"
-					output-model="output_data"
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="result">
+					<div
+						angular-multi-select
+						input-model="input_data"
+						output-model="output_data"
 
-					dropdown-label="Click me!"
-					node-label="<[ text ]>"
-					leaf-label="<[ text ]>"
-				></div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="view">
-				<p>Define your directive:</p>
-				<pre>
-					<code class="javascript" ng-non-bindable>
+						dropdown-label="Click me!"
+						node-label="<[ text ]>"
+						leaf-label="<[ text ]>"
+					></div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="view">
+					<p>Define your directive:</p>
+					<pre>
+						<code class="javascript" ng-non-bindable>
 &lt;div
 	angular-multi-select
 	input-model="input_data"
@@ -48,13 +48,13 @@
 	node-label="<[ text ]>"
 	leaf-label="<[ text ]>"
 >&lt;/div>
-					</code>
-				</pre>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="controller">
-				<p>Define your data models:</p>
-				<pre>
-					<code class="javascript">
+						</code>
+					</pre>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your data models:</p>
+					<pre>
+						<code class="javascript">
 $scope.input_data = [
 	{ text: 'A', value: 'a', id: 1},
 	{ text: 'B', value: 'b', id: 2},
@@ -65,10 +65,10 @@ $scope.input_data = [
 ];
 
 $scope.output_data = [];
-					</code>
-				</pre>
+						</code>
+					</pre>
+				</div>
 			</div>
-		</div>
 
 		</div>
 	</div>
