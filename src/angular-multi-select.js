@@ -32,6 +32,8 @@ angular_multi_select.directive('angularMultiSelect', [
 				element.append(content);
 
 				var self = {};
+				$scope.self = self; //We need to access 'self' from the template
+				//TODO. Replace all the $scope pollution with calls to 'self' from the template
 				var amsu = new angularMultiSelectUtils();
 
 				/*

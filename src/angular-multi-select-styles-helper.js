@@ -255,10 +255,27 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 		██      ██   ██ ██      ██   ██    ██    ██          ██   ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██ ███ ██ ██  ██ ██     ██      ██   ██ ██   ██ ██      ██
 		 ██████ ██   ██ ███████ ██   ██    ██    ███████     ██████  ██   ██  ██████  ██      ██████   ██████   ███ ███  ██   ████     ███████ ██   ██ ██████  ███████ ███████
 		*/
-		StylesHelper.prototype.create_dropdown_label = function (stats) {
+		StylesHelper.prototype.create_dropdown_label = function (stats, outputModel, output_type) {
 			//TODO: Cache + cache invalidation on data change
 
+			if (stats === undefined) {
+				return '';
+			}
+
+			/*
+			 * This is kind of a hack... 'stats' is an object that is used to interpolate
+			 * the dropdown label. Since the interpolation string might contain a call to the
+			 * 'outputModelIterator' filter, we need to pass somehow the output model and the
+			 * output type. The easiest way (and the cleanest, AFAIK) is to attach temporarily
+			 * those to the 'stats' object and then delete them.
+			 */
+			stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK] = outputModel;
+			stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK] = output_type;
+
 			var _interpolated = this.dropdown_repr(stats);
+
+			delete stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK];
+			delete stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK];
 
 			return $sce.trustAsHtml(_interpolated);
 		};
