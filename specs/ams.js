@@ -128,6 +128,97 @@ describe('Testing AMS with different name properties', function () {
 });
 
 /*
+██████  ██████   ██████  ██████  ██████   ██████  ██     ██ ███    ██     ██       █████  ██████  ███████ ██
+██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██    ██ ██     ██ ████   ██     ██      ██   ██ ██   ██ ██      ██
+██   ██ ██████  ██    ██ ██████  ██   ██ ██    ██ ██  █  ██ ██ ██  ██     ██      ███████ ██████  █████   ██
+██   ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██ ███ ██ ██  ██ ██     ██      ██   ██ ██   ██ ██      ██
+██████  ██   ██  ██████  ██      ██████   ██████   ███ ███  ██   ████     ███████ ██   ██ ██████  ███████ ███████
+*/
+describe('Testing AMS dropdown label with outputModelIterator filter', function () {
+	var $scope, compile, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+
+		inject(function($rootScope, $compile) {
+			$scope = $rootScope.$new();
+			compile = $compile;
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+		});
+	});
+
+	it('It should be able to render text correctly with output type objects', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_objects.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c,F f,S s,Y y,Z z');
+	});
+
+	it('It should be able to render text correctly with output type arrays', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_arrays.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c,F f,S s,Y y,Z z');
+	});
+
+	it('It should be able to render text correctly with output type object', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_object.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c');
+	});
+
+	it('It should be able to render text correctly with output type array', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_array.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c');
+	});
+
+	it('It should be able to render text correctly with output type value', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_value.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C');
+	});
+
+	it('It should be able to render text correctly honoring the join argument', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_objects_join.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c||F f||S s||Y y||Z z');
+	});
+});
+
+/*
 ██  ██  █████  ███    ██
 ██ ███ ██   ██ ████   ██
 ██  ██  █████  ██ ██  ██
@@ -668,7 +759,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-keys" property correctly', function () {
 		jasmine.getFixtures().load('demo_output_keys.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
@@ -678,7 +769,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-type" of type OUTPUT_DATA_TYPE_OBJECTS', function () {
 		jasmine.getFixtures().load('demo_output_type_objects.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
@@ -688,7 +779,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-type" of type OUTPUT_DATA_TYPE_OBJECT', function () {
 		jasmine.getFixtures().load('demo_output_type_object.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
@@ -698,7 +789,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-type" of type OUTPUT_DATA_TYPE_ARRAYS', function () {
 		jasmine.getFixtures().load('demo_output_type_arrays.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
@@ -708,7 +799,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-type" of type OUTPUT_DATA_TYPE_ARRAY', function () {
 		jasmine.getFixtures().load('demo_output_type_array.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
@@ -718,7 +809,7 @@ describe('Testing AMS output-related fields', function () {
 
 	it('It should be able to handle "output-type" of type OUTPUT_DATA_TYPE_VALUE', function () {
 		jasmine.getFixtures().load('demo_output_type_value.html');
-		element = angular.element('div');
+		element = angular.element('#demo_container');
 
 		compile(element)($scope);
 		$scope.$digest();
