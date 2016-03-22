@@ -73,7 +73,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			Object.assign(this, this.amsu.sanitize_ops(ops));
 
 			this.START_REPLACE_SYMBOL_REGEX        = /<\[/g;
-			this.END_REPLACE_SYMBOL_REGEX          = /]>/g;
+			this.END_REPLACE_SYMBOL_REGEX          = /\]>/g;
 			this.START_INTERPOLATE_SYMBOL          = $interpolate.startSymbol();
 			this.END_INTERPOLATE_SYMBOL            = $interpolate.endSymbol();
 
@@ -81,6 +81,11 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX   = /#>/g;
 			this.START_INTERPOLATE_SYMBOL_ALTERNATIVE   = $interpolate.startSymbol();
 			this.END_INTERPOLATE_SYMBOL_ALTERNATIVE     = $interpolate.endSymbol();
+
+			this.START_REPLACE_SYMBOL_ALTERNATIVE2_REGEX = /<\(/g;
+			this.END_REPLACE_SYMBOL_ALTERNATIVE2_REGEX   = /\)>/g;
+			this.START_INTERPOLATE_SYMBOL_ALTERNATIVE2   = $interpolate.startSymbol();
+			this.END_INTERPOLATE_SYMBOL_ALTERNATIVE2     = $interpolate.endSymbol();
 
 			this.START_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX = /<#/g;
 			this.END_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX   = /#>/g;
@@ -199,6 +204,25 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 			str = str
 				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE)
 				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE);
+			return $interpolate(str);
+		};
+
+		/*
+		██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████     ██████
+		██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ████   ██ ██   ██    ██    ██ ██    ██ ██               ██
+		██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████       ███████ ██      ██    █████   ██████  ██ ██  ██ ███████    ██    ██ ██    ██ █████        █████
+		██ ██  ██ ██    ██    ██      ██   ██ ██      ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ██  ██ ██ ██   ██    ██    ██  ██  ██  ██          ██
+		██ ██   ████    ██    ███████ ██   ██ ██       ██████  ███████ ██   ██    ██    ███████     ██   ██ ███████ ██    ███████ ██   ██ ██   ████ ██   ██    ██    ██   ████   ███████     ███████
+		*/
+		StylesHelper.prototype.interpolate_alternative2 = function (str) {
+			/*
+			 * Interpolation method used to interpolate <( )>.
+			 * This is normaly used to interpolate the data of each output model
+			 * item in the dropdown label.
+			 */
+			str = str
+				.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE2_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE2)
+				.replace(this.END_REPLACE_SYMBOL_ALTERNATIVE2_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE2);
 			return $interpolate(str);
 		};
 
