@@ -66,11 +66,12 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
  */
 
 	var StylesHelper = function StylesHelper(ops, attrs) {
+		attrs = attrs || {};
 		this.amsu = new angularMultiSelectUtils();
 		_extends(this, this.amsu.sanitize_ops(ops));
 
 		this.START_REPLACE_SYMBOL_REGEX = /<\[/g;
-		this.END_REPLACE_SYMBOL_REGEX = /]>/g;
+		this.END_REPLACE_SYMBOL_REGEX = /\]>/g;
 		this.START_INTERPOLATE_SYMBOL = $interpolate.startSymbol();
 		this.END_INTERPOLATE_SYMBOL = $interpolate.endSymbol();
 
@@ -78,6 +79,11 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
 		this.END_REPLACE_SYMBOL_ALTERNATIVE_REGEX = /#>/g;
 		this.START_INTERPOLATE_SYMBOL_ALTERNATIVE = $interpolate.startSymbol();
 		this.END_INTERPOLATE_SYMBOL_ALTERNATIVE = $interpolate.endSymbol();
+
+		this.START_REPLACE_SYMBOL_ALTERNATIVE2_REGEX = /<\(/g;
+		this.END_REPLACE_SYMBOL_ALTERNATIVE2_REGEX = /\)>/g;
+		this.START_INTERPOLATE_SYMBOL_ALTERNATIVE2 = $interpolate.startSymbol();
+		this.END_INTERPOLATE_SYMBOL_ALTERNATIVE2 = $interpolate.endSymbol();
 
 		this.START_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX = /<#/g;
 		this.END_REPLACE_SYMBOL_ALTERNATIVE_REPETITIVE_REGEX = /#>/g;
@@ -186,6 +192,23 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
 	};
 
 	/*
+ ██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████     ██████
+ ██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ████   ██ ██   ██    ██    ██ ██    ██ ██               ██
+ ██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████       ███████ ██      ██    █████   ██████  ██ ██  ██ ███████    ██    ██ ██    ██ █████        █████
+ ██ ██  ██ ██    ██    ██      ██   ██ ██      ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ██  ██ ██ ██   ██    ██    ██  ██  ██  ██          ██
+ ██ ██   ████    ██    ███████ ██   ██ ██       ██████  ███████ ██   ██    ██    ███████     ██   ██ ███████ ██    ███████ ██   ██ ██   ████ ██   ██    ██    ██   ████   ███████     ███████
+ */
+	StylesHelper.prototype.interpolate_alternative2 = function (str) {
+		/*
+   * Interpolation method used to interpolate <( )>.
+   * This is normaly used to interpolate the data of each output model
+   * item in the dropdown label.
+   */
+		str = str.replace(this.START_REPLACE_SYMBOL_ALTERNATIVE2_REGEX, this.START_INTERPOLATE_SYMBOL_ALTERNATIVE2).replace(this.END_REPLACE_SYMBOL_ALTERNATIVE2_REGEX, this.END_INTERPOLATE_SYMBOL_ALTERNATIVE2);
+		return $interpolate(str);
+	};
+
+	/*
  ██ ███    ██ ████████ ███████ ██████  ██████   ██████  ██       █████  ████████ ███████      █████  ██   ████████ ███████ ██████  ███    ██  █████  ████████ ██ ██    ██ ███████     ██████  ███████ ██████  ███████ ████████ ██ ████████ ██ ██    ██ ███████
  ██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██      ██   ██    ██    ██          ██   ██ ██      ██    ██      ██   ██ ████   ██ ██   ██    ██    ██ ██    ██ ██          ██   ██ ██      ██   ██ ██         ██    ██    ██    ██ ██    ██ ██
  ██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██      ███████    ██    █████       ███████ ██      ██    █████   ██████  ██ ██  ██ ███████    ██    ██ ██    ██ █████       ██████  █████   ██████  █████      ██    ██    ██    ██ ██    ██ █████
@@ -212,10 +235,27 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
  ██      ██   ██ ██      ██   ██    ██    ██          ██   ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██ ███ ██ ██  ██ ██     ██      ██   ██ ██   ██ ██      ██
   ██████ ██   ██ ███████ ██   ██    ██    ███████     ██████  ██   ██  ██████  ██      ██████   ██████   ███ ███  ██   ████     ███████ ██   ██ ██████  ███████ ███████
  */
-	StylesHelper.prototype.create_dropdown_label = function (stats) {
+	StylesHelper.prototype.create_dropdown_label = function (stats, outputModel, output_type) {
 		//TODO: Cache + cache invalidation on data change
 
+		if (stats === undefined) {
+			return '';
+		}
+
+		/*
+   * This is kind of a hack... 'stats' is an object that is used to interpolate
+   * the dropdown label. Since the interpolation string might contain a call to the
+   * 'outputModelIterator' filter, we need to pass somehow the output model and the
+   * output type. The easiest way (and the cleanest, AFAIK) is to attach temporarily
+   * those to the 'stats' object and then delete them.
+   */
+		stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK] = outputModel;
+		stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK] = output_type;
+
 		var _interpolated = this.dropdown_repr(stats);
+
+		delete stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK];
+		delete stats[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK];
 
 		return $sce.trustAsHtml(_interpolated);
 	};

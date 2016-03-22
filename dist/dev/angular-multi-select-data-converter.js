@@ -311,6 +311,40 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 	};
 
 	/*
+ ████████  ██████      ███████  ██████  ██████  ███    ███  █████  ████████
+    ██    ██    ██     ██      ██    ██ ██   ██ ████  ████ ██   ██    ██
+    ██    ██    ██     █████   ██    ██ ██████  ██ ████ ██ ███████    ██
+    ██    ██    ██     ██      ██    ██ ██   ██ ██  ██  ██ ██   ██    ██
+    ██     ██████      ██       ██████  ██   ██ ██      ██ ██   ██    ██
+ */
+	DataConverter.prototype.to_format = function (data, format, keys) {
+		/*
+   * Converts the input data to the desired output.
+   */
+		var res;
+
+		switch (format) {
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECTS:
+				res = this.to_array_of_objects(data, keys);
+				break;
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAYS:
+				res = this.to_array_of_arrays(data, keys);
+				break;
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECT:
+				res = this.to_object(data, keys);
+				break;
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
+				res = this.to_array(data, keys);
+				break;
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
+				res = this.to_value(data, keys);
+				break;
+		}
+
+		return res;
+	};
+
+	/*
  ████████  ██████       █████  ██████  ██████   █████  ██    ██      ██████  ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
     ██    ██    ██     ██   ██ ██   ██ ██   ██ ██   ██  ██  ██      ██    ██ ██          ██    ██ ██   ██      ██ ██      ██         ██    ██
     ██    ██    ██     ███████ ██████  ██████  ███████   ████       ██    ██ █████       ██    ██ ██████       ██ █████   ██         ██    ███████

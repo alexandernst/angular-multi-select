@@ -24,6 +24,14 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	INTERNAL_KEY_CHECKED_MODIFICATION: '$ams_checked_modification',
 
 	/*
+  * This gets injected while processing the stats, in the dropdown
+  * label. This allows us to iterate over the output model when
+  * generating the dropdown label.
+  */
+	INTERNAL_KEY_OUTPUT_MODEL_HACK: '$ams_output_model_hack',
+	INTERNAL_KEY_OUTPUT_TYPE_HACK: '$ams_output_type_hack',
+
+	/*
   * Possible values of the input/internal data
   */
 	INPUT_DATA_OPEN: true,

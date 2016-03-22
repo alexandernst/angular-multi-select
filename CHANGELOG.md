@@ -1,3 +1,7 @@
+### v6.1.0
+##### Added / Updated
+- Now it is possible to create the dropdown label with values from the items in the output model.
+
 ### v6.0.7
 ##### Added / Updated
 - Fix a bug related to keyboard handling.
