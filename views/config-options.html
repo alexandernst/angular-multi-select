@@ -513,6 +513,26 @@ dropdown-label="<[
 				</ul>
 			</p>
 
+			<p>
+				Starting with 6.1.0 you can also pass a template string to a special filter, which will be interpolated with
+				each of the items in your output model.
+			</p>
+			<pre>
+				<code>
+dropdown-label="<[ '<(text)>' | outputModelIterator : this ]>"
+dropdown-label="<[ '<(text)> - <(value)>' | outputModelIterator : this : ' | ' ]>"
+				</code>
+			</pre>
+			<p>
+				Output:
+			</p>
+			<pre>
+				<code>
+C,F,S,Y,Z
+C - c | F - f | S - s | Y - y | Z - y
+				</code>
+			</pre>
+
 			<!--
 			███    ██  ██████  ██████  ███████     ██       █████  ██████  ███████ ██
 			████   ██ ██    ██ ██   ██ ██          ██      ██   ██ ██   ██ ██      ██
