@@ -49,8 +49,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 			 * array or undefined.
 			 */
 			if (typeof(str) === 'string') {
-				return str.split(",")
-				.map(s => s.replace(/^\s+|\s+$/g, ''));
+				return str.split(",").map(s => s.replace(/^\s+|\s+$/g, ''));
 			} else {
 				return str;
 			}
