@@ -68,6 +68,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', [
 		 ██████  ██████  ██   ████ ███████    ██    ██   ██  ██████   ██████    ██     ██████  ██   ██
 		*/
 		var StylesHelper = function (ops, attrs) {
+			attrs = attrs || {};
 			this.amsu = new angularMultiSelectUtils();
 			Object.assign(this, this.amsu.sanitize_ops(ops));
 
