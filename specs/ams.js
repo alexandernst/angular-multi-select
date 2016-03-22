@@ -511,6 +511,36 @@ describe('Testing AMS with URL string as input data', function () {
 	});
 });
 
+/*
+     ██ ███████  ██████  ███    ██     ██ ███    ██ ██████  ██    ██ ████████     ███    ███  ██████  ██████  ███████ ██
+     ██ ██      ██    ██ ████   ██     ██ ████   ██ ██   ██ ██    ██    ██        ████  ████ ██    ██ ██   ██ ██      ██
+     ██ ███████ ██    ██ ██ ██  ██     ██ ██ ██  ██ ██████  ██    ██    ██        ██ ████ ██ ██    ██ ██   ██ █████   ██
+██   ██      ██ ██    ██ ██  ██ ██     ██ ██  ██ ██ ██      ██    ██    ██        ██  ██  ██ ██    ██ ██   ██ ██      ██
+ █████  ███████  ██████  ██   ████     ██ ██   ████ ██       ██████     ██        ██      ██  ██████  ██████  ███████ ███████
+*/
+describe('Testing AMS with JSON literal string as input data', function () {
+	var $scope, element;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_json.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile, $httpBackend) {
+			$scope = $rootScope.$new();
+			$compile(element)($scope);
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should be able to handle JSON literal string as input data', function () {
+		expect($scope.output_data.length).toEqual(5);
+	});
+});
 
 /*
 ███████ ███████  █████  ██████   ██████ ██   ██
