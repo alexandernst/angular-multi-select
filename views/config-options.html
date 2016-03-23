@@ -605,12 +605,16 @@ leaf-label="<[ text ]> (<[ value ]>)"
 			<h5 id="preselect">preselect</h5>
 			<p>
 				If you can't mark an item in the input model as checked, you can use this to check it. This attribute
-				accepts a pair of string separeted by a comma. The first one is the key, while the second one is the value.
+				accepts pairs of string separeted by a comma. The first one is the key, while the second one is the value.
+				Note that the value will be parsed as a number if it looks like a number. If you want a string value, use quotes.
 				The first element that matches the passed pair of values will be marked as checked.
 			</p>
 			<pre>
 				<code>
 preselect="foo, 42"
+preselect="foo, 42, bar, 10"
+preselect="name, Alex, age, 98"
+preselect="phone, '123456789'"
 				</code>
 			</pre>
 
