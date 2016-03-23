@@ -1,0 +1,95 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Demo > Preselecting values</h3>
+
+		<p>
+			You can preselect values even if they are not checked in the input model.
+		</p>
+
+		<div role="tabpanel">
+
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a data-target="#result" role="tab" data-toggle="tab">Result</a>
+				</li>
+				<li role="presentation">
+					<a data-target="#view" role="tab" data-toggle="tab">View</a>
+				</li>
+				<li role="presentation">
+					<a data-target="#controller" role="tab" data-toggle="tab">Controller</a>
+				</li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="result">
+					<div
+						angular-multi-select
+						input-model="input_data"
+						output-model="output_data"
+
+						dropdown-label="Click me!"
+						node-label="<[ text ]>"
+						leaf-label="<[ text ]>"
+						preselect="value, e, value, a"
+					></div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="view">
+					<p>Define your directive:</p>
+					<pre>
+						<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+	preselect="id, 4"
+>&lt;/div>
+						</code>
+					</pre>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="controller">
+					<p>Define your data models:</p>
+					<pre>
+						<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6}
+];
+
+$scope.output_data = [];
+						</code>
+					</pre>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<h5>Output model</h5>
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive.
+		</p>
+		<pre ng-bind-html="output_data | json : 4 | prettify"></pre>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
