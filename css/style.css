@@ -7,7 +7,6 @@
 		url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
 }
 
-
 body {
 	font-family: 'Lato', 'Arial';
 	font-size: 15px;
@@ -130,6 +129,10 @@ div.fauxCode + p,
 .tab-pane {
 	padding: 15px 0px 20px 0px;
 	border-bottom: 1px solid #ddd;
+}
+
+[role='tab'] {
+	cursor: pointer !important;
 }
 
 .download {
