@@ -1,0 +1,421 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Demo > Output types</h3>
+
+		<p>
+			Bellow are the various output types this directive supports.
+		</p>
+
+		<br>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<h5>'objects' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_1" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_1" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_1" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_1">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_1"
+								output-type="objects"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_1">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_1"
+	output-type="objects"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_1">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_1 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h5>'arrays' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_2" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_2" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_2" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_2">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_2"
+								output-type="arrays"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_2">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_2"
+	output-type="arrays"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_2">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_2 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_1 | json : 4 | prettify"></pre>
+			</div>
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_2 | json : 4 | prettify"></pre>
+			</div>
+		</div>
+
+		<br><br><br>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<h5>'object' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_3" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_3" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_3" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_3">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_3"
+								output-type="object"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_3">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_3"
+	output-type="object"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_3">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_3 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h5>'array' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_4" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_4" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_4" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_4">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_4"
+								output-type="array"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_4">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_4"
+	output-type="array"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_4">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_4 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_3 | json : 4 | prettify"></pre>
+			</div>
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_4 | json : 4 | prettify"></pre>
+			</div>
+		</div>
+
+		<br><br><br>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<h5>'value' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_5" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_5" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_5" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_5">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_5"
+								output-type="value"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_5">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_5"
+	output-type="value"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_5">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_5 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-sm-6">
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive.
+		</p>
+		<pre ng-bind-html="output_data_5 | json : 4 | prettify"></pre>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
