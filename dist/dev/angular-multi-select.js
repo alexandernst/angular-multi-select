@@ -75,11 +75,12 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     * Find out if something should be preselected.
     */
 			self.preselect = amsu.array_from_attr(attrs.preselect);
+			amsu.parse_pairs(self.preselect);
 
 			/*
     * Find out if some of the helpers should be hidden.
     */
-			$scope.hide_helpers = amsu.array_from_attr(attrs.hideHelpers) || [];
+			$scope.hide_helpers = amsu.array_from_attr(attrs.hideHelpers);
 
 			/*
     █████  ███    ███ ███████      ██████  ██████       ██ ███████  ██████ ████████ ███████
@@ -179,8 +180,8 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			$scope.reset = function () {
 				amse.insert($scope.reset_model);
 
-				if (self.preselect !== undefined) {
-					amse.check_node_by(self.preselect);
+				for (var i = 0; i < self.preselect.length; i += 2) {
+					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
 				}
 
 				$scope.items = amse.get_visible_tree();
@@ -313,8 +314,8 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 
 				amse.insert(internal_data);
 
-				if (self.preselect !== undefined) {
-					amse.check_node_by(self.preselect);
+				for (var i = 0; i < self.preselect.length; i += 2) {
+					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
 				}
 			};
 

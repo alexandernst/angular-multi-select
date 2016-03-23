@@ -1,3 +1,7 @@
+### v6.2.0
+##### Added / Updated
+- Now it is possible to make multiple preselections with 'preselect' attribute.
+
 ### v6.1.0
 ##### Added / Updated
 - Now it is possible to create the dropdown label with values from the items in the output model.

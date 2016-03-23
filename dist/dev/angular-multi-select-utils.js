@@ -49,7 +49,32 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 				return s.replace(/^\s+|\s+$/g, '');
 			});
 		} else {
-			return str;
+			return [];
+		}
+	};
+
+	/*
+ ██████   █████  ██████  ███████ ███████     ██████   █████  ██ ██████  ███████
+ ██   ██ ██   ██ ██   ██ ██      ██          ██   ██ ██   ██ ██ ██   ██ ██
+ ██████  ███████ ██████  ███████ █████       ██████  ███████ ██ ██████  ███████
+ ██      ██   ██ ██   ██      ██ ██          ██      ██   ██ ██ ██   ██      ██
+ ██      ██   ██ ██   ██ ███████ ███████     ██      ██   ██ ██ ██   ██ ███████
+ */
+	Utils.prototype.parse_pairs = function (arr) {
+		/*
+   * Takes an array of primitives and checks if the second
+   * value of each pair of values looks line a number (int or float),
+   * and if it does, it converts it to a Number.
+   *
+   * Note that the function modifies the passed array instead
+   * of creating a new one.
+   */
+		for (var i = 0; i < arr.length; i += 2) {
+			var value = arr[i + 1];
+
+			if (value.match(/^([0-9\.]*)$/gi) !== null) {
+				arr[i + 1] = Number(value);
+			}
 		}
 	};
 
@@ -79,6 +104,13 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 		return res;
 	};
 
+	/*
+ ██████  ██████  ███████ ██    ██ ███████ ███    ██ ████████     ███████  ██████ ██████   ██████  ██      ██          ██████  ██    ██ ██████  ██████  ██      ██ ███    ██  ██████
+ ██   ██ ██   ██ ██      ██    ██ ██      ████   ██    ██        ██      ██      ██   ██ ██    ██ ██      ██          ██   ██ ██    ██ ██   ██ ██   ██ ██      ██ ████   ██ ██
+ ██████  ██████  █████   ██    ██ █████   ██ ██  ██    ██        ███████ ██      ██████  ██    ██ ██      ██          ██████  ██    ██ ██████  ██████  ██      ██ ██ ██  ██ ██   ███
+ ██      ██   ██ ██       ██  ██  ██      ██  ██ ██    ██             ██ ██      ██   ██ ██    ██ ██      ██          ██   ██ ██    ██ ██   ██ ██   ██ ██      ██ ██  ██ ██ ██    ██
+ ██      ██   ██ ███████   ████   ███████ ██   ████    ██        ███████  ██████ ██   ██  ██████  ███████ ███████     ██████   ██████  ██████  ██████  ███████ ██ ██   ████  ██████
+ */
 	Utils.prototype.prevent_scroll_bubbling = function (element) {
 		element.addEventListener('mousewheel', function (e) {
 			if (element.clientHeight + element.scrollTop + e.deltaY >= element.scrollHeight) {
