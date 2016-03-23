@@ -558,7 +558,8 @@ describe('Testing AMS preselect functionality', function () {
 	});
 
 	it('It should be able to preselect', function () {
-		expect($scope.output_data[3].value).toEqual('w');
+		expect($scope.output_data[0].value).toEqual('a');
+		expect($scope.output_data[4].value).toEqual('w');
 	});
 });
 
