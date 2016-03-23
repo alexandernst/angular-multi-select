@@ -1,0 +1,204 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Demo > Leafs/nodes styling</h3>
+
+		<p>
+			You can style the leafs/nodes with constants and/or with the data from each item.
+			Make sure to check the <a href="#/config-options#node-label"><code>node-label</code></a>
+			and the <a href="#/config-options#leaf-label"><code>leaf-label</code></a>
+			configuration options for details.
+		</p>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<h5>Nodes</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_1" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_1" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_1" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_1">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_1"
+								output-type="objects"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]> &nbsp;<b>(checked
+									<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+									<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)</b>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_1">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_1"
+	output-type="objects"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]> &amp;nbsp;&lt;b>(checked
+		<# angularMultiSelectConstants.INTERNAL_KEY_CHECKED_CHILDREN #> /
+		<# angularMultiSelectConstants.INTERNAL_KEY_CHILDREN_LEAFS #>)&lt;/b>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_1">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2, open: true, children: [
+		{ text: 'C', value: 'c', id: 3, checked: true}
+	]},
+	{ text: 'D', value: 'd', id: 4, children: [
+		{ text: 'E', value: 'e', id: 5},
+		{ text: 'F', value: 'f', id: 6, checked: true}
+	]},
+	{ text: 'G', value: 'g', id: 7, children: [
+		{ text: 'H', value: 'h', id: 8},
+		{ text: 'I', value: 'i', id: 9, children: [
+			{ text: 'J', value: 'j', id: 10},
+			{ text: 'K', value: 'k', id: 11}
+		]},
+		{ text: 'L', value: 'l', id: 12},
+		{ text: 'M', value: 'm', id: 13}
+	]}
+];
+
+$scope.output_data_1 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h5>Leafs</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_2" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_2" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_2" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_2">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_2"
+								output-type="objects"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<div style='display: inline; color: red; background: lightblue; padding: 0 10px 0 10px;'><[ text ]></div>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_2">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_2"
+	output-type="objects"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="&lt;div style='display: inline; color: red; background: lightblue; padding: 0 10px 0 10px;'><[ text ]>&lt;/div>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_2">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2, open: true, children: [
+		{ text: 'C', value: 'c', id: 3, checked: true}
+	]},
+	{ text: 'D', value: 'd', id: 4, children: [
+		{ text: 'E', value: 'e', id: 5},
+		{ text: 'F', value: 'f', id: 6, checked: true}
+	]},
+	{ text: 'G', value: 'g', id: 7, children: [
+		{ text: 'H', value: 'h', id: 8},
+		{ text: 'I', value: 'i', id: 9, children: [
+			{ text: 'J', value: 'j', id: 10},
+			{ text: 'K', value: 'k', id: 11}
+		]},
+		{ text: 'L', value: 'l', id: 12},
+		{ text: 'M', value: 'm', id: 13}
+	]}
+];
+
+$scope.output_data_2 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive.
+		</p>
+		<pre ng-bind-html="output_data_1 | json : 4 | prettify"></pre>
+	</div>
+	<div class="col-sm-6">
+		<p>
+			Look at the <code>output-model</code> below to see the values getting updated
+			as you select / deselect an item in the directive.
+		</p>
+		<pre ng-bind-html="output_data_2 | json : 4 | prettify"></pre>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
