@@ -1,3 +1,7 @@
+### v6.2.1
+##### Added / Updated
+- Fixed i18n-ES minification protection.
+
 ### v6.2.0
 ##### Added / Updated
 - Now it is possible to make multiple preselections with 'preselect' attribute.

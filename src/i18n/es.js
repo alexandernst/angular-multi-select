@@ -1,5 +1,5 @@
 var angular_multi_select = angular.module('angular-multi-select');
-angular_multi_select.config(function (angularMultiSelectI18nProvider) {
+angular_multi_select.config(['angularMultiSelectI18nProvider', function (angularMultiSelectI18nProvider) {
 	angularMultiSelectI18nProvider.createTranslation('es', {
 		CHECK_ALL: 'Marcar todo',
 		CHECK_NONE: 'Desmarcar todo',
@@ -9,4 +9,4 @@ angular_multi_select.config(function (angularMultiSelectI18nProvider) {
 	});
 
 	angularMultiSelectI18nProvider.setLang('es');
-});
+}]);
