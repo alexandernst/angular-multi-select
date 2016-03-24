@@ -1,10 +1,14 @@
 ### v6.3.1
 ##### Added / Updated
 - Fixed a bug in 'to_internal' that would cause bad '$ams_parents_id' generation in certain cases.
+- Make items text non-selectable.
+- Added 'toggle-open-state-nodes-checked-state-leafs-on-label-click' mod.
 
 ### v6.3.0
 ##### Added / Updated
 - Added 'mods'.
+- Added 'toggle-checked-state-on-label-click' mod.
+- Added 'toggle-open-state-on-label-click' mod.
 
 ### v6.2.1
 ##### Added / Updated

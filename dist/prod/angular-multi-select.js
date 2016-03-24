@@ -299,7 +299,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 			var parents = [];
 			var last_level = item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
-			for (j = i; j > 0; j--) {
+			for (j = i - 1; j >= 0; j--) {
 				var possible_parent = final_data[j];
 
 				if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] >= last_level) continue;
@@ -2280,6 +2280,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
    ██   ██ ██  ██  ██      ██     ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
    ██   ██ ██      ██ ███████      ██████  ██████   █████  ███████  ██████    ██    ███████
    */
+			$scope.amsc = angularMultiSelectConstants;
 			var amse = new angularMultiSelectEngine($scope.ops);
 			var amssh = new angularMultiSelectStylesHelper($scope.ops, attrs);
 			var amsdc = new angularMultiSelectDataConverter($scope.ops);
