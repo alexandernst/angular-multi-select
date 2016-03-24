@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">Mods</h3>
+
+		<h5>Runtime modifications made easy</h5>
+
+		<p>
+			Your particular view of some feature might collide with what the rest of the users expect. For example, you
+			might expect that a click on the text label of an item should un/check that item, but another user might
+			expect that same action to trigger a open/close.
+		</p>
+		<p>
+			Sure the directive could be bloated with options, but I don't think that is the best way to go, so instead
+			I created 'mods' (v6.3.x). A 'mod' is a file that modifies the behavior of this directive at runtime, without any extra
+			configuration required.
+		</p>
+
+		<p>
+			Currently the available mods are:
+		</p>
+
+		<ul>
+			<li><b>toggle-checked-state-on-label-click</b> - Will trigger a un/check when a click is performed on a item's text label</li>
+			<li><b>toggle-open-state-on-label-click</b> - Will trigger a open/close when a click is performed on a item's text label</li>
+		</ul>
+
+		<p>
+			Once again, the only thing you should do is include one (or more) of those mods in your HTML:
+		</p>
+
+		<pre>
+			<code>
+&lt;script src="/dist/prod/mods/toggle-open-state-on-label-click.min.js">&lt;/script>
+			</code>
+		</pre>
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>

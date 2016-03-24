@@ -62,6 +62,10 @@ var demo = angular.module('demo', [
 		templateUrl: 'views/i18n.html',
 	});
 
+	$routeProvider.when('/mods', {
+		templateUrl: 'views/mods.html',
+	});
+
 	$routeProvider.when('/config-options', {
 		templateUrl: 'views/config-options.html',
 	});
