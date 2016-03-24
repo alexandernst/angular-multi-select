@@ -1,3 +1,7 @@
+### v6.3.0
+##### Added / Updated
+- Added 'mods'.
+
 ### v6.2.1
 ##### Added / Updated
 - Fixed i18n-ES minification protection.
