@@ -102,6 +102,7 @@ angular_multi_select.directive('angularMultiSelect', [
 				██   ██ ██  ██  ██      ██     ██    ██ ██   ██ ██   ██ ██      ██         ██         ██
 				██   ██ ██      ██ ███████      ██████  ██████   █████  ███████  ██████    ██    ███████
 				*/
+				$scope.amsc = angularMultiSelectConstants;
 				var amse = new angularMultiSelectEngine($scope.ops);
 				var amssh = new angularMultiSelectStylesHelper($scope.ops, attrs);
 				var amsdc = new angularMultiSelectDataConverter($scope.ops);
