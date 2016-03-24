@@ -91,7 +91,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					cwd: 'src/',
-					src: '*.js',
+					src: '**/*.js',
 					dest: 'dist/dev/',
 					ext: '.js',
 					extDot: 'last'
@@ -116,9 +116,22 @@ module.exports = function(grunt) {
 				},
 				files: [{
 					expand: true,
-					cwd: 'src/i18n',
+					cwd: 'dist/dev/i18n',
 					src: '*.js',
 					dest: 'dist/prod/i18n/',
+					ext: '.min.js',
+					extDot: 'last'
+				}]
+			},
+			mods: {
+				options: {
+					sourceMap: false
+				},
+				files: [{
+					expand: true,
+					cwd: 'dist/dev/mods',
+					src: '*.js',
+					dest: 'dist/prod/mods/',
 					ext: '.min.js',
 					extDot: 'last'
 				}]
