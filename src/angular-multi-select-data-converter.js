@@ -55,18 +55,10 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 			if (!Array.isArray(data)) return false;
 
-			var ids = [];
+			var ids = new Set();
 			var ctx = this;
-			var last_id = 1;
 			var correct = true;
-
-			function gen_id () {
-				while (ids.indexOf(last_id) !== -1) {
-					last_id++;
-				}
-
-				return last_id;
-			}
+			var id_seed = Date.now();
 
 			function process_items (items) {
 				if (correct === false) return;
@@ -80,13 +72,13 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 					// Check for id field.
 					// If not present, assign one
-					if (
-						!(ctx.ID_PROPERTY in item) ||
-						ids.indexOf(item[ctx.ID_PROPERTY]) !== -1
-					) {
-						item[ctx.ID_PROPERTY] = gen_id();
+					if (!(ctx.ID_PROPERTY in item) || ids.has(item[ctx.ID_PROPERTY])) {
+						while (ids.has(id_seed)) {
+							id_seed++;
+						}
+						item[ctx.ID_PROPERTY] = id_seed++;
 					}
-					ids.push(item[ctx.ID_PROPERTY]);
+					ids.add(item[ctx.ID_PROPERTY]);
 
 					// Check for open field.
 					// If open field doesn't exist or is not "true", set to false
@@ -172,7 +164,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				for (var i = 0; i < items.length; i++) {
 					item = items[i];
 
-					var final_item = angular.copy(item);
+					var final_item = Object.assign({}, item);
 					delete final_item[ctx.CHECKED_PROPERTY];
 					delete final_item[ctx.CHILDREN_PROPERTY];
 
@@ -207,33 +199,19 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 			process_items(data, 0);
 
-			// Create parents_id values
+			// calculate parents_id, visibility, children and checked properties
+			var parents = [];
 			var time = new Date();
 			for (i = 0; i < final_data.length; i++) {
 				item = final_data[i];
 
 				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
-				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) continue;
 
-				var parents = [];
-				var last_level = item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
-				for (j = i - 1; j >= 0; j--) {
-					var possible_parent = final_data[j];
-
-					if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] >= last_level) continue;
-
-					last_level = possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
-					parents.push(possible_parent[this.ID_PROPERTY]);
-
-					if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) break;
+				// Assign all the parent node IDs
+				parents[item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]] = item[ctx.ID_PROPERTY];
+				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] !== 0) {
+					item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = parents.slice(0, item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]);
 				}
-
-				item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = parents.reverse();
-			}
-
-			// calculate visibility, children and checked properties
-			for (i = 0; i < final_data.length; i++) {
-				item = final_data[i];
 
 				// If this is a root element, it should be visible
 				if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) item[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBLE;

@@ -29,6 +29,10 @@ describe('Testing data converter', function() {
 		});
 
 		it('It should be able to fill in empty/missing values and remove wrong ones', inject(function () {
+			spyOn(Date, 'now').and.callFake(function() {
+				return 1;
+			});
+
 			var dc = new angularMultiSelectDataConverter();
 			var res = dc.check_prerequisites(check_prerequisites_short_data_1);
 			expect(res).toEqual(check_prerequisites_short_data_1_after);
@@ -47,6 +51,10 @@ describe('Testing data converter', function() {
 		}));
 
 		it('It should be able to handle different key names in object items', inject(function () {
+			spyOn(Date, 'now').and.callFake(function() {
+				return 1;
+			});
+
 			var dc_mod = new angularMultiSelectDataConverter({
 				ID_PROPERTY: 'num',
 				OPEN_PROPERTY: 'abierto',
