@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -6,11 +6,67 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _templateObject = _taggedTemplateLiteral(['\n\n\t\t<div class="ams-button" ng-click="open = !open">\n\t\t\t<div class="ams-button-text" ng-bind-html="amssh.create_dropdown_label(stats, outputModel, self.output_type)"></div>\n\t\t\t<div class="ams-caret"></div>\n\t\t</div>\n\n\t\t<div class="ams-container ng-cloak" ng-show="open">\n\n\t\t\t<div class="ams-helpers">\n\t\t\t\t<div class="selects">\n\t\t\t\t\t<button class="all ams-btn" type="button" accesskey="a" ng-click="amse.check_all()" ng-hide="hide_helpers.indexOf(\'check_all\') > -1">{{ \'CHECK_ALL\' | translate }}</button>\n\t\t\t\t\t<button class="none ams-btn" type="button" accesskey="n" ng-click="amse.uncheck_all()" ng-hide="hide_helpers.indexOf(\'check_none\') > -1">{{ \'CHECK_NONE\' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class="resets">\n\t\t\t\t\t<button class="reset ams-btn" type="button" accesskey="r" ng-click="reset()" ng-hide="hide_helpers.indexOf(\'reset\') > -1">{{ \'RESET\' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class="ams-search" ng-show="search_field !== null">\n\t\t\t\t<input class="ams-search-field" type="text" name="ams-search-field" value="" placeholder="{{ \'SEARCH\' | translate }}" ng-model="search" autofocus>\n\t\t\t\t<div class="ams-spinner" ng-show="search_spinner_visible"></div>\n\t\t\t\t<button class="clear ams-btn" type="button" accesskey="c" name="clear" title="{{ \'CLEAR\' | translate }}" ng-click="search = \'\'"></button>\n\t\t\t</div>\n\n\t\t\t<div class="ams-items">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat="item in items track by item[ops.ID_PROPERTY]"\n\t\t\t\t\tclass="ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? \'ams-item-focused\' : \'\' }}"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass="ams-caret {{ amssh.get_open_class(item) }}"\n\t\t\t\t\t\tng-click="amse.toggle_open_node(item)"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class="ams-item-text" ng-bind-html="amssh.create_label(item)"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass="check {{ amssh.get_checked_class(item) }}"\n\t\t\t\t\t\tng-click="amse.toggle_check_node(item)"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t'], ['\n\n\t\t<div class="ams-button" ng-click="open = !open">\n\t\t\t<div class="ams-button-text" ng-bind-html="amssh.create_dropdown_label(stats, outputModel, self.output_type)"></div>\n\t\t\t<div class="ams-caret"></div>\n\t\t</div>\n\n\t\t<div class="ams-container ng-cloak" ng-show="open">\n\n\t\t\t<div class="ams-helpers">\n\t\t\t\t<div class="selects">\n\t\t\t\t\t<button class="all ams-btn" type="button" accesskey="a" ng-click="amse.check_all()" ng-hide="hide_helpers.indexOf(\'check_all\') > -1">{{ \'CHECK_ALL\' | translate }}</button>\n\t\t\t\t\t<button class="none ams-btn" type="button" accesskey="n" ng-click="amse.uncheck_all()" ng-hide="hide_helpers.indexOf(\'check_none\') > -1">{{ \'CHECK_NONE\' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class="resets">\n\t\t\t\t\t<button class="reset ams-btn" type="button" accesskey="r" ng-click="reset()" ng-hide="hide_helpers.indexOf(\'reset\') > -1">{{ \'RESET\' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class="ams-search" ng-show="search_field !== null">\n\t\t\t\t<input class="ams-search-field" type="text" name="ams-search-field" value="" placeholder="{{ \'SEARCH\' | translate }}" ng-model="search" autofocus>\n\t\t\t\t<div class="ams-spinner" ng-show="search_spinner_visible"></div>\n\t\t\t\t<button class="clear ams-btn" type="button" accesskey="c" name="clear" title="{{ \'CLEAR\' | translate }}" ng-click="search = \'\'"></button>\n\t\t\t</div>\n\n\t\t\t<div class="ams-items">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat="item in items track by item[ops.ID_PROPERTY]"\n\t\t\t\t\tclass="ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? \'ams-item-focused\' : \'\' }}"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass="ams-caret {{ amssh.get_open_class(item) }}"\n\t\t\t\t\t\tng-click="amse.toggle_open_node(item)"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class="ams-item-text" ng-bind-html="amssh.create_label(item)"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass="check {{ amssh.get_checked_class(item) }}"\n\t\t\t\t\t\tng-click="amse.toggle_check_node(item)"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t']);
+var _templateObject = _taggedTemplateLiteral(["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModel, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"], ["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModel, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"]);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+(function (e) {
+	function f(a, c) {
+		function b(a) {
+			if (!this || this.constructor !== b) return new b(a);this._keys = [];this._values = [];this._itp = [];this.objectOnly = c;a && v.call(this, a);
+		}c || w(a, "size", { get: x });a.constructor = b;b.prototype = a;return b;
+	}function v(a) {
+		this.add ? a.forEach(this.add, this) : a.forEach(function (a) {
+			this.set(a[0], a[1]);
+		}, this);
+	}function d(a) {
+		this.has(a) && (this._keys.splice(b, 1), this._values.splice(b, 1), this._itp.forEach(function (a) {
+			b < a[0] && a[0]--;
+		}));return -1 < b;
+	}function m(a) {
+		return this.has(a) ? this._values[b] : void 0;
+	}function n(a, c) {
+		if (this.objectOnly && c !== Object(c)) throw new TypeError("Invalid value used as weak collection key");if (c != c || 0 === c) for (b = a.length; b-- && !y(a[b], c);) {} else b = a.indexOf(c);return -1 < b;
+	}function p(a) {
+		return n.call(this, this._values, a);
+	}function q(a) {
+		return n.call(this, this._keys, a);
+	}function r(a, c) {
+		this.has(a) ? this._values[b] = c : this._values[this._keys.push(a) - 1] = c;return this;
+	}function t(a) {
+		this.has(a) || this._values.push(a);return this;
+	}function h() {
+		(this._keys || 0).length = this._values.length = 0;
+	}function z() {
+		return k(this._itp, this._keys);
+	}function l() {
+		return k(this._itp, this._values);
+	}function A() {
+		return k(this._itp, this._keys, this._values);
+	}function B() {
+		return k(this._itp, this._values, this._values);
+	}function k(a, c, b) {
+		var g = [0],
+		    e = !1;a.push(g);return { next: function next() {
+				var f,
+				    d = g[0];!e && d < c.length ? (f = b ? [c[d], b[d]] : c[d], g[0]++) : (e = !0, a.splice(a.indexOf(g), 1));return { done: e, value: f };
+			} };
+	}function x() {
+		return this._values.length;
+	}function u(a, c) {
+		for (var b = this.entries();;) {
+			var d = b.next();if (d.done) break;
+			a.call(c, d.value[1], d.value[0], this);
+		}
+	}var b,
+	    w = Object.defineProperty,
+	    y = function y(a, b) {
+		return isNaN(a) ? isNaN(b) : a === b;
+	};"undefined" == typeof WeakMap && (e.WeakMap = f({ "delete": d, clear: h, get: m, has: q, set: r }, !0));"undefined" != typeof Map && "function" === typeof new Map().values && new Map().values().next || (e.Map = f({ "delete": d, has: q, get: m, set: r, keys: z, values: l, entries: A, forEach: u, clear: h }));"undefined" != typeof Set && "function" === typeof new Set().values && new Set().values().next || (e.Set = f({ has: p, add: t, "delete": d, clear: h,
+		keys: l, values: l, entries: B, forEach: u }));"undefined" == typeof WeakSet && (e.WeakSet = f({ "delete": d, add: t, clear: h, has: p }, !0));
+})("undefined" != typeof exports && "undefined" != typeof global ? global : window);
 
 var angular_multi_select_consts = angular.module('angular-multi-select-constants', []);
 
@@ -158,18 +214,10 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 		if (!Array.isArray(data)) return false;
 
-		var ids = [];
+		var ids = new Set();
 		var ctx = this;
-		var last_id = 1;
 		var correct = true;
-
-		function gen_id() {
-			while (ids.indexOf(last_id) !== -1) {
-				last_id++;
-			}
-
-			return last_id;
-		}
+		var id_seed = Date.now();
 
 		function process_items(items) {
 			if (correct === false) return;
@@ -183,10 +231,13 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 				// Check for id field.
 				// If not present, assign one
-				if (!(ctx.ID_PROPERTY in item) || ids.indexOf(item[ctx.ID_PROPERTY]) !== -1) {
-					item[ctx.ID_PROPERTY] = gen_id();
+				if (!(ctx.ID_PROPERTY in item) || ids.has(item[ctx.ID_PROPERTY])) {
+					while (ids.has(id_seed)) {
+						id_seed++;
+					}
+					item[ctx.ID_PROPERTY] = id_seed++;
 				}
-				ids.push(item[ctx.ID_PROPERTY]);
+				ids.add(item[ctx.ID_PROPERTY]);
 
 				// Check for open field.
 				// If open field doesn't exist or is not "true", set to false
@@ -257,7 +308,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			for (var i = 0; i < items.length; i++) {
 				item = items[i];
 
-				var final_item = angular.copy(item);
+				var final_item = _extends({}, item);
 				delete final_item[ctx.CHECKED_PROPERTY];
 				delete final_item[ctx.CHILDREN_PROPERTY];
 
@@ -289,33 +340,19 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 		process_items(data, 0);
 
-		// Create parents_id values
-		var time = new Date();
+		// calculate parents_id, visibility, children and checked properties
+		var parents = [];
+		var time_seed = Date.now();
 		for (i = 0; i < final_data.length; i++) {
 			item = final_data[i];
 
-			item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
-			if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) continue;
+			item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time_seed++;
 
-			var parents = [];
-			var last_level = item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
-			for (j = i - 1; j >= 0; j--) {
-				var possible_parent = final_data[j];
-
-				if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] >= last_level) continue;
-
-				last_level = possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL];
-				parents.push(possible_parent[this.ID_PROPERTY]);
-
-				if (possible_parent[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) break;
+			// Assign all the parent node IDs
+			parents[item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]] = item[ctx.ID_PROPERTY];
+			if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] !== 0) {
+				item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = parents.slice(0, item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]);
 			}
-
-			item[angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID] = parents.reverse();
-		}
-
-		// calculate visibility, children and checked properties
-		for (i = 0; i < final_data.length; i++) {
-			item = final_data[i];
 
 			// If this is a root element, it should be visible
 			if (item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL] === 0) item[angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY] = angularMultiSelectConstants.INTERNAL_DATA_VISIBLE;
@@ -390,6 +427,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		}
 
 		if (this.DEBUG === true) console.time(this.NAME + ' -> to_external');
+
+		data = angular.copy(data);
 
 		for (var i = 0; i < data.length; i++) {
 			//AMS engine metadata
@@ -475,7 +514,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			var new_obj = {};
 			var obj = data[i];
 
-			if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
+			if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
 				continue;
 			}
 
@@ -535,7 +574,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			var new_arr = [];
 			var obj = data[i];
 
-			if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
+			if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
 				continue;
 			}
 
@@ -593,7 +632,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		var obj = data[0];
 		var ret = [];
 
-		if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
+		if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
 			//do nothing
 		} else {
 				if (keys.length === 0) {
@@ -647,7 +686,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		var ret;
 		var obj = data[0];
 
-		if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
+		if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
 			ret = {};
 		} else {
 			if (keys.length === 0) {
@@ -694,7 +733,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		var ret;
 		var obj = data[0];
 
-		if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
+		if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== 'object' || Array.isArray(obj)) {
 			ret = undefined;
 		} else {
 			if (key === undefined) {
@@ -839,8 +878,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', ['angularMultiSe
 		if (this.DEBUG === true) console.time(this.NAME + " -> create_collection");
 
 		this.collection = this.db.addCollection(name, {
-			indices: [this.ID_PROPERTY, this.CHECKED_PROPERTY, angularMultiSelectConstants.INTERNAL_KEY_LEVEL, angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID, angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY],
-			clone: true
+			indices: [this.ID_PROPERTY, this.CHECKED_PROPERTY, angularMultiSelectConstants.INTERNAL_KEY_LEVEL, angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID, angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]
 		});
 
 		if (this.DEBUG === true) console.timeEnd(this.NAME + " -> create_collection");
@@ -1693,9 +1731,9 @@ angular_multi_select_styles_helper.run([function () {
 
 	var indent = "";
 	for (i = 1; i < 20; i++) {
-		indent += '.ams-item-level-' + i + ' { padding-left: ' + (i + 1) * level_width + 'px; }';
+		indent += ".ams-item-level-" + i + " { padding-left: " + (i + 1) * level_width + "px; }";
 	}
-	inject.text('.ams-item { padding-right: ' + (check_width + 10) + 'px; } ' + indent);
+	inject.text(".ams-item { padding-right: " + (check_width + 10) + "px; } " + indent);
 	angular.element(document.getElementsByTagName('head')).append(inject);
 }]);
 
@@ -2212,6 +2250,10 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			var self = {};
 			$scope.self = self; //We need to access 'self' from the template
 			//TODO. Replace all the $scope pollution with calls to 'self' from the template
+
+			self.react_to_data_changes = false;
+			self.react_to_visual_changes = true;
+
 			var amsu = new angularMultiSelectUtils();
 
 			/*
@@ -2370,13 +2412,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     */
 			$scope.reset_model = null;
 			$scope.reset = function () {
-				amse.insert($scope.reset_model);
-
-				for (var i = 0; i < self.preselect.length; i += 2) {
-					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
-				}
-
-				$scope.items = amse.get_visible_tree();
+				self.init($scope.reset_model);
 			};
 
 			/*
@@ -2441,6 +2477,10 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
    */
 			amse.on_data_change_fn = function () {
+				if (self.react_to_data_changes === false) {
+					return;
+				}
+
 				/*
      * Will be triggered every time the internal model data is changed.
      * That could happen on check/uncheck, for example.
@@ -2459,7 +2499,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 					/*
       * Remove internal (undeeded) data.
       */
-					var res = $scope.ops.DEBUG ? checked_tree : amsdc.to_external(checked_tree);
+					var res = amsdc.to_external(checked_tree);
 
 					/*
       * Convert the data to the desired output.
@@ -2492,19 +2532,21 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
    ██  ██  ██ ██   ██ ██ ██  ██ ██
    ██      ██ ██   ██ ██ ██   ████
    */
-			self.init = function (data) {
+			self.prepare_data = function (data) {
 				if (!Array.isArray(data)) {
-					return;
+					return [];
 				}
 
 				var checked_data = self.do_not_check_data ? data : amsdc.check_prerequisites(data);
 				var internal_data = self.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
 
-				if ($scope.reset_model === null) {
-					$scope.reset_model = internal_data;
-				}
+				return internal_data;
+			};
 
-				amse.insert(internal_data);
+			self.init = function (data) {
+				$scope.reset_model = angular.copy(data); //TODO: Fix somehow... very expensive
+
+				amse.insert(data);
 
 				for (var i = 0; i < self.preselect.length; i += 2) {
 					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
@@ -2512,20 +2554,31 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			};
 
 			$scope.$watch('inputModel', function (_new, _old) {
+				self.react_to_data_changes = false;
 				/*
     * The entry point of the directive. This monitors the input data and
     * decides when to populate the internal data model and how to do it.
     */
+				var data;
 				if (typeof _new === "string") {
 					try {
-						self.init(JSON.parse(_new));
+						data = self.prepare_data(JSON.parse(_new));
+						self.init(data);
+						self.react_to_data_changes = true;
+						amse.on_data_change();
 					} catch (e) {
 						$http.get(_new).then(function (response) {
-							self.init(response.data);
+							data = self.prepare_data(response.data);
+							self.init(data);
+							self.react_to_data_changes = true;
+							amse.on_data_change();
 						});
 					}
 				} else {
-					self.init(_new);
+					data = self.prepare_data(_new);
+					self.init(data);
+					self.react_to_data_changes = true;
+					amse.on_data_change();
 				}
 			});
 

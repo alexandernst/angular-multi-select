@@ -1,6 +1,7 @@
 ### v6.3.2
 ##### Added / Updated
-- Performance improvements.
+- Performance improvements by as much as 80%.
+- Fixed a deadlock that would happen in certain cases when processing big data.
 
 ### v6.3.1
 ##### Added / Updated

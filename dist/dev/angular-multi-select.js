@@ -21,6 +21,10 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			var self = {};
 			$scope.self = self; //We need to access 'self' from the template
 			//TODO. Replace all the $scope pollution with calls to 'self' from the template
+
+			self.react_to_data_changes = false;
+			self.react_to_visual_changes = true;
+
 			var amsu = new angularMultiSelectUtils();
 
 			/*
@@ -179,13 +183,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     */
 			$scope.reset_model = null;
 			$scope.reset = function () {
-				amse.insert($scope.reset_model);
-
-				for (var i = 0; i < self.preselect.length; i += 2) {
-					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
-				}
-
-				$scope.items = amse.get_visible_tree();
+				self.init($scope.reset_model);
 			};
 
 			/*
@@ -250,6 +248,10 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     ██████  ██   ████     ██████  ██   ██    ██    ██   ██      ██████ ██   ██ ██   ██ ██   ████  ██████  ███████
    */
 			amse.on_data_change_fn = function () {
+				if (self.react_to_data_changes === false) {
+					return;
+				}
+
 				/*
      * Will be triggered every time the internal model data is changed.
      * That could happen on check/uncheck, for example.
@@ -268,7 +270,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 					/*
       * Remove internal (undeeded) data.
       */
-					var res = $scope.ops.DEBUG ? checked_tree : amsdc.to_external(checked_tree);
+					var res = amsdc.to_external(checked_tree);
 
 					/*
       * Convert the data to the desired output.
@@ -301,19 +303,21 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
    ██  ██  ██ ██   ██ ██ ██  ██ ██
    ██      ██ ██   ██ ██ ██   ████
    */
-			self.init = function (data) {
+			self.prepare_data = function (data) {
 				if (!Array.isArray(data)) {
-					return;
+					return [];
 				}
 
 				var checked_data = self.do_not_check_data ? data : amsdc.check_prerequisites(data);
 				var internal_data = self.do_not_convert_data ? checked_data : amsdc.to_internal(checked_data);
 
-				if ($scope.reset_model === null) {
-					$scope.reset_model = internal_data;
-				}
+				return internal_data;
+			};
 
-				amse.insert(internal_data);
+			self.init = function (data) {
+				$scope.reset_model = angular.copy(data); //TODO: Fix somehow... very expensive
+
+				amse.insert(data);
 
 				for (var i = 0; i < self.preselect.length; i += 2) {
 					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
@@ -321,20 +325,31 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			};
 
 			$scope.$watch('inputModel', function (_new, _old) {
+				self.react_to_data_changes = false;
 				/*
     * The entry point of the directive. This monitors the input data and
     * decides when to populate the internal data model and how to do it.
     */
+				var data;
 				if (typeof _new === "string") {
 					try {
-						self.init(JSON.parse(_new));
+						data = self.prepare_data(JSON.parse(_new));
+						self.init(data);
+						self.react_to_data_changes = true;
+						amse.on_data_change();
 					} catch (e) {
 						$http.get(_new).then(function (response) {
-							self.init(response.data);
+							data = self.prepare_data(response.data);
+							self.init(data);
+							self.react_to_data_changes = true;
+							amse.on_data_change();
 						});
 					}
 				} else {
-					self.init(_new);
+					data = self.prepare_data(_new);
+					self.init(data);
+					self.react_to_data_changes = true;
+					amse.on_data_change();
 				}
 			});
 

@@ -126,8 +126,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', ['angularMultiSe
 		if (this.DEBUG === true) console.time(this.NAME + " -> create_collection");
 
 		this.collection = this.db.addCollection(name, {
-			indices: [this.ID_PROPERTY, this.CHECKED_PROPERTY, angularMultiSelectConstants.INTERNAL_KEY_LEVEL, angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID, angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY],
-			clone: true
+			indices: [this.ID_PROPERTY, this.CHECKED_PROPERTY, angularMultiSelectConstants.INTERNAL_KEY_LEVEL, angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID, angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY]
 		});
 
 		if (this.DEBUG === true) console.timeEnd(this.NAME + " -> create_collection");
