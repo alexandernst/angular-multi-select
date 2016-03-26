@@ -15,7 +15,7 @@ var demo = angular.module('demo', [
 
 .filter('prettify', function ($sce) {
 	function syntaxHighlight(json) {
-		if (json === null) return;
+		if (json === null || json === undefined) return;
 		json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		var res = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
 			var cls = 'ams-json-number';
