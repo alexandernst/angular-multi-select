@@ -152,3 +152,16 @@
 		margin-right: 0;
 	}
 }
+
+@media(max-width:768px) {
+	#sidebar-wrapper {
+		width: 220px;
+		z-index: 1001;
+	}
+
+	#page-content-wrapper {
+		width: 800px;
+		float: right;
+		left: 220px;
+	}
+}
