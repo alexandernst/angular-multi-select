@@ -270,7 +270,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 		if (this.DEBUG === true) console.time(this.NAME + ' -> to_external');
 
-		data = angular.copy(data);
+		data = JSON.parse(JSON.stringify(data));
 
 		for (var i = 0; i < data.length; i++) {
 			//AMS engine metadata

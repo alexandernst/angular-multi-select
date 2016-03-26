@@ -315,7 +315,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			};
 
 			self.init = function (data) {
-				$scope.reset_model = angular.copy(data); //TODO: Fix somehow... very expensive
+				$scope.reset_model = JSON.parse(JSON.stringify(data));
 
 				amse.insert(data);
 

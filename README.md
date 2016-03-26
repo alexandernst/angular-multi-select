@@ -1,6 +1,11 @@
 # Angular Multi Select [![Build Status](https://travis-ci.org/alexandernst/angular-multi-select.svg?branch=master)](https://travis-ci.org/alexandernst/angular-multi-select) ![Logo](https://raw.githubusercontent.com/alexandernst/angular-multi-select/assets/logo_small.png)
-Pure AngularJS directive which creates a dropdown button with multiple or single selections.
-Doesn't require jQuery and works well with other Javascript libraries.
+Pure Angular directive which creates the fastes dropdown you'll find.
+It offers single or multiple selection modes and a wide range of output formats.
+Doesn't require external libraries.
+
+### How fast is it?
+
+<b>VERY</b> fast. You won't find anything faster. The demos I work with are made of ~45.000 objects built with the <a href="https://github.com/alexandernst/angular-multi-select/blob/master/utils/generate_big_dataset.js">`utils/generate_big_dataset.js`</a> script, and the directive is able to check, validate, process and insert the entire data in ~1.5 seconds. You can get even faster than that if you craft your input data carefully (see <a href="http://alexandernst.github.io/angular-multi-select/#/under-the-hood">docs</a>).
 
 ![Screenshot](https://raw.githubusercontent.com/alexandernst/angular-multi-select/assets/demo.gif)
 

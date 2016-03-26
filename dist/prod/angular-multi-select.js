@@ -428,7 +428,7 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 		if (this.DEBUG === true) console.time(this.NAME + ' -> to_external');
 
-		data = angular.copy(data);
+		data = JSON.parse(JSON.stringify(data));
 
 		for (var i = 0; i < data.length; i++) {
 			//AMS engine metadata
@@ -2544,7 +2544,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			};
 
 			self.init = function (data) {
-				$scope.reset_model = angular.copy(data); //TODO: Fix somehow... very expensive
+				$scope.reset_model = JSON.parse(JSON.stringify(data));
 
 				amse.insert(data);
 

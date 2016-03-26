@@ -1,3 +1,7 @@
+### v6.3.3
+##### Added / Updated
+- More performance improvements.
+
 ### v6.3.2
 ##### Added / Updated
 - Performance improvements by as much as 80%.
