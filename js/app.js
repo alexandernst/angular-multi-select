@@ -56,18 +56,19 @@ var demo = angular.module('demo', [
 
 	$routeProvider.when('/keyboard', {
 		templateUrl: 'views/keyboard.html',
+		controller: 'demoKeyboard'
 	});
 
 	$routeProvider.when('/i18n', {
-		templateUrl: 'views/i18n.html',
+		templateUrl: 'views/i18n.html'
 	});
 
 	$routeProvider.when('/mods', {
-		templateUrl: 'views/mods.html',
+		templateUrl: 'views/mods.html'
 	});
 
 	$routeProvider.when('/config-options', {
-		templateUrl: 'views/config-options.html',
+		templateUrl: 'views/config-options.html'
 	});
 
 	$routeProvider.when('/demo-minimal', {
