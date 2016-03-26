@@ -106,9 +106,9 @@ var demo = angular.module('demo', [
 		controller: 'demoSearching'
 	});
 
-	$routeProvider.when('/demo-single-selection-mode', {
-		templateUrl: 'views/demo-single-selection-mode.html',
-		controller: 'demoSingleSelectionMode'
+	$routeProvider.when('/demo-limited-selection-mode', {
+		templateUrl: 'views/demo-limited-selection-mode.html',
+		controller: 'demoLimitedSelectionMode'
 	});
 
 	$routeProvider.when('/demo-preselecting-values', {
