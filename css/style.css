@@ -214,3 +214,15 @@ div.fauxCode + p,
 	top: 17px;
 	right: 10px;
 }
+
+@media(max-width:768px) {
+	.githubButtons {
+		width: 40%;
+		top: 17px !important;
+		top: 0px;
+	}
+
+	.githubButtons iframe {
+		display: none;
+	}
+}
