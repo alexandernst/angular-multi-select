@@ -65,6 +65,7 @@ module.exports = function(grunt) {
 			},
 			basic: {
 				src: [
+					'node_modules/es6-collections/es6-collections.js',
 					'src/*.js',
 
 					//Stupid concat is stupid...

@@ -26,7 +26,7 @@ describe('Testing engine', function() {
 	describe('Testing insert method', function () {
 		it('It should be able to insert data and return it back as-is', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 			var tree = e.get_full_tree();
 
 			//TODO: remove after https://github.com/techfort/LokiJS/issues/346
@@ -40,8 +40,8 @@ describe('Testing engine', function() {
 
 		it('It should be able to remove old collection before inserting a new one', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
+			e.insert(angular.copy(to_internal_data_1_after));
 			var tree = e.get_full_tree();
 
 			//TODO: remove after https://github.com/techfort/LokiJS/issues/346
@@ -64,7 +64,7 @@ describe('Testing engine', function() {
 	describe('Testing tree select operations', function () {
 		it('It should be able to do a get_full_tree()', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_full_tree();
 
@@ -79,7 +79,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_visible_tree()', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_visible_tree();
 			var dc = new angularMultiSelectDataConverter();
@@ -90,7 +90,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_filtered_tree()', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_filtered_tree([{
 				field: "text",
@@ -105,7 +105,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_LEAFS', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_LEAFS);
 			var dc = new angularMultiSelectDataConverter();
@@ -116,7 +116,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_LEAFS_MIXED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_LEAFS_MIXED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -127,7 +127,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_LEAFS_CHECKED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_LEAFS_CHECKED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -138,7 +138,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_LEAFS_MIXED_CHECKED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_LEAFS_MIXED_CHECKED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -149,7 +149,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_MIXED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_MIXED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -160,7 +160,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_CHECKED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_CHECKED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -171,7 +171,7 @@ describe('Testing engine', function() {
 
 		it('It should be able to do a get_checked_tree() with FIND_MIXED_CHECKED_NODES', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_checked_tree(angularMultiSelectConstants.FIND_MIXED_CHECKED_NODES);
 			var dc = new angularMultiSelectDataConverter();
@@ -193,7 +193,7 @@ describe('Testing engine', function() {
 			var e = new angularMultiSelectEngine({
 				MAX_CHECKED_LEAFS: 1
 			});
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 			var tree = e.get_checked_tree();
 			expect(tree[0].value).toEqual("z");
 
@@ -206,7 +206,7 @@ describe('Testing engine', function() {
 			var e2 = new angularMultiSelectEngine({
 				MAX_CHECKED_LEAFS: 2
 			});
-			e2.insert(to_internal_data_1_after);
+			e2.insert(angular.copy(to_internal_data_1_after));
 			tree = e2.get_checked_tree();
 			expect(tree[0].value).toEqual("y");
 			expect(tree[1].value).toEqual("z");
@@ -221,7 +221,7 @@ describe('Testing engine', function() {
 
 		it('It should correctly toggle the checked state of an item', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			var tree = e.get_full_tree();
 			expect(tree[0].checked).toEqual(false);
@@ -246,7 +246,7 @@ describe('Testing engine', function() {
 	describe('Testing tree open/close operations', function () {
 		it('It should correctly toggle the open state of an item', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 
 			// A
 			var tree = e.get_full_tree();
@@ -289,7 +289,7 @@ describe('Testing engine', function() {
 	describe('Testing tree stats', function () {
 		it('It should be able to return correct stats', function () {
 			var e = new angularMultiSelectEngine();
-			e.insert(to_internal_data_1_after);
+			e.insert(angular.copy(to_internal_data_1_after));
 			expect(e.get_stats()).toEqual(get_stats_1);
 
 			tree = e.get_full_tree();

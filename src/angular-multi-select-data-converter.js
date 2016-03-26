@@ -201,11 +201,11 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 
 			// calculate parents_id, visibility, children and checked properties
 			var parents = [];
-			var time = new Date();
+			var time_seed = Date.now();
 			for (i = 0; i < final_data.length; i++) {
 				item = final_data[i];
 
-				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time.getTime();
+				item[angularMultiSelectConstants.INTERNAL_KEY_CHECKED_MODIFICATION] = time_seed++;
 
 				// Assign all the parent node IDs
 				parents[item[angularMultiSelectConstants.INTERNAL_KEY_LEVEL]] = item[ctx.ID_PROPERTY];
@@ -287,6 +287,8 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			}
 
 			if (this.DEBUG === true) console.time(this.NAME + ' -> to_external');
+
+			data = angular.copy(data);
 
 			for (var i = 0; i < data.length; i++) {
 				//AMS engine metadata

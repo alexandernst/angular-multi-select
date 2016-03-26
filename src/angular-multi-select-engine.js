@@ -129,8 +129,7 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 					angularMultiSelectConstants.INTERNAL_KEY_LEVEL,
 					angularMultiSelectConstants.INTERNAL_KEY_PARENTS_ID,
 					angularMultiSelectConstants.INTERNAL_KEY_TREE_VISIBILITY
-				],
-				clone: true
+				]
 			});
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + " -> create_collection");

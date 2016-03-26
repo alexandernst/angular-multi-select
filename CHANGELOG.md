@@ -1,3 +1,7 @@
+### v6.3.2
+##### Added / Updated
+- Performance improvements.
+
 ### v6.3.1
 ##### Added / Updated
 - Fixed a bug in 'to_internal' that would cause bad '$ams_parents_id' generation in certain cases.
