@@ -218,8 +218,8 @@ div.fauxCode + p,
 @media(max-width:768px) {
 	.githubButtons {
 		width: 40%;
-		top: 17px !important;
-		top: 0px;
+		top: 17px;
+		right: -30px;
 	}
 
 	.githubButtons iframe {
