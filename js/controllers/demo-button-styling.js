@@ -43,5 +43,6 @@ demo.controller('demoButtonStyling', ['$scope', function ($scope) {
 	$scope.output_data_1 = [];
 	$scope.output_data_2 = [];
 	$scope.output_data_3 = [];
+	$scope.output_data_4 = [];
 
 }]);
