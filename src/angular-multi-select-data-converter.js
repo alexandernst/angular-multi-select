@@ -337,6 +337,9 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
 					res = this.to_array(data, keys);
 					break;
+				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUES:
+					res = this.to_values(data, keys);
+					break;
 				case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
 					res = this.to_value(data, keys);
 					break;
@@ -565,6 +568,52 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			}
 
 			if (this.DEBUG === true) console.timeEnd(this.NAME + ' -> to_object');
+
+			return ret;
+		};
+
+		/*
+		████████  ██████      ██    ██  █████  ██      ██    ██ ███████ ███████
+		   ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██      ██
+		   ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████   ███████
+		   ██    ██    ██      ██  ██  ██   ██ ██      ██    ██ ██           ██
+		   ██     ██████        ████   ██   ██ ███████  ██████  ███████ ███████
+		*/
+		DataConverter.prototype.to_values = function (data, keys) {
+			/*
+			 * Takes an array of one object (the result of get_checked_tree usually)
+			 * and returns the value of the key in the object that is passed as the
+			 * "key" argument.
+			 * If "key" hasn't been passed, the first available value in the object
+			 * will be returned.
+			 */
+			 if (!Array.isArray(data) || data.length === 0) {
+				return [];
+			}
+
+			if (this.DEBUG === true) console.time(this.NAME + ' -> to_values');
+
+			if (keys === undefined) {
+				keys = [];
+			}
+
+			var ret = [];
+
+			if (typeof(data) !== 'object' || !Array.isArray(data) || keys.length === 0) {
+				//do nothing
+			} else {
+				for (var i = 0; i < data.length; i++) {
+					for (var j = 0; j < keys.length; j++) {
+						if (!(keys[j] in data[i])) {
+							continue;
+						}
+
+						ret.push(data[i][keys[j]]);
+					}
+				}
+			}
+
+			if (this.DEBUG === true) console.timeEnd(this.NAME + ' -> to_values');
 
 			return ret;
 		};

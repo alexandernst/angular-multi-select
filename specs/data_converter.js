@@ -303,6 +303,55 @@ describe('Testing data converter', function() {
 	});
 
 	/*
+	████████  ██████      ██    ██  █████  ██      ██    ██ ███████ ███████
+	   ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██      ██
+	   ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████   ███████
+	   ██    ██    ██      ██  ██  ██   ██ ██      ██    ██ ██           ██
+	   ██     ██████        ████   ██   ██ ███████  ██████  ███████ ███████
+	*/
+	describe('Testing to_values method', function () {
+		it('It should return empty array on invalid data', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			res = dc.to_values();
+			expect(res).toEqual([]);
+
+			var res = dc.to_values(to_values_data_1);
+			expect(res).toEqual([]);
+
+			res = dc.to_values(to_values_data_2);
+			expect(res).toEqual([]);
+
+			res = dc.to_values(to_values_data_3);
+			expect(res).toEqual([]);
+		});
+
+		it('It should return the correct data when no "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_values(to_value_data_4);
+			expect(res).toEqual([]);
+		});
+
+		it('It should return the correct data when "keys" argument is passed', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_values(to_value_data_4, ['a']);
+			expect(res).toEqual(['foo1', 'foo2', 'foo3']);
+
+			res = dc.to_values(to_value_data_4, ['c', 'a']);
+			expect(res).toEqual([42, 'foo1', 43, 'foo2', 44, 'foo3']);
+		});
+
+		it('It should return the correct data when "keys" argument is passed and has invalid keys', function () {
+			var dc = new angularMultiSelectDataConverter();
+
+			var res = dc.to_values(to_value_data_4, ['z']);
+			expect(res).toEqual([]);
+		});
+	});
+
+	/*
 	████████  ██████      ██    ██  █████  ██      ██    ██ ███████
 	   ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██
 	   ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████
