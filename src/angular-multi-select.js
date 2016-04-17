@@ -286,11 +286,20 @@ angular_multi_select.directive('angularMultiSelect', [
 						var res = amsdc.to_external(checked_tree);
 
 						/*
+						 * This is used to create the dropdown label.
+						 */
+						if (typeof(attrs.dropdownLabel) === "string" && attrs.dropdownLabel.indexOf("outputModelIterator" > -1)) {
+							$scope.outputModelNotFormatted = JSON.parse(JSON.stringify(res));
+						}
+
+						/*
 						 * Convert the data to the desired output.
 						 */
 						res = amsdc.to_format(res, self.output_type, self.output_keys);
 
 						$scope.outputModel = res;
+					} else {
+						$scope.ops.DEBUG && console.warn("output model in AMS", $scope.ops.NAME, "is undefined, skipping output ops");
 					}
 				};
 

@@ -47,7 +47,8 @@ module.exports = function(grunt) {
 				nocomma: true,
 				nonbsp: true,
 				nonew: true,
-				notypeof: true
+				notypeof: true,
+				expr: true
 			}
 		},
 
