@@ -6,7 +6,7 @@
 ██████  ██   ██ ███████ ██  ██████
 */
 describe('Testing basic functionality of AMS', function () {
-	var $scope, element;
+	var $scope, element, injector;
 
 	beforeEach(function (){
 		module('angular-multi-select');
@@ -15,8 +15,9 @@ describe('Testing basic functionality of AMS', function () {
 		jasmine.getFixtures().load('demo_simple.html');
 		element = document.getElementById('demo_container');
 
-		inject(function($rootScope, $compile) {
+		inject(function($rootScope, $compile, $injector) {
 			$scope = $rootScope.$new();
+			injector = $injector;
 
 			$compile(element)($scope);
 
@@ -64,6 +65,48 @@ describe('Testing basic functionality of AMS', function () {
 
 	it('It should render text of button correctly', function () {
 		expect($('.ams-button-text')).toContainText('5 checked items');
+	});
+
+	it('It should broadcast "ams_toggle_open_node" event', function () {
+		rootScope = injector.get('$rootScope');
+		spyOn(rootScope, '$broadcast');
+
+		var btn = $('.ams-item-text:contains("R")').prev();
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+
+		expect(rootScope.$broadcast).toHaveBeenCalledWith('ams_toggle_open_node', {
+			name: 'ams-demo',
+			item: {
+				text: 'R',
+				value: 'r',
+				id: 18,
+				open: false,
+				checked: 1
+			}
+		});
+	});
+
+	it('It should broadcast "ams_toggle_check_node" event', function () {
+		rootScope = injector.get('$rootScope');
+		spyOn(rootScope, '$broadcast');
+
+		var btn = $('.ams-item-text:contains("R")').next();
+		btn.triggerHandler("click");
+
+		$scope.$digest();
+
+		expect(rootScope.$broadcast).toHaveBeenCalledWith('ams_toggle_check_node', {
+			name: 'ams-demo',
+			item: {
+				text: 'R',
+				value: 'r',
+				id: 18,
+				open: false,
+				checked: 1
+			}
+		});
 	});
 });
 

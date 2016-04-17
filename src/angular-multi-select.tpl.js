@@ -37,7 +37,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					<!-- Caret -->
 					<div
 						class="ams-caret {{ amssh.get_open_class(item) }}"
-						ng-click="amse.toggle_open_node(item)"
+						ng-click="toggle_open_node(item)"
 					></div>
 
 					<!-- Text of the element -->
@@ -46,7 +46,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 					<!-- Check holder -->
 					<div
 						class="check {{ amssh.get_checked_class(item) }}"
-						ng-click="amse.toggle_check_node(item)"
+						ng-click="toggle_check_node(item)"
 					>
 					</div>
 				</div>

@@ -10,13 +10,14 @@ angular_multi_select.directive('angularMultiSelect', [
 	'$http',
 	'$compile',
 	'$timeout',
+	'$rootScope',
 	'$templateCache',
 	'angularMultiSelectUtils',
 	'angularMultiSelectEngine',
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	'angularMultiSelectDataConverter',
-	function ($http, $compile, $timeout, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+	function ($http, $compile, $timeout, $rootScope, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 		'use strict';
 		return {
 			restrict: 'AE',
@@ -112,6 +113,26 @@ angular_multi_select.directive('angularMultiSelect', [
 				var amsdc = new angularMultiSelectDataConverter($scope.ops);
 				$scope.amse = amse;
 				$scope.amssh = amssh;
+
+				$scope.toggle_open_node = function (item) {
+					$rootScope.$broadcast('ams_toggle_open_node', {
+						name: $scope.ops.NAME,
+						item: JSON.parse(JSON.stringify(
+							amsdc.to_external([item])[0]
+						))
+					});
+					amse.toggle_open_node(item);
+				};
+
+				$scope.toggle_check_node = function (item) {
+					$rootScope.$broadcast('ams_toggle_check_node', {
+						name: $scope.ops.NAME,
+						item: JSON.parse(JSON.stringify(
+							amsdc.to_external([item])[0]
+						))
+					});
+					amse.toggle_open_node(item);
+				};
 
 				/*
 				██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
