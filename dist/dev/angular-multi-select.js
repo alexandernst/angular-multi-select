@@ -113,7 +113,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 					name: $scope.ops.NAME,
 					item: JSON.parse(JSON.stringify(amsdc.to_external([item])[0]))
 				});
-				amse.toggle_open_node(item);
+				amse.toggle_check_node(item);
 			};
 
 			/*

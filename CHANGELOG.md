@@ -1,3 +1,6 @@
+### v7.0.1
+- Fix a bad typo in the code preventing items to repaint after a check.
+
 ### v7.0.0
 - Better support for Angular <1.4
 - Dropdown label syntax has been changed to allow further customization.
