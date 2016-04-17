@@ -195,6 +195,17 @@ describe('Testing AMS dropdown label with outputModelIterator filter', function 
 		expect(text).toEqual('C c');
 	});
 
+	it('It should be able to render text correctly with output type values', function () {
+		jasmine.getFixtures().load('demo_dropdown_label_values.html');
+		element = angular.element('#demo_container');
+
+		compile(element)($scope);
+		$scope.$digest();
+
+		var text = $('.ams-button-text').text();
+		expect(text).toEqual('C c,F f,S s,Y y,Z z');
+	});
+
 	it('It should be able to render text correctly with output type value', function () {
 		jasmine.getFixtures().load('demo_dropdown_label_value.html');
 		element = angular.element('#demo_container');
