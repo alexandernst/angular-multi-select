@@ -240,17 +240,20 @@ angular_multi_select.directive('angularMultiSelect', [
 					}
 
 					$scope.search_spinner_visible = true;
-					self.search_promise = $timeout(function (query) {
-						//TODO: this needs a lot of improving. Maybe use lunar.js?
-						var filter = [];
-						filter.push({
-							field: $scope.search_field,
-							query: query
-						});
+					var _search_fn = function (query) {
+						self.search_promise = $timeout(function () {
+							//TODO: this needs a lot of improving. Maybe use lunar.js?
+							var filter = [];
+							filter.push({
+								field: $scope.search_field,
+								query: query
+							});
 
-						$scope.items = amse.get_filtered_tree(filter);
-						$scope.search_spinner_visible = false;
-					}, 1500, true, _new);
+							$scope.items = amse.get_filtered_tree(filter);
+							$scope.search_spinner_visible = false;
+						}, 1500, true);
+					};
+					_search_fn(_new); // Hack for Angular <1.4 support
 				});
 
 				/*
