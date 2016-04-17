@@ -14,5 +14,6 @@ demo.controller('demoOutputTypes', ['$scope', function ($scope) {
 	$scope.output_data_3 = [];
 	$scope.output_data_4 = [];
 	$scope.output_data_5 = [];
+	$scope.output_data_6 = [];
 
 }]);

@@ -394,21 +394,94 @@ $scope.output_data_5 = [];
 
 				</div>
 			</div>
-			<div class="col-sm-6">
 
+			<div class="col-sm-6">
+				<h5>'values' type</h5>
+				<div role="tabpanel">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a data-target="#result_6" role="tab" data-toggle="tab">Result</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#view_6" role="tab" data-toggle="tab">View</a>
+						</li>
+						<li role="presentation">
+							<a data-target="#controller_6" role="tab" data-toggle="tab">Controller</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="result_6">
+							<div
+								angular-multi-select
+								input-model="input_data"
+								output-model="output_data_6"
+								output-type="value"
+
+								dropdown-label="Click me!"
+								node-label="<[ text ]>"
+								leaf-label="<[ text ]>"
+							></div>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="view_6">
+							<p>Define your directive:</p>
+							<pre>
+								<code class="javascript" ng-non-bindable>
+&lt;div
+	angular-multi-select
+	input-model="input_data"
+	output-model="output_data_6"
+	output-type="value"
+
+	dropdown-label="Click me!"
+	node-label="<[ text ]>"
+	leaf-label="<[ text ]>"
+>&lt;/div>
+								</code>
+							</pre>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="controller_6">
+							<p>Define your data models:</p>
+							<pre>
+								<code class="javascript">
+$scope.input_data = [
+	{ text: 'A', value: 'a', id: 1},
+	{ text: 'B', value: 'b', id: 2},
+	{ text: 'C', value: 'c', id: 3, checked: true},
+	{ text: 'D', value: 'd', id: 4},
+	{ text: 'E', value: 'e', id: 5},
+	{ text: 'F', value: 'f', id: 6, checked: true}
+];
+
+$scope.output_data_6 = [];
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</div>
 
-	</div>
-</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_5 | json : 4 | prettify"></pre>
+			</div>
+			<div class="col-sm-6">
+				<p>
+					Look at the <code>output-model</code> below to see the values getting updated
+					as you select / deselect an item in the directive.
+				</p>
+				<pre ng-bind-html="output_data_6 | json : 4 | prettify"></pre>
+			</div>
+		</div>
 
-<div class="row">
-	<div class="col-sm-6">
-		<p>
-			Look at the <code>output-model</code> below to see the values getting updated
-			as you select / deselect an item in the directive.
-		</p>
-		<pre ng-bind-html="output_data_5 | json : 4 | prettify"></pre>
 	</div>
 </div>
 
