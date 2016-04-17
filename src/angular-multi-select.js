@@ -131,7 +131,7 @@ angular_multi_select.directive('angularMultiSelect', [
 							amsdc.to_external([item])[0]
 						))
 					});
-					amse.toggle_open_node(item);
+					amse.toggle_check_node(item);
 				};
 
 				/*
