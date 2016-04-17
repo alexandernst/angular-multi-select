@@ -16,8 +16,4 @@ demo.controller('demoOutputTypes', ['$scope', function ($scope) {
 	$scope.output_data_5 = [];
 	$scope.output_data_6 = [];
 
-	$scope.$watch('output_data_6', function (_new, _old) {
-		console.log(_new);
-	});
-
 }]);

@@ -59,6 +59,10 @@ var demo = angular.module('demo', [
 		controller: 'demoKeyboard'
 	});
 
+	$routeProvider.when('/events', {
+		templateUrl: 'views/events.html'
+	});
+
 	$routeProvider.when('/i18n', {
 		templateUrl: 'views/i18n.html'
 	});
