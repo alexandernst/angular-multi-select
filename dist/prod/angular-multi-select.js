@@ -6,7 +6,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _templateObject = _taggedTemplateLiteral(["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModel, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"], ["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModel, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"amse.toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"]);
+var _templateObject = _taggedTemplateLiteral(["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModelNotFormatted, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"], ["\n\n\t\t<div class=\"ams-button\" ng-click=\"open = !open\">\n\t\t\t<div class=\"ams-button-text\" ng-bind-html=\"amssh.create_dropdown_label(stats, outputModelNotFormatted, self.output_type)\"></div>\n\t\t\t<div class=\"ams-caret\"></div>\n\t\t</div>\n\n\t\t<div class=\"ams-container ng-cloak\" ng-show=\"open\">\n\n\t\t\t<div class=\"ams-helpers\">\n\t\t\t\t<div class=\"selects\">\n\t\t\t\t\t<button class=\"all ams-btn\" type=\"button\" accesskey=\"a\" ng-click=\"amse.check_all()\" ng-hide=\"hide_helpers.indexOf('check_all') > -1\">{{ 'CHECK_ALL' | translate }}</button>\n\t\t\t\t\t<button class=\"none ams-btn\" type=\"button\" accesskey=\"n\" ng-click=\"amse.uncheck_all()\" ng-hide=\"hide_helpers.indexOf('check_none') > -1\">{{ 'CHECK_NONE' | translate }}</button>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"resets\">\n\t\t\t\t\t<button class=\"reset ams-btn\" type=\"button\" accesskey=\"r\" ng-click=\"reset()\" ng-hide=\"hide_helpers.indexOf('reset') > -1\">{{ 'RESET' | translate }}</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-search\" ng-show=\"search_field !== null\">\n\t\t\t\t<input class=\"ams-search-field\" type=\"text\" name=\"ams-search-field\" value=\"\" placeholder=\"{{ 'SEARCH' | translate }}\" ng-model=\"search\" autofocus>\n\t\t\t\t<div class=\"ams-spinner\" ng-show=\"search_spinner_visible\"></div>\n\t\t\t\t<button class=\"clear ams-btn\" type=\"button\" accesskey=\"c\" name=\"clear\" title=\"{{ 'CLEAR' | translate }}\" ng-click=\"search = ''\"></button>\n\t\t\t</div>\n\n\t\t\t<div class=\"ams-items\">\n\t\t\t\t<div\n\t\t\t\t\tng-repeat=\"item in items track by item[ops.ID_PROPERTY]\"\n\t\t\t\t\tclass=\"ams-item {{ amssh.get_level_class(item) }} {{ amssh.get_type_class(item) }} {{ amssh.get_open_class(item) }} {{ $index === focused_index ? 'ams-item-focused' : '' }}\"\n\t\t\t\t>\n\t\t\t\t\t<!-- Caret -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"ams-caret {{ amssh.get_open_class(item) }}\"\n\t\t\t\t\t\tng-click=\"toggle_open_node(item)\"\n\t\t\t\t\t></div>\n\n\t\t\t\t\t<!-- Text of the element -->\n\t\t\t\t\t<div class=\"ams-item-text\" ng-bind-html=\"amssh.create_label(item)\"></div>\n\n\t\t\t\t\t<!-- Check holder -->\n\t\t\t\t\t<div\n\t\t\t\t\t\tclass=\"check {{ amssh.get_checked_class(item) }}\"\n\t\t\t\t\t\tng-click=\"toggle_check_node(item)\"\n\t\t\t\t\t>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\n\t"]);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -133,6 +133,7 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	OUTPUT_DATA_TYPE_ARRAYS: 'arrays',
 	OUTPUT_DATA_TYPE_OBJECT: 'object',
 	OUTPUT_DATA_TYPE_ARRAY: 'array',
+	OUTPUT_DATA_TYPE_VALUES: 'values',
 	OUTPUT_DATA_TYPE_VALUE: 'value',
 
 	/*
@@ -477,6 +478,9 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
 				res = this.to_array(data, keys);
 				break;
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUES:
+				res = this.to_values(data, keys);
+				break;
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
 				res = this.to_value(data, keys);
 				break;
@@ -705,6 +709,52 @@ angular_multi_select_data_converter.factory('angularMultiSelectDataConverter', [
 		}
 
 		if (this.DEBUG === true) console.timeEnd(this.NAME + ' -> to_object');
+
+		return ret;
+	};
+
+	/*
+ ████████  ██████      ██    ██  █████  ██      ██    ██ ███████ ███████
+    ██    ██    ██     ██    ██ ██   ██ ██      ██    ██ ██      ██
+    ██    ██    ██     ██    ██ ███████ ██      ██    ██ █████   ███████
+    ██    ██    ██      ██  ██  ██   ██ ██      ██    ██ ██           ██
+    ██     ██████        ████   ██   ██ ███████  ██████  ███████ ███████
+ */
+	DataConverter.prototype.to_values = function (data, keys) {
+		/*
+   * Takes an array of one object (the result of get_checked_tree usually)
+   * and returns the value of the key in the object that is passed as the
+   * "key" argument.
+   * If "key" hasn't been passed, the first available value in the object
+   * will be returned.
+   */
+		if (!Array.isArray(data) || data.length === 0) {
+			return [];
+		}
+
+		if (this.DEBUG === true) console.time(this.NAME + ' -> to_values');
+
+		if (keys === undefined) {
+			keys = [];
+		}
+
+		var ret = [];
+
+		if ((typeof data === "undefined" ? "undefined" : _typeof(data)) !== 'object' || !Array.isArray(data) || keys.length === 0) {
+			//do nothing
+		} else {
+				for (var i = 0; i < data.length; i++) {
+					for (var j = 0; j < keys.length; j++) {
+						if (!(keys[j] in data[i])) {
+							continue;
+						}
+
+						ret.push(data[i][keys[j]]);
+					}
+				}
+			}
+
+		if (this.DEBUG === true) console.timeEnd(this.NAME + ' -> to_values');
 
 		return ret;
 	};
@@ -2231,7 +2281,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 
 var angular_multi_select = angular.module('angular-multi-select', ['angular-multi-select-utils', 'angular-multi-select-engine', 'angular-multi-select-constants', 'angular-multi-select-styles-helper', 'angular-multi-select-data-converter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$timeout', '$templateCache', 'angularMultiSelectUtils', 'angularMultiSelectEngine', 'angularMultiSelectConstants', 'angularMultiSelectStylesHelper', 'angularMultiSelectDataConverter', function ($http, $compile, $timeout, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$timeout', '$rootScope', '$templateCache', 'angularMultiSelectUtils', 'angularMultiSelectEngine', 'angularMultiSelectConstants', 'angularMultiSelectStylesHelper', 'angularMultiSelectDataConverter', function ($http, $compile, $timeout, $rootScope, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 	'use strict';
 
 	return {
@@ -2328,6 +2378,22 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			var amsdc = new angularMultiSelectDataConverter($scope.ops);
 			$scope.amse = amse;
 			$scope.amssh = amssh;
+
+			$scope.toggle_open_node = function (item) {
+				$rootScope.$broadcast('ams_toggle_open_node', {
+					name: $scope.ops.NAME,
+					item: JSON.parse(JSON.stringify(amsdc.to_external([item])[0]))
+				});
+				amse.toggle_open_node(item);
+			};
+
+			$scope.toggle_check_node = function (item) {
+				$rootScope.$broadcast('ams_toggle_check_node', {
+					name: $scope.ops.NAME,
+					item: JSON.parse(JSON.stringify(amsdc.to_external([item])[0]))
+				});
+				amse.toggle_open_node(item);
+			};
 
 			/*
    ██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
@@ -2456,17 +2522,20 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				}
 
 				$scope.search_spinner_visible = true;
-				self.search_promise = $timeout(function (query) {
-					//TODO: this needs a lot of improving. Maybe use lunar.js?
-					var filter = [];
-					filter.push({
-						field: $scope.search_field,
-						query: query
-					});
+				var _search_fn = function _search_fn(query) {
+					self.search_promise = $timeout(function () {
+						//TODO: this needs a lot of improving. Maybe use lunar.js?
+						var filter = [];
+						filter.push({
+							field: $scope.search_field,
+							query: query
+						});
 
-					$scope.items = amse.get_filtered_tree(filter);
-					$scope.search_spinner_visible = false;
-				}, 1500, true, _new);
+						$scope.items = amse.get_filtered_tree(filter);
+						$scope.search_spinner_visible = false;
+					}, 1500, true);
+				};
+				_search_fn(_new); // Hack for Angular <1.4 support
 			});
 
 			/*
@@ -2502,11 +2571,20 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 					var res = amsdc.to_external(checked_tree);
 
 					/*
+      * This is used to create the dropdown label.
+      */
+					if (typeof attrs.dropdownLabel === "string" && attrs.dropdownLabel.indexOf("outputModelIterator" > -1)) {
+						$scope.outputModelNotFormatted = JSON.parse(JSON.stringify(res));
+					}
+
+					/*
       * Convert the data to the desired output.
       */
 					res = amsdc.to_format(res, self.output_type, self.output_keys);
 
 					$scope.outputModel = res;
+				} else {
+					$scope.ops.DEBUG && console.warn("output model in AMS", $scope.ops.NAME, "is undefined, skipping output ops");
 				}
 			};
 
@@ -2611,14 +2689,18 @@ angular_multi_select.filter('translate', ['angularMultiSelectI18n', function (an
 
 angular_multi_select.filter('outputModelIterator', ['angularMultiSelectConstants', 'angularMultiSelectStylesHelper', function (angularMultiSelectConstants, angularMultiSelectStylesHelper) {
 	return function (text, data, glue) {
+		var exp,
+		    output = [];
 		var amssh = new angularMultiSelectStylesHelper();
 
-		var output = [];
+		if (!data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]) {
+			return "";
+		}
 
-		var exp;
 		switch (data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK]) {
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECTS:
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAYS:
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUES:
 				data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK].map(function (v) {
 					exp = amssh.interpolate_alternative2(text);
 					output.push(exp(v));
@@ -2626,11 +2708,9 @@ angular_multi_select.filter('outputModelIterator', ['angularMultiSelectConstants
 				break;
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECT:
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
-				exp = amssh.interpolate_alternative2(text);
-				output.push(exp(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]));
-				break;
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
-				output.push(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]);
+				exp = amssh.interpolate_alternative2(text);
+				output.push(exp(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK][0]));
 				break;
 		}
 

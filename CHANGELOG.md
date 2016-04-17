@@ -1,3 +1,8 @@
+### v7.0.0
+- Better support for Angular <1.4
+- Dropdown label syntax has been changed to allow further customization.
+- Now AMS will broadcast events on un/checking and opening/closing items.
+
 ### v6.3.3
 ##### Added / Updated
 - More performance improvements.

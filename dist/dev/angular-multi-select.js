@@ -2,7 +2,7 @@
 
 var angular_multi_select = angular.module('angular-multi-select', ['angular-multi-select-utils', 'angular-multi-select-engine', 'angular-multi-select-constants', 'angular-multi-select-styles-helper', 'angular-multi-select-data-converter']);
 
-angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$timeout', '$templateCache', 'angularMultiSelectUtils', 'angularMultiSelectEngine', 'angularMultiSelectConstants', 'angularMultiSelectStylesHelper', 'angularMultiSelectDataConverter', function ($http, $compile, $timeout, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
+angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$timeout', '$rootScope', '$templateCache', 'angularMultiSelectUtils', 'angularMultiSelectEngine', 'angularMultiSelectConstants', 'angularMultiSelectStylesHelper', 'angularMultiSelectDataConverter', function ($http, $compile, $timeout, $rootScope, $templateCache, angularMultiSelectUtils, angularMultiSelectEngine, angularMultiSelectConstants, angularMultiSelectStylesHelper, angularMultiSelectDataConverter) {
 	'use strict';
 
 	return {
@@ -99,6 +99,22 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 			var amsdc = new angularMultiSelectDataConverter($scope.ops);
 			$scope.amse = amse;
 			$scope.amssh = amssh;
+
+			$scope.toggle_open_node = function (item) {
+				$rootScope.$broadcast('ams_toggle_open_node', {
+					name: $scope.ops.NAME,
+					item: JSON.parse(JSON.stringify(amsdc.to_external([item])[0]))
+				});
+				amse.toggle_open_node(item);
+			};
+
+			$scope.toggle_check_node = function (item) {
+				$rootScope.$broadcast('ams_toggle_check_node', {
+					name: $scope.ops.NAME,
+					item: JSON.parse(JSON.stringify(amsdc.to_external([item])[0]))
+				});
+				amse.toggle_open_node(item);
+			};
 
 			/*
    ██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
@@ -227,17 +243,20 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				}
 
 				$scope.search_spinner_visible = true;
-				self.search_promise = $timeout(function (query) {
-					//TODO: this needs a lot of improving. Maybe use lunar.js?
-					var filter = [];
-					filter.push({
-						field: $scope.search_field,
-						query: query
-					});
+				var _search_fn = function _search_fn(query) {
+					self.search_promise = $timeout(function () {
+						//TODO: this needs a lot of improving. Maybe use lunar.js?
+						var filter = [];
+						filter.push({
+							field: $scope.search_field,
+							query: query
+						});
 
-					$scope.items = amse.get_filtered_tree(filter);
-					$scope.search_spinner_visible = false;
-				}, 1500, true, _new);
+						$scope.items = amse.get_filtered_tree(filter);
+						$scope.search_spinner_visible = false;
+					}, 1500, true);
+				};
+				_search_fn(_new); // Hack for Angular <1.4 support
 			});
 
 			/*
@@ -273,11 +292,20 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 					var res = amsdc.to_external(checked_tree);
 
 					/*
+      * This is used to create the dropdown label.
+      */
+					if (typeof attrs.dropdownLabel === "string" && attrs.dropdownLabel.indexOf("outputModelIterator" > -1)) {
+						$scope.outputModelNotFormatted = JSON.parse(JSON.stringify(res));
+					}
+
+					/*
       * Convert the data to the desired output.
       */
 					res = amsdc.to_format(res, self.output_type, self.output_keys);
 
 					$scope.outputModel = res;
+				} else {
+					$scope.ops.DEBUG && console.warn("output model in AMS", $scope.ops.NAME, "is undefined, skipping output ops");
 				}
 			};
 

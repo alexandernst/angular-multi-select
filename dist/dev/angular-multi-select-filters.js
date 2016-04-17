@@ -10,14 +10,18 @@ angular_multi_select.filter('translate', ['angularMultiSelectI18n', function (an
 
 angular_multi_select.filter('outputModelIterator', ['angularMultiSelectConstants', 'angularMultiSelectStylesHelper', function (angularMultiSelectConstants, angularMultiSelectStylesHelper) {
 	return function (text, data, glue) {
+		var exp,
+		    output = [];
 		var amssh = new angularMultiSelectStylesHelper();
 
-		var output = [];
+		if (!data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]) {
+			return "";
+		}
 
-		var exp;
 		switch (data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK]) {
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECTS:
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAYS:
+			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUES:
 				data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK].map(function (v) {
 					exp = amssh.interpolate_alternative2(text);
 					output.push(exp(v));
@@ -25,11 +29,9 @@ angular_multi_select.filter('outputModelIterator', ['angularMultiSelectConstants
 				break;
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_OBJECT:
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_ARRAY:
-				exp = amssh.interpolate_alternative2(text);
-				output.push(exp(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]));
-				break;
 			case angularMultiSelectConstants.OUTPUT_DATA_TYPE_VALUE:
-				output.push(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]);
+				exp = amssh.interpolate_alternative2(text);
+				output.push(exp(data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK][0]));
 				break;
 		}
 

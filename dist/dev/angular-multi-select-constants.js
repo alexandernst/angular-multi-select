@@ -65,6 +65,7 @@ angular_multi_select_consts.constant("angularMultiSelectConstants", {
 	OUTPUT_DATA_TYPE_ARRAYS: 'arrays',
 	OUTPUT_DATA_TYPE_OBJECT: 'object',
 	OUTPUT_DATA_TYPE_ARRAY: 'array',
+	OUTPUT_DATA_TYPE_VALUES: 'values',
 	OUTPUT_DATA_TYPE_VALUE: 'value',
 
 	/*
