@@ -148,9 +148,9 @@ output-type="objects"
 						<pre>
 							<code>
 input = [
-	{a: 'foo1', b: 'bar1', c: 42},
-	{a: 'foo2', b: 'bar2', c: 43},
-	{a: 'foo3', b: 'bar3', c: 44}
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
+	{a: 'foo3', b: 'bar3', c: 44, checked: true}
 ];
 
 output = [
@@ -167,20 +167,20 @@ output = [
 						<pre>
 							<code>
 output-type="arrays"
+output-keys="a, b, c"
 							</code>
 						</pre>
 						<pre>
 							<code>
 input = [
-	{a: 'foo1', b: 'bar1', c: 42},
-	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
 	{a: 'foo3', b: 'bar3', c: 44}
 ];
 
 output = [
 	['foo1', 'bar1', 42],
-	['foo2', 'bar2', 43],
-	['foo3', 'bar3', 44]
+	['foo2', 'bar2', 43]
 ];
 							</code>
 						</pre>
@@ -196,8 +196,8 @@ output-type="object"
 						<pre>
 							<code>
 input = [
-	{a: 'foo1', b: 'bar1', c: 42},
-	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
 	{a: 'foo3', b: 'bar3', c: 44}
 ];
 
@@ -216,12 +216,33 @@ output-type="array"
 						<pre>
 							<code>
 input = [
-	{a: 'foo1', b: 'bar1', c: 42},
-	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
 	{a: 'foo3', b: 'bar3', c: 44}
 ];
 
 output = ['foo1', 'bar1', 42];
+							</code>
+						</pre>
+					</li>
+					<li><b>values</b> - The output will be an array containing all the values of the keys that are passed
+						(check <a href="#/config-options#output-keys"><code>output-keys</code></a>).
+						If no key is passed, an empty array will be returned.
+						<pre>
+							<code>
+output-type="values"
+output-keys="a, c"
+							</code>
+						</pre>
+						<pre>
+							<code>
+input = [
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
+	{a: 'foo3', b: 'bar3', c: 44}
+];
+
+output = ['foo1', 42, 'foo2', 43];
 							</code>
 						</pre>
 					</li>
@@ -232,13 +253,14 @@ output = ['foo1', 'bar1', 42];
 						<pre>
 							<code>
 output-type="value"
+output-keys="a"
 							</code>
 						</pre>
 						<pre>
 							<code>
 input = [
-	{a: 'foo1', b: 'bar1', c: 42},
-	{a: 'foo2', b: 'bar2', c: 43},
+	{a: 'foo1', b: 'bar1', c: 42, checked: true},
+	{a: 'foo2', b: 'bar2', c: 43, checked: true},
 	{a: 'foo3', b: 'bar3', c: 44}
 ];
 
