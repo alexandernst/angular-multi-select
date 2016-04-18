@@ -1,3 +1,6 @@
+### v7.1.0
+- Add a signals/events based API.
+
 ### v7.0.4
 - Items container should be re-positioned after queries that modify the number of visible items.
 
