@@ -1,3 +1,6 @@
+### v7.0.2
+- Fix wrong positioning of the items container in certain cases.
+
 ### v7.0.1
 - Fix a bad typo in the code preventing items to repaint after a check.
 

@@ -288,8 +288,8 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
     ██    ██   ██ ██   ██ ██   ████ ███████ ██       ██████  ██   ██ ██      ██     ██       ██████  ███████ ██    ██    ██  ██████  ██   ████
  */
 	StylesHelper.prototype.transform_position = function (element) {
-		var btn = element[0];
-		var container = btn.getElementsByClassName('ams-container')[0];
+		var btn = element[0].getElementsByClassName('ams-button')[0];
+		var container = element[0].getElementsByClassName('ams-container')[0];
 
 		var translateX = 0,
 		    translateY = 0;
