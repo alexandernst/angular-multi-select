@@ -2434,23 +2434,23 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
     ██████  ██   ████     ███████   ████   ███████ ██   ████    ██    ███████
    */
 			$rootScope.$on('ams_do_check_all', function (event, args) {
-				if (args.name === $scope.ops.NAME) amse.check_all();
+				if (args.name === $scope.ops.NAME || args.name === '*') amse.check_all();
 			});
 
 			$rootScope.$on('ams_do_uncheck_all', function (event, args) {
-				if (args.name === $scope.ops.NAME) amse.uncheck_all();
+				if (args.name === $scope.ops.NAME || args.name === '*') amse.uncheck_all();
 			});
 
 			$rootScope.$on('ams_do_reset', function (event, args) {
-				if (args.name === $scope.ops.NAME) $scope.reset();
+				if (args.name === $scope.ops.NAME || args.name === '*') $scope.reset();
 			});
 
 			$rootScope.$on('ams_do_toggle_open_node', function (event, args) {
-				if (args.name === $scope.ops.NAME) amse.toggle_open_node(amse.get_item(args.item));
+				if (args.name === $scope.ops.NAME || args.name === '*') amse.toggle_open_node(amse.get_item(args.item));
 			});
 
 			$rootScope.$on('ams_do_toggle_check_node', function (event, args) {
-				if (args.name === $scope.ops.NAME) amse.toggle_check_node(amse.get_item(args.item));
+				if (args.name === $scope.ops.NAME || args.name === '*') amse.toggle_check_node(amse.get_item(args.item));
 			});
 
 			/*

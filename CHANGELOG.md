@@ -1,3 +1,6 @@
+### v7.1.1
+- Make it possible to controll all AMS instances with the API via the '\*' selector.
+
 ### v7.1.0
 - Add a signals/events based API.
 
