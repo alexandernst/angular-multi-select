@@ -45,7 +45,7 @@ $rootScope.$broadcast('ams_do_reset', {
 					<b>ams_do_toggle_open_node</b>
 					<pre>
 						<code class="javascript">
-$rootScope.$broadcast('ams_do_check_all', {
+$rootScope.$broadcast('ams_do_toggle_open_node', {
 	name: 'my ams',
 	item: {id: 4}
 });
@@ -57,7 +57,7 @@ $rootScope.$broadcast('ams_do_check_all', {
 					<b>ams_do_toggle_check_node</b>
 					<pre>
 						<code class="javascript">
-$rootScope.$broadcast('ams_do_check_all', {
+$rootScope.$broadcast('ams_do_toggle_check_node', {
 	name: 'my ams',
 	item: {id: 4}
 });
@@ -80,7 +80,7 @@ $rootScope.$broadcast('ams_do_check_all', {
 				the first matching result will be used.
 				<pre>
 					<code class="javascript">
-$rootScope.$broadcast('ams_do_check_all', {
+$rootScope.$broadcast('ams_do_toggle_check_node', {
 	name: 'my ams',
 	item: {name: 'John', age: 42}
 });
