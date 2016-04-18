@@ -540,7 +540,7 @@ describe('Testing AMS positioning capabilities', function () {
 		var container_rect = container[0].getBoundingClientRect();
 
 		expect(container_rect.left).toEqual(btn_rect.left);
-		expect(container[0].style.transform || "").toEqual("");
+		expect(container[0].style.transform).toEqual("translate(0px, 0px)");
 	});
 });
 
