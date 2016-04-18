@@ -59,6 +59,10 @@ var demo = angular.module('demo', [
 		controller: 'demoKeyboard'
 	});
 
+	$routeProvider.when('/api', {
+		templateUrl: 'views/api.html'
+	});
+
 	$routeProvider.when('/events', {
 		templateUrl: 'views/events.html'
 	});

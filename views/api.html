@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<h3 class="pageHeading">API</h3>
+
+		<h5>Controlling AMS programmatically</h5>
+
+		<p>
+			AMS allows to be controlled programmatically with a signals-based API that accepts the following event names:
+			<ul>
+				<li>
+					<b>ams_do_check_all</b>
+					<pre>
+						<code class="javascript">
+$rootScope.$broadcast('ams_do_check_all', {
+	name: 'my ams'
+});
+						</code>
+					</pre>
+				</li>
+
+				<li>
+					<b>ams_do_uncheck_all</b>
+					<pre>
+						<code class="javascript">
+$rootScope.$broadcast('ams_do_uncheck_all', {
+	name: 'my ams'
+});
+						</code>
+					</pre>
+				</li>
+
+				<li>
+					<b>ams_do_reset</b>
+					<pre>
+						<code class="javascript">
+$rootScope.$broadcast('ams_do_reset', {
+	name: 'my ams'
+});
+						</code>
+					</pre>
+				</li>
+
+				<li>
+					<b>ams_do_toggle_open_node</b>
+					<pre>
+						<code class="javascript">
+$rootScope.$broadcast('ams_do_check_all', {
+	name: 'my ams',
+	item: {id: 4}
+});
+						</code>
+					</pre>
+				</li>
+
+				<li>
+					<b>ams_do_toggle_check_node</b>
+					<pre>
+						<code class="javascript">
+$rootScope.$broadcast('ams_do_check_all', {
+	name: 'my ams',
+	item: {id: 4}
+});
+						</code>
+					</pre>
+				</li>
+			</ul>
+		</p>
+
+		As you can see, the important argument is the <code>args</code> one. That argument is an object containing 2 keys.
+		<ul>
+			<li>
+				<b>name</b> - the name you (or AMS) assigned to the directive or <b>'*'</b>. That allows you to controll only a
+				specific AMS instance or all instances.
+			</li>
+
+			<li>
+				<b>item</b> - the item that you want to apply the action on. Normally you'd want to pass your <code>id</code>
+				property and the value, but you can pass anything you want. All the keys/values will be passed to Loki and
+				the first matching result will be used.
+				<pre>
+					<code class="javascript">
+$rootScope.$broadcast('ams_do_check_all', {
+	name: 'my ams',
+	item: {name: 'John', age: 42}
+});
+					</code>
+				</pre>
+			</li>
+		</ul>
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	  });
+	});
+</script>
