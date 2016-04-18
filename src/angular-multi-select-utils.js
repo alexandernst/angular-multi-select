@@ -49,7 +49,9 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 			 * array or undefined.
 			 */
 			if (typeof(str) === 'string') {
-				return str.split(",").map(s => s.replace(/^\s+|\s+$/g, ''));
+				return str.split(",")
+					.map(s => s.replace(/^\s+|\s+$/g, ''))
+					.filter(s => s.length > 0);
 			} else {
 				return [];
 			}
@@ -74,7 +76,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 			for (var i = 0; i < arr.length; i+= 2) {
 				var value = arr[i + 1];
 
-				if (value.match(/^([0-9\.]*)$/gi) !== null) {
+				if (value && value.match(/^([0-9\.]*)$/gi) !== null) {
 					arr[i + 1] = Number(value);
 				}
 			}

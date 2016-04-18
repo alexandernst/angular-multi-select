@@ -47,6 +47,8 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 		if (typeof str === 'string') {
 			return str.split(",").map(function (s) {
 				return s.replace(/^\s+|\s+$/g, '');
+			}).filter(function (s) {
+				return s.length > 0;
 			});
 		} else {
 			return [];
@@ -72,7 +74,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 		for (var i = 0; i < arr.length; i += 2) {
 			var value = arr[i + 1];
 
-			if (value.match(/^([0-9\.]*)$/gi) !== null) {
+			if (value && value.match(/^([0-9\.]*)$/gi) !== null) {
 				arr[i + 1] = Number(value);
 			}
 		}
