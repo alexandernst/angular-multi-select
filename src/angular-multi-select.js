@@ -114,6 +114,13 @@ angular_multi_select.directive('angularMultiSelect', [
 				$scope.amse = amse;
 				$scope.amssh = amssh;
 
+				/*
+				██████  ██████   ██████   █████  ██████   ██████  █████  ███████ ████████
+				██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██      ██   ██ ██         ██
+				██████  ██████  ██    ██ ███████ ██   ██ ██      ███████ ███████    ██
+				██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██      ██   ██      ██    ██
+				██████  ██   ██  ██████  ██   ██ ██████   ██████ ██   ██ ███████    ██
+				*/
 				$scope.toggle_open_node = function (item) {
 					$rootScope.$broadcast('ams_toggle_open_node', {
 						name: $scope.ops.NAME,
@@ -133,6 +140,33 @@ angular_multi_select.directive('angularMultiSelect', [
 					});
 					amse.toggle_check_node(item);
 				};
+
+				/*
+				 ██████  ███    ██     ███████ ██    ██ ███████ ███    ██ ████████ ███████
+				██    ██ ████   ██     ██      ██    ██ ██      ████   ██    ██    ██
+				██    ██ ██ ██  ██     █████   ██    ██ █████   ██ ██  ██    ██    ███████
+				██    ██ ██  ██ ██     ██       ██  ██  ██      ██  ██ ██    ██         ██
+				 ██████  ██   ████     ███████   ████   ███████ ██   ████    ██    ███████
+				*/
+				$rootScope.$on('ams_do_check_all', function(event, args) {
+					if (args.name === $scope.ops.NAME) amse.check_all();
+				});
+
+				$rootScope.$on('ams_do_uncheck_all', function(event, args) {
+					if (args.name === $scope.ops.NAME) amse.uncheck_all();
+				});
+
+				$rootScope.$on('ams_do_reset', function(event, args) {
+					if (args.name === $scope.ops.NAME) $scope.reset();
+				});
+
+				$rootScope.$on('ams_do_toggle_open_node', function(event, args) {
+					if (args.name === $scope.ops.NAME) amse.toggle_open_node(amse.get_item(args.item));
+				});
+
+				$rootScope.$on('ams_do_toggle_check_node', function(event, args) {
+					if (args.name === $scope.ops.NAME) amse.toggle_check_node(amse.get_item(args.item));
+				});
 
 				/*
 				██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██

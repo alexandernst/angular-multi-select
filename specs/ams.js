@@ -171,6 +171,86 @@ describe('Testing AMS with different name properties', function () {
 });
 
 /*
+ █████  ██████  ██
+██   ██ ██   ██ ██
+███████ ██████  ██
+██   ██ ██      ██
+██   ██ ██      ██
+*/
+describe('Testing AMS API', function () {
+	var $scope, element, rootScope;
+
+	beforeEach(function (){
+		module('angular-multi-select');
+
+		jasmine.getFixtures().fixturesPath = 'specs/ams';
+		jasmine.getFixtures().load('demo_simple.html');
+		element = document.getElementById('demo_container');
+
+		inject(function($rootScope, $compile, $timeout) {
+			rootScope = $rootScope;
+			$scope = $rootScope.$new();
+			timeout = $timeout;
+
+			$compile(element)($scope);
+
+			$scope.input_data = to_internal_data_1;
+			$scope.output_data = [];
+
+			$scope.$digest();
+		});
+	});
+
+	it('It should be able to react to "ams_do_check_all" broadcast', function () {
+		rootScope.$broadcast('ams_do_check_all', {name: 'ams-demo'});
+		rootScope.$digest();
+
+		var check = $('.check').length;
+		var checked = $('.checked').length;
+		expect(check).toEqual(checked);
+	});
+
+	it('It should be able to react to "ams_do_uncheck_all" broadcast', function () {
+		rootScope.$broadcast('ams_do_uncheck_all', {name: 'ams-demo'});
+		rootScope.$digest();
+
+		var checked = $('.checked').length;
+		expect(checked).toEqual(0);
+	});
+
+	it('It should be able to react to "ams_do_reset" broadcast', function () {
+		rootScope.$broadcast('ams_do_check_all', {name: 'ams-demo'});
+		rootScope.$digest();
+
+		var check = $('.check').length;
+		var checked = $('.checked').length;
+		expect(check).toEqual(checked);
+
+		rootScope.$broadcast('ams_do_reset', {name: 'ams-demo'});
+		rootScope.$digest();
+
+		checked = $('.checked').length;
+		expect(checked).toEqual(4);
+	});
+
+	it('It should be able to react to "ams_do_toggle_open_node" broadcast', function () {
+		rootScope.$broadcast('ams_do_toggle_open_node', {name: 'ams-demo', item: {id: 4}});
+		rootScope.$digest();
+
+		var open = $('.ams-item-text:contains("D")').prev().hasClass("open");
+		expect(open).toEqual(true);
+	});
+
+	it('It should be able to react to "ams_do_toggle_check_node" broadcast', function () {
+		rootScope.$broadcast('ams_do_toggle_check_node', {name: 'ams-demo', item: {id: 4}});
+		rootScope.$digest();
+
+		var checked = $('.checked').length;
+		expect(checked).toEqual(5);
+	});
+});
+
+/*
 ██████  ██████   ██████  ██████  ██████   ██████  ██     ██ ███    ██     ██       █████  ██████  ███████ ██
 ██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██    ██ ██     ██ ████   ██     ██      ██   ██ ██   ██ ██      ██
 ██   ██ ██████  ██    ██ ██████  ██   ██ ██    ██ ██  █  ██ ██ ██  ██     ██      ███████ ██████  █████   ██
