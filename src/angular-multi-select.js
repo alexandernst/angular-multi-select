@@ -191,15 +191,6 @@ angular_multi_select.directive('angularMultiSelect', [
 					}
 
 					amsu.process_kb_input(event, $scope, element);
-
-					/*
-					 * This is required to avoid weird gaps appearing between the items
-					 * container and the button if the container is positione on top of
-					 * the button and a node is closed.
-					 */
-					$timeout(function () {
-						amssh.transform_position(element);
-					});
 				};
 				document.addEventListener('keydown', $scope.onkeypress_listener);
 
@@ -249,6 +240,10 @@ angular_multi_select.directive('angularMultiSelect', [
 						}
 						$scope.items = amse.get_visible_tree();
 						$scope.search_spinner_visible = false;
+
+						$timeout(function () {
+							amssh.transform_position(element);
+						});
 						return;
 					}
 
@@ -272,6 +267,10 @@ angular_multi_select.directive('angularMultiSelect', [
 
 							$scope.items = amse.get_filtered_tree(filter);
 							$scope.search_spinner_visible = false;
+
+							$timeout(function () {
+								amssh.transform_position(element);
+							});
 						}, 1500, true);
 					};
 					_search_fn(_new); // Hack for Angular <1.4 support
@@ -340,6 +339,14 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * This is normaly on open/close actions.
 					 */
 					$scope.items = amse.get_visible_tree();
+
+					/*
+					 * This is required to avoid weird gaps appearing between the items
+					 * container and the button if the amount of shown items changes.
+					 */
+					$timeout(function () {
+						amssh.transform_position(element);
+					});
 				};
 
 				/*
