@@ -1,3 +1,6 @@
+### v7.0.3
+- More fixes related to items container positioning in corner cases.
+
 ### v7.0.2
 - Fix wrong positioning of the items container in certain cases.
 

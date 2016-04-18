@@ -2044,9 +2044,7 @@ angular_multi_select_styles_helper.factory('angularMultiSelectStylesHelper', ['$
 			translateY -= container_rect.height + btn_rect.height;
 		}
 
-		if (translateX < 0 || translateY < 0) {
-			container.style.transform = "translate(" + translateX + "px, " + translateY + "px)";
-		}
+		container.style.transform = "translate(" + translateX + "px, " + translateY + "px)";
 	};
 
 	return StylesHelper;
