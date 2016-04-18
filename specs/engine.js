@@ -77,6 +77,19 @@ describe('Testing engine', function() {
 			expect(tree).toEqual(to_internal_data_1_after);
 		});
 
+		it('It should be able to do a get_item()', function () {
+			var e = new angularMultiSelectEngine();
+			e.insert(angular.copy(to_internal_data_1_after));
+
+			var item = e.get_item({});
+			expect(item).toEqual({});
+
+			item = e.get_item({id: 1});
+			var dc = new angularMultiSelectDataConverter();
+			item = dc.to_external([item]);
+			expect(item[0]).toEqual({ text: 'A', value: 'a', id: 1, open: false, checked: false });
+		});
+
 		it('It should be able to do a get_visible_tree()', function () {
 			var e = new angularMultiSelectEngine();
 			e.insert(angular.copy(to_internal_data_1_after));

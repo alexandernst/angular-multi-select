@@ -420,6 +420,34 @@ angular_multi_select_engine.factory('angularMultiSelectEngine', [
 		};
 
 		/*
+		 ██████  ███████ ████████     ██ ████████ ███████ ███    ███
+		██       ██         ██        ██    ██    ██      ████  ████
+		██   ███ █████      ██        ██    ██    █████   ██ ████ ██
+		██    ██ ██         ██        ██    ██    ██      ██  ██  ██
+		 ██████  ███████    ██        ██    ██    ███████ ██      ██
+		*/
+		Engine.prototype.get_item = function (item) {
+			if (typeof(item) !== 'object' || Object.keys(item).length === 0) return {};
+
+			var filter = [];
+			for (var k in item) {
+				filter.push({
+					[k]: item[k]
+				});
+			}
+
+			var res = this.collection.find({
+				'$and': filter
+			});
+
+			if (Array.isArray(res) && res.length > 0) {
+				return res[0];
+			} else {
+				return {};
+			}
+		};
+
+		/*
 		████████  ██████   ██████   ██████  ██      ███████      ██████  ██████  ███████ ███    ██
 		   ██    ██    ██ ██       ██       ██      ██          ██    ██ ██   ██ ██      ████   ██
 		   ██    ██    ██ ██   ███ ██   ███ ██      █████       ██    ██ ██████  █████   ██ ██  ██
