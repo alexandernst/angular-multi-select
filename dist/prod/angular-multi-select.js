@@ -2120,7 +2120,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
    * using ',' as separator and return the resulting
    * array or undefined.
    */
-		if (typeof str === 'string') {
+		if (typeof str === 'string' && str.length > 0) {
 			return str.split(",").map(function (s) {
 				return s.replace(/^\s+|\s+$/g, '');
 			});
