@@ -48,7 +48,7 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', [
 			 * using ',' as separator and return the resulting
 			 * array or undefined.
 			 */
-			if (typeof(str) === 'string') {
+			if (typeof(str) === 'string' && str.length > 0) {
 				return str.split(",").map(s => s.replace(/^\s+|\s+$/g, ''));
 			} else {
 				return [];
