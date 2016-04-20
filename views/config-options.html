@@ -537,13 +537,19 @@ dropdown-label="<[
 
 			<p>
 				Starting with 6.1.0 you can also pass a template string to a special filter, which will be interpolated with
-				each of the items in your output model.
+				each of the items in your output model. The filter accepts a second argument that will be used as a glue.
 			</p>
+
+			<p>
+				Starting with 7.2.0 you can also pass a third argument that will be used as the dropdown's text if no items
+				are checked.
+			</p>
+
 			<pre>
 				<code>
 dropdown-label="<[ '<(text)>' | outputModelIterator : this ]>"
 dropdown-label="<[ '<(text)> - <(value)>' | outputModelIterator : this : ' | ' ]>"
-dropdown-label="<[ '' | outputModelIterator : this ]>" // output-type="value"
+dropdown-label="<[ '<(text)> - <(value)>' | outputModelIterator : this : ' | ' : 'Please select something' ]>"
 				</code>
 			</pre>
 			<p>
@@ -553,7 +559,7 @@ dropdown-label="<[ '' | outputModelIterator : this ]>" // output-type="value"
 				<code>
 C,F,S,Y,Z
 C - c | F - f | S - s | Y - y | Z - y
-C
+Please select something
 				</code>
 			</pre>
 
