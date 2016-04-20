@@ -1,3 +1,6 @@
+### v7.2.0
+- Now it's possible to assign a default value that will be shown if nothing is checked (outputModelIterator filter).
+
 ### v7.1.2
 - Do not crash if 'preselect' property is an empty string.
 
