@@ -13,12 +13,12 @@ angular_multi_select.filter('outputModelIterator', [
 	'angularMultiSelectConstants',
 	'angularMultiSelectStylesHelper',
 	function (angularMultiSelectConstants, angularMultiSelectStylesHelper) {
-		return function (text, data, glue) {
+		return function (text, data, glue, default_str) {
 			var exp, output = [];
 			var amssh = new angularMultiSelectStylesHelper();
 
 			if (!data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]) {
-				return "";
+				return default_str || "";
 			}
 
 			switch (data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_TYPE_HACK]) {
@@ -38,7 +38,7 @@ angular_multi_select.filter('outputModelIterator', [
 					break;
 			}
 
-			return output.join(glue);
+			return output.join(glue) || default_str || "";
 		};
 	}
 ]);
