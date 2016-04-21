@@ -6,43 +6,72 @@
 		<h5>Listening for events</h5>
 
 		<p>
-			AMS will broadcast events whenever an item is un/checked or opened/closed. The names of the events are:
+			AMS will broadcast events whenever <i>something</i> happens. The names of the events are:
 			<ul>
-				<li><b>ams_toggle_check_node</b></li>
-				<li><b>ams_toggle_open_node</b></li>
-			</ul>
-		</p>
 
-		<pre>
-			<code class="javascript">
-$scope.$on('ams_toggle_check_node', function(event, args) {
-	console.log(event, args);
-});
-
+				<li><b>ams_output_model_change</b></li>
+				<pre>
+					<code class="javascript">
 $scope.$on('ams_toggle_open_node', function(event, args) {
 	console.log(event, args);
 });
-			</code>
-		</pre>
+					</code>
+				</pre>
+				<pre>
+					<code class="javascript">
+Object {name: "ams_toggle_open_node", targetScope: m, defaultPrevented: false, currentScope: b},
+Object {name: "angular-multi-select-14609208330.14700627423064772", model: XXXXXXXX
+					</code>
+				</pre>
+				<ul>
+					<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
+					<li><b>model</b> - the output model <b>after</b> the actual change</li>
+				</ul>
 
-		That will output something like
+				<br><br>
 
-		<pre>
-			<code class="javascript">
+				<li><b>ams_toggle_check_node</b></li>
+				<pre>
+					<code class="javascript">
+$scope.$on('ams_toggle_check_node', function(event, args) {
+	console.log(event, args);
+});
+					</code>
+				</pre>
+				<pre>
+					<code class="javascript">
 Object {name: "ams_toggle_open_node", targetScope: m, defaultPrevented: false, currentScope: b},
 Object {name: "angular-multi-select-14609208330.14700627423064772", item: {"text":"A","value":"a","id":1,"open":false,"checked":1}}
+					</code>
+				</pre>
+				<ul>
+					<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
+					<li><b>item</b> - the item that caused the broadcast <b>before</b> the actual change</li>
+				</ul>
 
+				<br><br>
+
+				<li><b>ams_toggle_open_node</b></li>
+				<pre>
+					<code class="javascript">
+$scope.$on('ams_toggle_open_node', function(event, args) {
+	console.log(event, args);
+});
+					</code>
+				</pre>
+				<pre>
+					<code class="javascript">
 Object {name: "ams_toggle_open_node", targetScope: m, defaultPrevented: false, currentScope: b},
 Object {name: "angular-multi-select-14609208330.14700627423064772", item: {"text":"A","value":"a","id":1,"open":false,"checked":1}}
-			</code>
-		</pre>
+					</code>
+				</pre>
+				<ul>
+					<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
+					<li><b>item</b> - the item that caused the broadcast <b>before</b> the actual change</li>
+				</ul>
 
-		As you can see, the important argument is the <code>args</code> one. That argument is an object containing 2 keys.
-		<ul>
-			<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
-			<li><b>item</b> - the item that caused the broadcast <b>before</b> the actual change</li>
-		</ul>
-
+			</ul>
+		</p>
 	</div>
 </div>
 
