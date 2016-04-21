@@ -1,3 +1,6 @@
+### v7.3.0
+- Add an event for when the output model has been changed.
+
 ### v7.2.1
 - Output model isn't required anymore. This will allow the output model to be assigned 'undefined'.
 
