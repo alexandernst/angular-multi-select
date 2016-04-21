@@ -1,3 +1,6 @@
+### v7.3.1
+- Emit 'ams_output_model_change' after the model has been changed.
+
 ### v7.3.0
 - Add an event for when the output model has been changed.
 

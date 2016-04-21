@@ -336,9 +336,11 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				res = amsdc.to_format(res, self.output_type, self.output_keys);
 
 				$scope.outputModel = res;
-				$rootScope.$broadcast('ams_output_model_change', {
-					name: $scope.ops.NAME,
-					model: $scope.outputModel
+				$timeout(function () {
+					$rootScope.$broadcast('ams_output_model_change', {
+						name: $scope.ops.NAME,
+						model: $scope.outputModel
+					});
 				});
 			};
 
