@@ -1,3 +1,6 @@
+### v7.2.1
+- Output model isn't required anymore. This will allow the output model to be assigned 'undefined'.
+
 ### v7.2.0
 - Now it's possible to assign a default value that will be shown if nothing is checked (outputModelIterator filter).
 

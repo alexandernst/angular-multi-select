@@ -10,7 +10,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 
 		scope: {
 			inputModel: '=',
-			outputModel: '='
+			outputModel: '=?'
 		},
 
 		link: function link($scope, element, attrs) {
@@ -316,30 +316,26 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
      */
 				$scope.items = amse.get_visible_tree();
 
-				if ($scope.outputModel !== undefined) {
-					var checked_tree = amse.get_checked_tree(self.output_filter);
+				var checked_tree = amse.get_checked_tree(self.output_filter);
 
-					/*
-      * Remove internal (undeeded) data.
-      */
-					var res = amsdc.to_external(checked_tree);
+				/*
+     * Remove internal (undeeded) data.
+     */
+				var res = amsdc.to_external(checked_tree);
 
-					/*
-      * This is used to create the dropdown label.
-      */
-					if (typeof attrs.dropdownLabel === "string" && attrs.dropdownLabel.indexOf("outputModelIterator" > -1)) {
-						$scope.outputModelNotFormatted = JSON.parse(JSON.stringify(res));
-					}
-
-					/*
-      * Convert the data to the desired output.
-      */
-					res = amsdc.to_format(res, self.output_type, self.output_keys);
-
-					$scope.outputModel = res;
-				} else {
-					$scope.ops.DEBUG && console.warn("output model in AMS", $scope.ops.NAME, "is undefined, skipping output ops");
+				/*
+     * This is used to create the dropdown label.
+     */
+				if (typeof attrs.dropdownLabel === "string" && attrs.dropdownLabel.indexOf("outputModelIterator" > -1)) {
+					$scope.outputModelNotFormatted = JSON.parse(JSON.stringify(res));
 				}
+
+				/*
+     * Convert the data to the desired output.
+     */
+				res = amsdc.to_format(res, self.output_type, self.output_keys);
+
+				$scope.outputModel = res;
 			};
 
 			/*
