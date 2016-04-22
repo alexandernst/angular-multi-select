@@ -1,3 +1,6 @@
+### v7.3.2
+- Better handle empty output in outputModelIterator filter.
+
 ### v7.3.1
 - Emit 'ams_output_model_change' after the model has been changed.
 
