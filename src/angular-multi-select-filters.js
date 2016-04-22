@@ -17,7 +17,7 @@ angular_multi_select.filter('outputModelIterator', [
 			var exp, output = [];
 			var amssh = new angularMultiSelectStylesHelper();
 
-			if (!data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK]) {
+			if (!data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK] || data[angularMultiSelectConstants.INTERNAL_KEY_OUTPUT_MODEL_HACK].length === 0) {
 				return default_str || "";
 			}
 
