@@ -2641,8 +2641,7 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				$scope.outputModel = res;
 				$timeout(function () {
 					$rootScope.$broadcast('ams_output_model_change', {
-						name: $scope.ops.NAME,
-						model: $scope.outputModel
+						name: $scope.ops.NAME
 					});
 				});
 			};
@@ -2696,6 +2695,12 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				for (var i = 0; i < self.preselect.length; i += 2) {
 					amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
 				}
+
+				$timeout(function () {
+					$rootScope.$broadcast('ams_input_model_change', {
+						name: $scope.ops.NAME
+					});
+				});
 			};
 
 			$scope.$watch('inputModel', function (_new, _old) {

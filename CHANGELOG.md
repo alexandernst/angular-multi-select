@@ -1,3 +1,7 @@
+### v7.4.0
+- Stop emitting the output model in the 'ams_output_model_change' event as we already have access to that data.
+- Add an event for when the input model has been changed.
+
 ### v7.3.2
 - Better handle empty output in outputModelIterator filter.
 
