@@ -356,8 +356,7 @@ angular_multi_select.directive('angularMultiSelect', [
 					$scope.outputModel = res;
 					$timeout(function () {
 						$rootScope.$broadcast('ams_output_model_change', {
-							name: $scope.ops.NAME,
-							model: $scope.outputModel
+							name: $scope.ops.NAME
 						});
 					});
 				};
