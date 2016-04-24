@@ -410,6 +410,12 @@ angular_multi_select.directive('angularMultiSelect', [
 					for (var i = 0; i < self.preselect.length; i += 2) {
 						amse.check_node_by([self.preselect[i], self.preselect[i + 1]]);
 					}
+
+					$timeout(function () {
+						$rootScope.$broadcast('ams_input_model_change', {
+							name: $scope.ops.NAME
+						});
+					});
 				};
 
 				$scope.$watch('inputModel', function (_new, _old) {
