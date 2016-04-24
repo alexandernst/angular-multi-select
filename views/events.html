@@ -20,12 +20,31 @@ $scope.$on('ams_output_model_change', function(event, args) {
 				<pre>
 					<code class="javascript">
 Object {name: "ams_output_model_change", targetScope: m, defaultPrevented: false, currentScope: b},
-Object {name: "angular-multi-select-14609208330.14700627423064772", model: XXXXXXXX
+Object {name: "angular-multi-select-14609208330.14700627423064772"
 					</code>
 				</pre>
 				<ul>
 					<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
-					<li><b>model</b> - the output model <b>after</b> the actual change</li>
+				</ul>
+
+				<br><br>
+
+				<li><b>ams_input_model_change</b></li>
+				<pre>
+					<code class="javascript">
+$scope.$on('ams_input_model_change', function(event, args) {
+	console.log(event, args);
+});
+					</code>
+				</pre>
+				<pre>
+					<code class="javascript">
+Object {name: "ams_input_model_change", targetScope: m, defaultPrevented: false, currentScope: b},
+Object {name: "angular-multi-select-14609208330.14700627423064772"
+					</code>
+				</pre>
+				<ul>
+					<li><b>name</b> - the name you (or AMS) assigned to the directive</li>
 				</ul>
 
 				<br><br>
