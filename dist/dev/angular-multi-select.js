@@ -150,6 +150,14 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
 				if (args.name === $scope.ops.NAME || args.name === '*') amse.toggle_check_node(amse.get_item(args.item));
 			});
 
+			$rootScope.$on('ams_open', function (event, args) {
+				if (args.name === $scope.ops.NAME || args.name === '*') $scope.open = true;
+			});
+
+			$rootScope.$on('ams_close', function (event, args) {
+				if (args.name === $scope.ops.NAME || args.name === '*') $scope.open = false;
+			});
+
 			/*
    ██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
    ██    ██ ██ ██      ██ ██   ██ ██ ██      ██    ██     ██  ██
@@ -334,6 +342,13 @@ angular_multi_select.directive('angularMultiSelect', ['$http', '$compile', '$tim
      * Convert the data to the desired output.
      */
 				res = amsdc.to_format(res, self.output_type, self.output_keys);
+
+				/*
+     * Don't do anything else if the output model hasn't changed.
+     */
+				if (angular.equals($scope.outputModel, res)) {
+					return;
+				}
 
 				$scope.outputModel = res;
 				$timeout(function () {

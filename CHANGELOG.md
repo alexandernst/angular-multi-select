@@ -1,3 +1,7 @@
+### v7.4.1
+- Assign new output model only if something actually changed.
+- Add a signal in the API for opening/closing a particular/all instance/s of AMS.
+
 ### v7.4.0
 - Stop emitting the output model in the 'ams_output_model_change' event as we already have access to that data.
 - Add an event for when the input model has been changed.
