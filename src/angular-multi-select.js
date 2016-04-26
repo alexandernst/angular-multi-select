@@ -168,6 +168,14 @@ angular_multi_select.directive('angularMultiSelect', [
 					if (args.name === $scope.ops.NAME || args.name === '*') amse.toggle_check_node(amse.get_item(args.item));
 				});
 
+				$rootScope.$on('ams_open', function(event, args) {
+					if (args.name === $scope.ops.NAME || args.name === '*') $scope.open = true;
+				});
+
+				$rootScope.$on('ams_close', function(event, args) {
+					if (args.name === $scope.ops.NAME || args.name === '*') $scope.open = false;
+				});
+
 				/*
 				██    ██ ██ ███████ ██ ██████  ██ ██      ██ ████████ ██    ██
 				██    ██ ██ ██      ██ ██   ██ ██ ██      ██    ██     ██  ██
