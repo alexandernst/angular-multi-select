@@ -353,6 +353,13 @@ angular_multi_select.directive('angularMultiSelect', [
 					 */
 					res = amsdc.to_format(res, self.output_type, self.output_keys);
 
+					/*
+					 * Don't do anything else if the output model hasn't changed.
+					 */
+					if (angular.equals($scope.outputModel, res)) {
+						return;
+					}
+
 					$scope.outputModel = res;
 					$timeout(function () {
 						$rootScope.$broadcast('ams_output_model_change', {
