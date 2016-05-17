@@ -1,3 +1,6 @@
+### v7.4.2
+- Add Bower support.
+
 ### v7.4.1
 - Assign new output model only if something actually changed.
 - Add a signal in the API for opening/closing a particular/all instance/s of AMS.

@@ -32,6 +32,8 @@
     "bower_components",
     "utils",
     "specs",
-    "src"
+    "src",
+    "test",
+    "tests"
   ]
 }
