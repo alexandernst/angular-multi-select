@@ -1,3 +1,6 @@
+### v7.4.3
+- Fix preselect not working properly with quoted numbers.
+
 ### v7.4.2
 - Add Bower support.
 

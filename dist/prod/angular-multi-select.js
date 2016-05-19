@@ -2148,7 +2148,9 @@ angular_multi_select_utils.factory('angularMultiSelectUtils', ['angularMultiSele
 		for (var i = 0; i < arr.length; i += 2) {
 			var value = arr[i + 1];
 
-			if (value.match(/^([0-9\.]*)$/gi) !== null) {
+			if (value.match(/^'(.*)'$/gi) !== null || value.match(/^"(.*)"$/gi) !== null) {
+				arr[i + 1] = value.substring(1, value.length - 1);
+			} else if (value.match(/^([0-9\.]*)$/gi) !== null) {
 				arr[i + 1] = Number(value);
 			}
 		}
