@@ -1,3 +1,9 @@
+### v7.4.5
+- Minor tweaks to package.json
+
+### v7.4.4
+- Release in Bower
+
 ### v7.4.3
 - Fix preselect not working properly with quoted numbers.
 
