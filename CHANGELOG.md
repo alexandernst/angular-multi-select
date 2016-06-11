@@ -1,3 +1,7 @@
+### v7.4.6
+- Fix a bug in the template preventing toggling the state of the node in some cases.
+- Make it possible to select more than one node while in filtered mode (#101)
+
 ### v7.4.5
 - Minor tweaks to package.json
 
