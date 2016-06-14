@@ -340,7 +340,9 @@ angular_multi_select.directive('angularMultiSelect', [
 					 * Get the visible tree only once. Consecutive calls on un/check
 					 * will automatically propagate to the rendered tree.
 					 */
-					$scope.items = amse.get_visible_tree();
+					if (!$scope.search) {
+						$scope.items = amse.get_visible_tree();
+					}
 
 					var checked_tree = amse.get_checked_tree(self.output_filter);
 

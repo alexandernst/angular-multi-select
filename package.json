@@ -1,17 +1,14 @@
 {
 	"name": "angular-multi-select",
-	"version": "7.4.3",
+	"version": "7.4.6",
 	"description": "A multi select dropdown directive for AngularJS",
-	"main": [
-		"dist/prod/angular-multi-select.min.js",
-		"dist/prod/angular-multi-select.min.css"
-	],
+	"main": "dist/prod/angular-multi-select.min.js",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:alexandernst/angular-multi-select.git"
 	},
 	"dependencies": {
-		"angular": "1.5.0",
+		"angular": ">=1.5.0",
 		"lokijs": "1.3.16"
 	},
 	"devDependencies": {
