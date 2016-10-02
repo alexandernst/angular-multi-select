@@ -1,5 +1,5 @@
 # Angular Multi Select [![Build Status](https://travis-ci.org/alexandernst/angular-multi-select.svg?branch=master)](https://travis-ci.org/alexandernst/angular-multi-select) ![Logo](https://raw.githubusercontent.com/alexandernst/angular-multi-select/assets/logo_small.png)
-Pure Angular directive which creates the fastes dropdown you'll find.
+Angular directive which creates the fastes dropdown you'll find.
 It offers single or multiple selection modes and a wide range of output formats.
 Doesn't require external libraries.
 
