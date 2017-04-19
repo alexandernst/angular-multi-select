@@ -24,7 +24,7 @@ angular_multi_select.run(['$templateCache', function($templateCache) {
 			</div>
 
 			<div class="ams-search" ng-show="search_field !== null">
-				<input class="ams-search-field" type="text" name="ams-search-field" value="" placeholder="{{ 'SEARCH' | translate }}" ng-model="search" autofocus>
+				<input class="ams-search-field" type="text" name="ams-search-field" value="" placeholder="{{ 'SEARCH' | translate }}" ng-model="search" autofocus></input>
 				<div class="ams-spinner" ng-show="search_spinner_visible"></div>
 				<button class="clear ams-btn" type="button" accesskey="c" name="clear" title="{{ 'CLEAR' | translate }}" ng-click="search = ''"></button>
 			</div>
